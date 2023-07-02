@@ -7,11 +7,11 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.demo.Circle
+import com.alexrdclement.uiplayground.demo.DemoCircle
 import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
 
 fun Modifier.blur(
-    radius: Dp = 4.dp,
+    radius: Dp,
     edgeTreatment: BlurredEdgeTreatment = BlurredEdgeTreatment.Rectangle,
 ): Modifier {
     return this.blur(
@@ -24,8 +24,8 @@ fun Modifier.blur(
 @Composable
 private fun Preview() {
     UiPlaygroundPreview {
-        Circle(
-            modifier = Modifier.blur()
+        DemoCircle(
+            modifier = Modifier.blur(radius = 4.dp)
         )
     }
 }

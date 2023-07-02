@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
 
 @Composable
-fun Text(
+fun DemoText(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.displayLarge,
 ) {
@@ -31,6 +31,6 @@ fun Text(
 @Composable
 private fun Preview() {
     UiPlaygroundPreview {
-        Text()
+        DemoText()
     }
 }

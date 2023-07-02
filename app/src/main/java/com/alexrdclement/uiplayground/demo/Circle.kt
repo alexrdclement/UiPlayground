@@ -5,12 +5,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
 
 @Composable
-fun Circle(modifier: Modifier = Modifier) {
+fun DemoCircle(modifier: Modifier = Modifier) {
     val color = MaterialTheme.colorScheme.primary
     Canvas(
         modifier = modifier.fillMaxSize()
@@ -23,6 +22,6 @@ fun Circle(modifier: Modifier = Modifier) {
 @Composable
 private fun Preview() {
     UiPlaygroundPreview {
-        Circle()
+        DemoCircle()
     }
 }

@@ -1,39 +1,28 @@
 package com.alexrdclement.uiplayground.shaders
 
 import android.os.Build
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.demo.Circle
+import com.alexrdclement.uiplayground.demo.DemoCircle
+import com.alexrdclement.uiplayground.demo.Control
 import com.alexrdclement.uiplayground.demo.ControlBar
 import com.alexrdclement.uiplayground.demo.DemoSubject
 import com.alexrdclement.uiplayground.ui.theme.UiPlaygroundTheme
-import com.alexrdclement.uiplayground.demo.Text as DemoText
-
-enum class DemoModifier {
-    None,
-    Blur,
-    ChromaticAberration,
-}
+import com.alexrdclement.uiplayground.demo.DemoText as DemoText
 
 @Composable
 fun ShaderScreen() {
@@ -43,7 +32,45 @@ fun ShaderScreen() {
     }
 
     var demoSubject by remember { mutableStateOf(DemoSubject.Circle) }
-    var demoModifier by remember { mutableStateOf(DemoModifier.None) }
+    val demoModifiers = remember {
+        mutableStateListOf(
+            DemoModifier.None,
+            DemoModifier.Blur(radius = 0.dp),
+            DemoModifier.ChromaticAberration(amount = 0f)
+        )
+    }
+    var demoModifierIndex by remember { mutableStateOf(0) }
+    val demoModifier by remember(demoModifiers, demoModifierIndex) {
+        derivedStateOf { demoModifiers[demoModifierIndex] }
+    }
+
+    val controls: List<Control> by remember(demoModifier) {
+        derivedStateOf {
+            when (val innerModifier = demoModifier) {
+                DemoModifier.None -> emptyList()
+                is DemoModifier.Blur -> listOf(
+                    Control.Slider(
+                        name = "Radius",
+                        value = innerModifier.radius.value,
+                        onValueChange = {
+                            demoModifiers[demoModifierIndex] = innerModifier.copy(radius = it.dp)
+                        },
+                        valueRange = 0f..16f
+                    )
+                )
+                is DemoModifier.ChromaticAberration -> listOf(
+                    Control.Slider(
+                        name = "Amount",
+                        value = innerModifier.amount,
+                        onValueChange = {
+                            demoModifiers[demoModifierIndex] = innerModifier.copy(amount = it)
+                        },
+                        valueRange = 0f..1024f,
+                    )
+                )
+            }
+        }
+    }
 
     Surface(
         color = MaterialTheme.colorScheme.surface
@@ -54,28 +81,34 @@ fun ShaderScreen() {
             Box(
                 modifier = Modifier.weight(1f)
             ) {
-                val modifier = when (demoModifier) {
+                val modifier = when (val innerModifier = demoModifier) {
                     DemoModifier.None -> Modifier
-                    DemoModifier.Blur -> Modifier.blur()
-                    DemoModifier.ChromaticAberration -> Modifier.chromaticAberration()
+                    is DemoModifier.Blur -> Modifier.blur(
+                        radius = innerModifier.radius,
+                    )
+                    is DemoModifier.ChromaticAberration -> Modifier.chromaticAberration(
+                        amount = { innerModifier.amount }
+                    )
                 }.border(
                     1.dp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 when (demoSubject) {
-                    DemoSubject.Circle -> Circle(modifier = modifier)
+                    DemoSubject.Circle -> DemoCircle(modifier = modifier)
                     DemoSubject.Text -> DemoText(modifier = modifier)
                 }
             }
 
             ControlBar(
+                controls = controls,
                 demoSubject = demoSubject,
                 demoModifier = demoModifier,
+                demoModifiers = demoModifiers,
                 onSubjectSelected = {
                     demoSubject = it
                 },
                 onModifierSelected = {
-                    demoModifier = it
+                    demoModifierIndex = it
                 },
             )
         }

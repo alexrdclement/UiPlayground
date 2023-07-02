@@ -18,9 +18,8 @@ import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.demo.Circle
+import com.alexrdclement.uiplayground.demo.DemoCircle
 import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
 
 // Inspired by Romain Guy on Coding with the Italians: https://www.youtube.com/watch?v=s5RibxKdo-o
@@ -58,7 +57,7 @@ half4 main(float2 fragCoord) {
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 fun Modifier.chromaticAberration(
-    amount: () -> Float = { 100f },
+    amount: () -> Float,
 ): Modifier = composed {
     val shader = remember(ShaderSource) { RuntimeShader(ShaderSource) }
 
@@ -85,7 +84,7 @@ private fun Preview() {
         val range = 1f..1000f
         var amount by remember { mutableStateOf(range.start)}
         Column {
-            Circle(
+            DemoCircle(
                 modifier = Modifier
                     .weight(1f)
                     .chromaticAberration(amount = { amount })
