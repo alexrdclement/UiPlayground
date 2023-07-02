@@ -72,8 +72,8 @@ fun ShaderScreen() {
                     DemoModifier.None -> Modifier
                     is DemoModifier.Blur -> Modifier.blur(
                         radius = innerModifier.radius,
+                        edgeTreatment = innerModifier.edgeTreatment,
                     )
-
                     is DemoModifier.ChromaticAberration -> Modifier.chromaticAberration(
                         amount = { innerModifier.amount }
                     )
