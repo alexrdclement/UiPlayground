@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,50 +51,11 @@ fun ShaderScreen() {
 
     val controls: List<Control> by remember(demoModifier) {
         derivedStateOf {
-            when (val innerModifier = demoModifier) {
-                DemoModifier.None -> emptyList()
-                is DemoModifier.Blur -> {
-                    val edgeTreatments = listOf(
-                        BlurredEdgeTreatment.Rectangle,
-                        BlurredEdgeTreatment.Unbounded,
-                    )
-                    listOf(
-                        Control.Slider(
-                            name = "Radius",
-                            value = innerModifier.radius.value,
-                            onValueChange = {
-                                demoModifiers[demoModifierIndex] =
-                                    innerModifier.copy(radius = it.dp)
-                            },
-                            valueRange = 0f..16f
-                        ),
-                        Control.Dropdown(
-                            name = "Edge treatment",
-                            values = edgeTreatments.map {
-                                Control.Dropdown.DropdownItem(
-                                    name = it.toString(),
-                                    value = it
-                                )
-                            },
-                            selectedIndex = edgeTreatments.indexOf(innerModifier.edgeTreatment),
-                            onValueChange = {
-                                demoModifiers[demoModifierIndex] =
-                                    innerModifier.copy(edgeTreatment = edgeTreatments[it])
-                            }
-                        )
-                    )
-                }
-                is DemoModifier.ChromaticAberration -> listOf(
-                    Control.Slider(
-                        name = "Amount",
-                        value = innerModifier.amount,
-                        onValueChange = {
-                            demoModifiers[demoModifierIndex] = innerModifier.copy(amount = it)
-                        },
-                        valueRange = 0f..1024f,
-                    )
-                )
-            }
+            makeControls(
+                demoModifier = demoModifier,
+                demoModifierIndex = demoModifierIndex,
+                demoModifiers = demoModifiers,
+            )
         }
     }
 
@@ -141,6 +103,56 @@ fun ShaderScreen() {
     }
 }
 
+private fun makeControls(
+    demoModifier: DemoModifier,
+    demoModifierIndex: Int,
+    demoModifiers: SnapshotStateList<DemoModifier>,
+): List<Control> {
+    return when (demoModifier) {
+        DemoModifier.None -> emptyList()
+        is DemoModifier.Blur -> {
+            val edgeTreatments = listOf(
+                BlurredEdgeTreatment.Rectangle,
+                BlurredEdgeTreatment.Unbounded,
+            )
+            listOf(
+                Control.Slider(
+                    name = "Radius",
+                    value = demoModifier.radius.value,
+                    onValueChange = {
+                        demoModifiers[demoModifierIndex] =
+                            demoModifier.copy(radius = it.dp)
+                    },
+                    valueRange = 0f..16f
+                ),
+                Control.Dropdown(
+                    name = "Edge treatment",
+                    values = edgeTreatments.map {
+                        Control.Dropdown.DropdownItem(
+                            name = it.toString(),
+                            value = it
+                        )
+                    },
+                    selectedIndex = edgeTreatments.indexOf(demoModifier.edgeTreatment),
+                    onValueChange = {
+                        demoModifiers[demoModifierIndex] =
+                            demoModifier.copy(edgeTreatment = edgeTreatments[it])
+                    }
+                )
+            )
+        }
+        is DemoModifier.ChromaticAberration -> listOf(
+            Control.Slider(
+                name = "Amount",
+                value = demoModifier.amount,
+                onValueChange = {
+                    demoModifiers[demoModifierIndex] = demoModifier.copy(amount = it)
+                },
+                valueRange = 0f..1024f,
+            )
+        )
+    }
+}
 
 @Preview
 @Composable
