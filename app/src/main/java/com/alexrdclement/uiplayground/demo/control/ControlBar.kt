@@ -67,7 +67,7 @@ fun SubjectModifierBar(
     onSubjectSelected: (DemoSubject) -> Unit,
     onModifierSelected: (index: Int) -> Unit,
 ) {
-    val subjectControl by remember {
+    val subjectControl by remember(demoSubject) {
         mutableStateOf(
             Control.Dropdown(
                 name = "",
@@ -79,7 +79,7 @@ fun SubjectModifierBar(
             )
         )
     }
-    val modifierControl by remember {
+    val modifierControl by remember(demoModifier) {
         mutableStateOf(
             Control.Dropdown(
                 name = "",
