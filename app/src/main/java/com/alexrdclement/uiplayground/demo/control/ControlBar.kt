@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.demo
+package com.alexrdclement.uiplayground.demo.control
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -21,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.shaders.DemoModifier
 import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
 
@@ -38,10 +38,13 @@ fun ControlBar(
     Column {
         for (control in controls) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(16.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
                 when (control) {
                     is Control.Slider -> SliderControl(control = control)
+                    is Control.Dropdown<*> -> DropdownControl(control = control)
                 }
             }
         }
@@ -64,8 +67,30 @@ fun SubjectModifierBar(
     onSubjectSelected: (DemoSubject) -> Unit,
     onModifierSelected: (index: Int) -> Unit,
 ) {
-    var isSubjectDropdownExpanded by remember { mutableStateOf(false) }
-    var isModifierDropdownExpanded by remember { mutableStateOf(false) }
+    val subjectControl by remember {
+        mutableStateOf(
+            Control.Dropdown(
+                name = "",
+                values = DemoSubject.values().map {
+                    Control.Dropdown.DropdownItem(name = it.name, value = it)
+                },
+                selectedIndex = DemoSubject.values().indexOf(demoSubject),
+                onValueChange = { onSubjectSelected(DemoSubject.values()[it]) }
+            )
+        )
+    }
+    val modifierControl by remember {
+        mutableStateOf(
+            Control.Dropdown(
+                name = "",
+                values = demoModifiers.map {
+                    Control.Dropdown.DropdownItem(name = it.name, value = it)
+                },
+                selectedIndex = demoModifiers.indexOf(demoModifier),
+                onValueChange = { onModifierSelected(it) }
+            )
+        )
+    }
 
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -74,62 +99,8 @@ fun SubjectModifierBar(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Box {
-            ControlBarItem(
-                name = demoSubject.name,
-                onClick = {
-                    isSubjectDropdownExpanded = true
-                }
-            )
-
-            DropdownMenu(
-                expanded = isSubjectDropdownExpanded,
-                onDismissRequest = { isSubjectDropdownExpanded = false },
-            ) {
-                DemoSubject.values().forEach {
-                    DropdownMenuItem(
-                        text = { androidx.compose.material3.Text(text = it.name) },
-                        onClick = {
-                            onSubjectSelected(it)
-                        }
-                    )
-                }
-            }
-        }
-        Box {
-            ControlBarItem(
-                name = demoModifier.name,
-                onClick = {
-                    isModifierDropdownExpanded = true
-                }
-            )
-
-            DropdownMenu(
-                expanded = isModifierDropdownExpanded,
-                onDismissRequest = { isModifierDropdownExpanded = false },
-            ) {
-                demoModifiers.forEachIndexed { index, demoModifier ->
-                    DropdownMenuItem(
-                        text = { androidx.compose.material3.Text(text = demoModifier.name) },
-                        onClick = { onModifierSelected(index) }
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ControlBarItem(
-    name: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = modifier
-    ) {
-       androidx.compose.material3.Text(text = name)
+        DropdownControl(control = subjectControl, includeTitle = false)
+        DropdownControl(control = modifierControl, includeTitle = false)
     }
 }
 
@@ -153,7 +124,7 @@ private fun Preview() {
         var demoSubject by remember { mutableStateOf(DemoSubject.Circle) }
         val demoModifiers = remember {
             mutableStateListOf<DemoModifier>(
-                DemoModifier.Blur(radius = 2.dp)
+                DemoModifier.ChromaticAberration(amount = 0f)
             )
         }
         var demoModifierIndex by remember { mutableStateOf(0) }

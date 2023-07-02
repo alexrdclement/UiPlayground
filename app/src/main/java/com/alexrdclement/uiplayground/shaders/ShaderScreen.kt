@@ -15,14 +15,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.demo.DemoCircle
-import com.alexrdclement.uiplayground.demo.Control
-import com.alexrdclement.uiplayground.demo.ControlBar
-import com.alexrdclement.uiplayground.demo.DemoSubject
+import com.alexrdclement.uiplayground.demo.subject.DemoCircle
+import com.alexrdclement.uiplayground.demo.control.Control
+import com.alexrdclement.uiplayground.demo.control.ControlBar
+import com.alexrdclement.uiplayground.demo.subject.DemoSubject
+import com.alexrdclement.uiplayground.demo.subject.DemoText
 import com.alexrdclement.uiplayground.ui.theme.UiPlaygroundTheme
-import com.alexrdclement.uiplayground.demo.DemoText as DemoText
 
 @Composable
 fun ShaderScreen() {
@@ -35,7 +36,10 @@ fun ShaderScreen() {
     val demoModifiers = remember {
         mutableStateListOf(
             DemoModifier.None,
-            DemoModifier.Blur(radius = 0.dp),
+            DemoModifier.Blur(
+                radius = 0.dp,
+                edgeTreatment = BlurredEdgeTreatment.Rectangle
+            ),
             DemoModifier.ChromaticAberration(amount = 0f)
         )
     }
@@ -48,16 +52,37 @@ fun ShaderScreen() {
         derivedStateOf {
             when (val innerModifier = demoModifier) {
                 DemoModifier.None -> emptyList()
-                is DemoModifier.Blur -> listOf(
-                    Control.Slider(
-                        name = "Radius",
-                        value = innerModifier.radius.value,
-                        onValueChange = {
-                            demoModifiers[demoModifierIndex] = innerModifier.copy(radius = it.dp)
-                        },
-                        valueRange = 0f..16f
+                is DemoModifier.Blur -> {
+                    val edgeTreatments = listOf(
+                        BlurredEdgeTreatment.Rectangle,
+                        BlurredEdgeTreatment.Unbounded,
                     )
-                )
+                    listOf(
+                        Control.Slider(
+                            name = "Radius",
+                            value = innerModifier.radius.value,
+                            onValueChange = {
+                                demoModifiers[demoModifierIndex] =
+                                    innerModifier.copy(radius = it.dp)
+                            },
+                            valueRange = 0f..16f
+                        ),
+                        Control.Dropdown(
+                            name = "Edge treatment",
+                            values = edgeTreatments.map {
+                                Control.Dropdown.DropdownItem(
+                                    name = it.toString(),
+                                    value = it
+                                )
+                            },
+                            selectedIndex = edgeTreatments.indexOf(innerModifier.edgeTreatment),
+                            onValueChange = {
+                                demoModifiers[demoModifierIndex] =
+                                    innerModifier.copy(edgeTreatment = edgeTreatments[it])
+                            }
+                        )
+                    )
+                }
                 is DemoModifier.ChromaticAberration -> listOf(
                     Control.Slider(
                         name = "Amount",
@@ -86,6 +111,7 @@ fun ShaderScreen() {
                     is DemoModifier.Blur -> Modifier.blur(
                         radius = innerModifier.radius,
                     )
+
                     is DemoModifier.ChromaticAberration -> Modifier.chromaticAberration(
                         amount = { innerModifier.amount }
                     )

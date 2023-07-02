@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.demo
+package com.alexrdclement.uiplayground.demo.subject
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
