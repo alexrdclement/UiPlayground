@@ -24,6 +24,7 @@ import com.alexrdclement.uiplayground.demo.control.Control
 import com.alexrdclement.uiplayground.demo.control.ControlBar
 import com.alexrdclement.uiplayground.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.demo.subject.DemoText
+import com.alexrdclement.uiplayground.demo.subject.DemoTextField
 import com.alexrdclement.uiplayground.ui.theme.UiPlaygroundTheme
 
 @Composable
@@ -84,6 +85,7 @@ fun ShaderScreen() {
                 when (demoSubject) {
                     DemoSubject.Circle -> DemoCircle(modifier = modifier)
                     DemoSubject.Text -> DemoText(modifier = modifier)
+                    DemoSubject.TextField -> DemoTextField(modifier = modifier)
                 }
             }
 
