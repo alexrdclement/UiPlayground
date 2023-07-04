@@ -22,34 +22,22 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.demo.subject.DemoCircle
 import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
 
-// Inspired by Romain Guy on Coding with the Italians: https://www.youtube.com/watch?v=s5RibxKdo-o
+// Inspired by
+// - Romain Guy on Coding with the Italians: https://www.youtube.com/watch?v=s5RibxKdo-o
+// - Rikin Marfatia video: https://www.youtube.com/watch?v=hjJesq71UXc
 
 private var ShaderSource = """
 uniform shader composable;
 uniform float2 size;
 uniform float amount;
 
-float sq(float x) {
-    return x * x;
-}
-
 half4 main(float2 fragCoord) {
-    float2 dir = fragCoord + size * 0.5;
-    float distance = dot(dir, dir);
-    float displacement = distance / sq(max(size.x, size.y)) * amount;
-    
+    float displacement = 1.0 - size.x * amount;
     half4 color = composable.eval(fragCoord);
-//    color.rgb = half3(
-//        composable.eval(fragCoord - displacement).r,
-//        color.g,
-//        composable.eval(fragCoord + displacement).b
-//    );
-//    color.rgb *= color.a;
-//    return color;
     return half4(
-        composable.eval(fragCoord - displacement).r,
+        composable.eval(float2(fragCoord.x - displacement, fragCoord.y)).r,
         color.g,
-        composable.eval(fragCoord + displacement).b,
+        composable.eval(float2(fragCoord.x + displacement, fragCoord.y)).b,
         color.a
     );
 }
@@ -81,8 +69,8 @@ fun Modifier.chromaticAberration(
 @Composable
 private fun Preview() {
     UiPlaygroundPreview {
-        val range = 1f..1000f
-        var amount by remember { mutableStateOf(range.start)}
+        val range = 0f..1f
+        var amount by remember { mutableStateOf(range.endInclusive / 2f) }
         Column {
             DemoCircle(
                 modifier = Modifier

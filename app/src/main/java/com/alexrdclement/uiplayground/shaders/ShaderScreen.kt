@@ -154,7 +154,7 @@ private fun makeControls(
                 onValueChange = {
                     demoModifiers[demoModifierIndex] = demoModifier.copy(amount = it)
                 },
-                valueRange = 0f..1024f,
+                valueRange = 0f..1f,
             )
         )
         is DemoModifier.Noise -> listOf(
