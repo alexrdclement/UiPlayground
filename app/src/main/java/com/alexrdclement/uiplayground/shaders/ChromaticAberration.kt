@@ -29,15 +29,17 @@ import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
 private var ShaderSource = """
 uniform shader composable;
 uniform float2 size;
-uniform float amount;
+uniform float xAmount;
+uniform float yAmount;
 
 half4 main(float2 fragCoord) {
-    float displacement = 1.0 - size.x * amount;
+    float xDisplacement = 1.0 - size.x * xAmount;
+    float yDisplacement = 1.0 - size.y * yAmount;
     half4 color = composable.eval(fragCoord);
     return half4(
-        composable.eval(float2(fragCoord.x - displacement, fragCoord.y)).r,
+        composable.eval(float2(fragCoord.x - xDisplacement, fragCoord.y - yDisplacement)).r,
         color.g,
-        composable.eval(float2(fragCoord.x + displacement, fragCoord.y)).b,
+        composable.eval(float2(fragCoord.x + xDisplacement, fragCoord.y + yDisplacement)).b,
         color.a
     );
 }
@@ -45,7 +47,8 @@ half4 main(float2 fragCoord) {
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 fun Modifier.chromaticAberration(
-    amount: () -> Float,
+    xAmount: () -> Float,
+    yAmount: () -> Float,
 ): Modifier = composed {
     val shader = remember(ShaderSource) { RuntimeShader(ShaderSource) }
 
@@ -57,7 +60,8 @@ fun Modifier.chromaticAberration(
         )
     }.graphicsLayer {
         clip = true
-        shader.setFloatUniform("amount", amount())
+        shader.setFloatUniform("xAmount", xAmount())
+        shader.setFloatUniform("yAmount", yAmount())
         renderEffect = RenderEffect
             .createRuntimeShaderEffect(shader, "composable")
             .asComposeRenderEffect()
@@ -69,18 +73,28 @@ fun Modifier.chromaticAberration(
 @Composable
 private fun Preview() {
     UiPlaygroundPreview {
-        val range = 0f..1f
-        var amount by remember { mutableStateOf(range.endInclusive / 2f) }
+        val range = -1f..1f
+        var xAmount by remember { mutableStateOf(range.endInclusive / 2f) }
+        var yAmount by remember { mutableStateOf(range.endInclusive / 2f) }
         Column {
             DemoCircle(
                 modifier = Modifier
                     .weight(1f)
-                    .chromaticAberration(amount = { amount })
+                    .chromaticAberration(
+                        xAmount = { xAmount },
+                        yAmount = { yAmount }
+                    )
             )
             Slider(
                 valueRange = range,
-                value = amount,
-                onValueChange = { amount = it },
+                value = xAmount,
+                onValueChange = { xAmount = it },
+                modifier = Modifier.padding(16.dp)
+            )
+            Slider(
+                valueRange = range,
+                value = yAmount,
+                onValueChange = { yAmount = it },
                 modifier = Modifier.padding(16.dp)
             )
         }

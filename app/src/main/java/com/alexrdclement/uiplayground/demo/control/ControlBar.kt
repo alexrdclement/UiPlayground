@@ -1,14 +1,10 @@
 package com.alexrdclement.uiplayground.demo.control
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -124,7 +120,7 @@ private fun Preview() {
         var demoSubject by remember { mutableStateOf(DemoSubject.Circle) }
         val demoModifiers = remember {
             mutableStateListOf<DemoModifier>(
-                DemoModifier.ChromaticAberration(amount = 0f)
+                DemoModifier.ChromaticAberration(xAmount = 0f, yAmount = 0f)
             )
         }
         var demoModifierIndex by remember { mutableStateOf(0) }
