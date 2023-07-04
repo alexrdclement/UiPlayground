@@ -42,7 +42,11 @@ fun ShaderScreen() {
                 radius = 0.dp,
                 edgeTreatment = BlurredEdgeTreatment.Rectangle
             ),
-            DemoModifier.ChromaticAberration(xAmount = 0f, yAmount = 0f),
+            DemoModifier.ChromaticAberration(
+                xAmount = 0f,
+                yAmount = 0f,
+                colorMode = ChromaticAberrationColorMode.RGB,
+            ),
             DemoModifier.Noise(amount = 0f)
         )
     }
@@ -79,6 +83,7 @@ fun ShaderScreen() {
                     is DemoModifier.ChromaticAberration -> Modifier.chromaticAberration(
                         xAmount = { innerModifier.xAmount },
                         yAmount = { innerModifier.yAmount },
+                        colorMode = { innerModifier.colorMode },
                     )
                     is DemoModifier.Noise -> Modifier.noise(
                         amount = { innerModifier.amount }
@@ -149,6 +154,21 @@ private fun makeControls(
             )
         }
         is DemoModifier.ChromaticAberration -> listOf(
+            Control.Dropdown(
+                name = "Color mode",
+                values = ChromaticAberrationColorMode.values().map {
+                    Control.Dropdown.DropdownItem(
+                        name = it.name,
+                        value = it
+                    )
+                },
+                selectedIndex = ChromaticAberrationColorMode.values()
+                    .indexOf(demoModifier.colorMode),
+                onValueChange = {
+                    val colorMode = ChromaticAberrationColorMode.values()[it]
+                    demoModifiers[demoModifierIndex] = demoModifier.copy(colorMode = colorMode)
+                }
+            ),
             Control.Slider(
                 name = "X Amount",
                 value = demoModifier.xAmount,
@@ -164,7 +184,7 @@ private fun makeControls(
                     demoModifiers[demoModifierIndex] = demoModifier.copy(yAmount = it)
                 },
                 valueRange = -1f..1f,
-            )
+            ),
         )
         is DemoModifier.Noise -> listOf(
             Control.Slider(

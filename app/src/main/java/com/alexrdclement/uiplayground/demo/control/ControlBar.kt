@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.demo.subject.DemoSubject
+import com.alexrdclement.uiplayground.shaders.ChromaticAberrationColorMode
 import com.alexrdclement.uiplayground.shaders.DemoModifier
 import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
 
@@ -120,7 +121,11 @@ private fun Preview() {
         var demoSubject by remember { mutableStateOf(DemoSubject.Circle) }
         val demoModifiers = remember {
             mutableStateListOf<DemoModifier>(
-                DemoModifier.ChromaticAberration(xAmount = 0f, yAmount = 0f)
+                DemoModifier.ChromaticAberration(
+                    xAmount = 0f,
+                    yAmount = 0f,
+                    colorMode = ChromaticAberrationColorMode.RGB,
+                )
             )
         }
         var demoModifierIndex by remember { mutableStateOf(0) }

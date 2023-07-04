@@ -26,29 +26,69 @@ import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
 // - Romain Guy on Coding with the Italians: https://www.youtube.com/watch?v=s5RibxKdo-o
 // - Rikin Marfatia video: https://www.youtube.com/watch?v=hjJesq71UXc
 
+enum class ChromaticAberrationColorMode {
+    RGB,
+    CMYK,
+}
+
 private var ShaderSource = """
 uniform shader composable;
 uniform float2 size;
 uniform float xAmount;
 uniform float yAmount;
+uniform int colorMode;
+
+half4 CMYKtoRGB(half4 cmyk) {
+    float c = cmyk.x;
+    float m = cmyk.y;
+    float y = cmyk.z;
+    float k = cmyk.w;
+
+    float invK = 1.0 - k;
+    float r = 1.0 - min(1.0, c * invK + k);
+    float g = 1.0 - min(1.0, m * invK + k);
+    float b = 1.0 - min(1.0, y * invK + k);
+    return clamp(half4(r, g, b, 1.0), 0.0, 1.0);
+}
+
+half4 RGBtoCMYK(half4 rgb) {
+    float r = rgb.r;
+    float g = rgb.g;
+    float b = rgb.b;
+    float k = min(1.0 - r, min(1.0 - g, 1.0 - b));
+    float3 cmy = float3(0.0);
+    float invK = 1.0 - k;
+    if (invK != 0.0) {
+        cmy.x = (1.0 - r - k) / invK;
+        cmy.y = (1.0 - g - k) / invK;
+        cmy.z = (1.0 - b - k) / invK;
+    }
+    return clamp(half4(cmy, k), 0.0, 1.0);
+}
 
 half4 main(float2 fragCoord) {
     float xDisplacement = 1.0 - size.x * xAmount;
     float yDisplacement = 1.0 - size.y * yAmount;
     half4 color = composable.eval(fragCoord);
-    return half4(
+    half4 displacedColor = half4(
         composable.eval(float2(fragCoord.x - xDisplacement, fragCoord.y - yDisplacement)).r,
         color.g,
         composable.eval(float2(fragCoord.x + xDisplacement, fragCoord.y + yDisplacement)).b,
         color.a
     );
+    if (colorMode == 1) {
+        return RGBtoCMYK(displacedColor);
+    }
+    return displacedColor;
 }
 """
+
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 fun Modifier.chromaticAberration(
     xAmount: () -> Float,
     yAmount: () -> Float,
+    colorMode: () -> ChromaticAberrationColorMode = { ChromaticAberrationColorMode.RGB },
 ): Modifier = composed {
     val shader = remember(ShaderSource) { RuntimeShader(ShaderSource) }
 
@@ -62,6 +102,7 @@ fun Modifier.chromaticAberration(
         clip = true
         shader.setFloatUniform("xAmount", xAmount())
         shader.setFloatUniform("yAmount", yAmount())
+        shader.setIntUniform("colorMode", colorMode().ordinal)
         renderEffect = RenderEffect
             .createRuntimeShaderEffect(shader, "composable")
             .asComposeRenderEffect()
