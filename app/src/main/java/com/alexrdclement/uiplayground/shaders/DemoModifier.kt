@@ -14,4 +14,8 @@ sealed class DemoModifier(open val name: String) {
     data class ChromaticAberration(
         val amount: Float,
     ) : DemoModifier(name = "Chromatic Aberration")
+
+    data class Noise(
+        val amount: Float,
+    ) : DemoModifier(name = "Noise")
 }

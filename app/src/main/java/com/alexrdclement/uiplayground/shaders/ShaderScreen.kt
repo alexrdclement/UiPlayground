@@ -42,7 +42,8 @@ fun ShaderScreen() {
                 radius = 0.dp,
                 edgeTreatment = BlurredEdgeTreatment.Rectangle
             ),
-            DemoModifier.ChromaticAberration(amount = 0f)
+            DemoModifier.ChromaticAberration(amount = 0f),
+            DemoModifier.Noise(amount = 0f)
         )
     }
     var demoModifierIndex by remember { mutableStateOf(0) }
@@ -76,6 +77,9 @@ fun ShaderScreen() {
                         edgeTreatment = innerModifier.edgeTreatment,
                     )
                     is DemoModifier.ChromaticAberration -> Modifier.chromaticAberration(
+                        amount = { innerModifier.amount }
+                    )
+                    is DemoModifier.Noise -> Modifier.noise(
                         amount = { innerModifier.amount }
                     )
                 }.border(
@@ -151,6 +155,16 @@ private fun makeControls(
                     demoModifiers[demoModifierIndex] = demoModifier.copy(amount = it)
                 },
                 valueRange = 0f..1024f,
+            )
+        )
+        is DemoModifier.Noise -> listOf(
+            Control.Slider(
+                name = "Amount",
+                value = demoModifier.amount,
+                onValueChange = {
+                    demoModifiers[demoModifierIndex] = demoModifier.copy(amount = it)
+                },
+                valueRange = 0f..1f,
             )
         )
     }
