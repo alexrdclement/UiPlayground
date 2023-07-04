@@ -29,6 +29,7 @@ import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
 enum class ChromaticAberrationColorMode {
     RGB,
     CMYK,
+    RGBInverted,
 }
 
 private var ShaderSource = """
@@ -78,6 +79,8 @@ half4 main(float2 fragCoord) {
     );
     if (colorMode == 1) {
         return RGBtoCMYK(displacedColor);
+    } else if (colorMode == 2) {
+        return half4(1.0) - displacedColor;
     }
     return displacedColor;
 }
