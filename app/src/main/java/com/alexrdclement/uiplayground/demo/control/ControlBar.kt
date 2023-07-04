@@ -30,9 +30,10 @@ fun ControlBar(
     demoModifiers: List<DemoModifier>,
     onSubjectSelected: (DemoSubject) -> Unit,
     onModifierSelected: (index: Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
-    Column {
+    Column(modifier) {
         for (control in controls) {
             Row(
                 modifier = Modifier

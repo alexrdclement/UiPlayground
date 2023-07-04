@@ -20,4 +20,8 @@ sealed class DemoModifier(open val name: String) {
     data class Noise(
         val amount: Float,
     ) : DemoModifier(name = "Noise")
+
+    data class Pixelate(
+        val subdivisions: Int,
+    ) : DemoModifier(name = "Pixelate")
 }

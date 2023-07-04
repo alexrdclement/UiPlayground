@@ -5,6 +5,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -47,7 +49,8 @@ fun ShaderScreen() {
                 yAmount = 0f,
                 colorMode = ChromaticAberrationColorMode.RGB,
             ),
-            DemoModifier.Noise(amount = 0f)
+            DemoModifier.Noise(amount = 0f),
+            DemoModifier.Pixelate(subdivisions = 0),
         )
     }
     var demoModifierIndex by remember { mutableStateOf(0) }
@@ -86,12 +89,12 @@ fun ShaderScreen() {
                         colorMode = { innerModifier.colorMode },
                     )
                     is DemoModifier.Noise -> Modifier.noise(
-                        amount = { innerModifier.amount }
+                        amount = { innerModifier.amount },
                     )
-                }.border(
-                    1.dp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                    is DemoModifier.Pixelate -> Modifier.pixelate(
+                        subdivisions = { innerModifier.subdivisions },
+                    )
+                }
                 when (demoSubject) {
                     DemoSubject.Circle -> DemoCircle(modifier = modifier)
                     DemoSubject.Text -> DemoText(modifier = modifier)
@@ -99,6 +102,7 @@ fun ShaderScreen() {
                 }
             }
 
+            Divider(modifier = Modifier.fillMaxWidth())
             ControlBar(
                 controls = controls,
                 demoSubject = demoSubject,
@@ -109,7 +113,7 @@ fun ShaderScreen() {
                 },
                 onModifierSelected = {
                     demoModifierIndex = it
-                },
+                }
             )
         }
     }
@@ -194,6 +198,16 @@ private fun makeControls(
                     demoModifiers[demoModifierIndex] = demoModifier.copy(amount = it)
                 },
                 valueRange = 0f..1f,
+            )
+        )
+        is DemoModifier.Pixelate -> listOf(
+            Control.Slider(
+                name = "Amount",
+                value = demoModifier.subdivisions.toFloat(),
+                onValueChange = {
+                    demoModifiers[demoModifierIndex] = demoModifier.copy(subdivisions = it.toInt())
+                },
+                valueRange = 0f..100f,
             )
         )
     }
