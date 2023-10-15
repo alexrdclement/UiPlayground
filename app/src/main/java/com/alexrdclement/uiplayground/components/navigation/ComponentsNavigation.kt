@@ -28,7 +28,9 @@ fun NavGraphBuilder.componentsGraph(
 }
 
 fun NavController.navigateToComponents() {
-    this.navigate(componentsGraphRoute)
+    this.navigate(componentsGraphRoute) {
+        launchSingleTop = true
+    }
 }
 
 private fun NavGraphBuilder.componentCatalogScreen(

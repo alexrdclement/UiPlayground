@@ -30,6 +30,8 @@ fun NavGraphBuilder.componentScreen() {
 }
 
 fun NavController.navigateToComponent(component: Component) {
-    this.navigate(createComponentRoute(component))
+    this.navigate(createComponentRoute(component)) {
+        launchSingleTop = true
+    }
 }
 

@@ -8,7 +8,9 @@ import com.alexrdclement.uiplayground.shaders.ShaderScreen
 const val shadersRoute = "shaders"
 
 fun NavController.navigateToShaders() {
-    this.navigate(route = shadersRoute)
+    this.navigate(route = shadersRoute) {
+        launchSingleTop = true
+    }
 }
 
 fun NavGraphBuilder.shadersScreen() {
