@@ -5,12 +5,12 @@ import androidx.navigation.compose.composable
 import com.alexrdclement.uiplayground.catalog.CatalogScreen
 import com.alexrdclement.uiplayground.catalog.MainCatalogItem
 
-const val catalogRoute = "catalog"
+const val mainCatalogRoute = "catalog"
 
 fun NavGraphBuilder.mainCatalogScreen(
     onItemClick: (MainCatalogItem) -> Unit,
 ) {
-    composable(catalogRoute) {
+    composable(mainCatalogRoute) {
         CatalogScreen(
             items = MainCatalogItem.values().toList(),
             onItemClick = onItemClick,

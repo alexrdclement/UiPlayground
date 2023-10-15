@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.alexrdclement.uiplayground.catalog.MainCatalogItem
-import com.alexrdclement.uiplayground.catalog.navigation.catalogRoute
+import com.alexrdclement.uiplayground.catalog.navigation.mainCatalogRoute
 import com.alexrdclement.uiplayground.catalog.navigation.mainCatalogScreen
 import com.alexrdclement.uiplayground.components.navigation.componentsGraph
 import com.alexrdclement.uiplayground.components.navigation.navigateToComponents
@@ -16,7 +16,7 @@ fun UiPlaygroundNavHost() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = catalogRoute,
+        startDestination = mainCatalogRoute,
     ) {
         mainCatalogScreen(
             onItemClick = { item ->
