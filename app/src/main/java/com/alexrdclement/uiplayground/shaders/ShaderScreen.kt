@@ -28,6 +28,7 @@ import com.alexrdclement.uiplayground.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.demo.subject.DemoText
 import com.alexrdclement.uiplayground.demo.subject.DemoTextField
 import com.alexrdclement.uiplayground.ui.theme.UiPlaygroundTheme
+import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
 
 @Composable
 fun ShaderScreen() {
@@ -67,55 +68,50 @@ fun ShaderScreen() {
             )
         }
     }
-
-    Surface(
-        color = MaterialTheme.colorScheme.surface
+    Column(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
+        Box(
+            modifier = Modifier.weight(1f)
         ) {
-            Box(
-                modifier = Modifier.weight(1f)
-            ) {
-                val modifier = when (val innerModifier = demoModifier) {
-                    DemoModifier.None -> Modifier
-                    is DemoModifier.Blur -> Modifier.blur(
-                        radius = innerModifier.radius,
-                        edgeTreatment = innerModifier.edgeTreatment,
-                    )
-                    is DemoModifier.ChromaticAberration -> Modifier.chromaticAberration(
-                        xAmount = { innerModifier.xAmount },
-                        yAmount = { innerModifier.yAmount },
-                        colorMode = { innerModifier.colorMode },
-                    )
-                    is DemoModifier.Noise -> Modifier.noise(
-                        amount = { innerModifier.amount },
-                    )
-                    is DemoModifier.Pixelate -> Modifier.pixelate(
-                        subdivisions = { innerModifier.subdivisions },
-                    )
-                }
-                when (demoSubject) {
-                    DemoSubject.Circle -> DemoCircle(modifier = modifier)
-                    DemoSubject.Text -> DemoText(modifier = modifier)
-                    DemoSubject.TextField -> DemoTextField(modifier = modifier)
-                }
+            val modifier = when (val innerModifier = demoModifier) {
+                DemoModifier.None -> Modifier
+                is DemoModifier.Blur -> Modifier.blur(
+                    radius = innerModifier.radius,
+                    edgeTreatment = innerModifier.edgeTreatment,
+                )
+                is DemoModifier.ChromaticAberration -> Modifier.chromaticAberration(
+                    xAmount = { innerModifier.xAmount },
+                    yAmount = { innerModifier.yAmount },
+                    colorMode = { innerModifier.colorMode },
+                )
+                is DemoModifier.Noise -> Modifier.noise(
+                    amount = { innerModifier.amount },
+                )
+                is DemoModifier.Pixelate -> Modifier.pixelate(
+                    subdivisions = { innerModifier.subdivisions },
+                )
             }
-
-            Divider(modifier = Modifier.fillMaxWidth())
-            ControlBar(
-                controls = controls,
-                demoSubject = demoSubject,
-                demoModifier = demoModifier,
-                demoModifiers = demoModifiers,
-                onSubjectSelected = {
-                    demoSubject = it
-                },
-                onModifierSelected = {
-                    demoModifierIndex = it
-                }
-            )
+            when (demoSubject) {
+                DemoSubject.Circle -> DemoCircle(modifier = modifier)
+                DemoSubject.Text -> DemoText(modifier = modifier)
+                DemoSubject.TextField -> DemoTextField(modifier = modifier)
+            }
         }
+
+        Divider(modifier = Modifier.fillMaxWidth())
+        ControlBar(
+            controls = controls,
+            demoSubject = demoSubject,
+            demoModifier = demoModifier,
+            demoModifiers = demoModifiers,
+            onSubjectSelected = {
+                demoSubject = it
+            },
+            onModifierSelected = {
+                demoModifierIndex = it
+            }
+        )
     }
 }
 
@@ -216,7 +212,7 @@ private fun makeControls(
 @Preview
 @Composable
 private fun Preview() {
-    UiPlaygroundTheme {
+    UiPlaygroundPreview {
         ShaderScreen()
     }
 }

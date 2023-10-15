@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.alexrdclement.uiplayground.navigation.UiPlaygroundNavHost
 import com.alexrdclement.uiplayground.shaders.ShaderScreen
 import com.alexrdclement.uiplayground.ui.theme.UiPlaygroundTheme
 
@@ -18,7 +19,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             UiPlaygroundTheme {
-                ShaderScreen()
+                Surface {
+                    UiPlaygroundNavHost()
+                }
             }
         }
     }
