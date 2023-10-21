@@ -31,7 +31,6 @@ fun MediaPlaybackBarDemo() {
             MediaControlBar(
                 mediaItem = mediaItem,
                 isPlaying = isPlaying,
-                onClick = { /*TODO*/ },
                 onPlayPauseClick = { isPlaying = !isPlaying }
             )
         }
