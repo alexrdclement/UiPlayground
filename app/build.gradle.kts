@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(platform(libs.compose.bom))
+    implementation(libs.compose.foundation)
     implementation(libs.ui)
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
