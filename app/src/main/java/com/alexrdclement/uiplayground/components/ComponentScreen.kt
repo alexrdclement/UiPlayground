@@ -5,13 +5,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.alexrdclement.uiplayground.components.mediacontrolbar.Artist
-import com.alexrdclement.uiplayground.components.mediacontrolbar.MediaControlBar
-import com.alexrdclement.uiplayground.components.mediacontrolbar.MediaControlBarAnchorState
-import com.alexrdclement.uiplayground.components.mediacontrolbar.MediaItem
-import com.alexrdclement.uiplayground.components.mediacontrolbar.rememberMediaControlBarState
+import com.alexrdclement.uiplayground.components.mediacontrolsheet.Artist
+import com.alexrdclement.uiplayground.components.mediacontrolsheet.MediaControlBar
+import com.alexrdclement.uiplayground.components.mediacontrolsheet.MediaControlSheet
+import com.alexrdclement.uiplayground.components.mediacontrolsheet.MediaControlBarAnchorState
+import com.alexrdclement.uiplayground.components.mediacontrolsheet.MediaItem
+import com.alexrdclement.uiplayground.components.mediacontrolsheet.rememberMediaControlBarState
+import kotlinx.coroutines.launch
 
 @Composable
 fun ComponentScreen(
@@ -29,11 +32,17 @@ fun MediaPlaybackBarDemo() {
     val state = rememberMediaControlBarState(
         initialValue = MediaControlBarAnchorState.Expanded,
     )
+    val coroutineScope = rememberCoroutineScope()
 
-    MediaControlBar(
+    MediaControlSheet(
         mediaItem = mediaItem,
         isPlaying = isPlaying,
         onPlayPauseClick = { isPlaying = !isPlaying },
+        onControlBarClick = {
+            coroutineScope.launch {
+                state.expand()
+            }
+        },
         state = state,
         modifier = Modifier.systemBarsPadding()
     )

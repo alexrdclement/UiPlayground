@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.components.mediacontrolbar
+package com.alexrdclement.uiplayground.components.mediacontrolsheet
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues

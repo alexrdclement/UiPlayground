@@ -1,38 +1,27 @@
 @file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 
-package com.alexrdclement.uiplayground.components.mediacontrolbar
+package com.alexrdclement.uiplayground.components.mediacontrolsheet
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.SpringSpec
-import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.gestures.animateTo
-import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.snapTo
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -43,13 +32,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
@@ -74,13 +61,13 @@ enum class MediaControlBarAnchorState {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MediaControlBar(
+fun MediaControlSheet(
     mediaItem: MediaItem,
     isPlaying: Boolean,
     onPlayPauseClick: () -> Unit,
+    onControlBarClick: () -> Unit,
     modifier: Modifier = Modifier,
     state: MediaControlBarState = rememberMediaControlBarState(),
-    onClick: () -> Unit = {},
     minHeight: Dp = 64.dp,
 ) {
     BoxWithConstraints(
@@ -100,17 +87,6 @@ fun MediaControlBar(
         val transition = updateTransition(
             targetState = state.targetValue,
             label = "MediaControlBar Transition",
-        )
-
-        val artworkSize by transition.animateDp(
-            targetValueByState = { targetValue ->
-                when (targetValue) {
-                    MediaControlBarAnchorState.Expanded -> maxWidth
-                    MediaControlBarAnchorState.PartiallyExpanded,
-                    MediaControlBarAnchorState.Hidden -> minHeight
-                }
-            },
-            label = "artworkSize",
         )
 
         Column(
@@ -134,74 +110,11 @@ fun MediaControlBar(
                     fullHeight = expandedHeightPx.toFloat(),
                 )
         ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        scope.launch {
-                            when (state.currentValue) {
-                                MediaControlBarAnchorState.Hidden -> state.partialExpand()
-                                MediaControlBarAnchorState.PartiallyExpanded -> state.expand()
-                                MediaControlBarAnchorState.Expanded -> state.partialExpand()
-                            }
-                        }
-                        onClick()
-                    }
-
-            ) {
-                MediaItemArtwork(
-                    modifier = Modifier
-                        .align(Alignment.Top)
-                        .animateContentSize()
-                        .size(artworkSize)
-                )
-
-                val metadataAlpha by transition.animateFloat(
-                    targetValueByState = { targetValue ->
-                        when (targetValue) {
-                            MediaControlBarAnchorState.Hidden -> 0f
-                            MediaControlBarAnchorState.PartiallyExpanded -> 1f
-                            MediaControlBarAnchorState.Expanded -> 0f
-                        }
-                    },
-                    label = "Metadata alpha"
-                )
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 8.dp)
-                        .alpha(metadataAlpha)
-                ) {
-                    Text(
-                        text = mediaItem.title,
-                        textAlign = TextAlign.Start,
-                        style = MaterialTheme.typography.titleMedium,
-                        maxLines = 1,
-                        modifier = Modifier
-                            .basicMarquee()
-                    )
-                    Text(
-                        text = mediaItem.artists.joinToString { it.name },
-                        textAlign = TextAlign.Start,
-                        style = MaterialTheme.typography.bodyMedium,
-                        maxLines = 1,
-                        modifier = Modifier
-                            .basicMarquee()
-                    )
-                }
-
-                PlayPauseButton(
-                    onClick = onPlayPauseClick,
-                    isPlaying = isPlaying,
-                    modifier = Modifier
-                        .size(52.dp)
-                        .padding(8.dp)
-                        .alpha(if (state.isExpanded) 0f else 1f)
-                )
-            }
+            MediaControlBar(
+                mediaItem = mediaItem,
+                isPlaying = isPlaying,
+                onPlayPauseClick = onPlayPauseClick,
+            )
 
             val contentAlpha by transition.animateFloat(
                 targetValueByState = { targetValue ->
@@ -371,12 +284,18 @@ private fun Preview() {
             artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
         )
         var isPlaying by remember { mutableStateOf(false) }
-        MediaControlBar(
+        val state = rememberMediaControlBarState()
+        val coroutineScope = rememberCoroutineScope()
+        MediaControlSheet(
             mediaItem = mediaItem,
             isPlaying = isPlaying,
-            state = rememberMediaControlBarState(),
-            onClick = { /*TODO*/ },
-            onPlayPauseClick = { isPlaying = !isPlaying }
+            onPlayPauseClick = { isPlaying = !isPlaying },
+            onControlBarClick = {
+                coroutineScope.launch {
+                    state.expand()
+                }
+            },
+            state = state,
         )
     }
 }
