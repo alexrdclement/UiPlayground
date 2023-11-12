@@ -3,9 +3,9 @@ package com.alexrdclement.uiplayground.demo.control
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -36,7 +36,7 @@ fun <T> DropdownControl(
             Spacer(modifier = Modifier.height(8.dp))
         }
 
-        Button(
+        OutlinedButton(
             onClick = { isMenuExpanded = true }
         ) {
             Text(text = selectedValue.name)
