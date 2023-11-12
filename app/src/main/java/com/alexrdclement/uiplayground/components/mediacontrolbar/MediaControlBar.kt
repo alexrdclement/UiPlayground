@@ -12,8 +12,13 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.anchoredDraggable
+import androidx.compose.foundation.gestures.animateTo
 import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.snapTo
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -118,12 +123,10 @@ fun MediaControlBar(
                         state.offset.toInt()
                     )
                 }
-                .draggable(
-                    state = state.anchoredDraggableState.draggableState,
+                .anchoredDraggable(
+                    state = state.anchoredDraggableState,
                     orientation = Orientation.Vertical,
                     enabled = state.isVisible,
-                    startDragImmediately = state.anchoredDraggableState.isAnimationRunning,
-                    onDragStopped = { settleToDismiss(it) }
                 )
                 .modalBottomSheetAnchors(
                     state = state,
