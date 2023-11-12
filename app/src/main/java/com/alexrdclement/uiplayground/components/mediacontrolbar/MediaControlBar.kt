@@ -6,6 +6,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -64,126 +65,6 @@ enum class MediaControlBarAnchorState {
     Hidden,
     PartiallyExpanded,
     Expanded,
-}
-
-@Stable
-class MediaControlBarState(
-    val initialValue: MediaControlBarAnchorState,
-    val density: Density,
-) {
-
-    internal var anchoredDraggableState = AnchoredDraggableState(
-        initialValue = initialValue,
-        animationSpec = SpringSpec<Float>(),
-        confirmValueChange = { true },
-        positionalThreshold = { with(density) { 56.dp.toPx() } },
-        velocityThreshold = { with(density) { 125.dp.toPx() } }
-    )
-
-    suspend fun expand() {
-        anchoredDraggableState.animateTo(MediaControlBarAnchorState.Expanded)
-    }
-
-    suspend fun partialExpand() {
-        anchoredDraggableState.animateTo(MediaControlBarAnchorState.PartiallyExpanded)
-    }
-
-    suspend fun hide() {
-        anchoredDraggableState.animateTo(MediaControlBarAnchorState.Expanded)
-    }
-
-    internal suspend fun animateTo(
-        targetValue: MediaControlBarAnchorState,
-        velocity: Float = anchoredDraggableState.lastVelocity
-    ) {
-        anchoredDraggableState.animateTo(targetValue, velocity)
-    }
-
-    internal suspend fun snapTo(targetValue: MediaControlBarAnchorState) {
-        anchoredDraggableState.snapTo(targetValue)
-    }
-
-    internal suspend fun settle(velocity: Float) {
-        anchoredDraggableState.settle(velocity)
-    }
-
-    val offset: Float get() = anchoredDraggableState.offset
-
-    val progress: Float get() = anchoredDraggableState.progress
-
-    val currentValue: MediaControlBarAnchorState get() = anchoredDraggableState.currentValue
-    val targetValue: MediaControlBarAnchorState get() = anchoredDraggableState.targetValue
-
-    val isVisible: Boolean get() = currentValue != MediaControlBarAnchorState.Hidden
-    val isExpanded: Boolean get() = targetValue == MediaControlBarAnchorState.Expanded
-
-    companion object {
-        fun Saver(
-            density: Density,
-        ): Saver<MediaControlBarState, MediaControlBarAnchorState> = Saver(
-            save = { it.currentValue },
-            restore = {
-                MediaControlBarState(
-                    initialValue = it,
-                    density = density,
-                )
-            }
-        )
-    }
-}
-
-@Composable
-fun rememberMediaControlBarState(
-    initialValue: MediaControlBarAnchorState = MediaControlBarAnchorState.Hidden,
-): MediaControlBarState {
-    val density = LocalDensity.current
-    return rememberSaveable(
-        saver = MediaControlBarState.Saver(
-            density = density,
-        )
-    ) {
-        MediaControlBarState(
-            initialValue = initialValue,
-            density = density,
-        )
-    }
-}
-
-/**
- * Copied and modified from Material3 ModalBottomSheet.android.kt
- */
-@ExperimentalMaterial3Api
-private fun Modifier.modalBottomSheetAnchors(
-    state: MediaControlBarState,
-    minHeight: Float,
-    fullHeight: Float
-) = onSizeChanged { size ->
-
-    val newAnchors = DraggableAnchors {
-        MediaControlBarAnchorState.Hidden at fullHeight
-        if (size.height > (minHeight)) {
-            MediaControlBarAnchorState.PartiallyExpanded at fullHeight - minHeight
-        }
-        if (size.height != 0) {
-            MediaControlBarAnchorState.Expanded at max(0f, fullHeight - size.height)
-        }
-    }
-
-    val newTarget = when (state.targetValue) {
-        MediaControlBarAnchorState.Hidden -> MediaControlBarAnchorState.Hidden
-        MediaControlBarAnchorState.PartiallyExpanded, MediaControlBarAnchorState.Expanded -> {
-            val hasPartiallyExpandedState =
-                newAnchors.hasAnchorFor(MediaControlBarAnchorState.PartiallyExpanded)
-            when {
-                hasPartiallyExpandedState -> MediaControlBarAnchorState.PartiallyExpanded
-                newAnchors.hasAnchorFor(MediaControlBarAnchorState.Expanded) ->
-                    MediaControlBarAnchorState.Expanded
-                else -> MediaControlBarAnchorState.Hidden
-            }
-        }
-    }
-
-    state.anchoredDraggableState.updateAnchors(newAnchors, newTarget)
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -350,6 +231,132 @@ fun MediaItemArtwork(
             .aspectRatio(1f, matchHeightConstraintsFirst = false)
             .background(Color.Red)
     )
+}
+
+@Stable
+class MediaControlBarState(
+    val initialValue: MediaControlBarAnchorState,
+    val density: Density,
+) {
+
+    internal var anchoredDraggableState = AnchoredDraggableState(
+        initialValue = initialValue,
+        animationSpec = spring(),
+        confirmValueChange = {
+            when (it) {
+                MediaControlBarAnchorState.Hidden -> false // TODO: Temp
+                MediaControlBarAnchorState.PartiallyExpanded,
+                MediaControlBarAnchorState.Expanded -> true
+            }
+        },
+        positionalThreshold = { with(density) { 56.dp.toPx() } },
+        velocityThreshold = { with(density) { 125.dp.toPx() } }
+    )
+
+    suspend fun expand() {
+        anchoredDraggableState.animateTo(MediaControlBarAnchorState.Expanded)
+    }
+
+    suspend fun partialExpand() {
+        anchoredDraggableState.animateTo(MediaControlBarAnchorState.PartiallyExpanded)
+    }
+
+    suspend fun hide() {
+        anchoredDraggableState.animateTo(MediaControlBarAnchorState.Hidden)
+    }
+
+    internal suspend fun animateTo(
+        targetValue: MediaControlBarAnchorState,
+        velocity: Float = anchoredDraggableState.lastVelocity
+    ) {
+        anchoredDraggableState.animateTo(targetValue, velocity)
+    }
+
+    internal suspend fun snapTo(targetValue: MediaControlBarAnchorState) {
+        anchoredDraggableState.snapTo(targetValue)
+    }
+
+    internal suspend fun settle(velocity: Float) {
+        anchoredDraggableState.settle(velocity)
+    }
+
+    val offset: Float get() = anchoredDraggableState.offset
+
+    val progress: Float get() = anchoredDraggableState.progress
+
+    val currentValue: MediaControlBarAnchorState get() = anchoredDraggableState.currentValue
+    val targetValue: MediaControlBarAnchorState get() = anchoredDraggableState.targetValue
+
+    val isVisible: Boolean get() = currentValue != MediaControlBarAnchorState.Hidden
+    val isExpanded: Boolean get() = targetValue == MediaControlBarAnchorState.Expanded
+
+    companion object {
+        fun Saver(
+            density: Density,
+        ): Saver<MediaControlBarState, MediaControlBarAnchorState> = Saver(
+            save = { it.currentValue },
+            restore = {
+                MediaControlBarState(
+                    initialValue = it,
+                    density = density,
+                )
+            }
+        )
+    }
+}
+
+@Composable
+fun rememberMediaControlBarState(
+    initialValue: MediaControlBarAnchorState = MediaControlBarAnchorState.Hidden,
+): MediaControlBarState {
+    val density = LocalDensity.current
+    return rememberSaveable(
+        saver = MediaControlBarState.Saver(
+            density = density,
+        )
+    ) {
+        MediaControlBarState(
+            initialValue = initialValue,
+            density = density,
+        )
+    }
+}
+
+/**
+ * Copied and modified from Material3 ModalBottomSheet.android.kt
+ */
+@ExperimentalMaterial3Api
+private fun Modifier.modalBottomSheetAnchors(
+    state: MediaControlBarState,
+    minHeight: Float,
+    fullHeight: Float
+) = onSizeChanged { size ->
+
+    val newAnchors = DraggableAnchors {
+        MediaControlBarAnchorState.Hidden at fullHeight
+        if (size.height > (minHeight)) {
+            MediaControlBarAnchorState.PartiallyExpanded at fullHeight - minHeight
+        }
+        if (size.height != 0) {
+            MediaControlBarAnchorState.Expanded at max(0f, fullHeight - size.height)
+        }
+    }
+
+    val newTarget = when (state.targetValue) {
+        MediaControlBarAnchorState.Hidden -> MediaControlBarAnchorState.Hidden
+        MediaControlBarAnchorState.PartiallyExpanded, MediaControlBarAnchorState.Expanded -> {
+            val hasPartiallyExpandedState =
+                newAnchors.hasAnchorFor(MediaControlBarAnchorState.PartiallyExpanded)
+            when {
+                hasPartiallyExpandedState -> MediaControlBarAnchorState.PartiallyExpanded
+                newAnchors.hasAnchorFor(MediaControlBarAnchorState.Expanded) ->
+                    MediaControlBarAnchorState.Expanded
+                else -> MediaControlBarAnchorState.Hidden
+            }
+        }
+    }
+
+    state.anchoredDraggableState.updateAnchors(newAnchors, newTarget)
 }
 
 @Preview
