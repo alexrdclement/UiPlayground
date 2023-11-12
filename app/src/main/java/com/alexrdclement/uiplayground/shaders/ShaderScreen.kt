@@ -1,15 +1,12 @@
 package com.alexrdclement.uiplayground.shaders
 
 import android.os.Build
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -20,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.demo.subject.DemoCircle
@@ -28,7 +26,6 @@ import com.alexrdclement.uiplayground.demo.control.ControlBar
 import com.alexrdclement.uiplayground.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.demo.subject.DemoText
 import com.alexrdclement.uiplayground.demo.subject.DemoTextField
-import com.alexrdclement.uiplayground.ui.theme.UiPlaygroundTheme
 import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
 
 @Composable
@@ -97,6 +94,7 @@ fun ShaderScreen() {
             }
             when (demoSubject) {
                 DemoSubject.Circle -> DemoCircle(modifier = modifier)
+                DemoSubject.CircleOutline -> DemoCircle(drawStyle = Stroke(2f), modifier = modifier)
                 DemoSubject.Text -> DemoText(modifier = modifier)
                 DemoSubject.TextField -> DemoTextField(modifier = modifier)
             }
