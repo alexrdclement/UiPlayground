@@ -2,9 +2,7 @@
 
 package com.alexrdclement.uiplayground.components.mediacontrolsheet
 
-import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.AnchoredDraggableState
@@ -17,12 +15,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -33,9 +29,7 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,7 +49,6 @@ data class MediaItem(
 )
 
 enum class MediaControlBarAnchorState {
-    Hidden,
     PartiallyExpanded,
     Expanded,
 }
@@ -93,7 +86,6 @@ fun MediaControlSheet(
                 .anchoredDraggable(
                     state = state.anchoredDraggableState,
                     orientation = Orientation.Vertical,
-                    enabled = state.isVisible,
                 )
                 .modalBottomSheetAnchors(
                     state = state,
@@ -136,7 +128,6 @@ class MediaControlBarState(
         animationSpec = spring(),
         confirmValueChange = {
             when (it) {
-                MediaControlBarAnchorState.Hidden -> false // TODO: Temp
                 MediaControlBarAnchorState.PartiallyExpanded,
                 MediaControlBarAnchorState.Expanded -> true
             }
@@ -151,10 +142,6 @@ class MediaControlBarState(
 
     suspend fun partialExpand() {
         anchoredDraggableState.animateTo(MediaControlBarAnchorState.PartiallyExpanded)
-    }
-
-    suspend fun hide() {
-        anchoredDraggableState.animateTo(MediaControlBarAnchorState.Hidden)
     }
 
     internal suspend fun animateTo(
@@ -177,9 +164,7 @@ class MediaControlBarState(
     val progress: Float get() = anchoredDraggableState.progress
 
     val partialToFullProgress: Float get() = when (currentValue) {
-        MediaControlBarAnchorState.Hidden -> 0f
         MediaControlBarAnchorState.PartiallyExpanded -> when (targetValue) {
-            MediaControlBarAnchorState.Hidden -> 0f
             MediaControlBarAnchorState.PartiallyExpanded -> {
                 if (progress >= 1f) 0f else progress
             }
@@ -190,7 +175,6 @@ class MediaControlBarState(
         }
 
         MediaControlBarAnchorState.Expanded -> when (targetValue) {
-            MediaControlBarAnchorState.Hidden,
             MediaControlBarAnchorState.PartiallyExpanded -> {
                 if (progress >= 1f) 0f else 1f - progress
             }
@@ -204,7 +188,6 @@ class MediaControlBarState(
     val currentValue: MediaControlBarAnchorState get() = anchoredDraggableState.currentValue
     val targetValue: MediaControlBarAnchorState get() = anchoredDraggableState.targetValue
 
-    val isVisible: Boolean get() = currentValue != MediaControlBarAnchorState.Hidden
     val isExpanded: Boolean get() = targetValue == MediaControlBarAnchorState.Expanded
 
     companion object {
@@ -224,7 +207,7 @@ class MediaControlBarState(
 
 @Composable
 fun rememberMediaControlBarState(
-    initialValue: MediaControlBarAnchorState = MediaControlBarAnchorState.Hidden,
+    initialValue: MediaControlBarAnchorState = MediaControlBarAnchorState.PartiallyExpanded,
 ): MediaControlBarState {
     val density = LocalDensity.current
     return rememberSaveable(
@@ -250,7 +233,6 @@ private fun Modifier.modalBottomSheetAnchors(
 ) = onSizeChanged { size ->
 
     val newAnchors = DraggableAnchors {
-        MediaControlBarAnchorState.Hidden at fullHeight
         if (size.height > (minHeight)) {
             MediaControlBarAnchorState.PartiallyExpanded at fullHeight - minHeight
         }
@@ -260,7 +242,6 @@ private fun Modifier.modalBottomSheetAnchors(
     }
 
     val newTarget = when (state.targetValue) {
-        MediaControlBarAnchorState.Hidden -> MediaControlBarAnchorState.Hidden
         MediaControlBarAnchorState.PartiallyExpanded, MediaControlBarAnchorState.Expanded -> {
             val hasPartiallyExpandedState =
                 newAnchors.hasAnchorFor(MediaControlBarAnchorState.PartiallyExpanded)
@@ -268,7 +249,7 @@ private fun Modifier.modalBottomSheetAnchors(
                 hasPartiallyExpandedState -> MediaControlBarAnchorState.PartiallyExpanded
                 newAnchors.hasAnchorFor(MediaControlBarAnchorState.Expanded) ->
                     MediaControlBarAnchorState.Expanded
-                else -> MediaControlBarAnchorState.Hidden
+                else -> MediaControlBarAnchorState.PartiallyExpanded
             }
         }
     }
