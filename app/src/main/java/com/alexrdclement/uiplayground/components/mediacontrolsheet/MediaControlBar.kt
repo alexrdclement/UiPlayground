@@ -1,6 +1,7 @@
 package com.alexrdclement.uiplayground.components.mediacontrolsheet
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -8,18 +9,23 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -33,29 +39,34 @@ fun MediaControlBar(
     onClick: () -> Unit = {},
 ) {
     BoxWithConstraints {
-        val artworkSize = minHeight
         val maxWidthPx = this.constraints.maxWidth
+
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
+                .heightIn(minHeight)
                 .fillMaxWidth()
                 .clickable { onClick() }
         ) {
             MediaItemArtwork(
                 modifier = Modifier
-                    .align(Alignment.Top)
-                    .size(artworkSize)
-                    .graphicsLayer {
+                    .layout { measurable, constraints ->
                         val computedProgress = progress()
                         val minHeightPx = minHeight.toPx()
-                        val maxRatio = maxWidthPx / minHeightPx
-                        val scale = 1f + (maxRatio - 1f) * computedProgress
                         val height = minHeightPx + ((maxWidthPx - minHeightPx) * computedProgress)
-                        scaleX = scale
-                        scaleY = scale
-                        translationX = ((maxWidthPx) / 2f) * computedProgress - (size.width / 2f) * computedProgress
-                        translationY = (height - minHeightPx) / 2f
+
+                        val placeable = measurable.measure(
+                            constraints.copy(
+                                minHeight = minHeightPx.roundToInt(),
+                                minWidth = minHeightPx.roundToInt(),
+                                maxHeight = height.roundToInt(),
+                                maxWidth = height.roundToInt(),
+                            )
+                        )
+                        layout(height.roundToInt(), height.roundToInt()) {
+                            placeable.place(0, 0)
+                        }
                     }
             )
 

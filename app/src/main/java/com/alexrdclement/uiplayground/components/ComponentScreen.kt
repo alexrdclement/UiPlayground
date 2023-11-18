@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import com.alexrdclement.uiplayground.components.mediacontrolsheet.Artist
 import com.alexrdclement.uiplayground.components.mediacontrolsheet.MediaControlBar
 import com.alexrdclement.uiplayground.components.mediacontrolsheet.MediaControlSheet
@@ -37,6 +38,15 @@ fun MediaPlaybackBarDemo() {
     )
     val coroutineScope = rememberCoroutineScope()
 
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding()
+    ) {
+        Text(text = "Current value ${state.currentValue}")
+        Text(text = "Target value ${state.targetValue}")
+    }
+
     MediaControlSheet(
         mediaItem = mediaItem,
         isPlaying = isPlaying,
@@ -53,9 +63,15 @@ fun MediaPlaybackBarDemo() {
         state = state,
         modifier = Modifier.systemBarsPadding()
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-//            Text(text = "Current value ${state.currentValue}")
-//            Text(text = "Target value ${state.targetValue}")
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer {
+                    alpha = state.partialToFullProgress
+                }
+        ) {
+            Text(text = "Current value ${state.currentValue}")
+            Text(text = "Target value ${state.targetValue}")
         }
     }
 }
