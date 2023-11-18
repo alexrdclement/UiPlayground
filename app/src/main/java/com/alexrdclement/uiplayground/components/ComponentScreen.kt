@@ -1,6 +1,9 @@
 package com.alexrdclement.uiplayground.components
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,10 +43,19 @@ fun MediaPlaybackBarDemo() {
         onPlayPauseClick = { isPlaying = !isPlaying },
         onControlBarClick = {
             coroutineScope.launch {
-                state.expand()
+                if (state.isExpanded) {
+                    state.partialExpand()
+                } else {
+                    state.expand()
+                }
             }
         },
         state = state,
         modifier = Modifier.systemBarsPadding()
-    )
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+//            Text(text = "Current value ${state.currentValue}")
+//            Text(text = "Target value ${state.targetValue}")
+        }
+    }
 }

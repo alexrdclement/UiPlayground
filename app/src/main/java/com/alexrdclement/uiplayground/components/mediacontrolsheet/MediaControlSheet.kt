@@ -35,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -69,6 +70,7 @@ fun MediaControlSheet(
     modifier: Modifier = Modifier,
     state: MediaControlBarState = rememberMediaControlBarState(),
     minHeight: Dp = 64.dp,
+    content: @Composable () -> Unit = {},
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -77,17 +79,6 @@ fun MediaControlSheet(
             minHeight.toPx()
         }
         val expandedHeightPx = constraints.maxHeight
-
-        val scope = rememberCoroutineScope()
-
-        val settleToDismiss: (velocity: Float) -> Unit = {
-            scope.launch { state.settle(it) }
-        }
-
-        val transition = updateTransition(
-            targetState = state.targetValue,
-            label = "MediaControlBar Transition",
-        )
 
         Column(
             modifier = Modifier
@@ -114,26 +105,11 @@ fun MediaControlSheet(
                 mediaItem = mediaItem,
                 isPlaying = isPlaying,
                 onPlayPauseClick = onPlayPauseClick,
+                onClick = onControlBarClick,
+                progress = { state.partialToFullProgress },
             )
 
-            val contentAlpha by transition.animateFloat(
-                targetValueByState = { targetValue ->
-                    when (targetValue) {
-                        MediaControlBarAnchorState.Hidden -> 0f
-                        MediaControlBarAnchorState.PartiallyExpanded -> 0f
-                        MediaControlBarAnchorState.Expanded -> 1f
-                    }
-                },
-                label = "contentAlpha"
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .alpha(contentAlpha)
-            ) {
-                Text(text = "Current state ${transition.currentState}")
-                Text(text = "Target state ${transition.targetState}")
-            }
+            content()
         }
     }
 }
@@ -199,6 +175,31 @@ class MediaControlBarState(
     val offset: Float get() = anchoredDraggableState.offset
 
     val progress: Float get() = anchoredDraggableState.progress
+
+    val partialToFullProgress: Float get() = when (currentValue) {
+        MediaControlBarAnchorState.Hidden -> 0f
+        MediaControlBarAnchorState.PartiallyExpanded -> when (targetValue) {
+            MediaControlBarAnchorState.Hidden -> 0f
+            MediaControlBarAnchorState.PartiallyExpanded -> {
+                if (progress >= 1f) 0f else progress
+            }
+
+            MediaControlBarAnchorState.Expanded -> {
+                if (progress >= 1f) 1f else progress
+            }
+        }
+
+        MediaControlBarAnchorState.Expanded -> when (targetValue) {
+            MediaControlBarAnchorState.Hidden,
+            MediaControlBarAnchorState.PartiallyExpanded -> {
+                if (progress >= 1f) 0f else 1f - progress
+            }
+
+            MediaControlBarAnchorState.Expanded -> {
+                if (progress >= 1f) 1f else 1f - progress
+            }
+        }
+    }
 
     val currentValue: MediaControlBarAnchorState get() = anchoredDraggableState.currentValue
     val targetValue: MediaControlBarAnchorState get() = anchoredDraggableState.targetValue
