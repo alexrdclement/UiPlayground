@@ -2,10 +2,17 @@ name: "build"
 on:
   push:
     branches:
+      - main
       - feature/**
       - bugfix/**
       - maintenance/**
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
   pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
 
 concurrency:
   group: build-${{ github.ref }}
