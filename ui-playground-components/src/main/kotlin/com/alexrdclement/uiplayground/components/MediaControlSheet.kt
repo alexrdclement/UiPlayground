@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 
-package com.alexrdclement.uiplayground.components.mediacontrolsheet
+package com.alexrdclement.uiplayground.components
 
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -11,14 +11,15 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.gestures.animateTo
 import androidx.compose.foundation.gestures.snapTo
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,7 +41,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
+import com.alexrdclement.uiplayground.components.util.UiComponentPreview
 import kotlinx.coroutines.launch
 import kotlin.math.max
 
@@ -266,7 +267,7 @@ private fun Modifier.modalBottomSheetAnchors(
 @Preview
 @Composable
 private fun Preview() {
-    UiPlaygroundPreview {
+    UiComponentPreview {
         val mediaItem = MediaItem(
             title = "Title",
             artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
@@ -284,6 +285,14 @@ private fun Preview() {
                 }
             },
             state = state,
-        )
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                Text("Content")
+            }
+        }
     }
 }

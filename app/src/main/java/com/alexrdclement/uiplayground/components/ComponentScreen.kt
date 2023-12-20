@@ -12,12 +12,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import com.alexrdclement.uiplayground.components.mediacontrolsheet.Artist
-import com.alexrdclement.uiplayground.components.mediacontrolsheet.MediaControlBar
-import com.alexrdclement.uiplayground.components.mediacontrolsheet.MediaControlSheet
-import com.alexrdclement.uiplayground.components.mediacontrolsheet.MediaControlBarAnchorState
-import com.alexrdclement.uiplayground.components.mediacontrolsheet.MediaItem
-import com.alexrdclement.uiplayground.components.mediacontrolsheet.rememberMediaControlBarState
 import kotlinx.coroutines.launch
 
 @Composable
