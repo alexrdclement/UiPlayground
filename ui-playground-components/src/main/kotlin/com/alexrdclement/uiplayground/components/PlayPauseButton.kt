@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.components.mediacontrolsheet
+package com.alexrdclement.uiplayground.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
+import com.alexrdclement.uiplayground.components.util.UiComponentPreview
 
 @Composable
 fun PlayPauseButton(
@@ -46,7 +46,7 @@ fun PlayPauseButton(
 @Preview
 @Composable
 private fun Preview() {
-    UiPlaygroundPreview {
+    UiComponentPreview {
         PlayPauseButton(
             isEnabled = true,
             isPlaying = false,
