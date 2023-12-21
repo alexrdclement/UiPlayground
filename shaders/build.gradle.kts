@@ -35,9 +35,11 @@ android {
 
 dependencies {
     implementation(libs.core.ktx)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.foundation)
     implementation(libs.compose.ui)
-    implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.material3)
 
     testImplementation(libs.junit)
 
@@ -46,5 +48,4 @@ dependencies {
 
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
-    debugImplementation(libs.material3)
 }

@@ -2,18 +2,18 @@ package com.alexrdclement.uiplayground.shaders.preview
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
 
 @Composable
 internal fun DemoCircle(
     modifier: Modifier = Modifier,
+    color: Color = Color.Black,
     drawStyle: DrawStyle = Fill,
 ) {
-    val color = MaterialTheme.colorScheme.primary
     Canvas(
         modifier = modifier.fillMaxSize()
     ) {
