@@ -3,7 +3,7 @@ package com.alexrdclement.uiplayground.components
 import com.alexrdclement.uiplayground.catalog.CatalogItem
 
 enum class Component : CatalogItem {
-    MediaControlBar;
+    MediaControlSheet;
 
     override val title = this.name
 }

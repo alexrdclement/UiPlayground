@@ -22,7 +22,7 @@ fun NavGraphBuilder.componentScreen() {
         )
     ) { backStackEntry ->
         val componentName = backStackEntry.arguments?.getString(componentNameArgKey)
-        val component = componentName?.let(Component::valueOf) ?: Component.MediaControlBar
+        val component = componentName?.let(Component::valueOf) ?: Component.MediaControlSheet
         ComponentScreen(
             component = component,
         )
