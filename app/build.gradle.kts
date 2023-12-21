@@ -63,7 +63,7 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.material.icons.extended)
 
-    implementation(projects.uiPlaygroundComponents)
+    implementation(projects.components)
 
     testImplementation(libs.junit)
 
