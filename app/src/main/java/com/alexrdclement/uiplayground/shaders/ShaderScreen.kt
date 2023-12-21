@@ -35,7 +35,7 @@ import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 @Composable
 fun ShaderScreen() {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-        // Bummer
+        // Runtime shaders require API 33+
         return
     }
 

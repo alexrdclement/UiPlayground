@@ -17,7 +17,6 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.shaders.preview.DemoCircle
 import com.alexrdclement.uiplayground.shaders.preview.ShaderPreview
