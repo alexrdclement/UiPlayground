@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
+import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
 fun <T : CatalogItem> CatalogScreen(
@@ -49,7 +49,7 @@ fun <T : CatalogItem> CatalogScreen(
 private fun Preview() {
     UiPlaygroundPreview {
         CatalogScreen(
-            items = MainCatalogItem.values().toList(),
+            items = MainCatalogItem.entries.toList(),
             onItemClick = {}
         )
     }

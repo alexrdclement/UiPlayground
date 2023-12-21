@@ -19,8 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.shaders.ChromaticAberrationColorMode
 import com.alexrdclement.uiplayground.shaders.DemoModifier
-import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
-
+import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
 fun ControlBar(
@@ -69,11 +68,11 @@ fun SubjectModifierBar(
         mutableStateOf(
             Control.Dropdown(
                 name = "",
-                values = DemoSubject.values().map {
+                values = DemoSubject.entries.map {
                     Control.Dropdown.DropdownItem(name = it.name, value = it)
                 },
-                selectedIndex = DemoSubject.values().indexOf(demoSubject),
-                onValueChange = { onSubjectSelected(DemoSubject.values()[it]) }
+                selectedIndex = DemoSubject.entries.indexOf(demoSubject),
+                onValueChange = { onSubjectSelected(DemoSubject.entries[it]) }
             )
         )
     }

@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,12 +27,15 @@ import com.alexrdclement.uiplayground.demo.control.ControlBar
 import com.alexrdclement.uiplayground.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.demo.subject.DemoText
 import com.alexrdclement.uiplayground.demo.subject.DemoTextField
-import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
+import com.alexrdclement.uiplayground.shaders.chromaticAberration
+import com.alexrdclement.uiplayground.shaders.noise
+import com.alexrdclement.uiplayground.shaders.pixelate
+import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
 fun ShaderScreen() {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-        // Bummer
+        // Runtime shaders require API 33+
         return
     }
 
@@ -100,7 +104,7 @@ fun ShaderScreen() {
             }
         }
 
-        Divider(modifier = Modifier.fillMaxWidth())
+        HorizontalDivider(modifier = Modifier.fillMaxWidth())
         ControlBar(
             controls = controls,
             demoSubject = demoSubject,
@@ -157,16 +161,16 @@ private fun makeControls(
         is DemoModifier.ChromaticAberration -> listOf(
             Control.Dropdown(
                 name = "Color mode",
-                values = ChromaticAberrationColorMode.values().map {
+                values = ChromaticAberrationColorMode.entries.map {
                     Control.Dropdown.DropdownItem(
                         name = it.name,
                         value = it
                     )
                 },
-                selectedIndex = ChromaticAberrationColorMode.values()
+                selectedIndex = ChromaticAberrationColorMode.entries
                     .indexOf(demoModifier.colorMode),
                 onValueChange = {
-                    val colorMode = ChromaticAberrationColorMode.values()[it]
+                    val colorMode = ChromaticAberrationColorMode.entries[it]
                     demoModifiers[demoModifierIndex] = demoModifier.copy(colorMode = colorMode)
                 }
             ),
