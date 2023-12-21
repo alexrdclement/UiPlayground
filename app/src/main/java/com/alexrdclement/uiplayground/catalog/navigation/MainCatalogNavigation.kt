@@ -12,7 +12,7 @@ fun NavGraphBuilder.mainCatalogScreen(
 ) {
     composable(mainCatalogRoute) {
         CatalogScreen(
-            items = MainCatalogItem.values().toList(),
+            items = MainCatalogItem.entries.toList(),
             onItemClick = onItemClick,
         )
     }

@@ -38,7 +38,7 @@ private fun NavGraphBuilder.componentCatalogScreen(
 ) {
     composable(componentCatalogRoute) {
         CatalogScreen(
-            items = Component.values().toList(),
+            items = Component.entries.toList(),
             onItemClick = onItemClick,
         )
     }

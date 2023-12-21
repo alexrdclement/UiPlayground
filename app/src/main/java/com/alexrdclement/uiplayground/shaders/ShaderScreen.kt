@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -100,7 +101,7 @@ fun ShaderScreen() {
             }
         }
 
-        Divider(modifier = Modifier.fillMaxWidth())
+        HorizontalDivider(modifier = Modifier.fillMaxWidth())
         ControlBar(
             controls = controls,
             demoSubject = demoSubject,
@@ -157,16 +158,16 @@ private fun makeControls(
         is DemoModifier.ChromaticAberration -> listOf(
             Control.Dropdown(
                 name = "Color mode",
-                values = ChromaticAberrationColorMode.values().map {
+                values = ChromaticAberrationColorMode.entries.map {
                     Control.Dropdown.DropdownItem(
                         name = it.name,
                         value = it
                     )
                 },
-                selectedIndex = ChromaticAberrationColorMode.values()
+                selectedIndex = ChromaticAberrationColorMode.entries
                     .indexOf(demoModifier.colorMode),
                 onValueChange = {
-                    val colorMode = ChromaticAberrationColorMode.values()[it]
+                    val colorMode = ChromaticAberrationColorMode.entries[it]
                     demoModifiers[demoModifierIndex] = demoModifier.copy(colorMode = colorMode)
                 }
             ),

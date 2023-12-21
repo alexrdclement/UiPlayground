@@ -68,11 +68,11 @@ fun SubjectModifierBar(
         mutableStateOf(
             Control.Dropdown(
                 name = "",
-                values = DemoSubject.values().map {
+                values = DemoSubject.entries.map {
                     Control.Dropdown.DropdownItem(name = it.name, value = it)
                 },
-                selectedIndex = DemoSubject.values().indexOf(demoSubject),
-                onValueChange = { onSubjectSelected(DemoSubject.values()[it]) }
+                selectedIndex = DemoSubject.entries.indexOf(demoSubject),
+                onValueChange = { onSubjectSelected(DemoSubject.entries[it]) }
             )
         )
     }

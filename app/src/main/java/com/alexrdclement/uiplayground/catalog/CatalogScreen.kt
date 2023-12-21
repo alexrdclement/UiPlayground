@@ -49,7 +49,7 @@ fun <T : CatalogItem> CatalogScreen(
 private fun Preview() {
     UiPlaygroundPreview {
         CatalogScreen(
-            items = MainCatalogItem.values().toList(),
+            items = MainCatalogItem.entries.toList(),
             onItemClick = {}
         )
     }
