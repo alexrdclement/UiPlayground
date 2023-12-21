@@ -20,7 +20,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.demo.subject.DemoCircle
-import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
+import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 // Inspired by
 // - Romain Guy on Coding with the Italians: https://www.youtube.com/watch?v=s5RibxKdo-o

@@ -19,8 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.shaders.ChromaticAberrationColorMode
 import com.alexrdclement.uiplayground.shaders.DemoModifier
-import com.alexrdclement.uiplayground.util.UiPlaygroundPreview
-
+import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
 fun ControlBar(

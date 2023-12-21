@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.components.util.UiComponentPreview
 import kotlinx.coroutines.launch
 import kotlin.math.max
 
@@ -267,32 +266,30 @@ private fun Modifier.modalBottomSheetAnchors(
 @Preview
 @Composable
 private fun Preview() {
-    UiComponentPreview {
-        val mediaItem = MediaItem(
-            title = "Title",
-            artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
-        )
-        var isPlaying by remember { mutableStateOf(false) }
-        val state = rememberMediaControlBarState()
-        val coroutineScope = rememberCoroutineScope()
-        MediaControlSheet(
-            mediaItem = mediaItem,
-            isPlaying = isPlaying,
-            onPlayPauseClick = { isPlaying = !isPlaying },
-            onControlBarClick = {
-                coroutineScope.launch {
-                    state.expand()
-                }
-            },
-            state = state,
-        ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                Text("Content")
+    val mediaItem = MediaItem(
+        title = "Title",
+        artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
+    )
+    var isPlaying by remember { mutableStateOf(false) }
+    val state = rememberMediaControlBarState()
+    val coroutineScope = rememberCoroutineScope()
+    MediaControlSheet(
+        mediaItem = mediaItem,
+        isPlaying = isPlaying,
+        onPlayPauseClick = { isPlaying = !isPlaying },
+        onControlBarClick = {
+            coroutineScope.launch {
+                state.expand()
             }
+        },
+        state = state,
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            Text("Content")
         }
     }
 }

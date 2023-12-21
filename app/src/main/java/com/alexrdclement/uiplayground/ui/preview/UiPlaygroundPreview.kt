@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.util
+package com.alexrdclement.uiplayground.ui.preview
 
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable

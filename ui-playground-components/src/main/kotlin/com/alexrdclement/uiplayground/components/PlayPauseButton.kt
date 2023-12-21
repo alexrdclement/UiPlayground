@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.components.util.UiComponentPreview
 
 @Composable
 fun PlayPauseButton(
@@ -46,12 +45,10 @@ fun PlayPauseButton(
 @Preview
 @Composable
 private fun Preview() {
-    UiComponentPreview {
-        PlayPauseButton(
-            isEnabled = true,
-            isPlaying = false,
-            onClick = {},
-            modifier = Modifier.size(128.dp)
-        )
-    }
+    PlayPauseButton(
+        isEnabled = true,
+        isPlaying = false,
+        onClick = {},
+        modifier = Modifier.size(128.dp)
+    )
 }
