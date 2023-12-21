@@ -263,7 +263,7 @@ private fun Modifier.modalBottomSheetAnchors(
     state.anchoredDraggableState.updateAnchors(newAnchors, newTarget)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun Preview() {
     val mediaItem = MediaItem(

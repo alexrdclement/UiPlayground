@@ -14,11 +14,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
@@ -31,7 +38,7 @@ fun MediaControlBar(
     onPlayPauseClick: () -> Unit,
     modifier: Modifier = Modifier,
     minHeight: Dp = 64.dp,
-    progress: () -> Float,
+    progress: () -> Float = { 0f },
     onClick: () -> Unit = {},
 ) {
     BoxWithConstraints {
@@ -105,4 +112,25 @@ fun MediaControlBar(
             )
         }
     }
+}
+
+private class ProgressPreviewParameterProvider : PreviewParameterProvider<Float> {
+    override val values = sequenceOf(0f, 0.5f, 1f)
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Preview(
+    @PreviewParameter(ProgressPreviewParameterProvider::class) progress: Float
+) {
+    var isPlaying by remember { mutableStateOf(false) }
+    MediaControlBar(
+        mediaItem = MediaItem(
+            title = "Title",
+            artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
+        ),
+        isPlaying = isPlaying,
+        onPlayPauseClick = { isPlaying = !isPlaying },
+        progress = { progress },
+    )
 }
