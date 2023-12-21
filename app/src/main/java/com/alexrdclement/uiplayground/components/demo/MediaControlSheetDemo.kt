@@ -13,18 +13,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import com.alexrdclement.uiplayground.components.Artist
-import com.alexrdclement.uiplayground.components.MediaControlBarAnchorState
+import com.alexrdclement.uiplayground.components.MediaControlSheetAnchorState
 import com.alexrdclement.uiplayground.components.MediaControlSheet
 import com.alexrdclement.uiplayground.components.MediaItem
-import com.alexrdclement.uiplayground.components.rememberMediaControlBarState
+import com.alexrdclement.uiplayground.components.rememberMediaControlSheetState
 import kotlinx.coroutines.launch
 
 @Composable
 fun MediaControlSheetDemo() {
     val mediaItem = MediaItem("Title", listOf(Artist("Artist 1"), Artist("Artist 2")))
     var isPlaying by remember { mutableStateOf(false) }
-    val state = rememberMediaControlBarState(
-        initialValue = MediaControlBarAnchorState.Expanded,
+    val state = rememberMediaControlSheetState(
+        initialValue = MediaControlSheetAnchorState.Expanded,
     )
     val coroutineScope = rememberCoroutineScope()
 
