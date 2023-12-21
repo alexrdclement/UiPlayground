@@ -19,8 +19,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.demo.subject.DemoCircle
-import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
+import com.alexrdclement.uiplayground.shaders.preview.DemoCircle
+import com.alexrdclement.uiplayground.shaders.preview.ShaderPreview
 
 // Inspired by
 // - Romain Guy on Coding with the Italians: https://www.youtube.com/watch?v=s5RibxKdo-o
@@ -113,35 +113,32 @@ fun Modifier.chromaticAberration(
 }
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-@Preview
+@ShaderPreview
 @Composable
 private fun Preview() {
-    UiPlaygroundPreview {
-        val range = -1f..1f
-        var xAmount by remember { mutableStateOf(range.endInclusive / 2f) }
-        var yAmount by remember { mutableStateOf(range.endInclusive / 2f) }
-        Column {
-            DemoCircle(
-                modifier = Modifier
-                    .weight(1f)
-                    .chromaticAberration(
-                        xAmount = { xAmount },
-                        yAmount = { yAmount }
-                    )
-            )
-            Slider(
-                valueRange = range,
-                value = xAmount,
-                onValueChange = { xAmount = it },
-                modifier = Modifier.padding(16.dp)
-            )
-            Slider(
-                valueRange = range,
-                value = yAmount,
-                onValueChange = { yAmount = it },
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-
+    val range = -1f..1f
+    var xAmount by remember { mutableStateOf(range.endInclusive / 2f) }
+    var yAmount by remember { mutableStateOf(range.endInclusive / 2f) }
+    Column {
+        DemoCircle(
+            modifier = Modifier
+                .weight(1f)
+                .chromaticAberration(
+                    xAmount = { xAmount },
+                    yAmount = { yAmount }
+                )
+        )
+        Slider(
+            valueRange = range,
+            value = xAmount,
+            onValueChange = { xAmount = it },
+            modifier = Modifier.padding(16.dp)
+        )
+        Slider(
+            valueRange = range,
+            value = yAmount,
+            onValueChange = { yAmount = it },
+            modifier = Modifier.padding(16.dp)
+        )
     }
 }

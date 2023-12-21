@@ -18,3 +18,4 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "UiPlayground"
 include(":app")
 include(":components")
+include(":shaders")

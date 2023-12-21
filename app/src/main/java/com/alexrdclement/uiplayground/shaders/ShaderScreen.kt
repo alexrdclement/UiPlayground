@@ -27,6 +27,9 @@ import com.alexrdclement.uiplayground.demo.control.ControlBar
 import com.alexrdclement.uiplayground.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.demo.subject.DemoText
 import com.alexrdclement.uiplayground.demo.subject.DemoTextField
+import com.alexrdclement.uiplayground.shaders.chromaticAberration
+import com.alexrdclement.uiplayground.shaders.noise
+import com.alexrdclement.uiplayground.shaders.pixelate
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
