@@ -47,6 +47,8 @@ import kotlin.math.max
 data class Artist(val name: String)
 
 data class MediaItem(
+    val artworkThumbnailUrl: String?,
+    val artworkLargeUrl: String?,
     val title: String,
     val artists: List<Artist>,
 )
@@ -106,20 +108,6 @@ fun MediaControlSheet(
 
             content()
         }
-    }
-}
-
-@Composable
-fun MediaItemArtwork(
-    modifier: Modifier,
-) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .aspectRatio(1f, matchHeightConstraintsFirst = true)
-            .background(Color.Red)
-    ) {
-        Text("Hi")
     }
 }
 
@@ -267,6 +255,8 @@ private fun Modifier.modalBottomSheetAnchors(
 @Composable
 private fun Preview() {
     val mediaItem = MediaItem(
+        artworkThumbnailUrl = null,
+        artworkLargeUrl = null,
         title = "Title",
         artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
     )
