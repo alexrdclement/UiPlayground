@@ -21,7 +21,12 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MediaControlSheetDemo() {
-    val mediaItem = MediaItem("Title", listOf(Artist("Artist 1"), Artist("Artist 2")))
+    val mediaItem = MediaItem(
+        artworkThumbnailUrl = null,
+        artworkLargeUrl = null,
+        title = "Title",
+        artists = listOf(Artist("Artist 1"), Artist("Artist 2"))
+    )
     var isPlaying by remember { mutableStateOf(false) }
     val state = rememberMediaControlSheetState(
         initialValue = MediaControlSheetAnchorState.Expanded,
