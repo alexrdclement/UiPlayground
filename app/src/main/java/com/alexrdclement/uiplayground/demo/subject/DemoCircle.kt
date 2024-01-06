@@ -1,6 +1,7 @@
 package com.alexrdclement.uiplayground.demo.subject
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -17,7 +18,9 @@ fun DemoCircle(
 ) {
     val color = MaterialTheme.colorScheme.primary
     Canvas(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface)
     ) {
         drawCircle(color, style = drawStyle, radius = size.minDimension / 4f)
     }

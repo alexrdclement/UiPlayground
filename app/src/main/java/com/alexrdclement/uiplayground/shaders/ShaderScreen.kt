@@ -21,15 +21,12 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.demo.subject.DemoCircle
 import com.alexrdclement.uiplayground.demo.control.Control
 import com.alexrdclement.uiplayground.demo.control.ControlBar
+import com.alexrdclement.uiplayground.demo.subject.DemoCircle
 import com.alexrdclement.uiplayground.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.demo.subject.DemoText
 import com.alexrdclement.uiplayground.demo.subject.DemoTextField
-import com.alexrdclement.uiplayground.shaders.chromaticAberration
-import com.alexrdclement.uiplayground.shaders.noise
-import com.alexrdclement.uiplayground.shaders.pixelate
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
