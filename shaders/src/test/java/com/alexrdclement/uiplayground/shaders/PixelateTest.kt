@@ -4,20 +4,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.alexrdclement.uiplayground.shaders.preview.DemoCircle
 import com.alexrdclement.uiplayground.testing.PaparazziTestRule
+import com.google.testing.junit.testparameterinjector.TestParameter
+import com.google.testing.junit.testparameterinjector.TestParameterInjector
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
 
-@RunWith(Parameterized::class)
+@RunWith(TestParameterInjector::class)
 class PixelateTest(
+    @TestParameter(valuesProvider = SubdivisionProvider::class)
     private val subdivisions: Int,
 ) {
 
-    companion object {
-        @JvmStatic
-        @Parameterized.Parameters(name = "{0}")
-        fun data() = listOf(0, 1, 2, 5, 10, 25, 50, 100).map { arrayOf(it) }
+    object SubdivisionProvider : TestParameter.TestParameterValuesProvider {
+        override fun provideValues() = listOf(0, 1, 2, 5, 10, 25, 50, 100)
     }
 
     @get:Rule

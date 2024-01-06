@@ -43,6 +43,7 @@ dependencies {
     implementation(libs.material3)
 
     testImplementation(libs.junit)
+    testImplementation(libs.test.parameter.injector)
     testImplementation(projects.testing)
 
     androidTestImplementation(libs.androidx.test.ext.junit)

@@ -2,32 +2,30 @@ package com.alexrdclement.uiplayground.shaders
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import app.cash.paparazzi.DeviceConfig
-import app.cash.paparazzi.Paparazzi
 import com.alexrdclement.uiplayground.shaders.preview.DemoCircle
 import com.alexrdclement.uiplayground.testing.PaparazziTestRule
-import com.android.ide.common.rendering.api.SessionParams
+import com.google.testing.junit.testparameterinjector.TestParameter
+import com.google.testing.junit.testparameterinjector.TestParameterInjector
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
 
-@RunWith(Parameterized::class)
+@RunWith(TestParameterInjector::class)
 class ChromaticAberrationTest(
-    private val xAmount: Float,
-    private val yAmount: Float,
+    @TestParameter(valuesProvider = AmountProvider::class)
+    private val amounts: Pair<Float, Float>,
 ) {
+    private val xAmount = amounts.first
+    private val yAmount = amounts.second
 
-    companion object {
-        @JvmStatic
-        @Parameterized.Parameters(name = "{0}, {1}")
-        fun data() = listOf(
-            arrayOf(0f, 0f),
-            arrayOf(0.1f, 0f),
-            arrayOf(0f, 0.1f),
-            arrayOf(0.2f, 0f),
-            arrayOf(0f, 0.2f),
-            arrayOf(0.2f, 0.2f),
+    object AmountProvider : TestParameter.TestParameterValuesProvider {
+        override fun provideValues() = listOf(
+            Pair(0f, 0f),
+            Pair(0.1f, 0f),
+            Pair(0f, 0.1f),
+            Pair(0.2f, 0f),
+            Pair(0f, 0.2f),
+            Pair(0.2f, 0.2f),
         )
     }
 

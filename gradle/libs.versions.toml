@@ -14,6 +14,7 @@ kotlin = "1.9.20"
 lifecycle-runtime-ktx = "2.6.2"
 material3 = "1.2.0-beta01"
 paparazzi = "1.3.1"
+test-parameter-injector = "1.14"
 
 [libraries]
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
@@ -36,6 +37,7 @@ lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtim
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 paparazzi = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "paparazzi" }
+test-parameter-injector = { group = "com.google.testparameterinjector", name = "test-parameter-injector", version.ref = "test-parameter-injector" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
