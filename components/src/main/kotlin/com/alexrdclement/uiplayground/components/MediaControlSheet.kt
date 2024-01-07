@@ -100,6 +100,10 @@ fun MediaControlSheet(
                 onPlayPauseClick = onPlayPauseClick,
                 onClick = onControlBarClick,
                 progress = { state.partialToFullProgress },
+                contentDescription = when (state.currentValue) {
+                    MediaControlSheetAnchorState.PartiallyExpanded -> "Media control bar, minimized"
+                    MediaControlSheetAnchorState.Expanded -> "Media control bar, expanded"
+                }
             )
 
             content()
