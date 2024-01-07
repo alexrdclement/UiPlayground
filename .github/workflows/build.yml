@@ -47,7 +47,7 @@ jobs:
       - name: Run screenshot tests
         id: verifyScreenshots
         continue-on-error: true
-        run: ./gradlew verifyPaparazziDemoDebug
+        run: ./gradlew verifyPaparazziDebug
 
       - name: Prevent pushing new screenshots if this is a fork
         id: checkfork
@@ -60,7 +60,7 @@ jobs:
         id: recordScreenshots
         if: steps.verifyScreenshots.outcome == 'failure' && github.event_name == 'pull_request'
         run: |
-          ./gradlew recordPaparazziDemoDebug
+          ./gradlew recordPaparazziDebug
 
       - name: Push new screenshots if available
         uses: stefanzweifel/git-auto-commit-action@v5
