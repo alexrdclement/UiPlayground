@@ -25,6 +25,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
+        javaParameters = true // Enable detailed names in test-parameter-injector tests
     }
     buildFeatures {
         compose = true
