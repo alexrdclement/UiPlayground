@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.paparazzi)
 }
 
 android {
@@ -45,6 +46,8 @@ dependencies {
     implementation(libs.material.icons.extended)
 
     testImplementation(libs.junit)
+    testImplementation(libs.test.parameter.injector)
+    testImplementation(projects.testing)
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
