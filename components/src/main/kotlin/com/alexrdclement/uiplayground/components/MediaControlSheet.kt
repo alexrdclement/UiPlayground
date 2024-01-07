@@ -112,7 +112,6 @@ class MediaControlSheetState(
     val initialValue: MediaControlSheetAnchorState,
     val density: Density,
 ) {
-
     internal var anchoredDraggableState = AnchoredDraggableState(
         initialValue = initialValue,
         animationSpec = spring(),
@@ -232,14 +231,18 @@ private fun Modifier.modalBottomSheetAnchors(
     }
 
     val newTarget = when (state.targetValue) {
-        MediaControlSheetAnchorState.PartiallyExpanded, MediaControlSheetAnchorState.Expanded -> {
-            val hasPartiallyExpandedState =
-                newAnchors.hasAnchorFor(MediaControlSheetAnchorState.PartiallyExpanded)
-            when {
-                hasPartiallyExpandedState -> MediaControlSheetAnchorState.PartiallyExpanded
-                newAnchors.hasAnchorFor(MediaControlSheetAnchorState.Expanded) ->
-                    MediaControlSheetAnchorState.Expanded
-                else -> MediaControlSheetAnchorState.PartiallyExpanded
+        MediaControlSheetAnchorState.PartiallyExpanded -> {
+            if (newAnchors.hasAnchorFor(MediaControlSheetAnchorState.PartiallyExpanded)) {
+                MediaControlSheetAnchorState.PartiallyExpanded
+            } else {
+                MediaControlSheetAnchorState.Expanded
+            }
+        }
+        MediaControlSheetAnchorState.Expanded -> {
+            if (newAnchors.hasAnchorFor(MediaControlSheetAnchorState.Expanded)) {
+                MediaControlSheetAnchorState.Expanded
+            } else {
+                MediaControlSheetAnchorState.PartiallyExpanded
             }
         }
     }
@@ -257,7 +260,9 @@ private fun Preview() {
         artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
     )
     var isPlaying by remember { mutableStateOf(false) }
-    val state = rememberMediaControlSheetState()
+    val state = rememberMediaControlSheetState(
+        initialValue = MediaControlSheetAnchorState.PartiallyExpanded,
+    )
     val coroutineScope = rememberCoroutineScope()
     MediaControlSheet(
         mediaItem = mediaItem,
