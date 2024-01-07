@@ -19,3 +19,4 @@ rootProject.name = "UiPlayground"
 include(":app")
 include(":components")
 include(":shaders")
+include(":testing")

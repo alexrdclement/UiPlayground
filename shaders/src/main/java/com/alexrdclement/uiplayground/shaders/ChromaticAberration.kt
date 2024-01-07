@@ -85,11 +85,17 @@ half4 main(float2 fragCoord) {
 }
 """
 
-
+/**
+ * @param xAmount: Return amount of aberration to apply on the X axis where 0f applies none and 1f
+ * offsets by the full width of the target.
+ * @param xAmount: Return amount of aberration to apply on the Y axis where 0f applies none and 1f
+ * offsets by the full height of the target.
+ * @param colorMode: The output color space.
+ */
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 fun Modifier.chromaticAberration(
-    xAmount: () -> Float,
-    yAmount: () -> Float,
+    xAmount: () -> Float = { 0f },
+    yAmount: () -> Float = { 0f },
     colorMode: () -> ChromaticAberrationColorMode = { ChromaticAberrationColorMode.RGB },
 ): Modifier = composed {
     val shader = remember(ShaderSource) { RuntimeShader(ShaderSource) }
