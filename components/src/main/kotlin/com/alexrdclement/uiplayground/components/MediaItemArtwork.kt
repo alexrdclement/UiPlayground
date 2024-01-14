@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import coil.compose.AsyncImage
 
 const val DisabledAlpha = 0.35f
@@ -34,8 +35,9 @@ fun MediaItemArtwork(
             modifier = modifier
                 .aspectRatio(1f, matchHeightConstraintsFirst = true)
                 .background(Color.Red)
+                .clearAndSetSemantics {}
         ) {
-            Text("Hi")
+            Text("Art")
         }
     }
 }

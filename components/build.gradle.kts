@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.paparazzi)
 }
 
 android {
@@ -24,6 +25,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
+        javaParameters = true // Enable detailed names in test-parameter-injector tests
     }
     buildFeatures {
         compose = true
@@ -45,9 +47,11 @@ dependencies {
     implementation(libs.material.icons.extended)
 
     testImplementation(libs.junit)
+    testImplementation(libs.test.parameter.injector)
+    testImplementation(projects.testing)
 
     androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.compose.ui.test.junit4)
 
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)

@@ -29,7 +29,7 @@ fun MediaControlSheetDemo() {
     )
     var isPlaying by remember { mutableStateOf(false) }
     val state = rememberMediaControlSheetState(
-        initialValue = MediaControlSheetAnchorState.Expanded,
+        initialValue = MediaControlSheetAnchorState.PartiallyExpanded,
     )
     val coroutineScope = rememberCoroutineScope()
 

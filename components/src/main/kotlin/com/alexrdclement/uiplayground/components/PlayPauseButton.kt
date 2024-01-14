@@ -35,7 +35,9 @@ fun PlayPauseButton(
     ) {
         Image(
             imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-            contentDescription = if (isPlaying) "Pause" else "Play",
+            contentDescription = if (isPlaying) {
+                PlayPauseButtonContentDescriptionPlaying
+            } else PlayPauseButtonContentDescriptionPaused,
             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
             modifier = Modifier
                 .fillMaxSize()

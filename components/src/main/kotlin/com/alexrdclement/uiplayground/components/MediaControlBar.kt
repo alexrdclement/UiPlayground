@@ -24,6 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -42,6 +45,7 @@ fun MediaControlBar(
     minHeight: Dp = 64.dp,
     progress: () -> Float = { 0f },
     onClick: () -> Unit = {},
+    stateDescription: String? = null,
 ) {
     BoxWithConstraints {
         val maxWidthPx = this.constraints.maxWidth
@@ -54,6 +58,12 @@ fun MediaControlBar(
                     .heightIn(minHeight)
                     .fillMaxWidth()
                     .clickable { onClick() }
+                    .semantics {
+                        contentDescription = MediaControlBarContentDescription
+                        stateDescription?.let {
+                            this@semantics.stateDescription = it
+                        }
+                    }
             ) {
                Box(
                     modifier = Modifier
