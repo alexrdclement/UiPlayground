@@ -12,7 +12,7 @@
 
 ### Media Control Sheet
 
-
+![Media Control Sheet demo](docs/assets/mediacontrolsheet-demo-dark.gif)
 
 ## Shaders
 
