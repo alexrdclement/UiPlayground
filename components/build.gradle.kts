@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.paparazzi)
+    alias(libs.plugins.roborazzi)
 }
 
 android {
@@ -33,6 +33,11 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -46,9 +51,17 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.material.icons.extended)
 
+//    testImplementation(libs.androidx.test.core)
+//    testImplementation(libs.androidx.test.ext.junit)
+    testImplementation(libs.compose.ui.test.junit4)
     testImplementation(libs.junit)
-    testImplementation(libs.test.parameter.injector)
+//    testImplementation(libs.test.parameter.injector)
     testImplementation(projects.testing)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.espresso.core)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    testImplementation(libs.roborazzi.rule)
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.compose.ui.test.junit4)
