@@ -4,15 +4,15 @@
 
 [Source](components/src/main/kotlin/com/alexrdclement/uiplayground/components/)
 
+### Media Control Sheet
+
+![Media Control Sheet demo](docs/assets/mediacontrolsheet-demo-dark.gif)
+
 ### Media Control Bar
 
 | 0% | 50% | 100% |
 | -- | --- | ---- |
 | ![Media Control Bar - 0%](<components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=0.0].png>) | ![Media Control Bar - 50%](<components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=0.5].png>) | ![Media Control Bar - 100%](<components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=1.0].png>) |
-
-### Media Control Sheet
-
-![Media Control Sheet demo](docs/assets/mediacontrolsheet-demo-dark.gif)
 
 ## Shaders
 
