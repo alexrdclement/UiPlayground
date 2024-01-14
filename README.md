@@ -6,11 +6,9 @@
 
 ### Media Control Bar
 
-![Media Control Bar - 0%](components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar%5Bprogress=0.0%5D.png)
-
-![Media Control Bar - 50%](components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar%5Bprogress=0.5%5D.png)
-
-![Media Control Bar - 100%](components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar%5Bprogress=1.0%5D.png)
+| 0% | 50% | 100% |
+| -- | --- | ---- |
+| ![Media Control Bar - 0%](components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar%5Bprogress=0.0%5D.png) | ![Media Control Bar - 50%](components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar%5Bprogress=0.5%5D.png) | ![Media Control Bar - 100%](components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar%5Bprogress=1.0%5D.png) |
 
 ### Media Control Sheet
 
@@ -22,11 +20,9 @@
 
 ### Chromatic Abberration
 
-![Chromatic Aberration 0, 0](<shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_ChromaticAberrationTest_whiteCircle[(0.0, 0.0)].png>)
-
-![Chromatic Aberration 0.1, 0](<shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_ChromaticAberrationTest_whiteCircle[(0.1, 0.0)].png>)
-
-![Chromatic Aberration 0.2, 0](<shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_ChromaticAberrationTest_whiteCircle[(0.2, 0.0)].png>)
+| 0.0, 0.0 | 0.1, 0.0 | 0.2, 0.0 |
+| -------- | -------- | -------- |
+| ![Chromatic Aberration 0, 0](<shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_ChromaticAberrationTest_whiteCircle[(0.0, 0.0)].png>) | ![Chromatic Aberration 0.1, 0](<shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_ChromaticAberrationTest_whiteCircle[(0.1, 0.0)].png>) | ![Chromatic Aberration 0.2, 0](<shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_ChromaticAberrationTest_whiteCircle[(0.2, 0.0)].png>) | 
 
 ![Chromatic Aberration 0, 0](<shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_ChromaticAberrationTest_blackCircle[(0.0, 0.0)].png>)
 
