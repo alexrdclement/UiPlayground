@@ -53,7 +53,7 @@ A simple noise effect with increasing levels of opacity.
 | 0% | 20% | 50% | 100% |
 | -- | --- | --- | ---- |
 | ![Noise - 0%](shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_NoiseTest_whiteCircle[0.0].png) | ![Noise - 20%](shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_NoiseTest_whiteCircle[0.2].png) | ![Noise - 50%](shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_NoiseTest_whiteCircle[0.5].png) | ![Noise - 100%](shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_NoiseTest_whiteCircle[1.0].png) |
-| ![Noise - 0%](shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_NoiseTest_blackCircle[0.0].png) | ![Noise - 20%](shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_NoiseTest_blackCircle[0.2].png) | ![Noise - 50%](shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_NoiseTest_blackCircle[0.5].png) | ![Noise - 100%](shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_NoiseTest_blackCircle[1.0].png)
+| ![Noise - 0%](shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_NoiseTest_blackCircle[0.0].png) | ![Noise - 20%](shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_NoiseTest_blackCircle[0.2].png) | ![Noise - 50%](shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_NoiseTest_blackCircle[0.5].png) | ![Noise - 100%](shaders/src/test/snapshots/images/com.alexrdclement.uiplayground.shaders_NoiseTest_blackCircle[1.0].png) |
 
 ## Screenshot Tests
 

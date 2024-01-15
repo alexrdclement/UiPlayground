@@ -43,6 +43,10 @@ half4 main(float2 fragCoord) {
 }
 """
 
+/**
+ * @param amount: Returns the amount of noise to apply between 0f and 1f where 0f is none and 1f is
+ * the maximum amount.
+ */
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 fun Modifier.noise(
     amount: () -> Float,

@@ -37,6 +37,10 @@ half4 main(float2 fragCoord) {
 }
 """
 
+/**
+ * @param subdivisions: Returns the number of additional adjacent pixels to include in each pixel
+ * block.
+ */
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 fun Modifier.pixelate(
     subdivisions: () -> Int,

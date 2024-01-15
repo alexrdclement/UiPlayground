@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import coil.compose.AsyncImage
 
-const val DisabledAlpha = 0.35f
+private const val DisabledAlpha = 0.35f
 
 @Composable
 fun MediaItemArtwork(
