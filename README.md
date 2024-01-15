@@ -8,13 +8,11 @@ UiPlayground is a space for me to experiment with UI APIs, patterns, and tools w
 
 ## Components
 
-Below are UI components written with Jetpack Compose.
-
 [Source](components/src/main/kotlin/com/alexrdclement/uiplayground/components/)
 
 ### Media Control Sheet
 
-Media Control Sheet is an interactive component that shows simple media information and controls when collapsed and large-scale media artwork when expanded. It's inspired by similar components in the YouTube and YouTube Music apps.
+Media Control Sheet is an interactive component that shows simple media information when collapsed and large-scale media artwork when expanded. It's inspired by similar components in the YouTube and YouTube Music apps.
 
 ![Media Control Sheet demo](docs/assets/mediacontrolsheet-demo-dark.gif)
 
@@ -26,7 +24,7 @@ Media Control Sheet is an interactive component that shows simple media informat
 
 ## Shaders
 
-[Runtime Shaders](https://developer.android.com/reference/android/graphics/RuntimeShader) were introduced in Android 13 and enable detailed control over how pixels are rendered on the screen. Below are shaders I've written, ported, or adapted as [Modifiers](https://developer.android.com/jetpack/compose/modifiers) that can be applied to any Composable that exposes a Modifier.
+[Runtime Shaders](https://developer.android.com/reference/android/graphics/RuntimeShader) (introduced in Android 13) enable detailed control over how individual pixels are rendered on the screen. Below are shaders I've written, ported, or adapted as [Modifiers](https://developer.android.com/jetpack/compose/modifiers) that can be applied to any Composable that exposes a Modifier.
 
 [Source](shaders/src/main/kotlin/com/alexrdclement/uiplayground/shaders/)
 
@@ -50,7 +48,7 @@ The Pixelate shader assigns the color of all pixels in a region to that of a sam
 
 ### Noise
 
-A very simple noise effect with increasing levels of opacity.
+A simple noise effect with increasing levels of opacity.
 
 | 0% | 20% | 50% | 100% |
 | -- | --- | --- | ---- |
@@ -61,6 +59,6 @@ A very simple noise effect with increasing levels of opacity.
 
 With the exception of the GIFs, the images above were captured as gold files for automated screenshot tests of the library. Screenshots are generated for each Pull Request and compared against these gold files to ensure UI changes are made intentionally and with review. These screenshot tests are powered by [Paparazzi](https://github.com/cashapp/paparazzi) and [TestParameterInjector](https://github.com/google/TestParameterInjector).
 
-[Component Tests](components\src\test)
+[Component Tests](components/src/test)
 
-[Shader Tests](shaders\src\test)
+[Shader Tests](shaders/src/test)
