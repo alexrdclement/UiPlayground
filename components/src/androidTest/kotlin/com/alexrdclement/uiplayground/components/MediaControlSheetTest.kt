@@ -16,9 +16,9 @@ import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasStateDescription
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.printToLog
+import com.alexrdclement.uiplayground.components.model.Artist
+import com.alexrdclement.uiplayground.components.model.MediaItem
 import kotlinx.coroutines.launch
 import org.junit.Rule
 import org.junit.Test
@@ -37,7 +37,7 @@ class MediaControlSheetTest {
 
     @Composable
     private fun ComposableUnderTest(
-        initialValue: MediaControlSheetAnchorState,
+        initialValue: MediaControlSheetAnchor,
     ) {
         var isPlaying by remember { mutableStateOf(false) }
         val state = rememberMediaControlSheetState(
@@ -73,7 +73,7 @@ class MediaControlSheetTest {
     fun partiallyExpandedToExpanded_updatesStateDescription() {
         rule.setContent {
             ComposableUnderTest(
-                initialValue = MediaControlSheetAnchorState.PartiallyExpanded,
+                initialValue = MediaControlSheetAnchor.PartiallyExpanded,
             )
         }
 
@@ -91,7 +91,7 @@ class MediaControlSheetTest {
     fun expandedToPartiallyExpanded_updatesStateDescription() {
         rule.setContent {
             ComposableUnderTest(
-                initialValue = MediaControlSheetAnchorState.Expanded,
+                initialValue = MediaControlSheetAnchor.Expanded,
             )
         }
 

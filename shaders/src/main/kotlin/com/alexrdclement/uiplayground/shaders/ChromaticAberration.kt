@@ -86,10 +86,10 @@ half4 main(float2 fragCoord) {
 """
 
 /**
- * @param xAmount: Return amount of aberration to apply on the X axis where 0f applies none and 1f
- * offsets by the full width of the target.
- * @param xAmount: Return amount of aberration to apply on the Y axis where 0f applies none and 1f
- * offsets by the full height of the target.
+ * @param xAmount: Returns the amount of aberration to apply on the X axis where 0f applies none
+ * and 1f offsets by the full width of the target.
+ * @param xAmount: Returns the amount of aberration to apply on the Y axis where 0f applies none
+ * and 1f offsets by the full height of the target.
  * @param colorMode: The output color space.
  */
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
