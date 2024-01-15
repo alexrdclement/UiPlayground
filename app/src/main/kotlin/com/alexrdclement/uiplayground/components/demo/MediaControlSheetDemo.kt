@@ -13,7 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import com.alexrdclement.uiplayground.components.model.Artist
-import com.alexrdclement.uiplayground.components.MediaControlSheetAnchorState
+import com.alexrdclement.uiplayground.components.MediaControlSheetAnchor
 import com.alexrdclement.uiplayground.components.MediaControlSheet
 import com.alexrdclement.uiplayground.components.model.MediaItem
 import com.alexrdclement.uiplayground.components.rememberMediaControlSheetState
@@ -29,7 +29,7 @@ fun MediaControlSheetDemo() {
     )
     var isPlaying by remember { mutableStateOf(false) }
     val state = rememberMediaControlSheetState(
-        initialValue = MediaControlSheetAnchorState.PartiallyExpanded,
+        initialValue = MediaControlSheetAnchor.PartiallyExpanded,
     )
     val coroutineScope = rememberCoroutineScope()
 

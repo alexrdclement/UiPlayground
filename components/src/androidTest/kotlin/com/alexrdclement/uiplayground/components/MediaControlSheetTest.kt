@@ -37,7 +37,7 @@ class MediaControlSheetTest {
 
     @Composable
     private fun ComposableUnderTest(
-        initialValue: MediaControlSheetAnchorState,
+        initialValue: MediaControlSheetAnchor,
     ) {
         var isPlaying by remember { mutableStateOf(false) }
         val state = rememberMediaControlSheetState(
@@ -73,7 +73,7 @@ class MediaControlSheetTest {
     fun partiallyExpandedToExpanded_updatesStateDescription() {
         rule.setContent {
             ComposableUnderTest(
-                initialValue = MediaControlSheetAnchorState.PartiallyExpanded,
+                initialValue = MediaControlSheetAnchor.PartiallyExpanded,
             )
         }
 
@@ -91,7 +91,7 @@ class MediaControlSheetTest {
     fun expandedToPartiallyExpanded_updatesStateDescription() {
         rule.setContent {
             ComposableUnderTest(
-                initialValue = MediaControlSheetAnchorState.Expanded,
+                initialValue = MediaControlSheetAnchor.Expanded,
             )
         }
 

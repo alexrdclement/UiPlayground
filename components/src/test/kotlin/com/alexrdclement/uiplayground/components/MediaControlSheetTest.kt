@@ -15,14 +15,14 @@ import org.junit.runner.RunWith
 
 @RunWith(TestParameterInjector::class)
 class MediaControlSheetTest(
-    @TestParameter(valuesProvider = AnchorStateProvider::class)
-    private val anchorState: MediaControlSheetAnchorState,
+    @TestParameter(valuesProvider = AnchorProvider::class)
+    private val anchor: MediaControlSheetAnchor,
 ) {
 
-    object AnchorStateProvider : TestParameter.TestParameterValuesProvider {
+    object AnchorProvider : TestParameter.TestParameterValuesProvider {
         override fun provideValues() = listOf(
-            MediaControlSheetAnchorState.PartiallyExpanded,
-            MediaControlSheetAnchorState.Expanded
+            MediaControlSheetAnchor.PartiallyExpanded,
+            MediaControlSheetAnchor.Expanded
         )
     }
 
@@ -33,7 +33,7 @@ class MediaControlSheetTest(
     fun mediaControlSheet() {
         paparazzi.snapshot {
             val state = rememberMediaControlSheetState(
-                initialValue = anchorState,
+                initialValue = anchor,
             )
             MediaControlSheet(
                 mediaItem = testMediaItem,

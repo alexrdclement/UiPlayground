@@ -89,9 +89,9 @@ fun MediaControlSheet(
                 onClick = onControlBarClick,
                 progress = { state.partialToFullProgress },
                 stateDescription = when (state.currentValue) {
-                    MediaControlSheetAnchorState.PartiallyExpanded ->
+                    MediaControlSheetAnchor.PartiallyExpanded ->
                         MediaControlBarStateDescriptionPartiallyExpanded
-                    MediaControlSheetAnchorState.Expanded -> MediaControlBarStateDescriptionExpanded
+                    MediaControlSheetAnchor.Expanded -> MediaControlBarStateDescriptionExpanded
                 }
             )
 
@@ -100,14 +100,14 @@ fun MediaControlSheet(
     }
 }
 
-enum class MediaControlSheetAnchorState {
+enum class MediaControlSheetAnchor {
     PartiallyExpanded,
     Expanded,
 }
 
 @Stable
 class MediaControlSheetState(
-    val initialValue: MediaControlSheetAnchorState,
+    val initialValue: MediaControlSheetAnchor,
     val density: Density,
 ) {
     internal var anchoredDraggableState = AnchoredDraggableState(
@@ -115,8 +115,8 @@ class MediaControlSheetState(
         animationSpec = spring(),
         confirmValueChange = {
             when (it) {
-                MediaControlSheetAnchorState.PartiallyExpanded,
-                MediaControlSheetAnchorState.Expanded -> true
+                MediaControlSheetAnchor.PartiallyExpanded,
+                MediaControlSheetAnchor.Expanded -> true
             }
         },
         positionalThreshold = { with(density) { 56.dp.toPx() } },
@@ -124,21 +124,21 @@ class MediaControlSheetState(
     )
 
     suspend fun expand() {
-        anchoredDraggableState.animateTo(MediaControlSheetAnchorState.Expanded)
+        anchoredDraggableState.animateTo(MediaControlSheetAnchor.Expanded)
     }
 
     suspend fun partialExpand() {
-        anchoredDraggableState.animateTo(MediaControlSheetAnchorState.PartiallyExpanded)
+        anchoredDraggableState.animateTo(MediaControlSheetAnchor.PartiallyExpanded)
     }
 
     internal suspend fun animateTo(
-        targetValue: MediaControlSheetAnchorState,
+        targetValue: MediaControlSheetAnchor,
         velocity: Float = anchoredDraggableState.lastVelocity
     ) {
         anchoredDraggableState.animateTo(targetValue, velocity)
     }
 
-    internal suspend fun snapTo(targetValue: MediaControlSheetAnchorState) {
+    internal suspend fun snapTo(targetValue: MediaControlSheetAnchor) {
         anchoredDraggableState.snapTo(targetValue)
     }
 
@@ -151,36 +151,36 @@ class MediaControlSheetState(
     val progress: Float get() = anchoredDraggableState.progress
 
     val partialToFullProgress: Float get() = when (currentValue) {
-        MediaControlSheetAnchorState.PartiallyExpanded -> when (targetValue) {
-            MediaControlSheetAnchorState.PartiallyExpanded -> {
+        MediaControlSheetAnchor.PartiallyExpanded -> when (targetValue) {
+            MediaControlSheetAnchor.PartiallyExpanded -> {
                 if (progress >= 1f) 0f else progress
             }
 
-            MediaControlSheetAnchorState.Expanded -> {
+            MediaControlSheetAnchor.Expanded -> {
                 if (progress >= 1f) 1f else progress
             }
         }
 
-        MediaControlSheetAnchorState.Expanded -> when (targetValue) {
-            MediaControlSheetAnchorState.PartiallyExpanded -> {
+        MediaControlSheetAnchor.Expanded -> when (targetValue) {
+            MediaControlSheetAnchor.PartiallyExpanded -> {
                 if (progress >= 1f) 0f else 1f - progress
             }
 
-            MediaControlSheetAnchorState.Expanded -> {
+            MediaControlSheetAnchor.Expanded -> {
                 if (progress >= 1f) 1f else 1f - progress
             }
         }
     }
 
-    val currentValue: MediaControlSheetAnchorState get() = anchoredDraggableState.currentValue
-    val targetValue: MediaControlSheetAnchorState get() = anchoredDraggableState.targetValue
+    val currentValue: MediaControlSheetAnchor get() = anchoredDraggableState.currentValue
+    val targetValue: MediaControlSheetAnchor get() = anchoredDraggableState.targetValue
 
-    val isExpanded: Boolean get() = targetValue == MediaControlSheetAnchorState.Expanded
+    val isExpanded: Boolean get() = targetValue == MediaControlSheetAnchor.Expanded
 
     companion object {
         fun Saver(
             density: Density,
-        ): Saver<MediaControlSheetState, MediaControlSheetAnchorState> = Saver(
+        ): Saver<MediaControlSheetState, MediaControlSheetAnchor> = Saver(
             save = { it.currentValue },
             restore = {
                 MediaControlSheetState(
@@ -194,7 +194,7 @@ class MediaControlSheetState(
 
 @Composable
 fun rememberMediaControlSheetState(
-    initialValue: MediaControlSheetAnchorState = MediaControlSheetAnchorState.PartiallyExpanded,
+    initialValue: MediaControlSheetAnchor = MediaControlSheetAnchor.PartiallyExpanded,
 ): MediaControlSheetState {
     val density = LocalDensity.current
     return rememberSaveable(
@@ -221,26 +221,26 @@ private fun Modifier.modalBottomSheetAnchors(
 
     val newAnchors = DraggableAnchors {
         if (size.height > (minHeight)) {
-            MediaControlSheetAnchorState.PartiallyExpanded at fullHeight - minHeight
+            MediaControlSheetAnchor.PartiallyExpanded at fullHeight - minHeight
         }
         if (size.height != 0) {
-            MediaControlSheetAnchorState.Expanded at max(0f, fullHeight - size.height)
+            MediaControlSheetAnchor.Expanded at max(0f, fullHeight - size.height)
         }
     }
 
     val newTarget = when (state.targetValue) {
-        MediaControlSheetAnchorState.PartiallyExpanded -> {
-            if (newAnchors.hasAnchorFor(MediaControlSheetAnchorState.PartiallyExpanded)) {
-                MediaControlSheetAnchorState.PartiallyExpanded
+        MediaControlSheetAnchor.PartiallyExpanded -> {
+            if (newAnchors.hasAnchorFor(MediaControlSheetAnchor.PartiallyExpanded)) {
+                MediaControlSheetAnchor.PartiallyExpanded
             } else {
-                MediaControlSheetAnchorState.Expanded
+                MediaControlSheetAnchor.Expanded
             }
         }
-        MediaControlSheetAnchorState.Expanded -> {
-            if (newAnchors.hasAnchorFor(MediaControlSheetAnchorState.Expanded)) {
-                MediaControlSheetAnchorState.Expanded
+        MediaControlSheetAnchor.Expanded -> {
+            if (newAnchors.hasAnchorFor(MediaControlSheetAnchor.Expanded)) {
+                MediaControlSheetAnchor.Expanded
             } else {
-                MediaControlSheetAnchorState.PartiallyExpanded
+                MediaControlSheetAnchor.PartiallyExpanded
             }
         }
     }
@@ -259,7 +259,7 @@ private fun Preview() {
     )
     var isPlaying by remember { mutableStateOf(false) }
     val state = rememberMediaControlSheetState(
-        initialValue = MediaControlSheetAnchorState.PartiallyExpanded,
+        initialValue = MediaControlSheetAnchor.PartiallyExpanded,
     )
     val coroutineScope = rememberCoroutineScope()
     MediaControlSheet(
