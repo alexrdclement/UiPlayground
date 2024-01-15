@@ -37,22 +37,10 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.components.model.Artist
+import com.alexrdclement.uiplayground.components.model.MediaItem
 import kotlinx.coroutines.launch
 import kotlin.math.max
-
-data class Artist(val name: String)
-
-data class MediaItem(
-    val artworkThumbnailUrl: String?,
-    val artworkLargeUrl: String?,
-    val title: String,
-    val artists: List<Artist>,
-)
-
-enum class MediaControlSheetAnchorState {
-    PartiallyExpanded,
-    Expanded,
-}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -110,6 +98,11 @@ fun MediaControlSheet(
             content()
         }
     }
+}
+
+enum class MediaControlSheetAnchorState {
+    PartiallyExpanded,
+    Expanded,
 }
 
 @Stable

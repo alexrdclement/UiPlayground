@@ -33,6 +33,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.components.model.Artist
+import com.alexrdclement.uiplayground.components.model.MediaItem
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
