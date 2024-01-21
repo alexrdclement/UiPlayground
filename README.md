@@ -18,9 +18,9 @@ Media Control Sheet is an interactive component that shows simple media informat
 
 ### Media Control Bar
 
-| 0% | 50% | 100% |
-| -- | --- | ---- |
-| ![Media Control Bar - 0%](<components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=0.0].png>) | ![Media Control Bar - 50%](<components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=0.5].png>) | ![Media Control Bar - 100%](<components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=1.0].png>) |
+| 0%                                                                                                                                       | 50% | 100% |
+|------------------------------------------------------------------------------------------------------------------------------------------| --- | ---- |
+| ![Media Control Bar - 0%](<docs/assets/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=0.0].png>) | ![Media Control Bar - 50%](<components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=0.5].png>) | ![Media Control Bar - 100%](<components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=1.0].png>) |
 
 ## Shaders
 
