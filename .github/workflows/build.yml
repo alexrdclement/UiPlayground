@@ -16,8 +16,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test_and_apk:
-    name: "Local tests and APKs"
+  build_and_test:
+    name: "Build and test"
     runs-on: ubuntu-latest
 
     permissions:
@@ -96,7 +96,7 @@ jobs:
 #    if: github.ref == 'refs/heads/main'
 
     runs-on: macos-13
-    needs: [ build ]
+    needs: [ build_and_test ]
     timeout-minutes: 30
 
     steps:
