@@ -1,6 +1,6 @@
-UiPlayground is a space for me to experiment with UI APIs, patterns, and tools within the [Jetpack Compose](https://developer.android.com/jetpack/compose) ecosystem. It contains both a library of UI components/shaders/etc. and an app to demonstrate the library.
+UiPlayground is a space for me to experiment with UI APIs, patterns, and tools within the [Jetpack Compose](https://developer.android.com/jetpack/compose) ecosystem. It contains both a library of UI components/shaders/etc. and a catalog app to demonstrate the library.
 
-## Demo App
+## Catalog App
 
 ![Media Control Sheet demo](docs/assets/app-demo-dark.gif)
 
