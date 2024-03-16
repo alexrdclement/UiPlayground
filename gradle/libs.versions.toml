@@ -15,7 +15,7 @@ lifecycle-runtime-ktx = "2.7.0"
 material3 = "1.2.0"
 paparazzi = "1.3.2"
 test-parameter-injector = "1.14"
-maven-publish = "0.28.0-rc1"
+maven-publish = "0.28.0"
 
 [libraries]
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
