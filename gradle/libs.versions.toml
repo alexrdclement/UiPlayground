@@ -4,7 +4,6 @@ agp = "8.3.0-beta02"
 androidx-navigation-compose = "2.7.7"
 androidx-test-ext-junit = "1.1.5"
 coil = "2.4.0"
-compose = "1.6.1"
 compose-bom = "2024.02.00"
 compose-compiler = "1.5.9"
 core-ktx = "1.12.0"
@@ -25,7 +24,7 @@ coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
