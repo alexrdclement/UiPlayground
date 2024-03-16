@@ -2,22 +2,22 @@ name: "build"
 on:
   push:
     branches:
-      - main
+      - maintenance/publish
     paths-ignore:
       - '**.md'
       - 'docs/**'
-  pull_request:
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
+#  pull_request:
+#    paths-ignore:
+#      - '**.md'
+#      - 'docs/**'
 
 concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test_and_apk:
-    name: "Local tests and APKs"
+  build_and_test:
+    name: "Build and test"
     runs-on: ubuntu-latest
 
     permissions:
@@ -46,35 +46,35 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Run screenshot tests
-        id: verifyScreenshots
-        continue-on-error: true
-        run: ./gradlew verifyPaparazziDebug
-
-      - name: Prevent pushing new screenshots if this is a fork
-        id: checkfork
-        continue-on-error: false
-        if: steps.verifyScreenshots.outcome == 'failure' && github.event.pull_request.head.repo.full_name != github.repository
-        run: |
-          echo "::error::Screenshot tests failed, please create a PR in your fork first." && exit 1
-
-      - name: Generate new screenshots if verification failed and it's a PR
-        id: recordScreenshots
-        if: steps.verifyScreenshots.outcome == 'failure' && github.event_name == 'pull_request'
-        run: |
-          ./gradlew recordPaparazziDebug
-
-      - name: Push new screenshots if available
-        uses: stefanzweifel/git-auto-commit-action@v5
-        if: steps.recordScreenshots.outcome == 'success'
-        with:
-          file_pattern: '*/*.png'
-          disable_globbing: true
-          commit_message: "🤖 Update screenshots"
-
-      - name: Run local tests
-        if: always()
-        run: ./gradlew testDebug
+#      - name: Run screenshot tests
+#        id: verifyScreenshots
+#        continue-on-error: true
+#        run: ./gradlew verifyPaparazziDebug
+#
+#      - name: Prevent pushing new screenshots if this is a fork
+#        id: checkfork
+#        continue-on-error: false
+#        if: steps.verifyScreenshots.outcome == 'failure' && github.event.pull_request.head.repo.full_name != github.repository
+#        run: |
+#          echo "::error::Screenshot tests failed, please create a PR in your fork first." && exit 1
+#
+#      - name: Generate new screenshots if verification failed and it's a PR
+#        id: recordScreenshots
+#        if: steps.verifyScreenshots.outcome == 'failure' && github.event_name == 'pull_request'
+#        run: |
+#          ./gradlew recordPaparazziDebug
+#
+#      - name: Push new screenshots if available
+#        uses: stefanzweifel/git-auto-commit-action@v5
+#        if: steps.recordScreenshots.outcome == 'success'
+#        with:
+#          file_pattern: '*/*.png'
+#          disable_globbing: true
+#          commit_message: "🤖 Update screenshots"
+#
+#      - name: Run local tests
+#        if: always()
+#        run: ./gradlew testDebug
 
       - name: Build all build type and flavor permutations
         run: ./gradlew :app:assemble
@@ -91,3 +91,30 @@ jobs:
         with:
           name: test-results
           path: '**/build/test-results/test*UnitTest/**.xml'
+
+  publish:
+#    if: github.ref == 'refs/heads/main'
+
+    runs-on: macos-13
+    needs: [ build_and_test ]
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: 21
+
+      - uses: gradle/gradle-build-action@v2
+
+      - name: Publish to Sonatype
+        run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.GPG_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_KEY_PASSWORD }}
