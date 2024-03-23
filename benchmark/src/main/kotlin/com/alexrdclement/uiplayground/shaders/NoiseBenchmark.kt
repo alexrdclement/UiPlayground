@@ -16,11 +16,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/**
- * Before running this benchmark:
- * 1) switch your app's active build variant in the Studio (affects Studio runs only)
- * 2) add `<profileable android:shell="true" />` to your app's manifest, within the `<application>` tag
- */
 @RunWith(AndroidJUnit4::class)
 class NoiseBenchmark {
     @get:Rule
