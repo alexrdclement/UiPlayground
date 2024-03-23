@@ -1,5 +1,6 @@
 package com.alexrdclement.uiplayground.catalog
 
+import androidx.activity.compose.ReportDrawn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,7 @@ fun <T : CatalogItem> CatalogScreen(
     items: List<T>,
     onItemClick: (T) -> Unit,
 ) {
+    ReportDrawn()
     Column(
         verticalArrangement = Arrangement.spacedBy(
             space = 8.dp,
