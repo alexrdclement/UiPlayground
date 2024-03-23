@@ -11,6 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.uiautomator.By
 import com.alexrdclement.uiplayground.MainCatalogPage
 import com.alexrdclement.uiplayground.packageName
+import com.alexrdclement.uiplayground.waitAndFindObject
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -43,9 +44,9 @@ class ChromaticAberrationBenchmark {
             ShadersPage(device).selectModifier("Chromatic Aberration")
         }
     ) {
-        val xAmount = device.findObject(By.desc("X Amount"))
+        val xAmount = device.waitAndFindObject(By.desc("X Amount"))
         xAmount.drag(Point(xAmount.visibleCenter.x + 100, xAmount.visibleCenter.y))
-        val yAmount = device.findObject(By.desc("Y Amount"))
+        val yAmount = device.waitAndFindObject(By.desc("Y Amount"))
         yAmount.drag(Point(yAmount.visibleCenter.x + 100, yAmount.visibleCenter.y))
     }
 }

@@ -7,10 +7,10 @@ class MainCatalogPage(
     private val device: UiDevice,
 ) {
     fun navigateToComponents() {
-        device.findObject(By.text("Components")).click()
+        device.waitAndFindObject(By.text("Components")).click()
     }
 
     fun navigateToShaders() {
-        device.findObject(By.text("Shaders")).click()
+        device.waitAndFindObject(By.text("Shaders")).click()
     }
 }

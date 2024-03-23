@@ -12,6 +12,7 @@ import androidx.test.uiautomator.Until
 import com.alexrdclement.uiplayground.MainCatalogPage
 import com.alexrdclement.uiplayground.components.ComponentsPage
 import com.alexrdclement.uiplayground.packageName
+import com.alexrdclement.uiplayground.waitAndFindObject
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -52,6 +53,6 @@ class MediaControlSheetBenchmark {
             )
         }
     ) {
-        device.findObject(By.descContains("Media control bar")).click()
+        device.waitAndFindObject(By.descContains("Media control bar")).click()
     }
 }
