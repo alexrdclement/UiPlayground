@@ -37,10 +37,13 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.tracing.trace
 import com.alexrdclement.uiplayground.components.model.Artist
 import com.alexrdclement.uiplayground.components.model.MediaItem
 import kotlinx.coroutines.launch
 import kotlin.math.max
+
+private const val TraceName = "MediaControlSheet"
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -54,48 +57,50 @@ fun MediaControlSheet(
     minHeight: Dp = 64.dp,
     content: @Composable () -> Unit = {},
 ) {
-    BoxWithConstraints(
-        modifier = modifier
-    ) {
-        val minHeightPx = with(LocalDensity.current) {
-            minHeight.toPx()
-        }
-        val expandedHeightPx = constraints.maxHeight
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .navigationBarsPadding()
-                .offset {
-                    IntOffset(
-                        0,
-                        state.offset.toInt()
-                    )
-                }
-                .anchoredDraggable(
-                    state = state.anchoredDraggableState,
-                    orientation = Orientation.Vertical,
-                )
-                .modalBottomSheetAnchors(
-                    state = state,
-                    minHeight = minHeightPx,
-                    fullHeight = expandedHeightPx.toFloat(),
-                )
+    trace(TraceName) {
+        BoxWithConstraints(
+            modifier = modifier
         ) {
-            MediaControlBar(
-                mediaItem = mediaItem,
-                isPlaying = isPlaying,
-                onPlayPauseClick = onPlayPauseClick,
-                onClick = onControlBarClick,
-                progress = { state.partialToFullProgress },
-                stateDescription = when (state.currentValue) {
-                    MediaControlSheetAnchor.PartiallyExpanded ->
-                        MediaControlBarStateDescriptionPartiallyExpanded
-                    MediaControlSheetAnchor.Expanded -> MediaControlBarStateDescriptionExpanded
-                }
-            )
+            val minHeightPx = with(LocalDensity.current) {
+                minHeight.toPx()
+            }
+            val expandedHeightPx = constraints.maxHeight
 
-            content()
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .offset {
+                        IntOffset(
+                            0,
+                            state.offset.toInt()
+                        )
+                    }
+                    .anchoredDraggable(
+                        state = state.anchoredDraggableState,
+                        orientation = Orientation.Vertical,
+                    )
+                    .modalBottomSheetAnchors(
+                        state = state,
+                        minHeight = minHeightPx,
+                        fullHeight = expandedHeightPx.toFloat(),
+                    )
+            ) {
+                MediaControlBar(
+                    mediaItem = mediaItem,
+                    isPlaying = isPlaying,
+                    onPlayPauseClick = onPlayPauseClick,
+                    onClick = onControlBarClick,
+                    progress = { state.partialToFullProgress },
+                    stateDescription = when (state.currentValue) {
+                        MediaControlSheetAnchor.PartiallyExpanded ->
+                            MediaControlBarStateDescriptionPartiallyExpanded
+                        MediaControlSheetAnchor.Expanded -> MediaControlBarStateDescriptionExpanded
+                    }
+                )
+
+                content()
+            }
         }
     }
 }
