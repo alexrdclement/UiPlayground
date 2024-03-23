@@ -9,4 +9,8 @@ class MainCatalogPage(
     fun navigateToComponents() {
         device.findObject(By.text("Components")).click()
     }
+
+    fun navigateToShaders() {
+        device.findObject(By.text("Shaders")).click()
+    }
 }

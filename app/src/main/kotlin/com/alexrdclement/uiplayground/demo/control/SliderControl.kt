@@ -9,6 +9,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
@@ -24,7 +26,10 @@ fun SliderControl(
         Slider(
             value = control.value,
             onValueChange = control.onValueChange,
-            valueRange = control.valueRange
+            valueRange = control.valueRange,
+            modifier = Modifier.semantics {
+                contentDescription = control.name
+            }
         )
     }
 }
