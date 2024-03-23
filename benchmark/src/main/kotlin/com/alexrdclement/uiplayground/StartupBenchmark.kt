@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.benchmark
+package com.alexrdclement.uiplayground
 
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.StartupTimingMetric
@@ -20,7 +20,7 @@ class StartupBenchmark {
 
     @Test
     fun startup() = benchmarkRule.measureRepeated(
-        packageName = "com.alexrdclement.uiplayground",
+        packageName = packageName,
         metrics = listOf(StartupTimingMetric()),
         iterations = 5,
         startupMode = StartupMode.COLD,
