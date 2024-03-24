@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
+import androidx.tracing.trace
 import com.alexrdclement.uiplayground.shaders.preview.DemoCircle
 import com.alexrdclement.uiplayground.shaders.preview.ShaderPreview
 
@@ -45,20 +46,22 @@ half4 main(float2 fragCoord) {
 fun Modifier.pixelate(
     subdivisions: () -> Int,
 ): Modifier = composed {
-    val shader = remember(ShaderSource) { RuntimeShader(ShaderSource) }
+    trace("pixelate") {
+        val shader = remember(ShaderSource) { RuntimeShader(ShaderSource) }
 
-    this.onSizeChanged {
-        shader.setFloatUniform(
-            "size",
-            it.width.toFloat(),
-            it.height.toFloat()
-        )
-    }.graphicsLayer {
-        clip = true
-        shader.setFloatUniform("subdivisions", subdivisions().toFloat())
-        renderEffect = RenderEffect
-            .createRuntimeShaderEffect(shader, "composable")
-            .asComposeRenderEffect()
+        this.onSizeChanged {
+            shader.setFloatUniform(
+                "size",
+                it.width.toFloat(),
+                it.height.toFloat()
+            )
+        }.graphicsLayer {
+            clip = true
+            shader.setFloatUniform("subdivisions", subdivisions().toFloat())
+            renderEffect = RenderEffect
+                .createRuntimeShaderEffect(shader, "composable")
+                .asComposeRenderEffect()
+        }
     }
 }
 

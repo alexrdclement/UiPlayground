@@ -28,6 +28,12 @@ android {
                 "proguard-rules.pro"
             )
         }
+        create("benchmark") {
+            initWith(buildTypes.getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+            isDebuggable = false
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -56,6 +62,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.foundation)
+    implementation(libs.compose.runtime.tracing)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.graphics)
     implementation(libs.compose.ui.tooling.preview)

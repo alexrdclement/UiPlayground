@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.tracing)
     implementation(libs.core.ktx)
     implementation(libs.coil)
     implementation(libs.coil.compose)
