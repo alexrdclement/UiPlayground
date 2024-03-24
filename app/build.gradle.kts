@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -80,6 +81,9 @@ dependencies {
 
     implementation(projects.components)
     implementation(projects.shaders)
+    implementation(libs.androidx.profileinstaller)
+
+    baselineProfile(projects.baselineprofile)
 
     testImplementation(libs.junit)
 
