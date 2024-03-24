@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.uiplayground.benchmark"
+    namespace = "com.alexrdclement.uiplayground"
     compileSdk = 34
 
     compileOptions {
@@ -42,6 +42,8 @@ dependencies {
     implementation(libs.androidx.benchmark.macro.junit4)
     implementation(libs.androidx.tracing.perfetto)
     implementation(libs.androidx.tracing.perfetto.binary)
+
+    implementation(projects.uiautomatorFixtures)
 }
 
 androidComponents {
