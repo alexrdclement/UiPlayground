@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.paparazzi)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -35,6 +36,12 @@ android {
     }
 }
 
+baselineProfile {
+    filter {
+        include("com.alexrdclement.uiplayground.components.**")
+    }
+}
+
 dependencies {
     implementation(libs.androidx.tracing)
     implementation(libs.core.ktx)
@@ -46,6 +53,8 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.material.icons.extended)
+
+    baselineProfile(projects.components.baselineProfile)
 
     testImplementation(libs.junit)
     testImplementation(libs.test.parameter.injector)

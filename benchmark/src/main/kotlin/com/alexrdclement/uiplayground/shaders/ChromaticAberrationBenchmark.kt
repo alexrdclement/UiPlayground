@@ -1,6 +1,5 @@
 package com.alexrdclement.uiplayground.shaders
 
-import android.graphics.Point
 import androidx.benchmark.macro.ExperimentalMetricApi
 import androidx.benchmark.macro.FrameTimingMetric
 import androidx.benchmark.macro.StartupMode
@@ -8,10 +7,8 @@ import androidx.benchmark.macro.TraceSectionMetric
 import androidx.benchmark.macro.TraceSectionMetric.Mode
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.uiautomator.By
 import com.alexrdclement.uiplayground.MainCatalogPage
-import com.alexrdclement.uiplayground.packageName
-import com.alexrdclement.uiplayground.waitAndFindObject
+import com.alexrdclement.uiplayground.appPackageName
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,10 +18,12 @@ class ChromaticAberrationBenchmark {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
+    lateinit var shadersPage: ShadersPage
+
     @OptIn(ExperimentalMetricApi::class)
     @Test
     fun xyAdjustment() = benchmarkRule.measureRepeated(
-        packageName = packageName,
+        packageName = appPackageName,
         metrics = listOf(
             FrameTimingMetric(),
             TraceSectionMetric("chromaticAberration", Mode.Sum),
@@ -36,12 +35,9 @@ class ChromaticAberrationBenchmark {
             startActivityAndWait()
 
             MainCatalogPage(device).navigateToShaders()
-            ShadersPage(device).selectModifier("Chromatic Aberration")
+            shadersPage = ShadersPage(device).apply { selectChromaticAberration() }
         }
     ) {
-        val xAmount = device.waitAndFindObject(By.desc("X Amount"))
-        xAmount.drag(Point(xAmount.visibleCenter.x + 100, xAmount.visibleCenter.y))
-        val yAmount = device.waitAndFindObject(By.desc("Y Amount"))
-        yAmount.drag(Point(yAmount.visibleCenter.x + 100, yAmount.visibleCenter.y))
+        shadersPage.adjustChromaticAberration()
     }
 }

@@ -83,7 +83,7 @@ dependencies {
     implementation(projects.shaders)
     implementation(libs.androidx.profileinstaller)
 
-    baselineProfile(projects.baselineprofile)
+    baselineProfile(projects.baselineProfile)
 
     testImplementation(libs.junit)
 

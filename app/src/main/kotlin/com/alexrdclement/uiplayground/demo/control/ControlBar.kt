@@ -14,11 +14,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.shaders.ChromaticAberrationColorMode
-import com.alexrdclement.uiplayground.shaders.DemoModifier
+import com.alexrdclement.uiplayground.demo.shaders.DemoModifier
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
@@ -96,8 +99,20 @@ fun SubjectModifierBar(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        DropdownControl(control = subjectControl, includeTitle = false)
-        DropdownControl(control = modifierControl, includeTitle = false)
+        DropdownControl(
+            control = subjectControl,
+            includeTitle = false,
+            modifier = Modifier.semantics {
+                contentDescription = "Select subject"
+            },
+        )
+        DropdownControl(
+            control = modifierControl,
+            includeTitle = false,
+            modifier = Modifier.semantics {
+                contentDescription = "Select modifier"
+            },
+        )
     }
 }
 

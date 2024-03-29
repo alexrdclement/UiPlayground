@@ -9,7 +9,7 @@ import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alexrdclement.uiplayground.MainCatalogPage
 import com.alexrdclement.uiplayground.components.ComponentsPage
-import com.alexrdclement.uiplayground.packageName
+import com.alexrdclement.uiplayground.appPackageName
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,7 +22,7 @@ class MediaControlSheetBenchmark {
     @OptIn(ExperimentalMetricApi::class)
     @Test
     fun mediaControlSheetOpen() = benchmarkRule.measureRepeated(
-        packageName = packageName,
+        packageName = appPackageName,
         metrics = listOf(
             FrameTimingMetric(),
             TraceSectionMetric("MediaControlSheet", Mode.Sum),

@@ -25,7 +25,7 @@ class StartupBenchmark {
 
     private fun benchmark(compilationMode: CompilationMode) {
         benchmarkRule.measureRepeated(
-            packageName = packageName,
+            packageName = appPackageName,
             metrics = listOf(StartupTimingMetric()),
             iterations = 10,
             compilationMode = compilationMode,
