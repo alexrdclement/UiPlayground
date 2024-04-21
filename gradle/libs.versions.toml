@@ -48,7 +48,7 @@ espresso-core = { group = "androidx.test.espresso", name = "espresso-core", vers
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "material3" }
 paparazzi = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "paparazzi" }
 test-parameter-injector = { group = "com.google.testparameterinjector", name = "test-parameter-injector", version.ref = "test-parameter-injector" }
 
