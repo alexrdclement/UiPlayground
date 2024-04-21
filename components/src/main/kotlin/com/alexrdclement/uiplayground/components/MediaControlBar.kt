@@ -33,9 +33,13 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.trace
 import com.alexrdclement.uiplayground.components.model.Artist
 import com.alexrdclement.uiplayground.components.model.MediaItem
 import kotlin.math.roundToInt
+
+private const val TraceName = "MediaControlBar"
+private const val ArtworkTraceName = "$TraceName:MediaItemArtwork"
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -49,86 +53,88 @@ fun MediaControlBar(
     onClick: () -> Unit = {},
     stateDescription: String? = null,
 ) {
-    BoxWithConstraints {
-        val maxWidthPx = this.constraints.maxWidth
+    trace(TraceName) {
+        BoxWithConstraints {
+            val maxWidthPx = this.constraints.maxWidth
 
-        Surface {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier
-                    .heightIn(minHeight)
-                    .fillMaxWidth()
-                    .clickable { onClick() }
-                    .semantics {
-                        contentDescription = MediaControlBarContentDescription
-                        stateDescription?.let {
-                            this@semantics.stateDescription = it
-                        }
-                    }
-            ) {
-               Box(
-                    modifier = Modifier
-                        .layout { measurable, constraints ->
-                            val computedProgress = progress()
-                            val minHeightPx = minHeight.toPx()
-                            val height = minHeightPx + ((maxWidthPx - minHeightPx) * computedProgress)
-
-                            val placeable = measurable.measure(
-                                constraints.copy(
-                                    minHeight = minHeightPx.roundToInt(),
-                                    minWidth = minHeightPx.roundToInt(),
-                                    maxHeight = height.roundToInt(),
-                                    maxWidth = height.roundToInt(),
-                                )
-                            )
-                            layout(height.roundToInt(), height.roundToInt()) {
-                                placeable.place(0, 0)
+            Surface {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = modifier
+                        .heightIn(minHeight)
+                        .fillMaxWidth()
+                        .clickable { onClick() }
+                        .semantics {
+                            contentDescription = MediaControlBarContentDescription
+                            stateDescription?.let {
+                                this@semantics.stateDescription = it
                             }
                         }
                 ) {
-                   MediaItemArtwork(
-                       imageUrl = mediaItem.artworkLargeUrl,
-                   )
-               }
+                    MediaItemArtwork(
+                        imageUrl = mediaItem.artworkLargeUrl,
+                        modifier = Modifier
+                            .layout { measurable, constraints ->
+                                trace("$ArtworkTraceName:measure") {
+                                    val computedProgress = progress()
+                                    val minHeightPx = minHeight.toPx()
+                                    val height =
+                                        minHeightPx + ((maxWidthPx - minHeightPx) * computedProgress)
 
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 8.dp)
-                        .graphicsLayer {
-                            alpha = 1f - progress()
-                        }
-                ) {
-                    Text(
-                        text = mediaItem.title,
-                        textAlign = TextAlign.Start,
-                        style = MaterialTheme.typography.titleMedium,
-                        maxLines = 1,
-                        modifier = Modifier
-                            .basicMarquee()
+                                    val placeable = measurable.measure(
+                                        constraints.copy(
+                                            minHeight = minHeightPx.roundToInt(),
+                                            minWidth = minHeightPx.roundToInt(),
+                                            maxHeight = height.roundToInt(),
+                                            maxWidth = height.roundToInt(),
+                                        )
+                                    )
+                                    layout(height.roundToInt(), height.roundToInt()) {
+                                        placeable.place(0, 0)
+                                    }
+                                }
+                            }
                     )
-                    Text(
-                        text = mediaItem.artists.joinToString { it.name },
-                        textAlign = TextAlign.Start,
-                        style = MaterialTheme.typography.bodyMedium,
-                        maxLines = 1,
+
+                    Column(
+                        verticalArrangement = Arrangement.Center,
                         modifier = Modifier
-                            .basicMarquee()
+                            .weight(1f)
+                            .padding(horizontal = 8.dp)
+                            .graphicsLayer {
+                                alpha = 1f - progress()
+                            }
+                    ) {
+                        Text(
+                            text = mediaItem.title,
+                            textAlign = TextAlign.Start,
+                            style = MaterialTheme.typography.titleMedium,
+                            maxLines = 1,
+                            modifier = Modifier
+                                .basicMarquee()
+                        )
+                        Text(
+                            text = mediaItem.artists.joinToString { it.name },
+                            textAlign = TextAlign.Start,
+                            style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 1,
+                            modifier = Modifier
+                                .basicMarquee()
+                        )
+                    }
+
+                    PlayPauseButton(
+                        onClick = onPlayPauseClick,
+                        isPlaying = isPlaying,
+                        modifier = Modifier
+                            .size(52.dp)
+                            .padding(8.dp)
+                            .graphicsLayer {
+                                alpha = 1f - progress()
+                            }
                     )
                 }
-
-                PlayPauseButton(
-                    onClick = onPlayPauseClick,
-                    isPlaying = isPlaying,
-                    modifier = Modifier
-                        .size(52.dp)
-                        .padding(8.dp)
-                        .graphicsLayer {
-                            alpha = 1f - progress()
-                        }
-                )
             }
         }
     }
