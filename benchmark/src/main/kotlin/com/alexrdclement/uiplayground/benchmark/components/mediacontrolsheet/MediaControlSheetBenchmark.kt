@@ -1,5 +1,7 @@
-package com.alexrdclement.uiplayground.components.mediacontrolsheet
+package com.alexrdclement.uiplayground.benchmark.components.mediacontrolsheet
 
+import androidx.benchmark.macro.BaselineProfileMode
+import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.ExperimentalMetricApi
 import androidx.benchmark.macro.FrameTimingMetric
 import androidx.benchmark.macro.StartupMode
@@ -10,6 +12,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alexrdclement.uiplayground.MainCatalogPage
 import com.alexrdclement.uiplayground.components.ComponentsPage
 import com.alexrdclement.uiplayground.appPackageName
+import com.alexrdclement.uiplayground.components.mediacontrolsheet.MediaControlSheetPage
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,9 +22,15 @@ class MediaControlSheetBenchmark {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
-    @OptIn(ExperimentalMetricApi::class)
     @Test
-    fun mediaControlSheetOpen() = benchmarkRule.measureRepeated(
+    fun compilationModeNone() = mediaControlSheetOpen(CompilationMode.None())
+
+    @Test
+    fun compilationModePartial() =
+        mediaControlSheetOpen(CompilationMode.Partial(BaselineProfileMode.Require))
+
+    @OptIn(ExperimentalMetricApi::class)
+    fun mediaControlSheetOpen(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
         packageName = appPackageName,
         metrics = listOf(
             FrameTimingMetric(),
@@ -31,6 +40,7 @@ class MediaControlSheetBenchmark {
         ),
         iterations = 5,
         startupMode = StartupMode.WARM,
+        compilationMode = compilationMode,
         setupBlock = {
             pressHome()
             startActivityAndWait()

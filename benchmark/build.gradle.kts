@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.uiplayground"
+    namespace = "com.alexrdclement.uiplayground.benchmark"
     compileSdk = 34
 
     compileOptions {
@@ -25,8 +25,7 @@ android {
 
     buildTypes {
         create("benchmark") {
-            isDebuggable = true
-            signingConfig = getByName("debug").signingConfig
+            signingConfig = signingConfigs.getByName("debug")
             matchingFallbacks += listOf("release")
         }
     }
