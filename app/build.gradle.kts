@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -36,12 +37,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-        create("benchmark") {
-            initWith(buildTypes.getByName("release"))
-            signingConfig = signingConfigs.getByName("debug")
-            matchingFallbacks += listOf("release")
-            isDebuggable = false
         }
     }
     compileOptions {
@@ -79,6 +74,9 @@ dependencies {
 
     implementation(projects.components)
     implementation(projects.shaders)
+    implementation(libs.androidx.profileinstaller)
+
+    baselineProfile(projects.baselineProfile)
 
     testImplementation(libs.junit)
 

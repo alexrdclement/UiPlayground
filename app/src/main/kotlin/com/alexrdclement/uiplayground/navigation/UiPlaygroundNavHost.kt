@@ -6,10 +6,10 @@ import androidx.navigation.compose.rememberNavController
 import com.alexrdclement.uiplayground.catalog.MainCatalogItem
 import com.alexrdclement.uiplayground.catalog.navigation.mainCatalogRoute
 import com.alexrdclement.uiplayground.catalog.navigation.mainCatalogScreen
-import com.alexrdclement.uiplayground.components.navigation.componentsGraph
-import com.alexrdclement.uiplayground.components.navigation.navigateToComponents
-import com.alexrdclement.uiplayground.shaders.navigation.navigateToShaders
-import com.alexrdclement.uiplayground.shaders.navigation.shadersScreen
+import com.alexrdclement.uiplayground.demo.components.navigation.componentsGraph
+import com.alexrdclement.uiplayground.demo.components.navigation.navigateToComponents
+import com.alexrdclement.uiplayground.demo.shaders.navigation.navigateToShaders
+import com.alexrdclement.uiplayground.demo.shaders.navigation.shadersScreen
 
 @Composable
 fun UiPlaygroundNavHost() {
