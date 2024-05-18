@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.paparazzi)
     alias(libs.plugins.baselineprofile)
+    alias(libs.plugins.mavenPublish)
 }
 
 android {
@@ -47,7 +48,6 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.coil)
     implementation(libs.coil.compose)
-    implementation(platform(libs.compose.bom))
     implementation(libs.compose.foundation)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)

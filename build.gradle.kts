@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.androidTest) apply false
     alias(libs.plugins.baselineprofile) apply false
+    alias(libs.plugins.mavenPublish) apply false
 }
 
 subprojects {
