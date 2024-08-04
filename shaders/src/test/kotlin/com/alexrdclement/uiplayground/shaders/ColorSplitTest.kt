@@ -11,7 +11,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(TestParameterInjector::class)
-class ChromaticAberrationTest(
+class ColorSplitTest(
     @TestParameter(valuesProvider = AmountProvider::class)
     private val amounts: Pair<Float, Float>,
 ) {
@@ -37,7 +37,7 @@ class ChromaticAberrationTest(
         paparazzi.snapshot {
             DemoCircle(
                 modifier = Modifier
-                    .chromaticAberration(
+                    .colorSplit(
                         xAmount = { xAmount },
                         yAmount = { yAmount },
                     )
@@ -52,7 +52,7 @@ class ChromaticAberrationTest(
                 color = Color.White,
                 background = Color.Black,
                 modifier = Modifier
-                    .chromaticAberration(
+                    .colorSplit(
                         xAmount = { xAmount },
                         yAmount = { yAmount },
                     )

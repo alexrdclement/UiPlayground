@@ -2,7 +2,7 @@ package com.alexrdclement.uiplayground.demo.shaders
 
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.unit.Dp
-import com.alexrdclement.uiplayground.shaders.ChromaticAberrationColorMode
+import com.alexrdclement.uiplayground.shaders.ColorSplitMode
 
 sealed class DemoModifier(open val name: String) {
     data object None : DemoModifier(name = "None")
@@ -12,11 +12,11 @@ sealed class DemoModifier(open val name: String) {
         val edgeTreatment: BlurredEdgeTreatment,
     ) : DemoModifier(name = "Blur")
 
-    data class ChromaticAberration(
+    data class ColorSplit(
         val xAmount: Float,
         val yAmount: Float,
-        val colorMode: ChromaticAberrationColorMode,
-    ) : DemoModifier(name = "Chromatic Aberration")
+        val colorMode: ColorSplitMode,
+    ) : DemoModifier(name = "Color Split")
 
     data class Noise(
         val amount: Float,

@@ -16,11 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.demo.subject.DemoSubject
-import com.alexrdclement.uiplayground.shaders.ChromaticAberrationColorMode
+import com.alexrdclement.uiplayground.shaders.ColorSplitMode
 import com.alexrdclement.uiplayground.demo.shaders.DemoModifier
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
@@ -136,10 +135,10 @@ private fun Preview() {
         var demoSubject by remember { mutableStateOf(DemoSubject.Circle) }
         val demoModifiers = remember {
             mutableStateListOf<DemoModifier>(
-                DemoModifier.ChromaticAberration(
+                DemoModifier.ColorSplit(
                     xAmount = 0f,
                     yAmount = 0f,
-                    colorMode = ChromaticAberrationColorMode.RGB,
+                    colorMode = ColorSplitMode.RGB,
                 )
             )
         }

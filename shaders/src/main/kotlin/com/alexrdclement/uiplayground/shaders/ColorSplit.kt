@@ -32,7 +32,7 @@ import com.alexrdclement.uiplayground.shaders.preview.ShaderPreview
 // - Romain Guy on Coding with the Italians: https://www.youtube.com/watch?v=s5RibxKdo-o
 // - Rikin Marfatia video: https://www.youtube.com/watch?v=hjJesq71UXc
 
-enum class ChromaticAberrationColorMode {
+enum class ColorSplitMode {
     RGB,
     CMYK,
     RGBInverted,
@@ -99,31 +99,31 @@ half4 main(float2 fragCoord) {
 """
 
 /**
- * @param xAmount: Returns the amount of aberration to apply on the X axis where 0f applies none
+ * @param xAmount: Returns the amount of shift to apply on the X axis where 0f applies none
  * and 1f offsets by the full width of the target.
- * @param xAmount: Returns the amount of aberration to apply on the Y axis where 0f applies none
+ * @param xAmount: Returns the amount of shift to apply on the Y axis where 0f applies none
  * and 1f offsets by the full height of the target.
  * @param colorMode: The output color space.
  */
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-fun Modifier.chromaticAberration(
+fun Modifier.colorSplit(
     xAmount: () -> Float = { 0f },
     yAmount: () -> Float = { 0f },
-    colorMode: () -> ChromaticAberrationColorMode = { ChromaticAberrationColorMode.RGB },
-): Modifier = this then ChromaticAberrationElement(xAmount, yAmount, colorMode)
+    colorMode: () -> ColorSplitMode = { ColorSplitMode.RGB },
+): Modifier = this then ColorSplitElement(xAmount, yAmount, colorMode)
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-private data class ChromaticAberrationElement(
+private data class ColorSplitElement(
     val xAmount: () -> Float,
     val yAmount: () -> Float,
-    val colorMode: () -> ChromaticAberrationColorMode,
-) : ModifierNodeElement<ChromaticAberrationNode>() {
-    override fun create() = ChromaticAberrationNode(
+    val colorMode: () -> ColorSplitMode,
+) : ModifierNodeElement<ColorSplitNode>() {
+    override fun create() = ColorSplitNode(
         xAmount = xAmount,
         yAmount = yAmount,
         colorMode = colorMode,
     )
-    override fun update(node: ChromaticAberrationNode) {
+    override fun update(node: ColorSplitNode) {
         node.xAmount = xAmount
         node.yAmount = yAmount
         node.colorMode = colorMode
@@ -131,10 +131,10 @@ private data class ChromaticAberrationElement(
 }
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-private class ChromaticAberrationNode(
+private class ColorSplitNode(
     var xAmount: () -> Float,
     var yAmount: () -> Float,
-    var colorMode: () -> ChromaticAberrationColorMode,
+    var colorMode: () -> ColorSplitMode,
 ) : Modifier.Node(),
     DrawModifierNode,
     LayoutAwareModifierNode,
@@ -147,7 +147,7 @@ private class ChromaticAberrationNode(
     }
 
     override fun ContentDrawScope.draw() {
-        trace("chromaticAberration") {
+        trace("colorSplit") {
             shader.setFloatUniform(UniformXAmountName, xAmount())
             shader.setFloatUniform(UniformYAmountName, yAmount())
             shader.setIntUniform(UniformColorModeName, colorMode().ordinal)
@@ -178,7 +178,7 @@ private fun Preview() {
         DemoCircle(
             modifier = Modifier
                 .weight(1f)
-                .chromaticAberration(
+                .colorSplit(
                     xAmount = { xAmount },
                     yAmount = { yAmount }
                 )

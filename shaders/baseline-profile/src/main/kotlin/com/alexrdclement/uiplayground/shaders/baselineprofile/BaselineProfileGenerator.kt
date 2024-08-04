@@ -31,8 +31,8 @@ class BaselineProfileGenerator {
             MainCatalogPage(device).navigateToShaders()
             val shadersPage = ShadersPage(device)
 
-            shadersPage.selectChromaticAberration()
-            shadersPage.adjustChromaticAberration()
+            shadersPage.selectColorSplit()
+            shadersPage.adjustColorSplit()
 
             shadersPage.selectNoise()
             shadersPage.adjustNoise()
