@@ -2,6 +2,7 @@ package com.alexrdclement.uiplayground.demo.shaders
 
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.unit.Dp
+import com.alexrdclement.uiplayground.shaders.NoiseColorMode
 import com.alexrdclement.uiplayground.shaders.ColorSplitMode
 
 sealed class DemoModifier(open val name: String) {
@@ -19,6 +20,7 @@ sealed class DemoModifier(open val name: String) {
     ) : DemoModifier(name = "Color Split")
 
     data class Noise(
+        val colorMode: NoiseColorMode,
         val amount: Float,
     ) : DemoModifier(name = "Noise")
 

@@ -16,4 +16,10 @@ sealed class Control {
     ) : Control() {
         data class DropdownItem<T>(val name: String, val value: T)
     }
+
+    data class Toggle(
+        val name: String,
+        val value: Boolean,
+        val onValueChange: (Boolean) -> Unit,
+    ) : Control()
 }
