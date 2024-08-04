@@ -8,6 +8,8 @@ import com.alexrdclement.uiplayground.catalog.navigation.mainCatalogRoute
 import com.alexrdclement.uiplayground.catalog.navigation.mainCatalogScreen
 import com.alexrdclement.uiplayground.demo.components.navigation.componentsGraph
 import com.alexrdclement.uiplayground.demo.components.navigation.navigateToComponents
+import com.alexrdclement.uiplayground.demo.experiments.navigation.experimentsGraph
+import com.alexrdclement.uiplayground.demo.experiments.navigation.navigateToExperiments
 import com.alexrdclement.uiplayground.demo.shaders.navigation.navigateToShaders
 import com.alexrdclement.uiplayground.demo.shaders.navigation.shadersScreen
 
@@ -22,13 +24,17 @@ fun UiPlaygroundNavHost() {
             onItemClick = { item ->
                 when (item) {
                     MainCatalogItem.Components -> navController.navigateToComponents()
+                    MainCatalogItem.Experiments -> navController.navigateToExperiments()
                     MainCatalogItem.Shaders -> navController.navigateToShaders()
                 }
             }
         )
-        shadersScreen()
         componentsGraph(
             navController = navController,
         )
+        experimentsGraph(
+            navController = navController,
+        )
+        shadersScreen()
     }
 }
