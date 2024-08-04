@@ -13,14 +13,18 @@ import org.junit.runner.RunWith
 @RunWith(TestParameterInjector::class)
 class NoiseTest(
     @TestParameter(valuesProvider = ValuesProvider::class)
-    private val values: Pair<Float, Boolean>,
+    private val values: Pair<Float, NoiseColorMode>,
 ) {
     private val amount = values.first
-    private val colorEnabled = values.second
+    private val colorMode = values.second
 
     object ValuesProvider : TestParameter.TestParameterValuesProvider {
         override fun provideValues() = listOf(0f, .1f, .2f, .5f, 1f).flatMap { amount ->
-            listOf(false, true).map { colorEnabled ->
+            listOf(
+                NoiseColorMode.Monochrome,
+                NoiseColorMode.RandomColor,
+                NoiseColorMode.RandomColorFilterBlack,
+            ).map { colorEnabled ->
                 Pair(amount, colorEnabled)
             }
         }
@@ -34,7 +38,7 @@ class NoiseTest(
         paparazzi.snapshot {
             DemoCircle(
                 modifier = Modifier
-                    .noise(colorEnabled) { amount }
+                    .noise(colorMode) { amount }
             )
         }
     }
@@ -46,7 +50,7 @@ class NoiseTest(
                 color = Color.White,
                 background = Color.Black,
                 modifier = Modifier
-                    .noise(colorEnabled) { amount }
+                    .noise(colorMode) { amount }
             )
         }
     }

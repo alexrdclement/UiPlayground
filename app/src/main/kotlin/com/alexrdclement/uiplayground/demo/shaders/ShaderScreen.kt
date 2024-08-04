@@ -28,6 +28,7 @@ import com.alexrdclement.uiplayground.demo.subject.DemoCircle
 import com.alexrdclement.uiplayground.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.demo.subject.DemoText
 import com.alexrdclement.uiplayground.demo.subject.DemoTextField
+import com.alexrdclement.uiplayground.shaders.NoiseColorMode
 import com.alexrdclement.uiplayground.shaders.ColorSplitMode
 import com.alexrdclement.uiplayground.shaders.colorSplit
 import com.alexrdclement.uiplayground.shaders.noise
@@ -54,7 +55,7 @@ fun ShaderScreen() {
                 yAmount = 0f,
                 colorMode = ColorSplitMode.RGB,
             ),
-            DemoModifier.Noise(amount = 0f, colorEnabled = false),
+            DemoModifier.Noise(amount = 0f, colorMode = NoiseColorMode.Monochrome),
             DemoModifier.Pixelate(subdivisions = 0),
         )
     }
@@ -93,7 +94,7 @@ fun ShaderScreen() {
                 )
                 is DemoModifier.Noise -> Modifier.noise(
                     amount = { innerModifier.amount },
-                    colorEnabled = innerModifier.colorEnabled,
+                    colorMode = innerModifier.colorMode,
                 )
                 is DemoModifier.Pixelate -> Modifier.pixelate(
                     subdivisions = { innerModifier.subdivisions },
@@ -203,12 +204,20 @@ private fun makeControls(
                 },
                 valueRange = 0f..1f,
             ),
-            Control.Toggle(
-                name = "Color",
-                value = demoModifier.colorEnabled,
-                onValueChange = {
-                    demoModifiers[demoModifierIndex] = demoModifier.copy(colorEnabled = it)
+            Control.Dropdown(
+                name = "Color Mode",
+                values = NoiseColorMode.entries.map {
+                    Control.Dropdown.DropdownItem(
+                        name = it.name,
+                        value = it
+                    )
                 },
+                selectedIndex = NoiseColorMode.entries
+                    .indexOf(demoModifier.colorMode),
+                onValueChange = {
+                    val colorMode = NoiseColorMode.entries[it]
+                    demoModifiers[demoModifierIndex] = demoModifier.copy(colorMode = colorMode)
+                }
             )
         )
         is DemoModifier.Pixelate -> listOf(

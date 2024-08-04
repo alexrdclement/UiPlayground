@@ -6,7 +6,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Slider
-import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -35,13 +34,15 @@ import android.graphics.RenderEffect as AndroidRenderEffect
 private const val UniformShaderName = "composable"
 private const val UniformSize = "size"
 private const val UniformAmount = "amount"
-private const val UniformColorEnabled = "colorEnabled"
+private const val UniformColorEnabled = "colorEnabledInt"
+private const val UniformFilterBlack = "filterBlackInt"
 
 private var ShaderSource = """
 uniform shader $UniformShaderName;
 uniform float2 $UniformSize;
 uniform float $UniformAmount;
 uniform int $UniformColorEnabled;
+uniform int $UniformFilterBlack;
 
 // From https://thebookofshaders.com/10/
 float noise(float2 fragCoord) {
@@ -49,19 +50,29 @@ float noise(float2 fragCoord) {
 }
 
 half4 main(float2 fragCoord) {
+    bool colorEnabled = colorEnabledInt > 0;
+    bool filterBlack = filterBlackInt > 0;
+
     half4 color = composable.eval(fragCoord);
+    bool isBlack = color == half4(0.0, 0.0, 0.0, 1.0);
 
     float noiseVal = noise(fragCoord);
 
-    if (colorEnabled > 0 && noiseVal > 1 - amount) {
+    color.rgb *= 1 - noiseVal * amount; 
+
+    if (colorEnabled && (!filterBlack || !isBlack) && noiseVal > 1 - amount) {
         color.rgb = vec3(noise(fragCoord + 0.1), noise(fragCoord + 0.2), noise(fragCoord + 0.3));
     }
-
-    color.rgb *= 1 - noiseVal * amount; 
     
     return color;
 }
 """
+
+enum class NoiseColorMode {
+    Monochrome,
+    RandomColor,
+    RandomColorFilterBlack,
+}
 
 /**
  * @param amount: Returns the amount of noise to apply between 0f and 1f where 0f is none and 1f is
@@ -69,32 +80,44 @@ half4 main(float2 fragCoord) {
  */
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 fun Modifier.noise(
-    colorEnabled: Boolean = false,
+    colorMode: NoiseColorMode = NoiseColorMode.Monochrome,
     amount: () -> Float,
-): Modifier = this then NoiseElement(amount = amount, colorEnabled = colorEnabled)
+): Modifier = this then NoiseElement(colorMode, amount)
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 private data class NoiseElement(
+    val colorMode: NoiseColorMode,
     val amount: () -> Float,
-    val colorEnabled: Boolean,
 ) : ModifierNodeElement<NoiseNode>() {
-    override fun create() = NoiseNode(amount = amount, colorEnabled = colorEnabled)
+    override fun create() = NoiseNode(colorMode, amount)
     override fun update(node: NoiseNode) {
+        node.colorMode = colorMode
         node.amount = amount
-        node.colorEnabled = colorEnabled
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 private class NoiseNode(
+    var colorMode: NoiseColorMode,
     var amount: () -> Float,
-    var colorEnabled: Boolean,
 ) : Modifier.Node(),
     DrawModifierNode,
     LayoutAwareModifierNode,
     CompositionLocalConsumerModifierNode {
 
     private val shader = RuntimeShader(ShaderSource)
+
+    private val colorEnabled: Int
+        get() = when (colorMode) {
+            NoiseColorMode.Monochrome -> 0
+            else -> 1
+        }
+
+    private val filterBlack: Int
+        get() = when (colorMode) {
+            NoiseColorMode.RandomColorFilterBlack -> 1
+            else -> 0
+        }
 
     override fun onRemeasured(size: IntSize) {
         shader.setFloatUniform(UniformSize, size.width.toFloat(), size.height.toFloat())
@@ -103,7 +126,8 @@ private class NoiseNode(
     override fun ContentDrawScope.draw() {
         trace("noise") {
             shader.setFloatUniform(UniformAmount, amount())
-            shader.setIntUniform(UniformColorEnabled, if (colorEnabled) 1 else 0)
+            shader.setIntUniform(UniformColorEnabled, colorEnabled)
+            shader.setIntUniform(UniformFilterBlack, filterBlack)
 
             val graphicsContext = currentValueOf(LocalGraphicsContext)
             graphicsContext.useGraphicsLayer {
@@ -126,22 +150,18 @@ private class NoiseNode(
 private fun Preview() {
     val range = 0f..1f
     var amount by remember { mutableFloatStateOf(range.endInclusive / 2f) }
-    var color by remember { mutableStateOf(true) }
+    var colorMode by remember { mutableStateOf(NoiseColorMode.RandomColorFilterBlack) }
+
     Column {
         DemoCircle(
             modifier = Modifier
                 .weight(1f)
-                .noise(amount = { amount }, colorEnabled = color)
+                .noise(colorMode = colorMode, amount = { amount })
         )
         Slider(
             valueRange = range,
             value = amount,
             onValueChange = { amount = it },
-            modifier = Modifier.padding(16.dp)
-        )
-        Switch(
-            checked = color,
-            onCheckedChange = { color = it},
             modifier = Modifier.padding(16.dp)
         )
     }
