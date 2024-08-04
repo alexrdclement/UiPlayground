@@ -10,6 +10,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,11 +54,11 @@ fun ShaderScreen() {
                 yAmount = 0f,
                 colorMode = ColorSplitMode.RGB,
             ),
-            DemoModifier.Noise(amount = 0f),
+            DemoModifier.Noise(amount = 0f, colorEnabled = false),
             DemoModifier.Pixelate(subdivisions = 0),
         )
     }
-    var demoModifierIndex by remember { mutableStateOf(0) }
+    var demoModifierIndex by remember { mutableIntStateOf(0) }
     val demoModifier by remember(demoModifiers, demoModifierIndex) {
         derivedStateOf { demoModifiers[demoModifierIndex] }
     }
@@ -92,6 +93,7 @@ fun ShaderScreen() {
                 )
                 is DemoModifier.Noise -> Modifier.noise(
                     amount = { innerModifier.amount },
+                    colorEnabled = innerModifier.colorEnabled,
                 )
                 is DemoModifier.Pixelate -> Modifier.pixelate(
                     subdivisions = { innerModifier.subdivisions },
@@ -200,6 +202,13 @@ private fun makeControls(
                     demoModifiers[demoModifierIndex] = demoModifier.copy(amount = it)
                 },
                 valueRange = 0f..1f,
+            ),
+            Control.Toggle(
+                name = "Color",
+                value = demoModifier.colorEnabled,
+                onValueChange = {
+                    demoModifiers[demoModifierIndex] = demoModifier.copy(colorEnabled = it)
+                },
             )
         )
         is DemoModifier.Pixelate -> listOf(

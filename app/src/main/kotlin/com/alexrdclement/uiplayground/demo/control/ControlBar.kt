@@ -44,6 +44,7 @@ fun ControlBar(
                 when (control) {
                     is Control.Slider -> SliderControl(control = control)
                     is Control.Dropdown<*> -> DropdownControl(control = control)
+                    is Control.Toggle -> ToggleControl(control = control)
                 }
             }
         }

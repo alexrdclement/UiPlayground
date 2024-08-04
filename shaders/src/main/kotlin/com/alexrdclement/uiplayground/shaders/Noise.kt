@@ -6,9 +6,11 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -31,13 +33,15 @@ import android.graphics.RenderEffect as AndroidRenderEffect
 // Inspired by Rikin Marfatia's Grainy Gradients https://www.youtube.com/watch?v=soMl3k0mBx4
 
 private const val UniformShaderName = "composable"
-private const val UniformSizeName = "size"
-private const val UniformAmountName = "amount"
+private const val UniformSize = "size"
+private const val UniformAmount = "amount"
+private const val UniformColorEnabled = "colorEnabled"
 
 private var ShaderSource = """
 uniform shader $UniformShaderName;
-uniform float2 $UniformSizeName;
-uniform float $UniformAmountName;
+uniform float2 $UniformSize;
+uniform float $UniformAmount;
+uniform int $UniformColorEnabled;
 
 // From https://thebookofshaders.com/10/
 float noise(float2 fragCoord) {
@@ -47,8 +51,13 @@ float noise(float2 fragCoord) {
 half4 main(float2 fragCoord) {
     half4 color = composable.eval(fragCoord);
 
-    float noise = noise(fragCoord);
-    color.rgb *= 1 - noise * amount;
+    float noiseVal = noise(fragCoord);
+
+    if (colorEnabled > 0 && noiseVal > 1 - amount) {
+        color.rgb = vec3(noise(fragCoord + 0.1), noise(fragCoord + 0.2), noise(fragCoord + 0.3));
+    }
+
+    color.rgb *= 1 - noiseVal * amount; 
     
     return color;
 }
@@ -60,20 +69,26 @@ half4 main(float2 fragCoord) {
  */
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 fun Modifier.noise(
+    colorEnabled: Boolean = false,
     amount: () -> Float,
-): Modifier = this then NoiseElement(amount)
+): Modifier = this then NoiseElement(amount = amount, colorEnabled = colorEnabled)
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-private data class NoiseElement(val amount: () -> Float) : ModifierNodeElement<NoiseNode>() {
-    override fun create() = NoiseNode(amount = amount)
+private data class NoiseElement(
+    val amount: () -> Float,
+    val colorEnabled: Boolean,
+) : ModifierNodeElement<NoiseNode>() {
+    override fun create() = NoiseNode(amount = amount, colorEnabled = colorEnabled)
     override fun update(node: NoiseNode) {
         node.amount = amount
+        node.colorEnabled = colorEnabled
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 private class NoiseNode(
     var amount: () -> Float,
+    var colorEnabled: Boolean,
 ) : Modifier.Node(),
     DrawModifierNode,
     LayoutAwareModifierNode,
@@ -82,12 +97,13 @@ private class NoiseNode(
     private val shader = RuntimeShader(ShaderSource)
 
     override fun onRemeasured(size: IntSize) {
-        shader.setFloatUniform(UniformSizeName, size.width.toFloat(), size.height.toFloat())
+        shader.setFloatUniform(UniformSize, size.width.toFloat(), size.height.toFloat())
     }
 
     override fun ContentDrawScope.draw() {
         trace("noise") {
-            shader.setFloatUniform(UniformAmountName, amount())
+            shader.setFloatUniform(UniformAmount, amount())
+            shader.setIntUniform(UniformColorEnabled, if (colorEnabled) 1 else 0)
 
             val graphicsContext = currentValueOf(LocalGraphicsContext)
             graphicsContext.useGraphicsLayer {
@@ -110,16 +126,22 @@ private class NoiseNode(
 private fun Preview() {
     val range = 0f..1f
     var amount by remember { mutableFloatStateOf(range.endInclusive / 2f) }
+    var color by remember { mutableStateOf(true) }
     Column {
         DemoCircle(
             modifier = Modifier
                 .weight(1f)
-                .noise(amount = { amount })
+                .noise(amount = { amount }, colorEnabled = color)
         )
         Slider(
             valueRange = range,
             value = amount,
             onValueChange = { amount = it },
+            modifier = Modifier.padding(16.dp)
+        )
+        Switch(
+            checked = color,
+            onCheckedChange = { color = it},
             modifier = Modifier.padding(16.dp)
         )
     }

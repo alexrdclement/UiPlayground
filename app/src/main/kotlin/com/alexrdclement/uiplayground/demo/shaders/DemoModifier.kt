@@ -20,6 +20,7 @@ sealed class DemoModifier(open val name: String) {
 
     data class Noise(
         val amount: Float,
+        val colorEnabled: Boolean,
     ) : DemoModifier(name = "Noise")
 
     data class Pixelate(
