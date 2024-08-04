@@ -13,22 +13,33 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.asComposeRenderEffect
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.node.CompositionLocalConsumerModifierNode
+import androidx.compose.ui.node.DrawModifierNode
+import androidx.compose.ui.node.LayoutAwareModifierNode
+import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.node.currentValueOf
+import androidx.compose.ui.platform.LocalGraphicsContext
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.tracing.trace
 import com.alexrdclement.uiplayground.shaders.preview.DemoCircle
 import com.alexrdclement.uiplayground.shaders.preview.ShaderPreview
+import kotlin.math.roundToInt
 
 // Inspired by Rikin Marfatia's Pixellate
 // https://github.com/Rahkeen/ShaderPlayground/blob/main/app/src/main/java/co/rikin/shaderplayground/shaders/PixellateShader.kt
 
+private const val UniformShaderName = "composable"
+private const val UniformSizeName = "size"
+private const val UniformSubdivisionsName = "subdivisions"
+
 private var ShaderSource = """
-uniform shader composable;
-uniform float2 size;
-uniform float subdivisions;
+uniform shader $UniformShaderName;
+uniform float2 $UniformSizeName;
+uniform float $UniformSubdivisionsName;
 
 half4 main(float2 fragCoord) {
     float2 newCoord = fragCoord;
@@ -45,22 +56,45 @@ half4 main(float2 fragCoord) {
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 fun Modifier.pixelate(
     subdivisions: () -> Int,
-): Modifier = composed {
-    trace("pixelate") {
-        val shader = remember(ShaderSource) { RuntimeShader(ShaderSource) }
+): Modifier = this then PixelateElement(subdivisions)
 
-        this.onSizeChanged {
-            shader.setFloatUniform(
-                "size",
-                it.width.toFloat(),
-                it.height.toFloat()
-            )
-        }.graphicsLayer {
-            clip = true
-            shader.setFloatUniform("subdivisions", subdivisions().toFloat())
-            renderEffect = RenderEffect
-                .createRuntimeShaderEffect(shader, "composable")
-                .asComposeRenderEffect()
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+private data class PixelateElement(val subdivisions: () -> Int) : ModifierNodeElement<PixelateNode>() {
+    override fun create() = PixelateNode(subdivisions = subdivisions)
+    override fun update(node: PixelateNode) {
+        node.subdivisions = subdivisions
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+private class PixelateNode(
+    var subdivisions: () -> Int,
+) : Modifier.Node(),
+    DrawModifierNode,
+    LayoutAwareModifierNode,
+    CompositionLocalConsumerModifierNode {
+
+    private val shader = RuntimeShader(ShaderSource)
+
+    override fun onRemeasured(size: IntSize) {
+        shader.setFloatUniform(UniformSizeName, size.width.toFloat(), size.height.toFloat())
+    }
+
+    override fun ContentDrawScope.draw() {
+        trace("pixelate") {
+            shader.setFloatUniform(UniformSubdivisionsName, subdivisions().toFloat())
+
+            val graphicsContext = currentValueOf(LocalGraphicsContext)
+            graphicsContext.useGraphicsLayer {
+                clip = true
+                renderEffect = RenderEffect
+                    .createRuntimeShaderEffect(shader, UniformShaderName)
+                    .asComposeRenderEffect()
+
+                record { this@draw.drawContent() }
+
+                drawLayer(this)
+            }
         }
     }
 }
@@ -75,7 +109,7 @@ private fun Preview() {
         DemoCircle(
             modifier = Modifier
                 .weight(1f)
-                .noise(amount = { amount })
+                .pixelate(subdivisions = { amount.roundToInt() })
         )
         Slider(
             valueRange = range,
