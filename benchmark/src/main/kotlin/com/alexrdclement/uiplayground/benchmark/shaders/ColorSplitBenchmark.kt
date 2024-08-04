@@ -17,7 +17,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class ChromaticAberrationBenchmark {
+class ColorSplitBenchmark {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
@@ -34,7 +34,7 @@ class ChromaticAberrationBenchmark {
         packageName = appPackageName,
         metrics = listOf(
             FrameTimingMetric(),
-            TraceSectionMetric("chromaticAberration", Mode.Sum),
+            TraceSectionMetric("colorSplit", Mode.Sum),
         ),
         iterations = 5,
         startupMode = StartupMode.WARM,
@@ -44,9 +44,9 @@ class ChromaticAberrationBenchmark {
             startActivityAndWait()
 
             MainCatalogPage(device).navigateToShaders()
-            shadersPage = ShadersPage(device).apply { selectChromaticAberration() }
+            shadersPage = ShadersPage(device).apply { selectColorSplit() }
         }
     ) {
-        shadersPage.adjustChromaticAberration()
+        shadersPage.adjustColorSplit()
     }
 }

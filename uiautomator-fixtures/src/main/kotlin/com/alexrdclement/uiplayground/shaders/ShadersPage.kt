@@ -9,11 +9,11 @@ class ShadersPage(
     private val device: UiDevice,
 ) {
 
-    fun selectChromaticAberration() {
-        selectModifier("Chromatic Aberration")
+    fun selectColorSplit() {
+        selectModifier("Color Split")
     }
 
-    fun adjustChromaticAberration() {
+    fun adjustColorSplit() {
         val xAmount = device.waitAndFindObject(By.desc("X Amount"))
         xAmount.drag(Point(xAmount.visibleCenter.x + 100, xAmount.visibleCenter.y))
         val yAmount = device.waitAndFindObject(By.desc("Y Amount"))

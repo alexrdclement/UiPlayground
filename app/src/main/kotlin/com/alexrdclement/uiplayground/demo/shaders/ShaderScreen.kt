@@ -27,8 +27,8 @@ import com.alexrdclement.uiplayground.demo.subject.DemoCircle
 import com.alexrdclement.uiplayground.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.demo.subject.DemoText
 import com.alexrdclement.uiplayground.demo.subject.DemoTextField
-import com.alexrdclement.uiplayground.shaders.ChromaticAberrationColorMode
-import com.alexrdclement.uiplayground.shaders.chromaticAberration
+import com.alexrdclement.uiplayground.shaders.ColorSplitMode
+import com.alexrdclement.uiplayground.shaders.colorSplit
 import com.alexrdclement.uiplayground.shaders.noise
 import com.alexrdclement.uiplayground.shaders.pixelate
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
@@ -48,10 +48,10 @@ fun ShaderScreen() {
                 radius = 0.dp,
                 edgeTreatment = BlurredEdgeTreatment.Rectangle
             ),
-            DemoModifier.ChromaticAberration(
+            DemoModifier.ColorSplit(
                 xAmount = 0f,
                 yAmount = 0f,
-                colorMode = ChromaticAberrationColorMode.RGB,
+                colorMode = ColorSplitMode.RGB,
             ),
             DemoModifier.Noise(amount = 0f),
             DemoModifier.Pixelate(subdivisions = 0),
@@ -85,7 +85,7 @@ fun ShaderScreen() {
                     radius = innerModifier.radius,
                     edgeTreatment = innerModifier.edgeTreatment,
                 )
-                is DemoModifier.ChromaticAberration -> Modifier.chromaticAberration(
+                is DemoModifier.ColorSplit -> Modifier.colorSplit(
                     xAmount = { innerModifier.xAmount },
                     yAmount = { innerModifier.yAmount },
                     colorMode = { innerModifier.colorMode },
@@ -159,19 +159,19 @@ private fun makeControls(
                 )
             )
         }
-        is DemoModifier.ChromaticAberration -> listOf(
+        is DemoModifier.ColorSplit -> listOf(
             Control.Dropdown(
                 name = "Color mode",
-                values = ChromaticAberrationColorMode.entries.map {
+                values = ColorSplitMode.entries.map {
                     Control.Dropdown.DropdownItem(
                         name = it.name,
                         value = it
                     )
                 },
-                selectedIndex = ChromaticAberrationColorMode.entries
+                selectedIndex = ColorSplitMode.entries
                     .indexOf(demoModifier.colorMode),
                 onValueChange = {
-                    val colorMode = ChromaticAberrationColorMode.entries[it]
+                    val colorMode = ColorSplitMode.entries[it]
                     demoModifiers[demoModifierIndex] = demoModifier.copy(colorMode = colorMode)
                 }
             ),
