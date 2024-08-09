@@ -13,6 +13,10 @@ sealed class DemoModifier(open val name: String) {
         val edgeTreatment: BlurredEdgeTreatment,
     ) : DemoModifier(name = "Blur")
 
+    data class ColorInvert(
+        val amount: Float,
+    ) : DemoModifier(name = "Color Invert")
+
     data class ColorSplit(
         val xAmount: Float,
         val yAmount: Float,
