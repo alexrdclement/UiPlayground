@@ -82,13 +82,10 @@ private fun CurrencyAmountField(
             .padding(8.dp)
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(8.dp),
-        inputTransformation = InputTransformation.byValue { _, proposed ->
-            val parts = proposed
-                .filter { it.isDigit() || it == decimalSeparator }
-                .split(decimalSeparatorStr, limit = 2)
-
-            val intPart = parts.firstOrNull()
-            val decimalPart = parts.getOrNull(1)
+        inputTransformation = InputTransformation.byValue { current, proposed ->
+            val parts = proposed.split(decimalSeparatorStr, limit = 2)
+            val intPart = parts.firstOrNull()?.filter { it.isDigit() }
+            val decimalPart = parts.getOrNull(1)?.filter { it.isDigit() }
 
             if (decimalPart == null) {
                 intPart ?: ""
