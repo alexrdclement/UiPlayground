@@ -33,12 +33,6 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 import java.text.DecimalFormatSymbols
 
-private val decimalFormatSymbols = DecimalFormatSymbols.getInstance()
-private val currencyPrefix = decimalFormatSymbols.currencySymbol
-private val decimalSeparator = decimalFormatSymbols.decimalSeparator
-private val decimalSeparatorStr = decimalSeparator.toString()
-private val groupingSeparator = decimalFormatSymbols.groupingSeparator.toString()
-
 @Composable
 fun BasicTextFieldDemo(
     textFieldState: TextFieldState = rememberTextFieldState(),
@@ -64,6 +58,12 @@ fun BasicTextFieldDemo(
         )
     }
 }
+
+private val decimalFormatSymbols = DecimalFormatSymbols.getInstance()
+private val currencySymbol = decimalFormatSymbols.currencySymbol
+private val decimalSeparator = decimalFormatSymbols.decimalSeparator
+private val decimalSeparatorStr = decimalSeparator.toString()
+private val groupingSeparator = decimalFormatSymbols.groupingSeparator.toString()
 
 @Composable
 private fun CurrencyAmountField(
@@ -114,7 +114,7 @@ private fun CurrencyAmountField(
             ) {
                 if (includeCurrencyPrefix) {
                     BasicText(
-                        currencyPrefix,
+                        currencySymbol,
                         style = MaterialTheme.typography.headlineLarge.copy(
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
