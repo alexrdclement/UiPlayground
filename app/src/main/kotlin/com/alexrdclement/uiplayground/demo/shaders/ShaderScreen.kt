@@ -30,6 +30,7 @@ import com.alexrdclement.uiplayground.demo.subject.DemoText
 import com.alexrdclement.uiplayground.demo.subject.DemoTextField
 import com.alexrdclement.uiplayground.shaders.NoiseColorMode
 import com.alexrdclement.uiplayground.shaders.ColorSplitMode
+import com.alexrdclement.uiplayground.shaders.colorInvert
 import com.alexrdclement.uiplayground.shaders.colorSplit
 import com.alexrdclement.uiplayground.shaders.noise
 import com.alexrdclement.uiplayground.shaders.pixelate
@@ -49,6 +50,9 @@ fun ShaderScreen() {
             DemoModifier.Blur(
                 radius = 0.dp,
                 edgeTreatment = BlurredEdgeTreatment.Rectangle
+            ),
+            DemoModifier.ColorInvert(
+                amount = 0f,
             ),
             DemoModifier.ColorSplit(
                 xAmount = 0f,
@@ -86,6 +90,9 @@ fun ShaderScreen() {
                 is DemoModifier.Blur -> Modifier.blur(
                     radius = innerModifier.radius,
                     edgeTreatment = innerModifier.edgeTreatment,
+                )
+                is DemoModifier.ColorInvert -> Modifier.colorInvert(
+                    amount = { innerModifier.amount },
                 )
                 is DemoModifier.ColorSplit -> Modifier.colorSplit(
                     xAmount = { innerModifier.xAmount },
@@ -162,6 +169,16 @@ private fun makeControls(
                 )
             )
         }
+        is DemoModifier.ColorInvert -> listOf(
+            Control.Slider(
+                name = "Amount",
+                value = demoModifier.amount,
+                onValueChange = {
+                    demoModifiers[demoModifierIndex] = demoModifier.copy(amount = it)
+                },
+                valueRange = 0f..1f,
+            )
+        )
         is DemoModifier.ColorSplit -> listOf(
             Control.Dropdown(
                 name = "Color mode",

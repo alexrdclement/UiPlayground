@@ -9,6 +9,17 @@ class ShadersPage(
     private val device: UiDevice,
 ) {
 
+    fun selectColorInvert() {
+        selectModifier("Color Invert")
+    }
+
+    fun adjustColorInvert() {
+        // One adjustment doesn't generate benchmark/profile frame data
+        val amount = device.waitAndFindObject(By.desc("Amount"))
+        amount.drag(Point(amount.visibleCenter.x + 100, amount.visibleCenter.y))
+        amount.drag(Point(amount.visibleCenter.x + 200, amount.visibleCenter.y))
+    }
+
     fun selectColorSplit() {
         selectModifier("Color Split")
     }
