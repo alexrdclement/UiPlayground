@@ -1,7 +1,6 @@
 package com.alexrdclement.uiplayground.demo.experiments.demo
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,7 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,10 +36,25 @@ import java.text.DecimalFormatSymbols
 @Composable
 fun BasicTextFieldDemo(
     textFieldState: TextFieldState = rememberTextFieldState(),
-    prefix: String = "$",
-    placeholder: String = "0",
-    groupingSeparator: String = DecimalFormatSymbols.getInstance().groupingSeparator.toString(),
 ) {
+    AmountEntry(
+        textFieldState = textFieldState,
+    )
+}
+
+@Composable
+private fun AmountEntry(
+    textFieldState: TextFieldState = rememberTextFieldState(),
+    placeholder: String = "0",
+    includeCurrencyPrefix: Boolean = true,
+    maxNumDecimals: Int = 2
+) {
+    val decimalFormatSymbols = DecimalFormatSymbols.getInstance()
+    val currencyPrefix = decimalFormatSymbols.currencySymbol
+    val decimalSeparator = decimalFormatSymbols.decimalSeparator
+    val decimalSeparatorStr = decimalSeparator.toString()
+    val groupingSeparator = decimalFormatSymbols.groupingSeparator.toString()
+
     val text by snapshotFlow { textFieldState.text.toString() }
         .collectAsState(initial = textFieldState.text.toString())
 
@@ -66,15 +79,28 @@ fun BasicTextFieldDemo(
             ),
             modifier = Modifier
                 .width(IntrinsicSize.Min)
+                .padding(8.dp)
                 .background(MaterialTheme.colorScheme.surfaceVariant)
                 .padding(8.dp),
             inputTransformation = InputTransformation.byValue { _, proposed ->
-                proposed.filter { it.isDigit() }
+                val parts = proposed
+                    .filter { it.isDigit() || it == decimalSeparator }
+                    .split(decimalSeparatorStr, limit = 2)
+
+                val intPart = parts.firstOrNull()
+                val decimalPart = parts.getOrNull(1)
+
+                if (decimalPart == null) {
+                    intPart ?: ""
+                } else {
+                    intPart + decimalSeparatorStr + decimalPart.take(maxNumDecimals)
+                }
             },
             outputTransformation = {
-                for (index in 1 until originalText.length) {
+                val intPart = originalText.split(decimalSeparatorStr, limit = 2).firstOrNull() ?: ""
+                for (index in 1 until intPart.length) {
                     if (index % 3 == 0) {
-                        insert(originalText.length - index, groupingSeparator)
+                        insert(intPart.length - index, groupingSeparator)
                     }
                 }
             },
@@ -84,16 +110,16 @@ fun BasicTextFieldDemo(
             ),
             decorator = { textField ->
                 Row(
-                    modifier = Modifier
-                        .border(2.dp, Color.Red),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    BasicText(
-                        prefix,
-                        style = MaterialTheme.typography.headlineLarge.copy(
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    if (includeCurrencyPrefix) {
+                        BasicText(
+                            currencyPrefix,
+                            style = MaterialTheme.typography.headlineLarge.copy(
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
                         )
-                    )
+                    }
 
                     Box {
                         if (textFieldState.text.isEmpty()) {
