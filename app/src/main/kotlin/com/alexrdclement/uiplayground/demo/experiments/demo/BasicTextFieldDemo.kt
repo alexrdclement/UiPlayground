@@ -33,28 +33,16 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 import java.text.DecimalFormatSymbols
 
+private val decimalFormatSymbols = DecimalFormatSymbols.getInstance()
+private val currencyPrefix = decimalFormatSymbols.currencySymbol
+private val decimalSeparator = decimalFormatSymbols.decimalSeparator
+private val decimalSeparatorStr = decimalSeparator.toString()
+private val groupingSeparator = decimalFormatSymbols.groupingSeparator.toString()
+
 @Composable
 fun BasicTextFieldDemo(
     textFieldState: TextFieldState = rememberTextFieldState(),
 ) {
-    CurrencyAmountField(
-        textFieldState = textFieldState,
-    )
-}
-
-@Composable
-private fun CurrencyAmountField(
-    textFieldState: TextFieldState = rememberTextFieldState(),
-    placeholder: String = "0",
-    includeCurrencyPrefix: Boolean = true,
-    maxNumDecimals: Int = 2
-) {
-    val decimalFormatSymbols = DecimalFormatSymbols.getInstance()
-    val currencyPrefix = decimalFormatSymbols.currencySymbol
-    val decimalSeparator = decimalFormatSymbols.decimalSeparator
-    val decimalSeparatorStr = decimalSeparator.toString()
-    val groupingSeparator = decimalFormatSymbols.groupingSeparator.toString()
-
     val text by snapshotFlow { textFieldState.text.toString() }
         .collectAsState(initial = textFieldState.text.toString())
 
@@ -71,77 +59,88 @@ private fun CurrencyAmountField(
                 color = MaterialTheme.colorScheme.onSurface,
             ),
         )
+        CurrencyAmountField(
+            textFieldState = textFieldState,
+        )
+    }
+}
 
-        BasicTextField(
-            state = textFieldState,
-            textStyle = MaterialTheme.typography.headlineLarge.copy(
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            ),
-            modifier = Modifier
-                .width(IntrinsicSize.Min)
-                .padding(8.dp)
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .padding(8.dp),
-            inputTransformation = InputTransformation.byValue { _, proposed ->
-                val parts = proposed
-                    .filter { it.isDigit() || it == decimalSeparator }
-                    .split(decimalSeparatorStr, limit = 2)
+@Composable
+private fun CurrencyAmountField(
+    textFieldState: TextFieldState = rememberTextFieldState(),
+    placeholder: String = "0",
+    includeCurrencyPrefix: Boolean = true,
+    maxNumDecimals: Int = 2
+) {
+    BasicTextField(
+        state = textFieldState,
+        textStyle = MaterialTheme.typography.headlineLarge.copy(
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        ),
+        modifier = Modifier
+            .width(IntrinsicSize.Min)
+            .padding(8.dp)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .padding(8.dp),
+        inputTransformation = InputTransformation.byValue { _, proposed ->
+            val parts = proposed
+                .filter { it.isDigit() || it == decimalSeparator }
+                .split(decimalSeparatorStr, limit = 2)
 
-                val intPart = parts.firstOrNull()
-                val decimalPart = parts.getOrNull(1)
+            val intPart = parts.firstOrNull()
+            val decimalPart = parts.getOrNull(1)
 
-                if (decimalPart == null) {
-                    intPart ?: ""
-                } else {
-                    intPart + decimalSeparatorStr + decimalPart.take(maxNumDecimals)
+            if (decimalPart == null) {
+                intPart ?: ""
+            } else {
+                intPart + decimalSeparatorStr + decimalPart.take(maxNumDecimals)
+            }
+        },
+        outputTransformation = {
+            val intPart = originalText.split(decimalSeparatorStr, limit = 2).firstOrNull() ?: ""
+            for (index in 1 until intPart.length) {
+                if (index % 3 == 0) {
+                    insert(intPart.length - index, groupingSeparator)
                 }
-            },
-            outputTransformation = {
-                val intPart = originalText.split(decimalSeparatorStr, limit = 2).firstOrNull() ?: ""
-                for (index in 1 until intPart.length) {
-                    if (index % 3 == 0) {
-                        insert(intPart.length - index, groupingSeparator)
-                    }
+            }
+        },
+        lineLimits = TextFieldLineLimits.SingleLine,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Decimal,
+        ),
+        decorator = { textField ->
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                if (includeCurrencyPrefix) {
+                    BasicText(
+                        currencyPrefix,
+                        style = MaterialTheme.typography.headlineLarge.copy(
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    )
                 }
-            },
-            lineLimits = TextFieldLineLimits.SingleLine,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Decimal,
-            ),
-            decorator = { textField ->
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    if (includeCurrencyPrefix) {
+
+                Box {
+                    if (textFieldState.text.isEmpty()) {
                         BasicText(
-                            currencyPrefix,
+                            placeholder,
                             style = MaterialTheme.typography.headlineLarge.copy(
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                    alpha = 0.5f,
+                                ),
                             )
                         )
                     }
 
-                    Box {
-                        if (textFieldState.text.isEmpty()) {
-                            BasicText(
-                                placeholder,
-                                style = MaterialTheme.typography.headlineLarge.copy(
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                        alpha = 0.5f,
-                                    ),
-                                )
-                            )
-                        }
-
-                        // Min width to ensure cursor still appears
-                        Box(modifier = Modifier.widthIn(min = 8.dp)) {
-                            textField()
-                        }
+                    // Min width to ensure cursor still appears
+                    Box(modifier = Modifier.widthIn(min = 8.dp)) {
+                        textField()
                     }
                 }
             }
-        )
-    }
+        }
+    )
 }
 
 @Preview
