@@ -37,13 +37,13 @@ import java.text.DecimalFormatSymbols
 fun BasicTextFieldDemo(
     textFieldState: TextFieldState = rememberTextFieldState(),
 ) {
-    AmountEntry(
+    CurrencyAmountField(
         textFieldState = textFieldState,
     )
 }
 
 @Composable
-private fun AmountEntry(
+private fun CurrencyAmountField(
     textFieldState: TextFieldState = rememberTextFieldState(),
     placeholder: String = "0",
     includeCurrencyPrefix: Boolean = true,
