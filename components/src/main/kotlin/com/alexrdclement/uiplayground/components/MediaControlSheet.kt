@@ -2,6 +2,7 @@
 
 package com.alexrdclement.uiplayground.components
 
+import androidx.compose.animation.core.exponentialDecay
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.AnchoredDraggableState
@@ -117,7 +118,8 @@ class MediaControlSheetState(
 ) {
     internal var anchoredDraggableState = AnchoredDraggableState(
         initialValue = initialValue,
-        animationSpec = spring(),
+        snapAnimationSpec = spring(),
+        decayAnimationSpec = exponentialDecay(),
         confirmValueChange = {
             when (it) {
                 MediaControlSheetAnchor.PartiallyExpanded,
@@ -138,9 +140,8 @@ class MediaControlSheetState(
 
     internal suspend fun animateTo(
         targetValue: MediaControlSheetAnchor,
-        velocity: Float = anchoredDraggableState.lastVelocity
     ) {
-        anchoredDraggableState.animateTo(targetValue, velocity)
+        anchoredDraggableState.animateTo(targetValue)
     }
 
     internal suspend fun snapTo(targetValue: MediaControlSheetAnchor) {
@@ -153,28 +154,11 @@ class MediaControlSheetState(
 
     val offset: Float get() = anchoredDraggableState.offset
 
-    val progress: Float get() = anchoredDraggableState.progress
-
-    val partialToFullProgress: Float get() = when (currentValue) {
-        MediaControlSheetAnchor.PartiallyExpanded -> when (targetValue) {
-            MediaControlSheetAnchor.PartiallyExpanded -> {
-                if (progress >= 1f) 0f else progress
-            }
-
-            MediaControlSheetAnchor.Expanded -> {
-                if (progress >= 1f) 1f else progress
-            }
-        }
-
-        MediaControlSheetAnchor.Expanded -> when (targetValue) {
-            MediaControlSheetAnchor.PartiallyExpanded -> {
-                if (progress >= 1f) 0f else 1f - progress
-            }
-
-            MediaControlSheetAnchor.Expanded -> {
-                if (progress >= 1f) 1f else 1f - progress
-            }
-        }
+    val partialToFullProgress: Float get() {
+        return anchoredDraggableState.progress(
+            MediaControlSheetAnchor.PartiallyExpanded,
+            MediaControlSheetAnchor.Expanded,
+        )
     }
 
     val currentValue: MediaControlSheetAnchor get() = anchoredDraggableState.currentValue
@@ -223,7 +207,6 @@ private fun Modifier.modalBottomSheetAnchors(
     minHeight: Float,
     fullHeight: Float
 ) = onSizeChanged { size ->
-
     val newAnchors = DraggableAnchors {
         if (size.height > (minHeight)) {
             MediaControlSheetAnchor.PartiallyExpanded at fullHeight - minHeight
