@@ -123,7 +123,6 @@ private fun CurrencyAmountField(
 
                     Box {
                         if (textFieldState.text.isEmpty()) {
-                            // Placeholder
                             BasicText(
                                 placeholder,
                                 style = MaterialTheme.typography.headlineLarge.copy(
