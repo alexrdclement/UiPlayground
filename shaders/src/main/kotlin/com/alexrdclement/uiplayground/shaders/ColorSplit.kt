@@ -1,6 +1,5 @@
 package com.alexrdclement.uiplayground.shaders
 
-import android.graphics.RenderEffect
 import android.graphics.RuntimeShader
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -13,9 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
-import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.node.CompositionLocalConsumerModifierNode
 import androidx.compose.ui.node.DrawModifierNode
 import androidx.compose.ui.node.LayoutAwareModifierNode
@@ -27,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.tracing.trace
 import com.alexrdclement.uiplayground.shaders.preview.DemoCircle
 import com.alexrdclement.uiplayground.shaders.preview.ShaderPreview
+import com.alexrdclement.uiplayground.shaders.util.drawContentWithShader
 
 // Inspired by
 // - Romain Guy on Coding with the Italians: https://www.youtube.com/watch?v=s5RibxKdo-o
@@ -153,16 +151,7 @@ private class ColorSplitNode(
             shader.setIntUniform(UniformColorModeName, colorMode().ordinal)
 
             val graphicsContext = currentValueOf(LocalGraphicsContext)
-            graphicsContext.useGraphicsLayer {
-                clip = true
-                renderEffect = RenderEffect
-                    .createRuntimeShaderEffect(shader, UniformShaderName)
-                    .asComposeRenderEffect()
-
-                record { this@draw.drawContent() }
-
-                drawLayer(this)
-            }
+            drawContentWithShader(shader, UniformShaderName, graphicsContext)
         }
     }
 }
