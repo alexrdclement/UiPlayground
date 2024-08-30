@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalFoundationApi::class)
 
 package com.alexrdclement.uiplayground.components
 
@@ -201,7 +201,7 @@ fun rememberMediaControlSheetState(
 /**
  * Copied and modified from Material3 ModalBottomSheet.android.kt
  */
-@ExperimentalMaterial3Api
+@ExperimentalFoundationApi
 private fun Modifier.modalBottomSheetAnchors(
     state: MediaControlSheetState,
     minHeight: Float,
