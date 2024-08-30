@@ -13,9 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
-import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.node.CompositionLocalConsumerModifierNode
 import androidx.compose.ui.node.DrawModifierNode
 import androidx.compose.ui.node.LayoutAwareModifierNode
@@ -27,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.tracing.trace
 import com.alexrdclement.uiplayground.shaders.preview.DemoCircle
 import com.alexrdclement.uiplayground.shaders.preview.ShaderPreview
-import android.graphics.RenderEffect as AndroidRenderEffect
+import com.alexrdclement.uiplayground.shaders.util.drawContentWithShader
 
 // Inspired by Rikin Marfatia's Grainy Gradients https://www.youtube.com/watch?v=soMl3k0mBx4
 
@@ -130,16 +128,7 @@ private class NoiseNode(
             shader.setIntUniform(UniformFilterBlack, filterBlack)
 
             val graphicsContext = currentValueOf(LocalGraphicsContext)
-            graphicsContext.useGraphicsLayer {
-                clip = true
-                renderEffect = AndroidRenderEffect
-                    .createRuntimeShaderEffect(shader, UniformShaderName)
-                    .asComposeRenderEffect()
-
-                record { this@draw.drawContent() }
-
-                drawLayer(this)
-            }
+            drawContentWithShader(shader, UniformShaderName, graphicsContext)
         }
     }
 }
