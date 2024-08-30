@@ -37,9 +37,6 @@ uniform float $UniformAmount;
 
 half4 main(float2 fragCoord) {
     half4 color = composable.eval(fragCoord);
-    if (color == half4(0.0)) {
-        return color;
-    }
     return half4(abs(amount - color.r), abs(amount - color.g), abs(amount - color.b), color.a);
 }
 """
