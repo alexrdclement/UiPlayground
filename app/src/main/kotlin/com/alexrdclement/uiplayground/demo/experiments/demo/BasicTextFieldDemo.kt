@@ -19,6 +19,7 @@ import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldBuffer
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.text.input.insert
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 import java.text.DecimalFormatSymbols
+import kotlin.math.min
 
 @Composable
 fun BasicTextFieldDemo(
@@ -205,9 +207,11 @@ private class CurrencyAmountFieldInputTransformation(
         startIndex: Int,
     ) {
         if (decimalPart != null && decimalPart.length > maxNumDecimalValues) {
-            // Truncate decimal places
-            val truncatedDecimalPart = decimalPart.take(maxNumDecimalValues)
-            replace(startIndex, length, truncatedDecimalPart)
+            // Replace chars one-by-one so the cursor advances as expected
+            for (index in startIndex until min(maxNumDecimalValues, decimalPart.length)) {
+                replace(index, index + 1, decimalPart[index].toString())
+            }
+            delete(startIndex + maxNumDecimalValues, length)
         }
     }
 }
