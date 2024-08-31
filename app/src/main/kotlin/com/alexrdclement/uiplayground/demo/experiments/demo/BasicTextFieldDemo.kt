@@ -144,15 +144,15 @@ private class CurrencyAmountFieldInputTransformation(
             return
         }
 
-        if (proposed.count { it == decimalSeparator } > 1) {
-            // Reject changes for multiple decimal separators
-            revertAllChanges()
-            return
-        }
+        val parts = proposed.split(decimalSeparatorStr)
+        val filteredParts = parts.filter { it.isNotEmpty() }
+        var intPart = filteredParts.firstOrNull()?.filter { it.isDigit() } ?: ""
+        val decimalPart = filteredParts.getOrNull(1)?.filter { it.isDigit() }
 
-        val parts = proposed.split(decimalSeparatorStr, limit = 2)
-        var intPart = parts.firstOrNull()?.filter { it.isDigit() } ?: ""
-        val decimalPart = parts.getOrNull(1)?.filter { it.isDigit() }
+        if (parts.size > 2) {
+            // Filter out empty parts produced by multiple consecutive decimals
+            replace(intPart.length + 1, length, decimalPart ?: "")
+        }
 
         if (intPart.startsWith('0')) {
             // Allow single leading zero. Replace leading zero if followed by another digit.
