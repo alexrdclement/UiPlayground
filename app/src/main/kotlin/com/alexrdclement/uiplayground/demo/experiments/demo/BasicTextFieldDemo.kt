@@ -1,5 +1,6 @@
 package com.alexrdclement.uiplayground.demo.experiments.demo
 
+import androidx.annotation.CheckResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -136,47 +137,77 @@ private class CurrencyAmountFieldInputTransformation(
     )
 
     override fun TextFieldBuffer.transformInput() {
-        val proposed = asCharSequence()
+        filterChars()
+        filterConsecutiveDecimals()
 
-        if (proposed.any { !it.isDigit() && it != decimalSeparator }) {
-            // Reject changes for any non-digit, non-decimal characters
-            revertAllChanges()
-            return
-        }
-
-        val parts = proposed.split(decimalSeparatorStr)
-        val filteredParts = parts.filter { it.isNotEmpty() }
-        var intPart = filteredParts.firstOrNull()?.filter { it.isDigit() } ?: ""
-        val decimalPart = filteredParts.getOrNull(1)?.filter { it.isDigit() }
+        val parts = asCharSequence().split(decimalSeparatorStr)
+        val intPart = parts.firstOrNull()?.filter { it.isDigit() } ?: ""
+        val decimalPart = parts.getOrNull(1)?.filter { it.isDigit() }
 
         if (parts.size > 2) {
-            // Filter out empty parts produced by multiple consecutive decimals
+            // Instead of rejecting changes with multiple decimals, recalculate according to the
+            // first one.
             replace(intPart.length + 1, length, decimalPart ?: "")
         }
 
-        if (intPart.startsWith('0')) {
+        val filteredIntPart = filterIntPart(intPart, decimalPart)
+
+        filterDecimalPart(decimalPart, startIndex = filteredIntPart.length + 1)
+    }
+
+    private fun TextFieldBuffer.filterChars() {
+        val proposed = asCharSequence()
+        if (proposed.any { !it.isDigit() && it != decimalSeparator }) {
+            // Reject changes for any non-digit, non-decimal characters
+            revertAllChanges()
+        }
+    }
+
+    private fun TextFieldBuffer.filterConsecutiveDecimals() {
+        val proposed = asCharSequence()
+        if (proposed.zipWithNext().any { (a, b) -> a == decimalSeparator && b == decimalSeparator }) {
+            // Reject changes for consecutive decimals
+            revertAllChanges()
+        }
+    }
+
+    @CheckResult
+    private fun TextFieldBuffer.filterIntPart(
+        intPart: String,
+        decimalPart: String?,
+    ): String {
+        var mutableIntPart = intPart
+
+        if (mutableIntPart.startsWith('0')) {
             // Allow single leading zero. Replace leading zero if followed by another digit.
-            val indexOfFirstNonZero = intPart.indexOfFirst { it != '0' }
+            val indexOfFirstNonZero = mutableIntPart.indexOfFirst { it != '0' }
             val newIntPart = if (indexOfFirstNonZero > 0) {
-                intPart.substring(indexOfFirstNonZero)
+                mutableIntPart.substring(indexOfFirstNonZero)
             } else {
                 "0"
             }
-            replace(0, intPart.length, newIntPart)
-            intPart = newIntPart
+            replace(0, mutableIntPart.length, newIntPart)
+            mutableIntPart = newIntPart
         }
 
-        if (intPart.isEmpty() && decimalPart != null) {
+        if (mutableIntPart.isEmpty() && decimalPart != null) {
             // Prefill 0 when only decimal part is entered
             val newIntPart = "0"
-            replace(0, intPart.length, newIntPart)
-            intPart = newIntPart
+            replace(0, mutableIntPart.length, newIntPart)
+            mutableIntPart = newIntPart
         }
 
+        return mutableIntPart
+    }
+
+    private fun TextFieldBuffer.filterDecimalPart(
+        decimalPart: String?,
+        startIndex: Int,
+    ) {
         if (decimalPart != null && decimalPart.length > maxNumDecimalValues) {
             // Truncate decimal places
             val truncatedDecimalPart = decimalPart.take(maxNumDecimalValues)
-            replace(intPart.length + 1, length, truncatedDecimalPart)
+            replace(startIndex, length, truncatedDecimalPart)
         }
     }
 }
