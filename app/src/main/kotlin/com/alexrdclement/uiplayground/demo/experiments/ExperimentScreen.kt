@@ -1,7 +1,7 @@
 package com.alexrdclement.uiplayground.demo.experiments
 
 import androidx.compose.runtime.Composable
-import com.alexrdclement.uiplayground.demo.experiments.demo.BasicTextFieldDemo
+import com.alexrdclement.uiplayground.demo.experiments.demo.basictextfield.BasicTextFieldDemo
 
 @Composable
 fun ExperimentScreen(

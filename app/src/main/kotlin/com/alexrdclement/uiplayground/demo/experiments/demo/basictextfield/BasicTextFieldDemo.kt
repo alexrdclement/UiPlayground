@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.demo.experiments.demo
+package com.alexrdclement.uiplayground.demo.experiments.demo.basictextfield
 
 import androidx.annotation.CheckResult
 import androidx.compose.foundation.background
