@@ -167,9 +167,14 @@ private class CurrencyAmountFieldInputTransformation(
 
     private fun TextFieldBuffer.filterConsecutiveDecimals() {
         val proposed = asCharSequence()
-        if (proposed.zipWithNext().any { (a, b) -> a == decimalSeparator && b == decimalSeparator }) {
-            // Reject changes for consecutive decimals
-            revertAllChanges()
+        var lastChar = proposed.firstOrNull()
+        for (char in proposed.drop(1)) {
+            if (lastChar == decimalSeparator && char == decimalSeparator) {
+                // Reject changes for consecutive decimals
+                revertAllChanges()
+                return
+            }
+            lastChar = char
         }
     }
 
