@@ -2,13 +2,10 @@ package com.alexrdclement.uiplayground.demo.components.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.alexrdclement.uiplayground.catalog.CatalogScreen
 import com.alexrdclement.uiplayground.demo.components.Component
-import com.alexrdclement.uiplayground.demo.components.ComponentScreen
 
 private const val componentsGraphRoute = "componentGraph"
 private const val componentCatalogRoute = "componentCatalog"
