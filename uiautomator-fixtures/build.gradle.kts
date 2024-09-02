@@ -1,27 +1,14 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.uiplayground.android.library)
 }
 
 android {
     namespace = "com.alexrdclement.uiplayground"
-    compileSdk = 34
-
-    defaultConfig {
-        minSdk = 24
-    }
 
     buildTypes {
         release {
             isMinifyEnabled = false
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 }
 

@@ -1,7 +1,6 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.uiplayground.android.library)
+    alias(libs.plugins.uiplayground.android.library.compose)
     alias(libs.plugins.paparazzi)
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.maven.publish)
@@ -9,29 +8,11 @@ plugins {
 
 android {
     namespace = "com.alexrdclement.uiplayground.components"
-    compileSdk = 34
-
-    defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
 
     buildTypes {
         release {
             isMinifyEnabled = false
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-        javaParameters = true // Enable detailed names in test-parameter-injector tests
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
@@ -48,7 +29,6 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.compose.foundation)
     implementation(libs.compose.ui)
-    implementation(libs.compose.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.material.icons.extended)
 
@@ -60,7 +40,5 @@ dependencies {
 
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.compose.ui.test.junit4)
-
-    debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 }

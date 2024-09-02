@@ -1,28 +1,11 @@
 plugins {
-    alias(libs.plugins.android.test)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.baselineprofile)
+    // See https://github.com/gradle/gradle/issues/17968
+    id(libs.plugins.uiplayground.android.test.get().pluginId)
+    id(libs.plugins.baselineprofile.get().pluginId)
 }
 
 android {
     namespace = "com.alexrdclement.uiplayground.components.baselineprofile"
-    compileSdk = 34
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    defaultConfig {
-        minSdk = 28
-        targetSdk = 34
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
 
     targetProjectPath = ":app"
 

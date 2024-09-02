@@ -1,27 +1,9 @@
 plugins {
-    alias(libs.plugins.android.test)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.uiplayground.android.test)
 }
 
 android {
     namespace = "com.alexrdclement.uiplayground.benchmark"
-    compileSdk = 34
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    defaultConfig {
-        minSdk = 24
-        targetSdk = 34
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
 
     buildTypes {
         create("benchmark") {

@@ -1,12 +1,15 @@
 [versions]
 activity-compose = "1.9.1"
+android-desugar-jdk-libs = "2.1.1"
 agp = "8.5.2"
+android-tools = "31.6.0"
 androidx-navigation-compose = "2.7.7"
 androidx-test-ext-junit = "1.2.1"
 androidx-tracing = "1.3.0-alpha02"
 baselineprofile = "1.3.0"
 benchmark-macro-junit4 = "1.3.0"
 coil = "2.7.0"
+compose-bom = "2024.08.00"
 compose-runtime-tracing = "1.0.0-beta01"
 compose-ui = "1.7.0-rc01"
 core-ktx = "1.13.1"
@@ -24,8 +27,9 @@ uiautomator = "2.3.0"
 maven-publish = "0.28.0"
 
 [libraries]
-androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark-macro-junit4" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+android-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
+androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark-macro-junit4" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation-compose" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
@@ -36,6 +40,7 @@ androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomato
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 compose-runtime-tracing = { group = "androidx.compose.runtime", name = "runtime-tracing", version.ref = "compose-runtime-tracing" }
 compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose-ui" }
@@ -52,6 +57,11 @@ material-icons-extended = { group = "androidx.compose.material", name = "materia
 paparazzi = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "paparazzi" }
 test-parameter-injector = { group = "com.google.testparameterinjector", name = "test-parameter-injector", version.ref = "test-parameter-injector" }
 
+# Dependencies of the included build-logic
+android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "android-tools" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -61,5 +71,11 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
+
+uiplayground-android-application = { id = "uiplayground.android.application", version = "unspecified" }
+uiplayground-android-application-compose = { id = "uiplayground.android.application.compose", version = "unspecified" }
+uiplayground-android-library = { id = "uiplayground.android.library", version = "unspecified" }
+uiplayground-android-library-compose = { id = "uiplayground.android.library.compose", version = "unspecified" }
+uiplayground-android-test = { id = "uiplayground.android.test", version = "unspecified" }
 
 [bundles]
