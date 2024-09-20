@@ -2,7 +2,6 @@ package com.alexrdclement.uiplayground.demo.control
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Slider
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable

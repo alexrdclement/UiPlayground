@@ -3,7 +3,6 @@ package com.alexrdclement.uiplayground.demo.components.demo
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,6 +14,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import com.alexrdclement.uiplayground.components.model.Artist
 import com.alexrdclement.uiplayground.components.MediaControlSheetAnchor
 import com.alexrdclement.uiplayground.components.MediaControlSheet
+import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.components.model.MediaItem
 import com.alexrdclement.uiplayground.components.rememberMediaControlSheetState
 import kotlinx.coroutines.launch

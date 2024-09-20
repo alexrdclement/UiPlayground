@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -15,6 +14,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
@@ -33,8 +33,8 @@ fun BasicTextFieldDemo(
     ) {
         BasicText(
             text = text,
-            style = MaterialTheme.typography.headlineLarge.copy(
-                color = MaterialTheme.colorScheme.onSurface,
+            style = PlaygroundTheme.typography.headline.copy(
+                color = PlaygroundTheme.colorScheme.onSurface,
             ),
         )
         CurrencyAmountField(

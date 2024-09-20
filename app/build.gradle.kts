@@ -58,6 +58,7 @@ dependencies {
 
     implementation(projects.components)
     implementation(projects.shaders)
+    implementation(projects.theme)
 
     baselineProfile(projects.baselineProfile)
 

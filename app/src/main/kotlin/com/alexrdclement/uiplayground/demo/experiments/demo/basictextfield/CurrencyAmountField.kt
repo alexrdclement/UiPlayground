@@ -20,12 +20,12 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.text.input.insert
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 import java.text.DecimalFormatSymbols
 import kotlin.math.min
@@ -45,13 +45,13 @@ fun CurrencyAmountField(
 ) {
     BasicTextField(
         state = textFieldState,
-        textStyle = MaterialTheme.typography.headlineLarge.copy(
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        textStyle = PlaygroundTheme.typography.headline.copy(
+            color = PlaygroundTheme.colorScheme.onSurfaceVariant,
         ),
         modifier = Modifier
             .width(IntrinsicSize.Min)
             .padding(8.dp)
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .background(PlaygroundTheme.colorScheme.surfaceVariant)
             .padding(8.dp),
         inputTransformation = CurrencyAmountFieldInputTransformation(maxNumDecimalValues),
         outputTransformation = CurrencyAmountFieldOutputTransformation,
@@ -63,8 +63,8 @@ fun CurrencyAmountField(
                 if (includeCurrencyPrefix) {
                     BasicText(
                         currencySymbol,
-                        style = MaterialTheme.typography.headlineLarge.copy(
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = PlaygroundTheme.typography.headline.copy(
+                            color = PlaygroundTheme.colorScheme.onSurfaceVariant,
                         )
                     )
                 }
@@ -73,8 +73,8 @@ fun CurrencyAmountField(
                     if (textFieldState.text.isEmpty()) {
                         BasicText(
                             placeholder,
-                            style = MaterialTheme.typography.headlineLarge.copy(
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                            style = PlaygroundTheme.typography.headline.copy(
+                                color = PlaygroundTheme.colorScheme.onSurfaceVariant.copy(
                                     alpha = 0.5f,
                                 ),
                             )
