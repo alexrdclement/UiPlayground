@@ -18,8 +18,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -41,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.tracing.trace
 import com.alexrdclement.uiplayground.components.model.Artist
 import com.alexrdclement.uiplayground.components.model.MediaItem
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.coroutines.launch
 import kotlin.math.max
 
@@ -239,34 +238,36 @@ private fun Modifier.modalBottomSheetAnchors(
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    val mediaItem = MediaItem(
-        artworkThumbnailUrl = null,
-        artworkLargeUrl = null,
-        title = "Title",
-        artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
-    )
-    var isPlaying by remember { mutableStateOf(false) }
-    val state = rememberMediaControlSheetState(
-        initialValue = MediaControlSheetAnchor.PartiallyExpanded,
-    )
-    val coroutineScope = rememberCoroutineScope()
-    MediaControlSheet(
-        mediaItem = mediaItem,
-        isPlaying = isPlaying,
-        onPlayPauseClick = { isPlaying = !isPlaying },
-        onControlBarClick = {
-            coroutineScope.launch {
-                state.expand()
-            }
-        },
-        state = state,
-    ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize(),
+    PlaygroundTheme {
+        val mediaItem = MediaItem(
+            artworkThumbnailUrl = null,
+            artworkLargeUrl = null,
+            title = "Title",
+            artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
+        )
+        var isPlaying by remember { mutableStateOf(false) }
+        val state = rememberMediaControlSheetState(
+            initialValue = MediaControlSheetAnchor.PartiallyExpanded,
+        )
+        val coroutineScope = rememberCoroutineScope()
+        MediaControlSheet(
+            mediaItem = mediaItem,
+            isPlaying = isPlaying,
+            onPlayPauseClick = { isPlaying = !isPlaying },
+            onControlBarClick = {
+                coroutineScope.launch {
+                    state.expand()
+                }
+            },
+            state = state,
         ) {
-            Text("Content")
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                Text("Content")
+            }
         }
     }
 }
