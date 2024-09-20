@@ -29,8 +29,9 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.compose.foundation)
     implementation(libs.compose.ui)
-    implementation(libs.material3)
     implementation(libs.material.icons.extended)
+
+    implementation(projects.theme)
 
     baselineProfile(projects.components.baselineProfile)
 
