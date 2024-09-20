@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.components.preview.BoolPreviewParameterProvider
 
 @Composable
 fun PlayPauseButton(
@@ -43,10 +43,6 @@ fun PlayPauseButton(
                 .fillMaxSize()
         )
     }
-}
-
-private class BoolPreviewParameterProvider : PreviewParameterProvider<Boolean> {
-    override val values = sequenceOf(true, false)
 }
 
 @Preview

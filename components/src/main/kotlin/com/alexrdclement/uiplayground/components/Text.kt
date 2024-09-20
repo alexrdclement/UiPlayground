@@ -6,11 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import com.alexrdclement.uiplayground.components.preview.TextStylePreviewParameterProvider
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
@@ -24,10 +27,11 @@ fun Text(
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
 ) {
+    val color = style.color.takeOrElse { LocalContentColor.current }
     BasicText(
         text = text,
         modifier = modifier,
-        style = style,
+        style = style.copy(color = color),
         overflow = overflow,
         softWrap = softWrap,
         maxLines = maxLines,
@@ -48,10 +52,11 @@ fun Text(
     minLines: Int = 1,
     inlineContent: Map<String, InlineTextContent> = mapOf(),
 ) {
+    val color = style.color.takeOrElse { LocalContentColor.current }
     BasicText(
         text = text,
         modifier = modifier,
-        style = style,
+        style = style.copy(color = color),
         onTextLayout = onTextLayout,
         overflow = overflow,
         softWrap = softWrap,
@@ -63,10 +68,17 @@ fun Text(
 
 val LocalTextStyle = compositionLocalOf(structuralEqualityPolicy()) { TextStyle.Default }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
-private fun Preview() {
+private fun Preview(
+    @PreviewParameter(TextStylePreviewParameterProvider::class) textStylePair: Pair<String, TextStyle>,
+) {
     PlaygroundTheme {
-        Text("Hello World")
+        Surface {
+            Text(
+                text = textStylePair.first,
+                style = textStylePair.second,
+            )
+        }
     }
 }
