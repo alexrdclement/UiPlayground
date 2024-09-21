@@ -31,6 +31,35 @@ import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 fun Button(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    style: ButtonStyle = ButtonStyle.Outline,
+    enabled: Boolean = true,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    content: @Composable RowScope.() -> Unit
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        shape = CircleShape,
+        colors = when (style) {
+            ButtonStyle.Fill -> ButtonDefaults.defaultButtonColors()
+            ButtonStyle.Outline -> OutlineButtonDefaults.defaultButtonColors()
+        },
+        border = when (style) {
+            ButtonStyle.Fill -> null
+            ButtonStyle.Outline -> OutlineButtonDefaults.BorderStroke
+        },
+        contentPadding = contentPadding,
+        interactionSource = interactionSource,
+        content = content,
+    )
+}
+
+@Composable
+internal fun Button(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = CircleShape,
     colors: ButtonColors = ButtonDefaults.defaultButtonColors(),
@@ -66,6 +95,32 @@ fun Button(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
                 content = content
+            )
+        }
+    }
+}
+
+enum class ButtonStyle {
+    Fill,
+    Outline,
+}
+
+object OutlineButtonDefaults {
+    val BorderStroke: BorderStroke
+        @Composable
+        get() = BorderStroke(
+            width = 1.dp,
+            color = PlaygroundTheme.colorScheme.primary
+        )
+
+    @Composable
+    fun defaultButtonColors() = with(PlaygroundTheme.colorScheme) {
+        remember(this) {
+            ButtonColors(
+                containerColor = Color.Transparent,
+                contentColor = primary,
+                disabledContainerColor = Color.Transparent,
+                disabledContentColor = onSurface.copy(alpha = 0.38f)
             )
         }
     }
@@ -137,11 +192,28 @@ class ButtonColors(
 
 @PreviewLightDark
 @Composable
-private fun Preview(
+private fun PreviewFillStyle(
     @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
 ) {
     PlaygroundTheme {
         Button(
+            style = ButtonStyle.Fill,
+            enabled = enabled,
+            onClick = {},
+        ) {
+            Text("Button")
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewOutlineStyle(
+    @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
+) {
+    PlaygroundTheme {
+        Button(
+            style = ButtonStyle.Outline,
             enabled = enabled,
             onClick = {},
         ) {
