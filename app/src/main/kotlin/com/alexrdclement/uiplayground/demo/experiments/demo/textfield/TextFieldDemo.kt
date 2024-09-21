@@ -1,10 +1,9 @@
-package com.alexrdclement.uiplayground.demo.experiments.demo.basictextfield
+package com.alexrdclement.uiplayground.demo.experiments.demo.textfield
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
@@ -14,11 +13,12 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
-fun BasicTextFieldDemo(
+fun TextFieldDemo(
     textFieldState: TextFieldState = rememberTextFieldState(),
 ) {
     val text by snapshotFlow { textFieldState.text.toString() }
@@ -31,7 +31,7 @@ fun BasicTextFieldDemo(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        BasicText(
+        Text(
             text = text,
             style = PlaygroundTheme.typography.headline.copy(
                 color = PlaygroundTheme.colorScheme.onSurface,
@@ -48,6 +48,6 @@ fun BasicTextFieldDemo(
 private fun Preview() {
     UiPlaygroundPreview {
         val textFieldState = rememberTextFieldState(initialText = "123.45")
-        BasicTextFieldDemo(textFieldState = textFieldState)
+        TextFieldDemo(textFieldState = textFieldState)
     }
 }

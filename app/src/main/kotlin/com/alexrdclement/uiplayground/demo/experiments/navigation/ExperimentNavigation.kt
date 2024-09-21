@@ -22,7 +22,7 @@ fun NavGraphBuilder.experimentScreen() {
         )
     ) { backStackEntry ->
         val experimentName = backStackEntry.arguments?.getString(experimentNameArgKey)
-        val experiment = experimentName?.let(Experiment::valueOf) ?: Experiment.BasicTextField
+        val experiment = experimentName?.let(Experiment::valueOf) ?: Experiment.TextField
         ExperimentScreen(
             experiment = experiment,
         )

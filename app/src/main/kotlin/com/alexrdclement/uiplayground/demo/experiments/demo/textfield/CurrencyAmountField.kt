@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.demo.experiments.demo.basictextfield
+package com.alexrdclement.uiplayground.demo.experiments.demo.textfield
 
 import androidx.annotation.CheckResult
 import androidx.compose.foundation.background
@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.text.BasicText
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.OutputTransformation
@@ -25,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.components.TextField
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 import java.text.DecimalFormatSymbols
@@ -43,7 +43,7 @@ fun CurrencyAmountField(
     includeCurrencyPrefix: Boolean = true,
     maxNumDecimalValues: Int = 2
 ) {
-    BasicTextField(
+    TextField(
         state = textFieldState,
         textStyle = PlaygroundTheme.typography.headline.copy(
             color = PlaygroundTheme.colorScheme.onSurfaceVariant,
@@ -61,8 +61,8 @@ fun CurrencyAmountField(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 if (includeCurrencyPrefix) {
-                    BasicText(
-                        currencySymbol,
+                    Text(
+                        text = currencySymbol,
                         style = PlaygroundTheme.typography.headline.copy(
                             color = PlaygroundTheme.colorScheme.onSurfaceVariant,
                         )
@@ -71,8 +71,8 @@ fun CurrencyAmountField(
 
                 Box {
                     if (textFieldState.text.isEmpty()) {
-                        BasicText(
-                            placeholder,
+                        Text(
+                            text = placeholder,
                             style = PlaygroundTheme.typography.headline.copy(
                                 color = PlaygroundTheme.colorScheme.onSurfaceVariant.copy(
                                     alpha = 0.5f,
