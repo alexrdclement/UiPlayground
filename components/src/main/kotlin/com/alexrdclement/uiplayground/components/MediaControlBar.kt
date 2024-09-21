@@ -96,7 +96,7 @@ fun MediaControlBar(
                         verticalArrangement = Arrangement.Center,
                         modifier = Modifier
                             .weight(1f)
-                            .padding(horizontal = 8.dp)
+                            .padding(horizontal = PlaygroundTheme.spacing.small)
                             .graphicsLayer {
                                 alpha = 1f - progress()
                             }
@@ -126,7 +126,7 @@ fun MediaControlBar(
                         isPlaying = isPlaying,
                         modifier = Modifier
                             .size(52.dp)
-                            .padding(8.dp)
+                            .padding(PlaygroundTheme.spacing.small)
                             .graphicsLayer {
                                 alpha = 1f - progress()
                             }

@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.components.Button
 import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
@@ -33,7 +34,7 @@ fun <T> DropdownControl(
     Column(modifier = modifier) {
         if (includeTitle) {
             Text(control.name)
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(PlaygroundTheme.spacing.small))
         }
 
         Button(

@@ -50,15 +50,15 @@ fun CurrencyAmountField(
         ),
         modifier = Modifier
             .width(IntrinsicSize.Min)
-            .padding(8.dp)
+            .padding(PlaygroundTheme.spacing.small)
             .background(PlaygroundTheme.colorScheme.surfaceVariant)
-            .padding(8.dp),
+            .padding(PlaygroundTheme.spacing.small),
         inputTransformation = CurrencyAmountFieldInputTransformation(maxNumDecimalValues),
         outputTransformation = CurrencyAmountFieldOutputTransformation,
         lineLimits = TextFieldLineLimits.SingleLine,
         decorator = { textField ->
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
             ) {
                 if (includeCurrencyPrefix) {
                     Text(
@@ -82,7 +82,7 @@ fun CurrencyAmountField(
                     }
 
                     // Min width to ensure cursor still appears
-                    Box(modifier = Modifier.widthIn(min = 8.dp)) {
+                    Box(modifier = Modifier.widthIn(min = PlaygroundTheme.spacing.small)) {
                         textField()
                     }
                 }

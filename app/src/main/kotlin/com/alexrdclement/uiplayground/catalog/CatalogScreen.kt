@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.components.Button
 import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
@@ -26,12 +27,12 @@ fun <T : CatalogItem> CatalogScreen(
     ReportDrawn()
     Column(
         verticalArrangement = Arrangement.spacedBy(
-            space = 8.dp,
+            space = PlaygroundTheme.spacing.medium,
             alignment = Alignment.CenterVertically,
         ),
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
+            .padding(PlaygroundTheme.spacing.small)
             .safeDrawingPadding()
             .verticalScroll(rememberScrollState())
     ) {
