@@ -1,10 +1,10 @@
-package com.alexrdclement.uiplayground.components.preview
+package com.alexrdclement.uiplayground.theme.preview
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.alexrdclement.uiplayground.theme.PlaygroundTypography
 
-internal class TextStylePreviewParameterProvider : PreviewParameterProvider<Pair<String, TextStyle>> {
+class TextStylePreviewParameterProvider : PreviewParameterProvider<Pair<String, TextStyle>> {
     override val values = sequenceOf(
         "headline" to PlaygroundTypography.headline,
         "display" to PlaygroundTypography.display,

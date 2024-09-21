@@ -13,7 +13,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import com.alexrdclement.uiplayground.components.preview.TextStylePreviewParameterProvider
+import com.alexrdclement.uiplayground.theme.preview.TextStylePreviewParameterProvider
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
