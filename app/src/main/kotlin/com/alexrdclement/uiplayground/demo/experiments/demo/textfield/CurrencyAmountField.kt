@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.components.TextField
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
@@ -46,12 +45,11 @@ fun CurrencyAmountField(
     TextField(
         state = textFieldState,
         textStyle = PlaygroundTheme.typography.headline.copy(
-            color = PlaygroundTheme.colorScheme.onSurfaceVariant,
+            color = PlaygroundTheme.colorScheme.primary,
         ),
         modifier = Modifier
             .width(IntrinsicSize.Min)
             .padding(PlaygroundTheme.spacing.small)
-            .background(PlaygroundTheme.colorScheme.surfaceVariant)
             .padding(PlaygroundTheme.spacing.small),
         inputTransformation = CurrencyAmountFieldInputTransformation(maxNumDecimalValues),
         outputTransformation = CurrencyAmountFieldOutputTransformation,
@@ -64,7 +62,7 @@ fun CurrencyAmountField(
                     Text(
                         text = currencySymbol,
                         style = PlaygroundTheme.typography.headline.copy(
-                            color = PlaygroundTheme.colorScheme.onSurfaceVariant,
+                            color = PlaygroundTheme.colorScheme.primary,
                         )
                     )
                 }
@@ -74,7 +72,7 @@ fun CurrencyAmountField(
                         Text(
                             text = placeholder,
                             style = PlaygroundTheme.typography.headline.copy(
-                                color = PlaygroundTheme.colorScheme.onSurfaceVariant.copy(
+                                color = PlaygroundTheme.colorScheme.primary.copy(
                                     alpha = 0.5f,
                                 ),
                             )

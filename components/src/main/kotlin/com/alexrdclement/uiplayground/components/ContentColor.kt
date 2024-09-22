@@ -15,7 +15,6 @@ fun ColorScheme.contentColorFor(backgroundColor: Color): Color =
         secondary -> onSecondary
         background -> onBackground
         surface -> onSurface
-        surfaceVariant -> onSurfaceVariant
         else -> Color.Unspecified
     }
 

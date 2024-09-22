@@ -18,8 +18,6 @@ val LocalPlaygroundColorScheme = staticCompositionLocalOf {
         onBackground = Color.Unspecified,
         surface = Color.Unspecified,
         onSurface = Color.Unspecified,
-        surfaceVariant = Color.Unspecified,
-        onSurfaceVariant = Color.Unspecified,
     )
 }
 
