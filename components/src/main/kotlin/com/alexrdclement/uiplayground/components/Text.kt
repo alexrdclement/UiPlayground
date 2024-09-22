@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.alexrdclement.uiplayground.theme.preview.TextStylePreviewParameterProvider
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.PlaygroundTypography
 
 @Composable
 fun Text(
@@ -66,7 +67,7 @@ fun Text(
     )
 }
 
-val LocalTextStyle = compositionLocalOf(structuralEqualityPolicy()) { TextStyle.Default }
+val LocalTextStyle = compositionLocalOf(structuralEqualityPolicy()) { PlaygroundTypography.bodyMedium }
 
 @PreviewLightDark
 @Composable
