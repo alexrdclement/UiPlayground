@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.components.HorizontalDivider
+import com.alexrdclement.uiplayground.components.Surface
 import com.alexrdclement.uiplayground.demo.control.Control
 import com.alexrdclement.uiplayground.demo.control.ControlBar
 import com.alexrdclement.uiplayground.demo.subject.DemoCircle
@@ -77,57 +78,59 @@ fun ShaderScreen() {
             )
         }
     }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .safeDrawingPadding()
-    ) {
-        Box(
-            modifier = Modifier.weight(1f)
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .safeDrawingPadding()
         ) {
-            val modifier = when (val innerModifier = demoModifier) {
-                DemoModifier.None -> Modifier
-                is DemoModifier.Blur -> Modifier.blur(
-                    radius = innerModifier.radius,
-                    edgeTreatment = innerModifier.edgeTreatment,
-                )
-                is DemoModifier.ColorInvert -> Modifier.colorInvert(
-                    amount = { innerModifier.amount },
-                )
-                is DemoModifier.ColorSplit -> Modifier.colorSplit(
-                    xAmount = { innerModifier.xAmount },
-                    yAmount = { innerModifier.yAmount },
-                    colorMode = { innerModifier.colorMode },
-                )
-                is DemoModifier.Noise -> Modifier.noise(
-                    amount = { innerModifier.amount },
-                    colorMode = innerModifier.colorMode,
-                )
-                is DemoModifier.Pixelate -> Modifier.pixelate(
-                    subdivisions = { innerModifier.subdivisions },
-                )
+            Box(
+                modifier = Modifier.weight(1f)
+            ) {
+                val modifier = when (val innerModifier = demoModifier) {
+                    DemoModifier.None -> Modifier
+                    is DemoModifier.Blur -> Modifier.blur(
+                        radius = innerModifier.radius,
+                        edgeTreatment = innerModifier.edgeTreatment,
+                    )
+                    is DemoModifier.ColorInvert -> Modifier.colorInvert(
+                        amount = { innerModifier.amount },
+                    )
+                    is DemoModifier.ColorSplit -> Modifier.colorSplit(
+                        xAmount = { innerModifier.xAmount },
+                        yAmount = { innerModifier.yAmount },
+                        colorMode = { innerModifier.colorMode },
+                    )
+                    is DemoModifier.Noise -> Modifier.noise(
+                        amount = { innerModifier.amount },
+                        colorMode = innerModifier.colorMode,
+                    )
+                    is DemoModifier.Pixelate -> Modifier.pixelate(
+                        subdivisions = { innerModifier.subdivisions },
+                    )
+                }
+                when (demoSubject) {
+                    DemoSubject.Circle -> DemoCircle(modifier = modifier)
+                    DemoSubject.CircleOutline -> DemoCircle(drawStyle = Stroke(2f), modifier = modifier)
+                    DemoSubject.Text -> DemoText(modifier = modifier)
+                    DemoSubject.TextField -> DemoTextField(modifier = modifier)
+                }
             }
-            when (demoSubject) {
-                DemoSubject.Circle -> DemoCircle(modifier = modifier)
-                DemoSubject.CircleOutline -> DemoCircle(drawStyle = Stroke(2f), modifier = modifier)
-                DemoSubject.Text -> DemoText(modifier = modifier)
-                DemoSubject.TextField -> DemoTextField(modifier = modifier)
-            }
-        }
 
-        HorizontalDivider(modifier = Modifier.fillMaxWidth())
-        ControlBar(
-            controls = controls,
-            demoSubject = demoSubject,
-            demoModifier = demoModifier,
-            demoModifiers = demoModifiers,
-            onSubjectSelected = {
-                demoSubject = it
-            },
-            onModifierSelected = {
-                demoModifierIndex = it
-            }
-        )
+            HorizontalDivider(modifier = Modifier.fillMaxWidth())
+            ControlBar(
+                controls = controls,
+                demoSubject = demoSubject,
+                demoModifier = demoModifier,
+                demoModifiers = demoModifiers,
+                onSubjectSelected = {
+                    demoSubject = it
+                },
+                onModifierSelected = {
+                    demoModifierIndex = it
+                }
+            )
+        }
     }
 }
 
