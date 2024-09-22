@@ -7,6 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.alexrdclement.uiplayground.components.preview.BoolPreviewParameterProvider
@@ -23,7 +26,9 @@ fun Checkbox(
     Button(
         style = ButtonStyle.Borderless,
         onClick = { onCheckedChange(isChecked) },
-        modifier = modifier,
+        modifier = modifier.semantics(mergeDescendants = true) {
+            role = Role.Checkbox
+        },
         enabled = enabled,
         interactionSource = interactionSource,
     ) {
