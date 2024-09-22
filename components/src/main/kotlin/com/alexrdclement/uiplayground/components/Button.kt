@@ -45,10 +45,12 @@ fun Button(
         colors = when (style) {
             ButtonStyle.Fill -> ButtonDefaults.defaultButtonColors()
             ButtonStyle.Outline -> OutlineButtonDefaults.defaultButtonColors()
+            ButtonStyle.Borderless -> BorderlessButtonDefaults.defaultButtonColors()
         },
         border = when (style) {
             ButtonStyle.Fill -> null
             ButtonStyle.Outline -> OutlineButtonDefaults.BorderStroke
+            ButtonStyle.Borderless -> null
         },
         contentPadding = contentPadding,
         interactionSource = interactionSource,
@@ -103,6 +105,7 @@ internal fun Button(
 enum class ButtonStyle {
     Fill,
     Outline,
+    Borderless,
 }
 
 object OutlineButtonDefaults {
@@ -113,6 +116,20 @@ object OutlineButtonDefaults {
             color = PlaygroundTheme.colorScheme.primary
         )
 
+    @Composable
+    fun defaultButtonColors() = with(PlaygroundTheme.colorScheme) {
+        remember(this) {
+            ButtonColors(
+                containerColor = Color.Transparent,
+                contentColor = primary,
+                disabledContainerColor = Color.Transparent,
+                disabledContentColor = onSurface.copy(alpha = 0.38f)
+            )
+        }
+    }
+}
+
+object BorderlessButtonDefaults {
     @Composable
     fun defaultButtonColors() = with(PlaygroundTheme.colorScheme) {
         remember(this) {
@@ -218,6 +235,24 @@ private fun PreviewOutlineStyle(
             onClick = {},
         ) {
             Text("Button")
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewBorderlessStyle(
+    @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
+) {
+    PlaygroundTheme {
+        Surface {
+            Button(
+                style = ButtonStyle.Borderless,
+                enabled = enabled,
+                onClick = {},
+            ) {
+                Text("Button")
+            }
         }
     }
 }

@@ -3,7 +3,6 @@ package com.alexrdclement.uiplayground.demo.control
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,7 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.components.Checkbox
 import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
@@ -28,7 +27,7 @@ fun ToggleControl(
             Spacer(modifier = Modifier.height(PlaygroundTheme.spacing.small))
         }
 
-        Switch(control.value, onCheckedChange = control.onValueChange)
+        Checkbox(control.value, onCheckedChange = control.onValueChange)
     }
 }
 
@@ -36,12 +35,13 @@ fun ToggleControl(
 @Composable
 private fun Preview() {
     UiPlaygroundPreview {
-        var enabled by remember { mutableStateOf(false) }
+        var enabled by remember { mutableStateOf(true) }
+        val on by remember { mutableStateOf(false) }
         val control by remember {
             mutableStateOf(
                 Control.Toggle(
                     name = "Color",
-                    value = false,
+                    value = on,
                     onValueChange = { enabled = it }
                 )
             )
