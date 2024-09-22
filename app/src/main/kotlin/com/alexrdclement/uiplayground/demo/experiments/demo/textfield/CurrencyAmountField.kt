@@ -1,7 +1,6 @@
 package com.alexrdclement.uiplayground.demo.experiments.demo.textfield
 
 import androidx.annotation.CheckResult
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize

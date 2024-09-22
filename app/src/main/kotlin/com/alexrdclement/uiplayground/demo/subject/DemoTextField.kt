@@ -1,6 +1,5 @@
 package com.alexrdclement.uiplayground.demo.subject
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -20,9 +19,7 @@ fun DemoTextField(
         TextField(
             state = rememberTextFieldState(),
             textStyle = textStyle,
-            modifier = modifier
-                .background(PlaygroundTheme.colorScheme.background)
-                .align(Alignment.Center)
+            modifier = modifier.align(Alignment.Center)
         )
     }
 }
