@@ -1,7 +1,7 @@
 package com.alexrdclement.uiplayground.demo.control
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,7 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import com.alexrdclement.uiplayground.components.Slider
 import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
@@ -20,7 +22,8 @@ fun SliderControl(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
+        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
+        modifier = modifier,
     ) {
         Text(text = control.name)
         Slider(
@@ -38,7 +41,7 @@ fun SliderControl(
 @Composable
 private fun Preview() {
     UiPlaygroundPreview {
-        var value by remember { mutableStateOf(0f) }
+        var value by remember { mutableStateOf(0.5f) }
         val control = remember {
             Control.Slider(
                 name = "Amount",
