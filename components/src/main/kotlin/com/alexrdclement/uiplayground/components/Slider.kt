@@ -4,7 +4,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.MutatorMutex
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.DragScope
@@ -221,6 +220,13 @@ object SliderDefaults {
                 SolidColor(primary)
             }
         }
+    val ThumbBackgroundBrush: Brush
+        @Composable
+        get() = with(PlaygroundTheme.colorScheme) {
+            remember(this) {
+                SolidColor(surface)
+            }
+        }
 
     @Composable
     fun Track() {
@@ -245,20 +251,19 @@ object SliderDefaults {
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .size(ThumbSize)
-                .background(PlaygroundTheme.colorScheme.surface)
                 .border(ThumbBorderStroke)
         ) {
             val pointBrush = ThumbPointBrush
             val pointSize = ThumbPointSize
+            val backgroundBrush = ThumbBackgroundBrush
             Canvas(modifier = Modifier.fillMaxSize()) {
-                drawLine(
-                    pointBrush,
-                    start = Offset(0f, center.y),
-                    end = center,
-                    strokeWidth = TrackHeight.toPx()
+                drawRect(
+                    brush = backgroundBrush,
+                    topLeft = Offset(center.x, 0f),
+                    size = Size(this.size.width / 2, this.size.height)
                 )
                 drawRect(
-                    pointBrush,
+                    brush = pointBrush,
                     topLeft = Offset(center.x - pointSize.width / 2, center.y - pointSize.height / 2),
                     size = pointSize,
                 )
