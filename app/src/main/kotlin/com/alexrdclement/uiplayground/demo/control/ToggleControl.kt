@@ -35,14 +35,13 @@ fun ToggleControl(
 @Composable
 private fun Preview() {
     UiPlaygroundPreview {
-        var enabled by remember { mutableStateOf(true) }
-        val on by remember { mutableStateOf(false) }
+        var on by remember { mutableStateOf(false) }
         val control by remember {
             mutableStateOf(
                 Control.Toggle(
                     name = "Color",
                     value = on,
-                    onValueChange = { enabled = it }
+                    onValueChange = { on = it }
                 )
             )
         }
