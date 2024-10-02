@@ -48,6 +48,7 @@ import com.alexrdclement.uiplayground.components.MenuDefaults.DropdownMenuItemDe
 import com.alexrdclement.uiplayground.components.MenuDefaults.DropdownMenuItemDefaultMinWidth
 import com.alexrdclement.uiplayground.components.MenuDefaults.DropdownMenuVerticalPadding
 import com.alexrdclement.uiplayground.components.MenuDefaults.InTransitionDuration
+import com.alexrdclement.uiplayground.components.MenuDefaults.MenuBorderWidth
 import com.alexrdclement.uiplayground.components.MenuDefaults.OutTransitionDuration
 import com.alexrdclement.uiplayground.theme.ColorScheme
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
@@ -151,7 +152,7 @@ internal fun DropdownMenuContent(
             this.alpha = alpha
             transformOrigin = transformOriginState.value
         }.border(
-            width = 1.dp,
+            width = MenuBorderWidth,
             color = PlaygroundTheme.colorScheme.primary,
         ),
         shape = MenuDefaults.ContainerShape,
@@ -297,6 +298,7 @@ object MenuDefaults {
 
     // Size defaults.
     internal val MenuVerticalMargin = 48.dp
+    internal val MenuBorderWidth = 1.dp
     private val DropdownMenuItemHorizontalPadding = 12.dp
     internal val DropdownMenuVerticalPadding = 8.dp
     internal val DropdownMenuItemDefaultMinWidth = 112.dp

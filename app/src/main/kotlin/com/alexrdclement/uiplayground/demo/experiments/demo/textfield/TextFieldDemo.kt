@@ -33,9 +33,7 @@ fun TextFieldDemo(
     ) {
         Text(
             text = text,
-            style = PlaygroundTheme.typography.headline.copy(
-                color = PlaygroundTheme.colorScheme.onSurface,
-            ),
+            style = PlaygroundTheme.typography.headline,
         )
         CurrencyAmountField(
             textFieldState = textFieldState,

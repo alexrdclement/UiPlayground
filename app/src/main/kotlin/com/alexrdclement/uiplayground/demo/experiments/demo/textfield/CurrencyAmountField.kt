@@ -43,13 +43,10 @@ fun CurrencyAmountField(
 ) {
     TextField(
         state = textFieldState,
-        textStyle = PlaygroundTheme.typography.headline.copy(
-            color = PlaygroundTheme.colorScheme.primary,
-        ),
+        textStyle = PlaygroundTheme.typography.headline,
         modifier = Modifier
             .width(IntrinsicSize.Min)
-            .padding(PlaygroundTheme.spacing.small)
-            .padding(PlaygroundTheme.spacing.small),
+            .padding(PlaygroundTheme.spacing.medium),
         inputTransformation = CurrencyAmountFieldInputTransformation(maxNumDecimalValues),
         outputTransformation = CurrencyAmountFieldOutputTransformation,
         lineLimits = TextFieldLineLimits.SingleLine,
@@ -60,9 +57,7 @@ fun CurrencyAmountField(
                 if (includeCurrencyPrefix) {
                     Text(
                         text = currencySymbol,
-                        style = PlaygroundTheme.typography.headline.copy(
-                            color = PlaygroundTheme.colorScheme.primary,
-                        )
+                        style = PlaygroundTheme.typography.headline
                     )
                 }
 

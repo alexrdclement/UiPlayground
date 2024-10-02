@@ -22,7 +22,6 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -103,18 +102,14 @@ fun MediaControlBar(
                     ) {
                         Text(
                             text = mediaItem.title,
-                            style = PlaygroundTheme.typography.titleMedium.copy(
-                                textAlign = TextAlign.Start,
-                            ),
+                            style = PlaygroundTheme.typography.titleMedium,
                             maxLines = 1,
                             modifier = Modifier
                                 .basicMarquee()
                         )
                         Text(
                             text = mediaItem.artists.joinToString { it.name },
-                            style = PlaygroundTheme.typography.bodyMedium.copy(
-                                textAlign = TextAlign.Start,
-                            ),
+                            style = PlaygroundTheme.typography.bodyMedium,
                             maxLines = 1,
                             modifier = Modifier
                                 .basicMarquee()

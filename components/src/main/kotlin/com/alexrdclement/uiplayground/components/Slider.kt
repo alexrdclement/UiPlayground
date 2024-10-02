@@ -156,30 +156,26 @@ private fun Modifier.sliderSemantics(
     enabled: Boolean,
 ) = semantics {
     if (!enabled) disabled()
-    setProgress {
-            targetValue ->
+    setProgress { targetValue ->
         val resolvedValue = targetValue.coerceIn(
             state.valueRange.start,
             state.valueRange.endInclusive
         )
 
-        // This is to keep it consistent with AbsSeekbar.java: return false if no
-        // change from current.
         if (resolvedValue == state.value) {
-            false
-        } else {
-            if (resolvedValue != state.value) {
-                if (state.onValueChange != null) {
-                    state.onValueChange?.let {
-                        it(resolvedValue)
-                    }
-                } else {
-                    state.value = resolvedValue
-                }
-            }
-            state.onValueChangeFinished?.invoke()
-            true
+            return@setProgress false
         }
+
+        if (state.onValueChange != null) {
+            state.onValueChange?.let {
+                it(resolvedValue)
+            }
+        } else {
+            state.value = resolvedValue
+        }
+        state.onValueChangeFinished?.invoke()
+
+        true
     }
 }.progressSemantics(
     state.value,
