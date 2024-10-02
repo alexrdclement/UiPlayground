@@ -1,14 +1,14 @@
 package com.alexrdclement.uiplayground.ui.preview
 
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import com.alexrdclement.uiplayground.ui.theme.UiPlaygroundTheme
+import com.alexrdclement.uiplayground.components.Surface
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
 fun UiPlaygroundPreview(
     content: @Composable () -> Unit,
 ) {
-    UiPlaygroundTheme {
+    PlaygroundTheme {
         Surface(
             content = content,
         )

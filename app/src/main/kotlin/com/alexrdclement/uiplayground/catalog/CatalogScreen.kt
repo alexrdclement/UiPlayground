@@ -9,13 +9,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.components.Button
+import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
@@ -26,17 +27,17 @@ fun <T : CatalogItem> CatalogScreen(
     ReportDrawn()
     Column(
         verticalArrangement = Arrangement.spacedBy(
-            space = 8.dp,
+            space = PlaygroundTheme.spacing.medium,
             alignment = Alignment.CenterVertically,
         ),
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
+            .padding(PlaygroundTheme.spacing.small)
             .safeDrawingPadding()
             .verticalScroll(rememberScrollState())
     ) {
         for (item in items) {
-            OutlinedButton(
+            Button(
                 onClick = { onItemClick(item) },
                 modifier = Modifier.fillMaxWidth()
             ) {

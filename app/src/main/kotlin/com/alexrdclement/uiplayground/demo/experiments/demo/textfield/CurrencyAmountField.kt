@@ -1,7 +1,6 @@
-package com.alexrdclement.uiplayground.demo.experiments.demo.basictextfield
+package com.alexrdclement.uiplayground.demo.experiments.demo.textfield
 
 import androidx.annotation.CheckResult
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -9,8 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.text.BasicText
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.OutputTransformation
@@ -20,12 +17,13 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.delete
 import androidx.compose.foundation.text.input.insert
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.components.TextField
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 import java.text.DecimalFormatSymbols
 import kotlin.math.min
@@ -43,38 +41,32 @@ fun CurrencyAmountField(
     includeCurrencyPrefix: Boolean = true,
     maxNumDecimalValues: Int = 2
 ) {
-    BasicTextField(
+    TextField(
         state = textFieldState,
-        textStyle = MaterialTheme.typography.headlineLarge.copy(
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        ),
+        textStyle = PlaygroundTheme.typography.headline,
         modifier = Modifier
             .width(IntrinsicSize.Min)
-            .padding(8.dp)
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(8.dp),
+            .padding(PlaygroundTheme.spacing.medium),
         inputTransformation = CurrencyAmountFieldInputTransformation(maxNumDecimalValues),
         outputTransformation = CurrencyAmountFieldOutputTransformation,
         lineLimits = TextFieldLineLimits.SingleLine,
         decorator = { textField ->
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
             ) {
                 if (includeCurrencyPrefix) {
-                    BasicText(
-                        currencySymbol,
-                        style = MaterialTheme.typography.headlineLarge.copy(
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
+                    Text(
+                        text = currencySymbol,
+                        style = PlaygroundTheme.typography.headline
                     )
                 }
 
                 Box {
                     if (textFieldState.text.isEmpty()) {
-                        BasicText(
-                            placeholder,
-                            style = MaterialTheme.typography.headlineLarge.copy(
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        Text(
+                            text = placeholder,
+                            style = PlaygroundTheme.typography.headline.copy(
+                                color = PlaygroundTheme.colorScheme.primary.copy(
                                     alpha = 0.5f,
                                 ),
                             )
@@ -82,7 +74,7 @@ fun CurrencyAmountField(
                     }
 
                     // Min width to ensure cursor still appears
-                    Box(modifier = Modifier.widthIn(min = 8.dp)) {
+                    Box(modifier = Modifier.widthIn(min = PlaygroundTheme.spacing.small)) {
                         textField()
                     }
                 }

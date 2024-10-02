@@ -8,15 +8,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.components.preview.BoolPreviewParameterProvider
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
 fun PlayPauseButton(
@@ -38,15 +37,11 @@ fun PlayPauseButton(
             contentDescription = if (isPlaying) {
                 PlayPauseButtonContentDescriptionPlaying
             } else PlayPauseButtonContentDescriptionPaused,
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
+            colorFilter = ColorFilter.tint(PlaygroundTheme.colorScheme.onPrimary),
             modifier = Modifier
                 .fillMaxSize()
         )
     }
-}
-
-private class BoolPreviewParameterProvider : PreviewParameterProvider<Boolean> {
-    override val values = sequenceOf(true, false)
 }
 
 @Preview
@@ -54,11 +49,13 @@ private class BoolPreviewParameterProvider : PreviewParameterProvider<Boolean> {
 private fun PlayPreview(
     @PreviewParameter(BoolPreviewParameterProvider::class) isEnabled: Boolean,
 ) {
-    PlayPauseButton(
-        isEnabled = isEnabled,
-        isPlaying = false,
-        onClick = {},
-    )
+    PlaygroundTheme {
+        PlayPauseButton(
+            isEnabled = isEnabled,
+            isPlaying = false,
+            onClick = {},
+        )
+    }
 }
 
 @Preview
@@ -66,9 +63,11 @@ private fun PlayPreview(
 private fun PausePreview(
     @PreviewParameter(BoolPreviewParameterProvider::class) isEnabled: Boolean,
 ) {
-    PlayPauseButton(
-        isEnabled = isEnabled,
-        isPlaying = true,
-        onClick = {},
-    )
+    PlaygroundTheme {
+        PlayPauseButton(
+            isEnabled = isEnabled,
+            isPlaying = true,
+            onClick = {},
+        )
+    }
 }

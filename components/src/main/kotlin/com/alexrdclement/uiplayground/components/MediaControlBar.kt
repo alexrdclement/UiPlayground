@@ -1,10 +1,8 @@
 package com.alexrdclement.uiplayground.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,9 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +22,6 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -36,12 +30,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.trace
 import com.alexrdclement.uiplayground.components.model.Artist
 import com.alexrdclement.uiplayground.components.model.MediaItem
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlin.math.roundToInt
 
 private const val TraceName = "MediaControlBar"
 private const val ArtworkTraceName = "$TraceName:MediaItemArtwork"
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MediaControlBar(
     mediaItem: MediaItem,
@@ -101,23 +95,21 @@ fun MediaControlBar(
                         verticalArrangement = Arrangement.Center,
                         modifier = Modifier
                             .weight(1f)
-                            .padding(horizontal = 8.dp)
+                            .padding(horizontal = PlaygroundTheme.spacing.small)
                             .graphicsLayer {
                                 alpha = 1f - progress()
                             }
                     ) {
                         Text(
                             text = mediaItem.title,
-                            textAlign = TextAlign.Start,
-                            style = MaterialTheme.typography.titleMedium,
+                            style = PlaygroundTheme.typography.titleMedium,
                             maxLines = 1,
                             modifier = Modifier
                                 .basicMarquee()
                         )
                         Text(
                             text = mediaItem.artists.joinToString { it.name },
-                            textAlign = TextAlign.Start,
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = PlaygroundTheme.typography.bodyMedium,
                             maxLines = 1,
                             modifier = Modifier
                                 .basicMarquee()
@@ -129,7 +121,7 @@ fun MediaControlBar(
                         isPlaying = isPlaying,
                         modifier = Modifier
                             .size(52.dp)
-                            .padding(8.dp)
+                            .padding(PlaygroundTheme.spacing.small)
                             .graphicsLayer {
                                 alpha = 1f - progress()
                             }
@@ -149,16 +141,18 @@ private class ProgressPreviewParameterProvider : PreviewParameterProvider<Float>
 private fun Preview(
     @PreviewParameter(ProgressPreviewParameterProvider::class) progress: Float
 ) {
-    var isPlaying by remember { mutableStateOf(false) }
-    MediaControlBar(
-        mediaItem = MediaItem(
-            artworkThumbnailUrl = null,
-            artworkLargeUrl = null,
-            title = "Title",
-            artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
-        ),
-        isPlaying = isPlaying,
-        onPlayPauseClick = { isPlaying = !isPlaying },
-        progress = { progress },
-    )
+    PlaygroundTheme {
+        var isPlaying by remember { mutableStateOf(false) }
+        MediaControlBar(
+            mediaItem = MediaItem(
+                artworkThumbnailUrl = null,
+                artworkLargeUrl = null,
+                title = "Title",
+                artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
+            ),
+            isPlaying = isPlaying,
+            onPlayPauseClick = { isPlaying = !isPlaying },
+            progress = { progress },
+        )
+    }
 }

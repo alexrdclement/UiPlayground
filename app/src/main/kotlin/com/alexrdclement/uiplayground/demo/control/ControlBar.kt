@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.shaders.ColorSplitMode
 import com.alexrdclement.uiplayground.demo.shaders.DemoModifier
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
@@ -39,7 +40,7 @@ fun ControlBar(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(PlaygroundTheme.spacing.medium)
             ) {
                 when (control) {
                     is Control.Slider -> SliderControl(control = control)
@@ -97,7 +98,7 @@ fun SubjectModifierBar(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(PlaygroundTheme.spacing.medium)
     ) {
         DropdownControl(
             control = subjectControl,
