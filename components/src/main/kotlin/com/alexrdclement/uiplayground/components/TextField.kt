@@ -76,7 +76,7 @@ object TextFieldDefaults {
         @Composable
         get() = BorderStroke(
             width = 1.dp,
-            color = PlaygroundTheme.colorScheme.primary,
+            color = PlaygroundTheme.colorScheme.outline,
         )
 
     val TextFieldDecorator: TextFieldDecorator

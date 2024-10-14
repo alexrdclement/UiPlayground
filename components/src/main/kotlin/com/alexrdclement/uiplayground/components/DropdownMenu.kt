@@ -153,7 +153,7 @@ internal fun DropdownMenuContent(
             transformOrigin = transformOriginState.value
         }.border(
             width = MenuBorderWidth,
-            color = PlaygroundTheme.colorScheme.primary,
+            color = PlaygroundTheme.colorScheme.outline,
         ),
         shape = MenuDefaults.ContainerShape,
     ) {

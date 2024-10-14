@@ -11,6 +11,7 @@ data class ColorScheme(
     val onBackground: Color,
     val surface: Color,
     val onSurface: Color,
+    val outline: Color,
 )
 
 internal val PlaygroundDarkColorScheme = ColorScheme(
@@ -22,6 +23,7 @@ internal val PlaygroundDarkColorScheme = ColorScheme(
     onBackground = Color.White,
     surface = Color.Black,
     onSurface = Color.White,
+    outline = Color.White.copy(alpha = 0.5f),
 )
 
 internal val PlaygroundLightColorScheme = ColorScheme(
@@ -33,4 +35,5 @@ internal val PlaygroundLightColorScheme = ColorScheme(
     onBackground = Color.White,
     surface = Color.White,
     onSurface = Color.Black,
+    outline = Color.Black.copy(alpha = 0.5f),
 )

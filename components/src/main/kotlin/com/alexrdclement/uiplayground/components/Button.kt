@@ -114,7 +114,7 @@ object OutlineButtonDefaults {
         @Composable
         get() = BorderStroke(
             width = 1.dp,
-            color = PlaygroundTheme.colorScheme.primary
+            color = PlaygroundTheme.colorScheme.outline
         )
 
     @Composable

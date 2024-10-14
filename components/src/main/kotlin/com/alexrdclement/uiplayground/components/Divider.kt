@@ -43,5 +43,5 @@ fun VerticalDivider(
 
 object DividerDefaults {
     val Thickness: Dp = 1.dp
-    val color: Color @Composable get() = PlaygroundTheme.colorScheme.primary
+    val color: Color @Composable get() = PlaygroundTheme.colorScheme.outline
 }
