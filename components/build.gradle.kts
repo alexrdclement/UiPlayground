@@ -23,12 +23,13 @@ baselineProfile {
 }
 
 dependencies {
+    api(libs.compose.foundation)
+    api(libs.compose.ui)
+
     implementation(libs.androidx.tracing)
     implementation(libs.core.ktx)
     implementation(libs.coil)
     implementation(libs.coil.compose)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.ui)
     implementation(libs.material.icons.extended)
 
     implementation(projects.theme)
