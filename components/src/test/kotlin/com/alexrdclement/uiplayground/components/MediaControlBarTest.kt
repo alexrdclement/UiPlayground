@@ -1,6 +1,7 @@
 package com.alexrdclement.uiplayground.components
 
 import com.alexrdclement.uiplayground.testing.PaparazziTestRule
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.google.testing.junit.testparameterinjector.TestParameter
 import com.google.testing.junit.testparameterinjector.TestParameterInjector
 import org.junit.Rule
@@ -23,12 +24,14 @@ class MediaControlBarTest(
     @Test
     fun mediaControlBar() {
         paparazzi.snapshot {
-            MediaControlBar(
-                mediaItem = testMediaItem,
-                isPlaying = false,
-                onPlayPauseClick = {},
-                progress = { progress }
-            )
+            PlaygroundTheme {
+                MediaControlBar(
+                    mediaItem = testMediaItem,
+                    isPlaying = false,
+                    onPlayPauseClick = {},
+                    progress = { progress }
+                )
+            }
         }
     }
 }
