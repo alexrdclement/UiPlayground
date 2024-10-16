@@ -1,6 +1,7 @@
 import com.alexrdclement.uiplayground.convention.AndroidMinSdk
 import com.alexrdclement.uiplayground.convention.AndroidTargetSdk
-import com.alexrdclement.uiplayground.convention.configureKotlinAndroid
+import com.alexrdclement.uiplayground.convention.configureAndroid
+import com.alexrdclement.uiplayground.convention.configureKotlin
 import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -15,7 +16,8 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<ApplicationExtension> {
-                configureKotlinAndroid(this)
+                configureKotlin()
+                configureAndroid()
                 defaultConfig.targetSdk = AndroidTargetSdk
                 defaultConfig.minSdk = AndroidMinSdk
             }

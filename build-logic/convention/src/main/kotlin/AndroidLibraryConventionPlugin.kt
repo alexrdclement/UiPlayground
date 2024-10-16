@@ -1,6 +1,7 @@
 import com.alexrdclement.uiplayground.convention.AndroidMinSdk
 import com.alexrdclement.uiplayground.convention.AndroidTargetSdk
-import com.alexrdclement.uiplayground.convention.configureKotlinAndroid
+import com.alexrdclement.uiplayground.convention.configureAndroid
+import com.alexrdclement.uiplayground.convention.configureKotlin
 import com.alexrdclement.uiplayground.convention.disableUnnecessaryAndroidTests
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.gradle.LibraryExtension
@@ -15,11 +16,11 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.android.library")
-                apply("org.jetbrains.kotlin.android")
             }
 
             extensions.configure<LibraryExtension> {
-                configureKotlinAndroid(this)
+                configureKotlin()
+                configureAndroid()
                 defaultConfig.targetSdk = AndroidTargetSdk
                 defaultConfig.minSdk = AndroidMinSdk
             }

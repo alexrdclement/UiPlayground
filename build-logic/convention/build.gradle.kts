@@ -52,5 +52,9 @@ gradlePlugin {
             id = "uiplayground.android.test"
             implementationClass = "AndroidTestConventionPlugin"
         }
+        register("kotlinAndroid") {
+            id = "uiplayground.kotlin.android"
+            implementationClass = "KotlinAndroidConventionPlugin"
+        }
     }
 }
