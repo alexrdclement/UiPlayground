@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.uiplayground.android.library)
     alias(libs.plugins.uiplayground.android.library.compose)
+    alias(libs.plugins.uiplayground.kotlin.android)
     alias(libs.plugins.paparazzi)
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.maven.publish)
