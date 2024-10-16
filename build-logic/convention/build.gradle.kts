@@ -20,6 +20,8 @@ kotlin {
 dependencies {
     compileOnly(libs.android.gradle.plugin)
     compileOnly(libs.android.tools.common)
+    compileOnly(libs.compose.compiler.gradle.plugin)
+    compileOnly(libs.compose.gradle.plugin)
     compileOnly(libs.kotlin.gradle.plugin)
 }
 
@@ -32,6 +34,10 @@ tasks {
 
 gradlePlugin {
     plugins {
+        register("composeMultiplatform") {
+            id = "uiplayground.compose.multiplatform"
+            implementationClass = "ComposeMultiplatformConventionPlugin"
+        }
         register("androidApplicationCompose") {
             id = "uiplayground.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
@@ -55,6 +61,10 @@ gradlePlugin {
         register("kotlinAndroid") {
             id = "uiplayground.kotlin.android"
             implementationClass = "KotlinAndroidConventionPlugin"
+        }
+        register("kotlinMultiplatform") {
+            id = "uiplayground.kotlin.multiplatform"
+            implementationClass = "KotlinMultiplatformConventionPlugin"
         }
     }
 }

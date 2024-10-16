@@ -10,6 +10,7 @@ baselineprofile = "1.3.0"
 benchmark-macro-junit4 = "1.3.0"
 coil = "2.7.0"
 compose-bom = "2024.08.00"
+compose-multiplatform = "1.6.11"
 compose-runtime-tracing = "1.0.0-beta01"
 compose-ui = "1.7.0-rc01"
 core-ktx = "1.13.1"
@@ -60,6 +61,8 @@ test-parameter-injector = { group = "com.google.testparameterinjector", name = "
 # Dependencies of the included build-logic
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "android-tools" }
+compose-compiler-gradle-plugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
+compose-gradle-plugin = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "compose-multiplatform" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
@@ -68,14 +71,18 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
 
+uiplayground-compose-multiplatform = { id = "uiplayground.compose.multiplatform", version = "unspecified" }
 uiplayground-android-application = { id = "uiplayground.android.application", version = "unspecified" }
 uiplayground-android-application-compose = { id = "uiplayground.android.application.compose", version = "unspecified" }
 uiplayground-android-library = { id = "uiplayground.android.library", version = "unspecified" }
 uiplayground-android-library-compose = { id = "uiplayground.android.library.compose", version = "unspecified" }
 uiplayground-android-test = { id = "uiplayground.android.test", version = "unspecified" }
+uiplayground-kotlin-android = { id = "uiplayground.kotlin.android", version = "unspecified" }
+uiplayground-kotlin-multiplatform = { id = "uiplayground.kotlin.multiplatform", version = "unspecified" }
 
 [bundles]
