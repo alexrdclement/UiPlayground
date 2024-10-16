@@ -26,7 +26,6 @@ kotlin {
         }
         androidMain {
             dependencies {
-                implementation(compose.preview)
                 implementation(compose.uiTooling)
             }
         }
