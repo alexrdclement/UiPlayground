@@ -77,7 +77,7 @@ jobs:
         run: ./gradlew testDebug
 
       - name: Build all build type and flavor permutations
-        run: ./gradlew :app:assemble
+        run: ./gradlew :androidApp:assemble
 
       - name: Upload build outputs (APKs)
         uses: actions/upload-artifact@v3
