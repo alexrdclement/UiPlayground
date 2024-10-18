@@ -1,6 +1,5 @@
 package com.alexrdclement.uiplayground.demo.shaders
 
-import android.os.Build
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,11 +38,6 @@ import com.alexrdclement.uiplayground.ui.preview.UiPlaygroundPreview
 
 @Composable
 fun ShaderScreen() {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-        // Runtime shaders require API 33+
-        return
-    }
-
     var demoSubject by remember { mutableStateOf(DemoSubject.Circle) }
     val demoModifiers = remember {
         mutableStateListOf(
