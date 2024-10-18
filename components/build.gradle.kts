@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.uiplayground.android.library)
-    alias(libs.plugins.uiplayground.android.library.compose)
-    alias(libs.plugins.uiplayground.kotlin.android)
+    alias(libs.plugins.uiplayground.kotlin.multiplatform)
+    alias(libs.plugins.uiplayground.compose.multiplatform)
     alias(libs.plugins.paparazzi)
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.maven.publish)
@@ -24,25 +24,54 @@ baselineProfile {
 }
 
 dependencies {
-    api(libs.compose.foundation)
-    api(libs.compose.ui)
-
-    implementation(libs.androidx.tracing)
-    implementation(libs.core.ktx)
-    implementation(libs.coil)
-    implementation(libs.coil.compose)
-    implementation(libs.material.icons.extended)
-
-    implementation(projects.theme)
-
     baselineProfile(projects.components.baselineProfile)
+}
 
-    testImplementation(libs.junit)
-    testImplementation(libs.test.parameter.injector)
-    testImplementation(projects.testing)
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                api(compose.ui)
+                implementation(compose.foundation)
+                implementation(compose.material3)
 
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.compose.ui.test.junit4)
+                implementation(libs.core.ktx)
+                implementation(libs.coil.compose)
+                implementation(libs.coil.network.ktor3)
 
-    debugImplementation(libs.compose.ui.test.manifest)
+                implementation(projects.theme)
+                implementation(projects.trace)
+            }
+        }
+        androidMain {
+            dependencies {
+                implementation(compose.uiTooling)
+                implementation(libs.ktor.client.android)
+                implementation(libs.compose.ui.test.manifest)
+            }
+        }
+        androidUnitTest {
+            dependencies {
+                implementation(libs.junit)
+                implementation(libs.test.parameter.injector)
+                implementation(projects.testing)
+            }
+        }
+        androidInstrumentedTest {
+            dependencies {
+                implementation(libs.androidx.test.ext.junit)
+                implementation(libs.compose.ui.test.junit4)
+            }
+        }
+        appleMain {
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
+        }
+        jvmMain {
+            dependencies {
+                implementation(libs.ktor.client.java)
+            }
+        }
+    }
 }

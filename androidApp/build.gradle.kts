@@ -53,7 +53,6 @@ dependencies {
     implementation(libs.compose.runtime.tracing)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.graphics)
-    implementation(libs.material.icons.extended)
 
     implementation(projects.components)
     implementation(projects.shaders)

@@ -22,9 +22,6 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.trace
@@ -129,30 +126,5 @@ fun MediaControlBar(
                 }
             }
         }
-    }
-}
-
-private class ProgressPreviewParameterProvider : PreviewParameterProvider<Float> {
-    override val values = sequenceOf(0f, 0.5f, 1f)
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview(
-    @PreviewParameter(ProgressPreviewParameterProvider::class) progress: Float
-) {
-    PlaygroundTheme {
-        var isPlaying by remember { mutableStateOf(false) }
-        MediaControlBar(
-            mediaItem = MediaItem(
-                artworkThumbnailUrl = null,
-                artworkLargeUrl = null,
-                title = "Title",
-                artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
-            ),
-            isPlaying = isPlaying,
-            onPlayPauseClick = { isPlaying = !isPlaying },
-            progress = { progress },
-        )
     }
 }

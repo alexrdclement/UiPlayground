@@ -20,7 +20,7 @@ Media Control Sheet is an interactive component that shows simple media informat
 
 | 0% | 50% | 100% |
 | -- | --- | ---- |
-| ![Media Control Bar - 0%](https://media.githubusercontent.com/media/alexrdclement/UiPlayground/main/components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=0.0].png?raw=true) | ![Media Control Bar - 50%](<https://media.githubusercontent.com/media/alexrdclement/UiPlayground/main/components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=0.5].png?raw=true>) | ![Media Control Bar - 100%](<https://media.githubusercontent.com/media/alexrdclement/UiPlayground/main/components/src/test/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=1.0].png?raw=true>) |
+| ![Media Control Bar - 0%](https://media.githubusercontent.com/media/alexrdclement/UiPlayground/main/components/src/androidUnitTest/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=0.0].png?raw=true) | ![Media Control Bar - 50%](<https://media.githubusercontent.com/media/alexrdclement/UiPlayground/main/components/src/androidUnitTest/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=0.5].png?raw=true>) | ![Media Control Bar - 100%](<https://media.githubusercontent.com/media/alexrdclement/UiPlayground/main/components/src/androidUnitTest/snapshots/images/com.alexrdclement.uiplayground.components_MediaControlBarTest_mediaControlBar[progress=1.0].png?raw=true>) |
 
 ## Shaders
 

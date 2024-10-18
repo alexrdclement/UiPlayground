@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.clearAndSetSemantics
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 
 private const val DisabledAlpha = 0.35f
 

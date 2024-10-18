@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
@@ -22,10 +21,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.components.preview.BoolPreviewParameterProvider
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
@@ -205,55 +201,5 @@ class ButtonColors(
         result = 31 * result + disabledContainerColor.hashCode()
         result = 31 * result + disabledContentColor.hashCode()
         return result
-    }
-}
-
-@PreviewLightDark
-@Composable
-private fun PreviewFillStyle(
-    @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
-) {
-    PlaygroundTheme {
-        Button(
-            style = ButtonStyle.Fill,
-            enabled = enabled,
-            onClick = {},
-        ) {
-            Text("Button")
-        }
-    }
-}
-
-@PreviewLightDark
-@Composable
-private fun PreviewOutlineStyle(
-    @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
-) {
-    PlaygroundTheme {
-        Button(
-            style = ButtonStyle.Outline,
-            enabled = enabled,
-            onClick = {},
-        ) {
-            Text("Button")
-        }
-    }
-}
-
-@PreviewLightDark
-@Composable
-private fun PreviewBorderlessStyle(
-    @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
-) {
-    PlaygroundTheme {
-        Surface {
-            Button(
-                style = ButtonStyle.Borderless,
-                enabled = enabled,
-                onClick = {},
-            ) {
-                Text("Button")
-            }
-        }
     }
 }
