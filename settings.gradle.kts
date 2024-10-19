@@ -19,6 +19,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "UiPlayground"
 
 include(":androidApp")
+include(":app")
 include(":baseline-profile")
 include(":benchmark")
 include(":components")

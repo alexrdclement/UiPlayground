@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.graphics)
 
+    implementation(projects.app)
     implementation(projects.components)
     implementation(projects.shaders)
     implementation(projects.theme)
