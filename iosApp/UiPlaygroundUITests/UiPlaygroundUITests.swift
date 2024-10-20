@@ -1,6 +1,6 @@
 //
-//  uiplaygroundUITests.swift
-//  uiplaygroundUITests
+//  UiPlaygroundUITests.swift
+//  UiPlaygroundUITests
 //
 //  Created by Alex Clement on 10/18/24.
 //

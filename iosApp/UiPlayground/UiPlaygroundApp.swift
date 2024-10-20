@@ -1,6 +1,6 @@
 //
-//  uiplaygroundApp.swift
-//  uiplayground
+//  UiPlaygroundApp.swift
+//  UiPlayground
 //
 //  Created by Alex Clement on 10/18/24.
 //
