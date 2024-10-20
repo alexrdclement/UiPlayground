@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.RenderEffect
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.shaders.preview.DemoCircle
 import com.alexrdclement.uiplayground.shaders.preview.ShaderPreview
+import org.intellij.lang.annotations.Language
 import kotlin.math.roundToInt
 
 // Inspired by Rikin Marfatia's Pixellate
@@ -22,6 +23,7 @@ private const val UniformShaderName = "composable"
 private const val UniformSizeName = "size"
 private const val UniformSubdivisionsName = "subdivisions"
 
+@Language("AGSL")
 private var ShaderSource = """
 uniform shader $UniformShaderName;
 uniform float2 $UniformSizeName;

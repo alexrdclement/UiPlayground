@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.RenderEffect
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.shaders.preview.DemoCircle
 import com.alexrdclement.uiplayground.shaders.preview.ShaderPreview
+import org.intellij.lang.annotations.Language
 
 // Inspired by Rikin Marfatia's Grainy Gradients https://www.youtube.com/watch?v=soMl3k0mBx4
 
@@ -23,6 +24,7 @@ private const val UniformAmount = "amount"
 private const val UniformColorEnabled = "colorEnabledInt"
 private const val UniformFilterBlack = "filterBlackInt"
 
+@Language("AGSL")
 private var ShaderSource = """
 uniform shader $UniformShaderName;
 uniform float2 $UniformSize;

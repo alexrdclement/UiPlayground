@@ -6,7 +6,7 @@ private const val UniformShaderName = "composable"
 private const val UniformSizeName = "size"
 private const val UniformSubdivisionsName = "subdivisions"
 
-// TODO: convert to sksl
+// SKSL
 private var ShaderSource = """
 uniform shader $UniformShaderName;
 uniform float2 $UniformSizeName;

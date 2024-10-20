@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.alexrdclement.uiplayground.app.catalog.CatalogScreen
 import com.alexrdclement.uiplayground.app.demo.components.Component
 
 private const val componentsGraphRoute = "componentGraph"
@@ -33,7 +34,7 @@ private fun NavGraphBuilder.componentCatalogScreen(
     onItemClick: (Component) -> Unit,
 ) {
     composable(componentCatalogRoute) {
-        com.alexrdclement.uiplayground.app.catalog.CatalogScreen(
+        CatalogScreen(
             items = Component.entries.toList(),
             onItemClick = onItemClick,
         )

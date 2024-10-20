@@ -8,7 +8,7 @@ private const val UniformAmount = "amount"
 private const val UniformColorEnabled = "colorEnabledInt"
 private const val UniformFilterBlack = "filterBlackInt"
 
-// TODO: convert to sksl
+// SKSL
 private var ShaderSource = """
 uniform shader $UniformShaderName;
 uniform float2 $UniformSize;
@@ -56,7 +56,16 @@ class NoiseShaderImpl(
     }
 
     override fun setColorMode(colorMode: NoiseColorMode) {
-        shader.setIntUniform(UniformColorEnabled, colorMode.ordinal)
+        val colorEnabled = when (colorMode) {
+            NoiseColorMode.Monochrome -> 0
+            else -> 1
+        }
+        val filterBlack = when (colorMode) {
+            NoiseColorMode.RandomColorFilterBlack -> 1
+            else -> 0
+        }
+        shader.setIntUniform(UniformColorEnabled, colorEnabled)
+        shader.setIntUniform(UniformFilterBlack, filterBlack)
     }
 
     override fun setAmount(amount: Float) {

@@ -13,10 +13,12 @@ import androidx.compose.ui.graphics.RenderEffect
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.shaders.preview.DemoCircle
 import com.alexrdclement.uiplayground.shaders.preview.ShaderPreview
+import org.intellij.lang.annotations.Language
 
 private const val UniformShaderName = "composable"
 private const val UniformAmount = "amount"
 
+@Language("AGSL")
 private var ShaderSource = """
 uniform shader $UniformShaderName;
 uniform float $UniformAmount;

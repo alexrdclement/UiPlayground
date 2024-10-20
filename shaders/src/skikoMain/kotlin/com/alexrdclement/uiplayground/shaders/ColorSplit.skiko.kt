@@ -8,7 +8,7 @@ private const val UniformXAmountName = "xAmount"
 private const val UniformYAmountName = "yAmount"
 private const val UniformColorModeName = "colorMode"
 
-// TODO: convert to sksl
+// SKSL
 private var ShaderSource = """
 uniform shader $UniformShaderName;
 uniform float2 $UniformSizeName;

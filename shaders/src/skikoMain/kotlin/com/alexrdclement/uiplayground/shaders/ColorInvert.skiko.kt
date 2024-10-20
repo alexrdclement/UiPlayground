@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.RenderEffect
 private const val UniformShaderName = "composable"
 private const val UniformAmount = "amount"
 
-// TODO: convert to sksl
+// SKSL
 private var ShaderSource = """
 uniform shader $UniformShaderName;
 uniform float $UniformAmount;

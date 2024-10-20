@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.RenderEffect
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.shaders.preview.DemoCircle
 import com.alexrdclement.uiplayground.shaders.preview.ShaderPreview
+import org.intellij.lang.annotations.Language
 
 // Inspired by
 // - Romain Guy on Coding with the Italians: https://www.youtube.com/watch?v=s5RibxKdo-o
@@ -24,6 +25,7 @@ private const val UniformXAmountName = "xAmount"
 private const val UniformYAmountName = "yAmount"
 private const val UniformColorModeName = "colorMode"
 
+@Language("AGSL")
 private var ShaderSource = """
 uniform shader $UniformShaderName;
 uniform float2 $UniformSizeName;
