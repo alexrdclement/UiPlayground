@@ -14,14 +14,14 @@ import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.components.Button
 import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.trace.ReportDrawn
 
 @Composable
 fun <T : CatalogItem> CatalogScreen(
     items: List<T>,
     onItemClick: (T) -> Unit,
 ) {
-    // TODO
-    // ReportDrawn()
+    ReportDrawn()
     Column(
         verticalArrangement = Arrangement.spacedBy(
             space = PlaygroundTheme.spacing.medium,

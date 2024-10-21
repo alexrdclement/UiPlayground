@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.uiplayground.android.library)
     alias(libs.plugins.uiplayground.kotlin.multiplatform)
+    alias(libs.plugins.uiplayground.compose.multiplatform)
 }
 
 android {
@@ -26,8 +27,14 @@ kotlin {
     }
 
     sourceSets {
+        commonMain {
+            dependencies {
+                implementation(compose.runtime)
+            }
+        }
         androidMain {
             dependencies {
+                implementation(libs.activity.compose)
                 implementation(libs.androidx.tracing)
             }
         }

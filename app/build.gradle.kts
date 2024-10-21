@@ -27,6 +27,7 @@ kotlin {
             implementation(projects.components)
             implementation(projects.shaders)
             implementation(projects.theme)
+            implementation(projects.trace)
         }
         androidMain {
             dependencies {
