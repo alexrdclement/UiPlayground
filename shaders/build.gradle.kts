@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.uiplayground.android.library)
-    alias(libs.plugins.uiplayground.android.library.compose)
+    alias(libs.plugins.uiplayground.kotlin.multiplatform)
+    alias(libs.plugins.uiplayground.compose.multiplatform)
     alias(libs.plugins.paparazzi)
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.maven.publish)
@@ -23,20 +24,54 @@ baselineProfile {
 }
 
 dependencies {
-    implementation(libs.androidx.tracing)
-    implementation(libs.core.ktx)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.ui)
-    implementation(libs.material3)
-
     baselineProfile(projects.shaders.baselineProfile)
+}
 
-    testImplementation(libs.junit)
-    testImplementation(libs.test.parameter.injector)
-    testImplementation(projects.testing)
+kotlin {
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "shaders"
+            isStatic = true
+        }
+    }
 
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.ui)
+                implementation(libs.core.ktx)
+                implementation(projects.trace)
+            }
+        }
+        androidMain {
+            dependencies {
+                implementation(compose.uiTooling)
+                implementation(libs.compose.ui.test.manifest)
+            }
+        }
+        androidUnitTest {
+            dependencies {
+                implementation(libs.junit)
+                implementation(libs.test.parameter.injector)
+                implementation(projects.testing)
+            }
+        }
 
-    debugImplementation(libs.compose.ui.test.manifest)
+        val skikoMain by creating {
+            dependsOn(commonMain.get())
+        }
+
+        iosMain {
+            dependsOn(skikoMain)
+        }
+        jvmMain {
+            dependsOn(skikoMain)
+        }
+    }
 }

@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.uiplayground.android.library)
+    alias(libs.plugins.uiplayground.kotlin.android)
     alias(libs.plugins.paparazzi)
 }
 

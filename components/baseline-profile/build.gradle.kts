@@ -7,7 +7,7 @@ plugins {
 android {
     namespace = "com.alexrdclement.uiplayground.components.baselineprofile"
 
-    targetProjectPath = ":app"
+    targetProjectPath = ":androidApp"
 
 }
 
