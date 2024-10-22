@@ -3,6 +3,7 @@ package com.alexrdclement.uiplayground.app.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.alexrdclement.uiplayground.app.catalog.MainCatalogItem
 import com.alexrdclement.uiplayground.app.catalog.navigation.mainCatalogScreen
 import com.alexrdclement.uiplayground.app.demo.components.navigation.componentsGraph
 import com.alexrdclement.uiplayground.app.demo.components.navigation.navigateToComponents
@@ -21,9 +22,9 @@ fun UiPlaygroundNavHost() {
         mainCatalogScreen(
             onItemClick = { item ->
                 when (item) {
-                    com.alexrdclement.uiplayground.app.catalog.MainCatalogItem.Components -> navController.navigateToComponents()
-                    com.alexrdclement.uiplayground.app.catalog.MainCatalogItem.Experiments -> navController.navigateToExperiments()
-                    com.alexrdclement.uiplayground.app.catalog.MainCatalogItem.Shaders -> navController.navigateToShaders()
+                    MainCatalogItem.Components -> navController.navigateToComponents()
+                    MainCatalogItem.Experiments -> navController.navigateToExperiments()
+                    MainCatalogItem.Shaders -> navController.navigateToShaders()
                 }
             }
         )

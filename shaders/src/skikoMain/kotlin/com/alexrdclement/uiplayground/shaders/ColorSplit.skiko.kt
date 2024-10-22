@@ -73,25 +73,25 @@ class ColorSplitShaderImpl(
     configure: ColorSplitShader.() -> Unit,
 ) : ColorSplitShader {
 
-    private val shader = createShaderControl(ShaderSource, UniformShaderName, configure = { configure() })
+    private val control = createShaderControl(ShaderSource, UniformShaderName, configure = { configure() })
 
     override fun createRenderEffect(): RenderEffect? {
-        return shader.createRenderEffect()
+        return control.createRenderEffect()
     }
 
     override fun setXAmount(xAmount: Float) {
-        shader.setFloatUniform(UniformXAmountName, xAmount)
+        control.setFloatUniform(UniformXAmountName, xAmount)
     }
 
     override fun setYAmount(yAmount: Float) {
-        shader.setFloatUniform(UniformYAmountName, yAmount)
+        control.setFloatUniform(UniformYAmountName, yAmount)
     }
 
     override fun setColorMode(mode: ColorSplitMode) {
-        shader.setIntUniform(UniformColorModeName, mode.ordinal)
+        control.setIntUniform(UniformColorModeName, mode.ordinal)
     }
 
     override fun onRemeasured(width: Int, height: Int) {
-        shader.setFloatUniform(UniformSizeName, width.toFloat(), height.toFloat())
+        control.setFloatUniform(UniformSizeName, width.toFloat(), height.toFloat())
     }
 }

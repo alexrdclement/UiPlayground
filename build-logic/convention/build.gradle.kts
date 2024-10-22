@@ -34,10 +34,6 @@ tasks {
 
 gradlePlugin {
     plugins {
-        register("composeMultiplatform") {
-            id = "uiplayground.compose.multiplatform"
-            implementationClass = "ComposeMultiplatformConventionPlugin"
-        }
         register("androidApplicationCompose") {
             id = "uiplayground.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
@@ -57,6 +53,10 @@ gradlePlugin {
         register("androidTest") {
             id = "uiplayground.android.test"
             implementationClass = "AndroidTestConventionPlugin"
+        }
+        register("composeMultiplatform") {
+            id = "uiplayground.compose.multiplatform"
+            implementationClass = "ComposeMultiplatformConventionPlugin"
         }
         register("kotlinAndroid") {
             id = "uiplayground.kotlin.android"

@@ -65,10 +65,10 @@ actual fun createNoiseShader(
 class NoiseShaderImpl(
     configure: NoiseShader.() -> Unit
 ): NoiseShader {
-    private val shader = createShaderControl(ShaderSource, UniformShaderName, configure = { configure() })
+    private val control = createShaderControl(ShaderSource, UniformShaderName, configure = { configure() })
 
     override fun createRenderEffect(): RenderEffect? {
-        return shader.createRenderEffect()
+        return control.createRenderEffect()
     }
 
     override fun setColorMode(colorMode: NoiseColorMode) {
@@ -80,16 +80,16 @@ class NoiseShaderImpl(
             NoiseColorMode.RandomColorFilterBlack -> 1
             else -> 0
         }
-        shader.setIntUniform(UniformColorEnabled, colorEnabled)
-        shader.setIntUniform(UniformFilterBlack, filterBlack)
+        control.setIntUniform(UniformColorEnabled, colorEnabled)
+        control.setIntUniform(UniformFilterBlack, filterBlack)
     }
 
     override fun setAmount(amount: Float) {
-        shader.setFloatUniform(UniformAmount, amount)
+        control.setFloatUniform(UniformAmount, amount)
     }
 
     override fun onRemeasured(width: Int, height: Int) {
-        shader.setFloatUniform(UniformSize, width.toFloat(), height.toFloat())
+        control.setFloatUniform(UniformSize, width.toFloat(), height.toFloat())
     }
 }
 

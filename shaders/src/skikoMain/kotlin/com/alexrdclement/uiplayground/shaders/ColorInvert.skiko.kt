@@ -28,13 +28,13 @@ class ColorInvertShaderImpl(
     configure: ColorInvertShader.() -> Unit
 ) : ColorInvertShader {
 
-    private val shader = createShaderControl(ShaderSource, UniformShaderName, configure = { configure() })
+    private val control = createShaderControl(ShaderSource, UniformShaderName, configure = { configure() })
 
     override fun setAmount(amount: Float) {
-        shader.setFloatUniform(UniformAmount, amount)
+        control.setFloatUniform(UniformAmount, amount)
     }
 
     override fun createRenderEffect(): RenderEffect? {
-        return shader.createRenderEffect()
+        return control.createRenderEffect()
     }
 }

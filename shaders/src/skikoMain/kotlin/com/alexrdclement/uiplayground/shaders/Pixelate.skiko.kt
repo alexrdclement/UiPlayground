@@ -29,17 +29,17 @@ actual fun createPixelateShader(
 class PixelateShaderImpl(
     configure: PixelateShader.() -> Unit
 ): PixelateShader {
-    private val shader = createShaderControl(ShaderSource, UniformShaderName, configure = { configure() })
+    private val control = createShaderControl(ShaderSource, UniformShaderName, configure = { configure() })
 
     override fun createRenderEffect(): RenderEffect? {
-        return shader.createRenderEffect()
+        return control.createRenderEffect()
     }
 
     override fun setSubdivisions(subdivisions: Int) {
-        shader.setFloatUniform(UniformSubdivisionsName, subdivisions.toFloat())
+        control.setFloatUniform(UniformSubdivisionsName, subdivisions.toFloat())
     }
 
     override fun onRemeasured(width: Int, height: Int) {
-        shader.setFloatUniform(UniformSizeName, width.toFloat(), height.toFloat())
+        control.setFloatUniform(UniformSizeName, width.toFloat(), height.toFloat())
     }
 }
