@@ -45,27 +45,10 @@ android {
 
 dependencies {
     implementation(libs.core.ktx)
-    implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
-    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.profileinstaller)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.runtime.tracing)
-    implementation(libs.compose.ui)
-    implementation(libs.compose.ui.graphics)
 
     implementation(projects.app)
-    implementation(projects.components)
-    implementation(projects.shaders)
-    implementation(projects.theme)
 
     baselineProfile(projects.baselineProfile)
-
-    testImplementation(libs.junit)
-
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(libs.compose.ui.test.junit4)
-
-    debugImplementation(libs.compose.ui.test.manifest)
 }
