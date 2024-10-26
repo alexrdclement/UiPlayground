@@ -75,7 +75,7 @@ PLcom/alexrdclement/uiplayground/components/MediaControlBarKt$MediaControlBar$3$
 PLcom/alexrdclement/uiplayground/components/MediaControlBarKt$MediaControlBar$3$1$1$$ExternalSyntheticLambda4;->invoke(Ljava/lang/Object;)Ljava/lang/Object;
 PLcom/alexrdclement/uiplayground/components/MediaControlBarKt$MediaControlBar$3$1$1$$ExternalSyntheticLambda5;-><init>(Lkotlin/jvm/functions/Function0;)V
 HPLcom/alexrdclement/uiplayground/components/MediaControlBarKt$MediaControlBar$3$1$1$$ExternalSyntheticLambda5;->invoke(Ljava/lang/Object;)Ljava/lang/Object;
-PLcom/alexrdclement/uiplayground/components/MediaControlBarKt$MediaControlBar$3$1$1$$ExternalSyntheticLambda6;-><init>(Landroidx/compose/ui/layout/Placeable;)V
+HPLcom/alexrdclement/uiplayground/components/MediaControlBarKt$MediaControlBar$3$1$1$$ExternalSyntheticLambda6;-><init>(Landroidx/compose/ui/layout/Placeable;)V
 HPLcom/alexrdclement/uiplayground/components/MediaControlBarKt$MediaControlBar$3$1$1$$ExternalSyntheticLambda6;->invoke(Ljava/lang/Object;)Ljava/lang/Object;
 PLcom/alexrdclement/uiplayground/components/MediaControlSheetAnchor;->$values()[Lcom/alexrdclement/uiplayground/components/MediaControlSheetAnchor;
 PLcom/alexrdclement/uiplayground/components/MediaControlSheetAnchor;-><clinit>()V
@@ -97,11 +97,11 @@ PLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$$ExternalSynthet
 PLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$$ExternalSyntheticLambda1;->invoke()Ljava/lang/Object;
 PLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$$ExternalSyntheticLambda3;-><init>(Landroidx/compose/ui/unit/IntSize;FF)V
 PLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$$ExternalSyntheticLambda3;->invoke(Ljava/lang/Object;)Ljava/lang/Object;
-PLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$MediaControlSheet$1$1;->$r8$lambda$UpkJIt026mbAYOjR_YLD26rFdS4(Lcom/alexrdclement/uiplayground/components/MediaControlSheetState;Landroidx/compose/ui/unit/Density;)Landroidx/compose/ui/unit/IntOffset;
-PLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$MediaControlSheet$1$1;->$r8$lambda$aOLuSkOVOCtJJftZpvcwNQ8MTWU(Lcom/alexrdclement/uiplayground/components/MediaControlSheetState;)F
+HPLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$MediaControlSheet$1$1;->$r8$lambda$UpkJIt026mbAYOjR_YLD26rFdS4(Lcom/alexrdclement/uiplayground/components/MediaControlSheetState;Landroidx/compose/ui/unit/Density;)Landroidx/compose/ui/unit/IntOffset;
+HPLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$MediaControlSheet$1$1;->$r8$lambda$aOLuSkOVOCtJJftZpvcwNQ8MTWU(Lcom/alexrdclement/uiplayground/components/MediaControlSheetState;)F
 PLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$MediaControlSheet$1$1;-><init>(Lcom/alexrdclement/uiplayground/components/MediaControlSheetState;FLcom/alexrdclement/uiplayground/components/model/MediaItem;ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;)V
 HPLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$MediaControlSheet$1$1;->invoke$lambda$2$lambda$1(Lcom/alexrdclement/uiplayground/components/MediaControlSheetState;Landroidx/compose/ui/unit/Density;)Landroidx/compose/ui/unit/IntOffset;
-PLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$MediaControlSheet$1$1;->invoke$lambda$5$lambda$4$lambda$3(Lcom/alexrdclement/uiplayground/components/MediaControlSheetState;)F
+HPLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$MediaControlSheet$1$1;->invoke$lambda$5$lambda$4$lambda$3(Lcom/alexrdclement/uiplayground/components/MediaControlSheetState;)F
 HPLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$MediaControlSheet$1$1;->invoke(Landroidx/compose/foundation/layout/BoxWithConstraintsScope;Landroidx/compose/runtime/Composer;I)V
 PLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$MediaControlSheet$1$1;->invoke(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
 PLcom/alexrdclement/uiplayground/components/MediaControlSheetKt$MediaControlSheet$1$1$$ExternalSyntheticLambda0;-><init>(Lcom/alexrdclement/uiplayground/components/MediaControlSheetState;)V
@@ -117,7 +117,7 @@ PLcom/alexrdclement/uiplayground/components/MediaControlSheetState;->anchoredDra
 PLcom/alexrdclement/uiplayground/components/MediaControlSheetState;->expand(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 PLcom/alexrdclement/uiplayground/components/MediaControlSheetState;->getAnchoredDraggableState$components_release()Landroidx/compose/foundation/gestures/AnchoredDraggableState;
 PLcom/alexrdclement/uiplayground/components/MediaControlSheetState;->getCurrentValue()Lcom/alexrdclement/uiplayground/components/MediaControlSheetAnchor;
-PLcom/alexrdclement/uiplayground/components/MediaControlSheetState;->getOffset()F
+HPLcom/alexrdclement/uiplayground/components/MediaControlSheetState;->getOffset()F
 HPLcom/alexrdclement/uiplayground/components/MediaControlSheetState;->getPartialToFullProgress()F
 PLcom/alexrdclement/uiplayground/components/MediaControlSheetState;->getTargetValue()Lcom/alexrdclement/uiplayground/components/MediaControlSheetAnchor;
 PLcom/alexrdclement/uiplayground/components/MediaControlSheetState;->isExpanded()Z
