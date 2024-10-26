@@ -9,19 +9,23 @@ import com.alexrdclement.uiplayground.app.demo.experiments.ExperimentScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ExperimentRoute(val experiment: Experiment)
+data class ExperimentRoute(
+    // Serializable enums not supported in multiplatform navigation as of 2.8.0-alpha10
+    val experimentOrdinal: Int,
+)
 
 fun NavGraphBuilder.experimentScreen() {
     composable<ExperimentRoute> { backStackEntry ->
         val experimentRoute: ExperimentRoute = backStackEntry.toRoute()
+        val experiment = Experiment.entries[experimentRoute.experimentOrdinal]
         ExperimentScreen(
-            experiment = experimentRoute.experiment,
+            experiment = experiment,
         )
     }
 }
 
 fun NavController.navigateToExperiment(experiment: Experiment) {
-    this.navigate(ExperimentRoute(experiment)) {
+    this.navigate(ExperimentRoute(experiment.ordinal)) {
         launchSingleTop = true
     }
 }

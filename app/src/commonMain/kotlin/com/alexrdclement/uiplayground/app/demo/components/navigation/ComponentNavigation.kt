@@ -9,19 +9,23 @@ import com.alexrdclement.uiplayground.demo.components.ComponentScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ComponentRoute(val component: Component)
+data class ComponentRoute(
+    // Serializable enums not supported in multiplatform navigation as of 2.8.0-alpha10
+    val componentOrdinal: Int,
+)
 
 fun NavGraphBuilder.componentScreen() {
     composable<ComponentRoute> { backStackEntry ->
         val componentRoute: ComponentRoute = backStackEntry.toRoute()
+        val component = Component.entries[componentRoute.componentOrdinal]
         ComponentScreen(
-            component = componentRoute.component,
+            component = component,
         )
     }
 }
 
 fun NavController.navigateToComponent(component: Component) {
-    this.navigate(ComponentRoute(component)) {
+    this.navigate(ComponentRoute(component.ordinal)) {
         launchSingleTop = true
     }
 }
