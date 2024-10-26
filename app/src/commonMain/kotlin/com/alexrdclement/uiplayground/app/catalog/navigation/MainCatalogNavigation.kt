@@ -4,13 +4,15 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.alexrdclement.uiplayground.app.catalog.CatalogScreen
 import com.alexrdclement.uiplayground.app.catalog.MainCatalogItem
+import kotlinx.serialization.Serializable
 
-const val mainCatalogRoute = "catalog"
+@Serializable
+object CatalogRoute
 
 fun NavGraphBuilder.mainCatalogScreen(
     onItemClick: (MainCatalogItem) -> Unit,
 ) {
-    composable(mainCatalogRoute) {
+    composable<CatalogRoute> {
         CatalogScreen(
             items = MainCatalogItem.entries.toList(),
             onItemClick = onItemClick,

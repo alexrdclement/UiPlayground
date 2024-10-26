@@ -4,17 +4,19 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.alexrdclement.uiplayground.app.demo.shaders.ShaderScreen
+import kotlinx.serialization.Serializable
 
-private const val shadersRoute = "shaders"
+@Serializable
+object ShadersRoute
 
-fun NavController.navigateToShaders() {
-    this.navigate(route = shadersRoute) {
-        launchSingleTop = true
+fun NavGraphBuilder.shadersScreen() {
+    composable<ShadersRoute> {
+        ShaderScreen()
     }
 }
 
-fun NavGraphBuilder.shadersScreen() {
-    composable(shadersRoute) {
-        ShaderScreen()
+fun NavController.navigateToShaders() {
+    this.navigate(ShadersRoute) {
+        launchSingleTop = true
     }
 }

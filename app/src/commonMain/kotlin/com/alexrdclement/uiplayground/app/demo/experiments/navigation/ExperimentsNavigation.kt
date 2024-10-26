@@ -6,16 +6,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.alexrdclement.uiplayground.app.catalog.CatalogScreen
 import com.alexrdclement.uiplayground.app.demo.experiments.Experiment
+import kotlinx.serialization.Serializable
 
-private const val experimentsGraphRoute = "experimentsGraph"
-private const val experimentCatalogRoute = "experimentCatalog"
+@Serializable
+object ExperimentsGraphRoute
+
+@Serializable
+object ExperimentCatalogRoute
 
 fun NavGraphBuilder.experimentsGraph(
     navController: NavController,
 ) {
-    navigation(
-        route = experimentsGraphRoute,
-        startDestination = experimentCatalogRoute,
+    navigation<ExperimentsGraphRoute>(
+        startDestination = ExperimentCatalogRoute,
     ) {
         experimentCatalogScreen(
             onItemClick = navController::navigateToExperiment,
@@ -25,7 +28,7 @@ fun NavGraphBuilder.experimentsGraph(
 }
 
 fun NavController.navigateToExperiments() {
-    this.navigate(experimentsGraphRoute) {
+    this.navigate(ExperimentsGraphRoute) {
         launchSingleTop = true
     }
 }
@@ -33,7 +36,7 @@ fun NavController.navigateToExperiments() {
 private fun NavGraphBuilder.experimentCatalogScreen(
     onItemClick: (Experiment) -> Unit,
 ) {
-    composable(experimentCatalogRoute) {
+    composable<ExperimentCatalogRoute> {
         CatalogScreen(
             items = Experiment.entries.toList(),
             onItemClick = onItemClick,

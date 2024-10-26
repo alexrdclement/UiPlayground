@@ -2,27 +2,22 @@ package com.alexrdclement.uiplayground.app.demo.experiments.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.alexrdclement.uiplayground.app.demo.experiments.Experiment
 import com.alexrdclement.uiplayground.app.demo.experiments.ExperimentScreen
+import kotlinx.serialization.Serializable
 
-private const val experimentRouteRoot = "experiment"
-private const val experimentNameArgKey = "experimentName"
-private const val experimentRouteTemplate = "$experimentRouteRoot/{$experimentNameArgKey}"
-
-private fun createExperimentRoute(experiment: Experiment) = "$experimentRouteRoot/${experiment.name}"
+@Serializable
+data class ExperimentRoute(
+    // Serializable enums not supported in multiplatform navigation as of 2.8.0-alpha10
+    val experimentOrdinal: Int,
+)
 
 fun NavGraphBuilder.experimentScreen() {
-    composable(
-        route = experimentRouteTemplate,
-        arguments = listOf(
-            navArgument(experimentNameArgKey) { type = NavType.StringType }
-        )
-    ) { backStackEntry ->
-        val experimentName = backStackEntry.arguments?.getString(experimentNameArgKey)
-        val experiment = experimentName?.let(Experiment::valueOf) ?: Experiment.TextField
+    composable<ExperimentRoute> { backStackEntry ->
+        val experimentRoute: ExperimentRoute = backStackEntry.toRoute()
+        val experiment = Experiment.entries[experimentRoute.experimentOrdinal]
         ExperimentScreen(
             experiment = experiment,
         )
@@ -30,7 +25,7 @@ fun NavGraphBuilder.experimentScreen() {
 }
 
 fun NavController.navigateToExperiment(experiment: Experiment) {
-    this.navigate(createExperimentRoute(experiment)) {
+    this.navigate(ExperimentRoute(experiment.ordinal)) {
         launchSingleTop = true
     }
 }

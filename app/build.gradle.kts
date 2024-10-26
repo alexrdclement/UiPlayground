@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.uiplayground.android.library)
     alias(libs.plugins.uiplayground.kotlin.multiplatform)
     alias(libs.plugins.uiplayground.compose.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -18,11 +19,12 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.core.ktx)
-            implementation(libs.androidx.navigation.compose)
-
             implementation(compose.foundation)
             implementation(compose.ui)
+
+            implementation(libs.core.ktx)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.navigation.compose)
 
             implementation(projects.components)
             implementation(projects.shaders)
