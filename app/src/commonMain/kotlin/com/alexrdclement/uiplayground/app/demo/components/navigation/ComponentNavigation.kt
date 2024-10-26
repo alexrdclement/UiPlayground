@@ -2,35 +2,26 @@ package com.alexrdclement.uiplayground.app.demo.components.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.alexrdclement.uiplayground.app.demo.components.Component
 import com.alexrdclement.uiplayground.demo.components.ComponentScreen
+import kotlinx.serialization.Serializable
 
-private const val componentRouteRoot = "component"
-private const val componentNameArgKey = "componentName"
-private const val componentRouteTemplate = "$componentRouteRoot/{$componentNameArgKey}"
-
-private fun createComponentRoute(component: Component) = "$componentRouteRoot/${component.name}"
+@Serializable
+data class ComponentRoute(val component: Component)
 
 fun NavGraphBuilder.componentScreen() {
-    composable(
-        route = componentRouteTemplate,
-        arguments = listOf(
-            navArgument(componentNameArgKey) { type = NavType.StringType }
-        )
-    ) { backStackEntry ->
-        val componentName = backStackEntry.arguments?.getString(componentNameArgKey)
-        val component = componentName?.let(Component::valueOf) ?: Component.MediaControlSheet
+    composable<ComponentRoute> { backStackEntry ->
+        val componentRoute: ComponentRoute = backStackEntry.toRoute()
         ComponentScreen(
-            component = component,
+            component = componentRoute.component,
         )
     }
 }
 
 fun NavController.navigateToComponent(component: Component) {
-    this.navigate(createComponentRoute(component)) {
+    this.navigate(ComponentRoute(component)) {
         launchSingleTop = true
     }
 }
