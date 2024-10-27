@@ -7,7 +7,7 @@ PLcom/alexrdclement/uiplayground/shaders/ColorInvertShader$DefaultImpls;->onReme
 PLcom/alexrdclement/uiplayground/shaders/ColorInvertShaderImpl;->$r8$lambda$u0ko9pXHv-HL_vxA2DUd_WXb8nM(Lkotlin/jvm/functions/Function1;Lcom/alexrdclement/uiplayground/shaders/ColorInvertShaderImpl;Lcom/alexrdclement/uiplayground/shaders/ShaderControl;)Lkotlin/Unit;
 PLcom/alexrdclement/uiplayground/shaders/ColorInvertShaderImpl;-><clinit>()V
 HPLcom/alexrdclement/uiplayground/shaders/ColorInvertShaderImpl;-><init>(Lkotlin/jvm/functions/Function1;)V
-PLcom/alexrdclement/uiplayground/shaders/ColorInvertShaderImpl;->control$lambda$0(Lkotlin/jvm/functions/Function1;Lcom/alexrdclement/uiplayground/shaders/ColorInvertShaderImpl;Lcom/alexrdclement/uiplayground/shaders/ShaderControl;)Lkotlin/Unit;
+HPLcom/alexrdclement/uiplayground/shaders/ColorInvertShaderImpl;->control$lambda$0(Lkotlin/jvm/functions/Function1;Lcom/alexrdclement/uiplayground/shaders/ColorInvertShaderImpl;Lcom/alexrdclement/uiplayground/shaders/ShaderControl;)Lkotlin/Unit;
 PLcom/alexrdclement/uiplayground/shaders/ColorInvertShaderImpl;->createRenderEffect()Landroidx/compose/ui/graphics/RenderEffect;
 PLcom/alexrdclement/uiplayground/shaders/ColorInvertShaderImpl;->onRemeasured(II)V
 PLcom/alexrdclement/uiplayground/shaders/ColorInvertShaderImpl;->setAmount(F)V
@@ -56,7 +56,7 @@ PLcom/alexrdclement/uiplayground/shaders/NoiseShaderImpl;->onRemeasured(II)V
 PLcom/alexrdclement/uiplayground/shaders/NoiseShaderImpl;->setAmount(F)V
 HPLcom/alexrdclement/uiplayground/shaders/NoiseShaderImpl;->setColorMode(Lcom/alexrdclement/uiplayground/shaders/NoiseColorMode;)V
 PLcom/alexrdclement/uiplayground/shaders/NoiseShaderImpl$$ExternalSyntheticLambda0;-><init>(Lkotlin/jvm/functions/Function1;Lcom/alexrdclement/uiplayground/shaders/NoiseShaderImpl;)V
-HPLcom/alexrdclement/uiplayground/shaders/NoiseShaderImpl$$ExternalSyntheticLambda0;->invoke(Ljava/lang/Object;)Ljava/lang/Object;
+PLcom/alexrdclement/uiplayground/shaders/NoiseShaderImpl$$ExternalSyntheticLambda0;->invoke(Ljava/lang/Object;)Ljava/lang/Object;
 PLcom/alexrdclement/uiplayground/shaders/NoiseShaderImpl$WhenMappings;-><clinit>()V
 PLcom/alexrdclement/uiplayground/shaders/Noise_androidKt;-><clinit>()V
 PLcom/alexrdclement/uiplayground/shaders/Noise_androidKt;->access$getShaderSource$p()Ljava/lang/String;
