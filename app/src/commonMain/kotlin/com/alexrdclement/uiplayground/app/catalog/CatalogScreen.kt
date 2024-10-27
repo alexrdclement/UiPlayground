@@ -11,8 +11,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.alexrdclement.uiplayground.components.BackNavigationButton
 import com.alexrdclement.uiplayground.components.Button
+import com.alexrdclement.uiplayground.components.Scaffold
 import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.components.TopBar
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.trace.ReportDrawn
 
@@ -20,25 +23,41 @@ import com.alexrdclement.uiplayground.trace.ReportDrawn
 fun <T : CatalogItem> CatalogScreen(
     items: List<T>,
     onItemClick: (T) -> Unit,
+    title: String? = null,
+    onNavigateBack: (() -> Unit)? = null
 ) {
     ReportDrawn()
-    Column(
-        verticalArrangement = Arrangement.spacedBy(
-            space = PlaygroundTheme.spacing.medium,
-            alignment = Alignment.CenterVertically,
-        ),
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(PlaygroundTheme.spacing.small)
-            .safeDrawingPadding()
-            .verticalScroll(rememberScrollState())
+
+    Scaffold(
+        topBar = {
+            TopBar(
+                title = title?.let {
+                    { Text(title, style = PlaygroundTheme.typography.titleMedium) }
+                },
+                navButton = onNavigateBack?.let {
+                    { BackNavigationButton(onNavigateBack) }
+                },
+            )
+        }
     ) {
-        for (item in items) {
-            Button(
-                onClick = { onItemClick(item) },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(item.title)
+        Column(
+            verticalArrangement = Arrangement.spacedBy(
+                space = PlaygroundTheme.spacing.medium,
+                alignment = Alignment.CenterVertically,
+            ),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(PlaygroundTheme.spacing.small)
+                .safeDrawingPadding()
+                .verticalScroll(rememberScrollState())
+        ) {
+            for (item in items) {
+                Button(
+                    onClick = { onItemClick(item) },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(item.title)
+                }
             }
         }
     }

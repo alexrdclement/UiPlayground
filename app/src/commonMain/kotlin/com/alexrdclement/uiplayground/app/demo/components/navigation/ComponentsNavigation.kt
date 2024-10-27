@@ -22,8 +22,11 @@ fun NavGraphBuilder.componentsGraph(
     ) {
         componentCatalogScreen(
             onItemClick = navController::navigateToComponent,
+            onNavigateBack = navController::popBackStack,
         )
-        componentScreen()
+        componentScreen(
+            onNavigateBack = navController::popBackStack,
+        )
     }
 }
 
@@ -35,11 +38,14 @@ fun NavController.navigateToComponents() {
 
 private fun NavGraphBuilder.componentCatalogScreen(
     onItemClick: (Component) -> Unit,
+    onNavigateBack: () -> Unit,
 ) {
     composable<ComponentCatalogRoute> {
         CatalogScreen(
             items = Component.entries.toList(),
             onItemClick = onItemClick,
+            title = "Components",
+            onNavigateBack = onNavigateBack,
         )
     }
 }

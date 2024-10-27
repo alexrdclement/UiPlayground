@@ -7,6 +7,8 @@ import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 @Composable
 private fun Preview() {
     UiPlaygroundPreview {
-        ShaderScreen()
+        ShaderScreen(
+            onNavigateBack = {},
+        )
     }
 }

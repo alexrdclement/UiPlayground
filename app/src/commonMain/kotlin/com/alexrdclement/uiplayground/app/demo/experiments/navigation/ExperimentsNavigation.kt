@@ -22,8 +22,11 @@ fun NavGraphBuilder.experimentsGraph(
     ) {
         experimentCatalogScreen(
             onItemClick = navController::navigateToExperiment,
+            onNavigateBack = navController::popBackStack,
         )
-        experimentScreen()
+        experimentScreen(
+            onNavigateBack = navController::popBackStack,
+        )
     }
 }
 
@@ -35,11 +38,14 @@ fun NavController.navigateToExperiments() {
 
 private fun NavGraphBuilder.experimentCatalogScreen(
     onItemClick: (Experiment) -> Unit,
+    onNavigateBack: () -> Unit,
 ) {
     composable<ExperimentCatalogRoute> {
         CatalogScreen(
             items = Experiment.entries.toList(),
             onItemClick = onItemClick,
+            title = "Experiments",
+            onNavigateBack = onNavigateBack,
         )
     }
 }

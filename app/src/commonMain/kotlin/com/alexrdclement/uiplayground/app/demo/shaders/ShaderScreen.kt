@@ -21,21 +21,27 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.ControlBar
-import com.alexrdclement.uiplayground.components.HorizontalDivider
-import com.alexrdclement.uiplayground.components.Surface
 import com.alexrdclement.uiplayground.app.demo.subject.DemoCircle
 import com.alexrdclement.uiplayground.app.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.app.demo.subject.DemoText
 import com.alexrdclement.uiplayground.app.demo.subject.DemoTextField
+import com.alexrdclement.uiplayground.components.BackNavigationButton
+import com.alexrdclement.uiplayground.components.HorizontalDivider
+import com.alexrdclement.uiplayground.components.Scaffold
+import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.components.TopBar
 import com.alexrdclement.uiplayground.shaders.ColorSplitMode
 import com.alexrdclement.uiplayground.shaders.NoiseColorMode
 import com.alexrdclement.uiplayground.shaders.colorInvert
 import com.alexrdclement.uiplayground.shaders.colorSplit
 import com.alexrdclement.uiplayground.shaders.noise
 import com.alexrdclement.uiplayground.shaders.pixelate
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
-fun ShaderScreen() {
+fun ShaderScreen(
+    onNavigateBack: () -> Unit,
+) {
     var demoSubject by remember { mutableStateOf(DemoSubject.Circle) }
     val demoModifiers = remember {
         mutableStateListOf(
@@ -70,7 +76,14 @@ fun ShaderScreen() {
             )
         }
     }
-    Surface(modifier = Modifier.fillMaxSize()) {
+    Scaffold(
+        topBar = {
+            TopBar(
+                title = { Text("Shaders", style = PlaygroundTheme.typography.titleMedium) },
+                navButton = { BackNavigationButton(onNavigateBack) },
+            )
+        }
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()

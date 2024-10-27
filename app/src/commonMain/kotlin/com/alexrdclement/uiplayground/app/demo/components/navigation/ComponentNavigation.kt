@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.alexrdclement.uiplayground.app.demo.components.Component
-import com.alexrdclement.uiplayground.demo.components.ComponentScreen
+import com.alexrdclement.uiplayground.app.demo.components.ComponentScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -14,12 +14,15 @@ data class ComponentRoute(
     val componentOrdinal: Int,
 )
 
-fun NavGraphBuilder.componentScreen() {
+fun NavGraphBuilder.componentScreen(
+    onNavigateBack: () -> Unit,
+) {
     composable<ComponentRoute> { backStackEntry ->
         val componentRoute: ComponentRoute = backStackEntry.toRoute()
         val component = Component.entries[componentRoute.componentOrdinal]
         ComponentScreen(
             component = component,
+            onNavigateBack = onNavigateBack,
         )
     }
 }
