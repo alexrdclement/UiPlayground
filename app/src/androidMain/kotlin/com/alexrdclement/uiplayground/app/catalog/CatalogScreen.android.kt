@@ -14,3 +14,16 @@ private fun Preview() {
         )
     }
 }
+
+@Preview
+@Composable
+private fun WithNavPreview() {
+    UiPlaygroundPreview {
+        CatalogScreen(
+            items = MainCatalogItem.entries.toList(),
+            onItemClick = {},
+            title = "Components",
+            onNavigateBack = {},
+        )
+    }
+}

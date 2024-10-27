@@ -35,6 +35,8 @@ fun UiPlaygroundNavHost() {
         experimentsGraph(
             navController = navController,
         )
-        shadersScreen()
+        shadersScreen(
+            navController = navController,
+        )
     }
 }

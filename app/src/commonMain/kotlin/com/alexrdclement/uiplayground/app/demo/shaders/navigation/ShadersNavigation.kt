@@ -9,9 +9,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 object ShadersRoute
 
-fun NavGraphBuilder.shadersScreen() {
+fun NavGraphBuilder.shadersScreen(
+    navController: NavController
+) {
     composable<ShadersRoute> {
-        ShaderScreen()
+        ShaderScreen(
+            onNavigateBack = navController::popBackStack,
+        )
     }
 }
 
