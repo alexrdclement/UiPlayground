@@ -44,9 +44,10 @@ android {
 }
 
 dependencies {
-    implementation(libs.core.ktx)
     implementation(libs.activity.compose)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.profileinstaller)
+    implementation(libs.core.ktx)
 
     implementation(projects.app)
 
