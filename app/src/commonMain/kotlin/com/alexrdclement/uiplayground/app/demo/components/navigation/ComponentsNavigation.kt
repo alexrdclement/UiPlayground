@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.alexrdclement.uiplayground.app.catalog.CatalogScreen
 import com.alexrdclement.uiplayground.app.demo.components.Component
+import com.alexrdclement.uiplayground.app.demo.popBackStackIfResumed
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -22,10 +23,10 @@ fun NavGraphBuilder.componentsGraph(
     ) {
         componentCatalogScreen(
             onItemClick = navController::navigateToComponent,
-            onNavigateBack = navController::popBackStack,
+            onNavigateBack = navController::popBackStackIfResumed,
         )
         componentScreen(
-            onNavigateBack = navController::popBackStack,
+            onNavigateBack = navController::popBackStackIfResumed,
         )
     }
 }
