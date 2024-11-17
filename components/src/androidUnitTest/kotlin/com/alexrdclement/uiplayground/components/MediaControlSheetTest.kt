@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.testing.PaparazziTestRule
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.google.testing.junit.testparameterinjector.TestParameter
 import com.google.testing.junit.testparameterinjector.TestParameterInjector
 import org.junit.Rule
@@ -31,22 +32,24 @@ class MediaControlSheetTest(
     @Test
     fun mediaControlSheet() {
         paparazzi.snapshot {
-            val state = rememberMediaControlSheetState(
-                initialValue = anchor,
-            )
-            MediaControlSheet(
-                mediaItem = testMediaItem,
-                isPlaying = false,
-                onPlayPauseClick = {},
-                onControlBarClick = {},
-                state = state,
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize(),
+            PlaygroundTheme {
+                val state = rememberMediaControlSheetState(
+                    initialValue = anchor,
+                )
+                MediaControlSheet(
+                    mediaItem = testMediaItem,
+                    isPlaying = false,
+                    onPlayPauseClick = {},
+                    onControlBarClick = {},
+                    state = state,
                 ) {
-                    Text("Content")
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxSize(),
+                    ) {
+                        Text("Content")
+                    }
                 }
             }
         }
