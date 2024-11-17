@@ -1,6 +1,7 @@
 package com.alexrdclement.uiplayground.components
 
 import com.alexrdclement.uiplayground.testing.PaparazziTestRule
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.google.testing.junit.testparameterinjector.TestParameter
 import com.google.testing.junit.testparameterinjector.TestParameterInjector
 import org.junit.Rule
@@ -19,11 +20,13 @@ class PlayPauseButtonTest {
         @TestParameter isEnabled: Boolean,
     ) {
         paparazzi.snapshot {
-            PlayPauseButton(
-                isPlaying = isPlaying,
-                isEnabled = isEnabled,
-                onClick = {}
-            )
+            PlaygroundTheme {
+                PlayPauseButton(
+                    isPlaying = isPlaying,
+                    isEnabled = isEnabled,
+                    onClick = {}
+                )
+            }
         }
     }
 }
