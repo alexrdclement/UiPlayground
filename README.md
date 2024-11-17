@@ -1,14 +1,14 @@
-UiPlayground is a space for me to experiment with UI APIs, patterns, and tools within the [Jetpack Compose](https://developer.android.com/jetpack/compose) ecosystem. It contains both a library of UI components/shaders/etc. and a catalog app to demonstrate the library.
+UiPlayground is a Kotlin Multiplatform project to experiment with UI APIs, patterns, and tools within the [Compose Multiplatform](https://www.jetbrains.com/compose-multiplatform) ecosystem. It contains libraries of UI components/shaders/etc. and a catalog app to demonstrate them for Android and iOS.
 
 ## Catalog App
 
 ![Media Control Sheet demo](docs/assets/app-demo-dark.gif)
 
-[Source](app/src/main/kotlin/com/alexrdclement/uiplayground/)
+[Source](app/src)
 
 ## Components
 
-[Source](components/src/main/kotlin/com/alexrdclement/uiplayground/components/)
+[Source](components/src)
 
 ### Media Control Sheet
 
@@ -24,9 +24,11 @@ Media Control Sheet is an interactive component that shows simple media informat
 
 ## Shaders
 
-[Runtime Shaders](https://developer.android.com/reference/android/graphics/RuntimeShader) (introduced in Android 13) enable detailed control over how individual pixels are rendered on the screen. Below are shaders I've written, ported, or adapted as [Modifiers](https://developer.android.com/jetpack/compose/modifiers) that can be applied to any Composable that exposes a Modifier.
+[Runtime Shaders](https://developer.android.com/reference/android/graphics/RuntimeShader) enable detailed control over how individual pixels are rendered on the screen. Below are shaders I've written, ported, or adapted as [Modifiers](https://developer.android.com/jetpack/compose/modifiers) that can be applied to any Composable that exposes a Modifier.
 
-[Source](shaders/src/main/kotlin/com/alexrdclement/uiplayground/shaders/)
+On Android, these shaders are powered by the RuntimeShader library and the [Android Graphics Shader Language (AGSL)](https://developer.android.com/develop/ui/views/graphics/agsl). On non-Android platforms, the shaders are powered by [Skiko](https://github.com/JetBrains/skiko) and the [Skia Shader Language (SkSL)](https://skia.org/docs/user/sksl/).
+
+[Source](shaders/src)
 
 ### Color Split
 
@@ -59,6 +61,6 @@ A simple noise effect with increasing levels of opacity.
 
 With the exception of the GIFs, the images above were captured as gold files for automated screenshot tests of the library. Screenshots are generated for each Pull Request and compared against these gold files to ensure UI changes are made intentionally and with review. These screenshot tests are powered by [Paparazzi](https://github.com/cashapp/paparazzi) and [TestParameterInjector](https://github.com/google/TestParameterInjector).
 
-[Component Tests](components/src/test)
+[Component Tests](components/src/androidUnitTest/kotlin/com/alexrdclement/uiplayground/components)
 
-[Shader Tests](shaders/src/test)
+[Shader Tests](shaders/src/androidUnitTest/kotlin/com/alexrdclement/uiplayground/shaders)
