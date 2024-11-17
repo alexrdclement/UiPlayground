@@ -1,4 +1,4 @@
-UiPlayground is a Kotlin Multiplatform project to experiment with UI APIs, patterns, and tools within the [Compose Multiplatform](https://www.jetbrains.com/compose-multiplatform) ecosystem. It contains libraries of UI components/shaders/etc. and a catalog app to demonstrate them for Android and iOS.
+UiPlayground is a Kotlin Multiplatform project to experiment with UI APIs, patterns, and tools within the [Compose Multiplatform](https://www.jetbrains.com/compose-multiplatform) ecosystem. It contains libraries of UI components/shaders/etc. and a catalog app to demonstrate them on Android and iOS.
 
 ## Catalog App
 
