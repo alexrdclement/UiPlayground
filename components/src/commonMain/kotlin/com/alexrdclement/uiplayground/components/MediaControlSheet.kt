@@ -2,8 +2,7 @@
 
 package com.alexrdclement.uiplayground.components
 
-import androidx.compose.animation.core.exponentialDecay
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
@@ -23,7 +22,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -101,20 +99,15 @@ enum class MediaControlSheetAnchor {
 @Stable
 class MediaControlSheetState(
     val initialValue: MediaControlSheetAnchor,
-    val density: Density,
 ) {
     internal var anchoredDraggableState = AnchoredDraggableState(
         initialValue = initialValue,
-        snapAnimationSpec = spring(),
-        decayAnimationSpec = exponentialDecay(),
         confirmValueChange = {
             when (it) {
                 MediaControlSheetAnchor.PartiallyExpanded,
                 MediaControlSheetAnchor.Expanded -> true
             }
         },
-        positionalThreshold = { with(density) { 56.dp.toPx() } },
-        velocityThreshold = { with(density) { 125.dp.toPx() } }
     )
 
     suspend fun expand() {
@@ -135,8 +128,8 @@ class MediaControlSheetState(
         anchoredDraggableState.snapTo(targetValue)
     }
 
-    internal suspend fun settle(velocity: Float) {
-        anchoredDraggableState.settle(velocity)
+    internal suspend fun settle(animationSpec: AnimationSpec<Float>) {
+        anchoredDraggableState.settle(animationSpec)
     }
 
     val offset: Float get() = anchoredDraggableState.offset
@@ -154,14 +147,11 @@ class MediaControlSheetState(
     val isExpanded: Boolean get() = targetValue == MediaControlSheetAnchor.Expanded
 
     companion object {
-        fun Saver(
-            density: Density,
-        ): Saver<MediaControlSheetState, MediaControlSheetAnchor> = Saver(
+        fun Saver(): Saver<MediaControlSheetState, MediaControlSheetAnchor> = Saver(
             save = { it.currentValue },
             restore = {
                 MediaControlSheetState(
                     initialValue = it,
-                    density = density,
                 )
             }
         )
@@ -172,15 +162,11 @@ class MediaControlSheetState(
 fun rememberMediaControlSheetState(
     initialValue: MediaControlSheetAnchor = MediaControlSheetAnchor.PartiallyExpanded,
 ): MediaControlSheetState {
-    val density = LocalDensity.current
     return rememberSaveable(
-        saver = MediaControlSheetState.Saver(
-            density = density,
-        )
+        saver = MediaControlSheetState.Saver()
     ) {
         MediaControlSheetState(
             initialValue = initialValue,
-            density = density,
         )
     }
 }
@@ -203,22 +189,5 @@ private fun Modifier.modalBottomSheetAnchors(
         }
     }
 
-    val newTarget = when (state.targetValue) {
-        MediaControlSheetAnchor.PartiallyExpanded -> {
-            if (newAnchors.hasAnchorFor(MediaControlSheetAnchor.PartiallyExpanded)) {
-                MediaControlSheetAnchor.PartiallyExpanded
-            } else {
-                MediaControlSheetAnchor.Expanded
-            }
-        }
-        MediaControlSheetAnchor.Expanded -> {
-            if (newAnchors.hasAnchorFor(MediaControlSheetAnchor.Expanded)) {
-                MediaControlSheetAnchor.Expanded
-            } else {
-                MediaControlSheetAnchor.PartiallyExpanded
-            }
-        }
-    }
-
-    state.anchoredDraggableState.updateAnchors(newAnchors, newTarget)
+    state.anchoredDraggableState.updateAnchors(newAnchors, state.targetValue)
 }
