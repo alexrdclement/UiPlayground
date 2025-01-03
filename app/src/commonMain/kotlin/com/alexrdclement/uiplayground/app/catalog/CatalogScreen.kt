@@ -17,7 +17,7 @@ import com.alexrdclement.uiplayground.components.Scaffold
 import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.components.TopBar
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import com.alexrdclement.uiplayground.trace.ReportDrawn
+import com.alexrdclement.uiplayground.core.trace.ReportDrawn
 
 @Composable
 fun <T : CatalogItem> CatalogScreen(

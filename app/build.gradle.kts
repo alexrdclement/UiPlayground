@@ -27,9 +27,9 @@ kotlin {
             implementation(libs.navigation.compose)
 
             implementation(projects.components)
+            implementation(projects.core)
             implementation(projects.shaders)
             implementation(projects.theme)
-            implementation(projects.trace)
         }
         androidMain {
             dependencies {

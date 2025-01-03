@@ -10,7 +10,7 @@ import androidx.compose.ui.node.currentValueOf
 import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.compose.ui.unit.IntSize
 import com.alexrdclement.uiplayground.shaders.util.drawContentWithRenderEffect
-import com.alexrdclement.uiplayground.trace.trace
+import com.alexrdclement.uiplayground.core.trace.trace
 
 data class ShaderElement(
     val shader: Shader,

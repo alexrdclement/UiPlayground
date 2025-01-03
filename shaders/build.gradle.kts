@@ -47,7 +47,7 @@ kotlin {
                 implementation(compose.ui)
                 implementation(libs.core.ktx)
 
-                api(projects.trace)
+                api(projects.core)
             }
         }
         androidMain {
