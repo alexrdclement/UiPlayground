@@ -50,8 +50,9 @@ kotlin {
                 implementation(libs.coil.compose)
                 implementation(libs.coil.network.ktor3)
 
+                api(projects.trace)
+
                 implementation(projects.theme)
-                implementation(projects.trace)
             }
         }
         androidMain {
