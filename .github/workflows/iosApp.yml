@@ -38,4 +38,5 @@ jobs:
           java-version: 17
 
       - name: Build iOS Simulator app
-        run: xcodebuild -workspace iosApp/UiPlayground.xcodeproj/project.xcworkspace -configuration Debug -scheme UiPlayground -sdk iphonesimulator
+        run: xcodebuild -workspace iosApp/UiPlayground.xcodeproj/project.xcworkspace -list
+#          -configuration Debug -scheme UiPlayground -sdk iphonesimulator
