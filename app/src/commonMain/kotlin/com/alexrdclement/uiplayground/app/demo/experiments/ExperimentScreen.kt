@@ -1,6 +1,7 @@
 package com.alexrdclement.uiplayground.app.demo.experiments
 
 import androidx.compose.runtime.Composable
+import com.alexrdclement.uiplayground.app.demo.experiments.demo.button.ButtonDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.text.TextDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.textfield.TextFieldDemo
 import com.alexrdclement.uiplayground.components.BackNavigationButton
@@ -23,6 +24,7 @@ fun ExperimentScreen(
         },
     ) {
         when (experiment) {
+            Experiment.Button -> ButtonDemo()
             Experiment.Text -> TextDemo()
             Experiment.TextField -> TextFieldDemo()
         }
