@@ -11,7 +11,7 @@ import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 
 @Preview
 @Composable
-private fun Preview() {
+private fun DropdownControlPreview() {
     UiPlaygroundPreview {
         var selectedIndex by remember { mutableStateOf(0) }
         val control by remember {
@@ -33,5 +33,32 @@ private fun Preview() {
             )
         }
         DropdownControl(control = control)
+    }
+}
+
+@Preview
+@Composable
+private fun DropdownControlRowPreview() {
+    UiPlaygroundPreview {
+        var selectedIndex by remember { mutableStateOf(0) }
+        val control by remember {
+            mutableStateOf(
+                Control.Dropdown(
+                    name = "Edge treatment",
+                    values = listOf(
+                        BlurredEdgeTreatment.Rectangle,
+                        BlurredEdgeTreatment.Unbounded
+                    ).map {
+                        Control.Dropdown.DropdownItem(
+                            name = it.toString(),
+                            value = it
+                        )
+                    },
+                    selectedIndex = selectedIndex,
+                    onValueChange = { selectedIndex = it }
+                )
+            )
+        }
+        DropdownControlRow(control = control)
     }
 }
