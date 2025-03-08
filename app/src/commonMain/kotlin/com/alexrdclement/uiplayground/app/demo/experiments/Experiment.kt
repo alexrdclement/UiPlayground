@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class Experiment : CatalogItem {
+    Text,
     TextField;
 
     override val title = this.name
