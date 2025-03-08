@@ -1,7 +1,6 @@
 package com.alexrdclement.uiplayground.app.demo.control
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,45 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import com.alexrdclement.uiplayground.app.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.app.demo.shaders.DemoModifier
+import com.alexrdclement.uiplayground.app.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-
-@Composable
-fun ControlBar(
-    controls: List<Control>,
-    demoSubject: DemoSubject,
-    demoModifier: DemoModifier,
-    demoModifiers: List<DemoModifier>,
-    onSubjectSelected: (DemoSubject) -> Unit,
-    onModifierSelected: (index: Int) -> Unit,
-    modifier: Modifier = Modifier
-) {
-
-    Column(modifier) {
-        for (control in controls) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(PlaygroundTheme.spacing.medium)
-            ) {
-                when (control) {
-                    is Control.Slider -> SliderControl(control = control)
-                    is Control.Dropdown<*> -> DropdownControl(control = control)
-                    is Control.Toggle -> ToggleControl(control = control)
-                }
-            }
-        }
-
-        SubjectModifierBar(
-            demoSubject = demoSubject,
-            demoModifier = demoModifier,
-            demoModifiers = demoModifiers,
-            onSubjectSelected = onSubjectSelected,
-            onModifierSelected = onModifierSelected
-        )
-    }
-}
 
 @Composable
 fun SubjectModifierBar(

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -20,7 +21,8 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.ControlBar
+import com.alexrdclement.uiplayground.app.demo.control.Controls
+import com.alexrdclement.uiplayground.app.demo.control.SubjectModifierBar
 import com.alexrdclement.uiplayground.app.demo.subject.DemoCircle
 import com.alexrdclement.uiplayground.app.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.app.demo.subject.DemoText
@@ -123,18 +125,27 @@ fun ShaderScreen(
             }
 
             HorizontalDivider(modifier = Modifier.fillMaxWidth())
-            ControlBar(
-                controls = controls,
-                demoSubject = demoSubject,
-                demoModifier = demoModifier,
-                demoModifiers = demoModifiers,
-                onSubjectSelected = {
-                    demoSubject = it
-                },
-                onModifierSelected = {
-                    demoModifierIndex = it
+            Column {
+                if (controls.isNotEmpty()) {
+                    Controls(
+                        controls = controls,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(PlaygroundTheme.spacing.medium)
+                    )
                 }
-            )
+                SubjectModifierBar(
+                    demoSubject = demoSubject,
+                    demoModifier = demoModifier,
+                    demoModifiers = demoModifiers,
+                    onSubjectSelected = {
+                        demoSubject = it
+                    },
+                    onModifierSelected = {
+                        demoModifierIndex = it
+                    }
+                )
+            }
         }
     }
 }
