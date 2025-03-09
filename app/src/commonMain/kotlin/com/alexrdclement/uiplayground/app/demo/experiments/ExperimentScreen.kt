@@ -1,7 +1,10 @@
 package com.alexrdclement.uiplayground.app.demo.experiments
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.button.ButtonDemo
+import com.alexrdclement.uiplayground.app.demo.experiments.demo.gradient.GradientDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.text.TextDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.textfield.TextFieldDemo
 import com.alexrdclement.uiplayground.components.BackNavigationButton
@@ -22,11 +25,12 @@ fun ExperimentScreen(
                 navButton = { BackNavigationButton(onNavigateBack) },
             )
         },
-    ) {
+    ) { innerPadding ->
         when (experiment) {
             Experiment.Button -> ButtonDemo()
             Experiment.Text -> TextDemo()
             Experiment.TextField -> TextFieldDemo()
+            Experiment.Gradients -> GradientDemo(modifier = Modifier.padding(innerPadding))
         }
     }
 }
