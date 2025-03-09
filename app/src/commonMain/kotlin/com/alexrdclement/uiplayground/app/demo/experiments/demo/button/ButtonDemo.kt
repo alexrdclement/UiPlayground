@@ -26,6 +26,7 @@ import com.alexrdclement.uiplayground.components.Button
 import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ButtonDemo() {
@@ -84,7 +85,7 @@ fun ButtonDemo() {
         }
         HorizontalDivider(modifier = Modifier.fillMaxWidth())
         Controls(
-            controls = listOf(
+            controls = persistentListOf(
                 widthControl,
                 autoSizeControl,
                 softWrapControl,

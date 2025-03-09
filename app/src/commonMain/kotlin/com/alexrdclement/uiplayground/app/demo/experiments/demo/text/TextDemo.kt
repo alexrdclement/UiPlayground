@@ -34,6 +34,8 @@ import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 private enum class Overflow {
     Clip,
@@ -76,7 +78,7 @@ fun TextDemo() {
                 name = it.name,
                 value = it,
             )
-        },
+        }.toPersistentList(),
         selectedIndex = TextStyle.entries.indexOf(style),
         onValueChange = { style = TextStyle.entries[it] },
     )
@@ -128,7 +130,7 @@ fun TextDemo() {
                 name = it.name,
                 value = it
             )
-        },
+        }.toPersistentList(),
         selectedIndex = Overflow.entries.indexOf(overflow),
         onValueChange = { overflow = Overflow.entries[it] },
     )
@@ -179,7 +181,7 @@ fun TextDemo() {
         }
         HorizontalDivider(modifier = Modifier.fillMaxWidth())
         Controls(
-            controls = listOf(
+            controls = persistentListOf(
                 textFieldControl,
                 styleControl,
                 widthControl,

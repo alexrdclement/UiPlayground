@@ -16,6 +16,7 @@ core-ktx = "1.15.0"
 espresso-core = "3.6.1"
 junit = "4.13.2"
 kotlin = "2.1.0"
+kotlinx-collections-immutable = "0.3.8"
 kotlinx-serialization-json = "1.8.0"
 ktor = "3.0.0"
 lifecycle-runtime-ktx = "2.8.7"
@@ -48,6 +49,7 @@ compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-mani
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose-ui" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
 ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }

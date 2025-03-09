@@ -23,6 +23,7 @@ kotlin {
             implementation(compose.ui)
 
             implementation(libs.core.ktx)
+            implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.navigation.compose)
 

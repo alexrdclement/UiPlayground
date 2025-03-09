@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.tooling.preview.Preview
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
+import kotlinx.collections.immutable.toPersistentList
 
 @Preview
 @Composable
@@ -26,7 +27,7 @@ private fun DropdownControlPreview() {
                             name = it.toString(),
                             value = it
                         )
-                    },
+                    }.toPersistentList(),
                     selectedIndex = selectedIndex,
                     onValueChange = { selectedIndex = it }
                 )
@@ -53,7 +54,7 @@ private fun DropdownControlRowPreview() {
                             name = it.toString(),
                             value = it
                         )
-                    },
+                    }.toPersistentList(),
                     selectedIndex = selectedIndex,
                     onValueChange = { selectedIndex = it }
                 )

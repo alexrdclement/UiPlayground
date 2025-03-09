@@ -39,6 +39,10 @@ import com.alexrdclement.uiplayground.shaders.colorSplit
 import com.alexrdclement.uiplayground.shaders.noise
 import com.alexrdclement.uiplayground.shaders.pixelate
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ShaderScreen(
@@ -69,7 +73,7 @@ fun ShaderScreen(
         derivedStateOf { demoModifiers[demoModifierIndex] }
     }
 
-    val controls: List<Control> by remember(demoModifier) {
+    val controls: ImmutableList<Control> by remember(demoModifier) {
         derivedStateOf {
             makeControls(
                 demoModifier = demoModifier,
@@ -154,15 +158,15 @@ private fun makeControls(
     demoModifier: DemoModifier,
     demoModifierIndex: Int,
     demoModifiers: SnapshotStateList<DemoModifier>,
-): List<Control> {
+): ImmutableList<Control> {
     return when (demoModifier) {
-        DemoModifier.None -> emptyList()
+        DemoModifier.None -> persistentListOf()
         is DemoModifier.Blur -> {
             val edgeTreatments = listOf(
                 BlurredEdgeTreatment.Rectangle,
                 BlurredEdgeTreatment.Unbounded,
             )
-            listOf(
+            persistentListOf(
                 Control.Slider(
                     name = "Radius",
                     value = demoModifier.radius.value,
@@ -179,7 +183,7 @@ private fun makeControls(
                             name = it.toString(),
                             value = it
                         )
-                    },
+                    }.toPersistentList(),
                     selectedIndex = edgeTreatments.indexOf(demoModifier.edgeTreatment),
                     onValueChange = {
                         demoModifiers[demoModifierIndex] =
@@ -188,7 +192,7 @@ private fun makeControls(
                 )
             )
         }
-        is DemoModifier.ColorInvert -> listOf(
+        is DemoModifier.ColorInvert -> persistentListOf(
             Control.Slider(
                 name = "Amount",
                 value = demoModifier.amount,
@@ -198,7 +202,7 @@ private fun makeControls(
                 valueRange = 0f..1f,
             )
         )
-        is DemoModifier.ColorSplit -> listOf(
+        is DemoModifier.ColorSplit -> persistentListOf(
             Control.Dropdown(
                 name = "Color mode",
                 values = ColorSplitMode.entries.map {
@@ -206,7 +210,7 @@ private fun makeControls(
                         name = it.name,
                         value = it
                     )
-                },
+                }.toPersistentList(),
                 selectedIndex = ColorSplitMode.entries
                     .indexOf(demoModifier.colorMode),
                 onValueChange = {
@@ -231,7 +235,7 @@ private fun makeControls(
                 valueRange = -1f..1f,
             ),
         )
-        is DemoModifier.Noise -> listOf(
+        is DemoModifier.Noise -> persistentListOf(
             Control.Slider(
                 name = "Amount",
                 value = demoModifier.amount,
@@ -247,7 +251,7 @@ private fun makeControls(
                         name = it.name,
                         value = it
                     )
-                },
+                }.toPersistentList(),
                 selectedIndex = NoiseColorMode.entries
                     .indexOf(demoModifier.colorMode),
                 onValueChange = {
@@ -256,7 +260,7 @@ private fun makeControls(
                 }
             )
         )
-        is DemoModifier.Pixelate -> listOf(
+        is DemoModifier.Pixelate -> persistentListOf(
             Control.Slider(
                 name = "Amount",
                 value = demoModifier.subdivisions.toFloat(),

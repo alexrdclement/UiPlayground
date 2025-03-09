@@ -7,10 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun Controls(
-    controls: List<Control>,
+    controls: ImmutableList<Control>,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier) {

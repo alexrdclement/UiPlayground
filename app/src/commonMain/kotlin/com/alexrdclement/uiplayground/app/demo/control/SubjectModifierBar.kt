@@ -15,6 +15,7 @@ import androidx.compose.ui.semantics.semantics
 import com.alexrdclement.uiplayground.app.demo.shaders.DemoModifier
 import com.alexrdclement.uiplayground.app.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun SubjectModifierBar(
@@ -30,7 +31,7 @@ fun SubjectModifierBar(
                 name = "",
                 values = DemoSubject.entries.map {
                     Control.Dropdown.DropdownItem(name = it.name, value = it)
-                },
+                }.toPersistentList(),
                 selectedIndex = DemoSubject.entries.indexOf(demoSubject),
                 onValueChange = { onSubjectSelected(DemoSubject.entries[it]) }
             )
@@ -42,7 +43,7 @@ fun SubjectModifierBar(
                 name = "",
                 values = demoModifiers.map {
                     Control.Dropdown.DropdownItem(name = it.name, value = it)
-                },
+                }.toPersistentList(),
                 selectedIndex = demoModifiers.indexOf(demoModifier),
                 onValueChange = { onModifierSelected(it) }
             )
