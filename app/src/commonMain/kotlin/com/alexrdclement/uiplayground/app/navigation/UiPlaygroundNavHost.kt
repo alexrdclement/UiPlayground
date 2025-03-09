@@ -32,9 +32,7 @@ fun UiPlaygroundNavHost() {
             },
             onConfigureClick = navController::navigateToConfiguration,
         )
-        configurationGraph(
-            navController = navController,
-        )
+        configurationGraph()
         componentsGraph(
             navController = navController,
             onConfigureClick = navController::navigateToConfiguration,
