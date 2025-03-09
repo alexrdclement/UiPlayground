@@ -156,7 +156,7 @@ fun GradientDemo(modifier: Modifier = Modifier) {
                     },
                     resolutionX = 10,
                     resolutionY = 1,
-                    showPoints = true,
+                    showPoints = false,
                     indicesModifier = { it },
                 )
         )
