@@ -80,9 +80,6 @@ fun Modifier.meshGradient(
     }
 }
 
-
-
-
 class PointData(
     private val points: List<List<Pair<Offset, Color>>>,
     private val stepsX: Int,
@@ -228,7 +225,6 @@ class PointData(
         colors[index] = color
     }
 }
-
 
 private fun cubicPathX(point1: Offset, point2: Offset, position: Int): Path {
     val path = Path().apply {
