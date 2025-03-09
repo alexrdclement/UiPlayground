@@ -11,11 +11,13 @@ import kotlinx.serialization.Serializable
 object ShadersRoute
 
 fun NavGraphBuilder.shadersScreen(
-    navController: NavController
+    navController: NavController,
+    onConfigureClick: () -> Unit,
 ) {
     composable<ShadersRoute> {
         ShaderScreen(
             onNavigateBack = navController::popBackStackIfResumed,
+            onConfigureClick = onConfigureClick,
         )
     }
 }

@@ -16,13 +16,15 @@ data class ExperimentRoute(
 
 fun NavGraphBuilder.experimentScreen(
     onNavigateBack: () -> Unit,
+    onConfigureClick: () -> Unit,
 ) {
     composable<ExperimentRoute> { backStackEntry ->
         val experimentRoute: ExperimentRoute = backStackEntry.toRoute()
         val experiment = Experiment.entries[experimentRoute.experimentOrdinal]
         ExperimentScreen(
             experiment = experiment,
-            onNavigateBack = onNavigateBack
+            onNavigateBack = onNavigateBack,
+            onConfigureClick = onConfigureClick,
         )
     }
 }

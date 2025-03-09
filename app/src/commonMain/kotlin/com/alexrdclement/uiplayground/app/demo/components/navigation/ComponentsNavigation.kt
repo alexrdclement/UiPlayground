@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.alexrdclement.uiplayground.app.catalog.CatalogScreen
+import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
 import com.alexrdclement.uiplayground.app.demo.components.Component
 import com.alexrdclement.uiplayground.app.demo.popBackStackIfResumed
 import kotlinx.serialization.Serializable
@@ -17,6 +18,7 @@ object ComponentCatalogRoute
 
 fun NavGraphBuilder.componentsGraph(
     navController: NavController,
+    onConfigureClick: () -> Unit,
 ) {
     navigation<ComponentsGraphRoute>(
         startDestination = ComponentCatalogRoute,
@@ -24,9 +26,11 @@ fun NavGraphBuilder.componentsGraph(
         componentCatalogScreen(
             onItemClick = navController::navigateToComponent,
             onNavigateBack = navController::popBackStackIfResumed,
+            onConfigureClick = onConfigureClick,
         )
         componentScreen(
             onNavigateBack = navController::popBackStackIfResumed,
+            onConfigureClick = onConfigureClick,
         )
     }
 }
@@ -40,6 +44,7 @@ fun NavController.navigateToComponents() {
 private fun NavGraphBuilder.componentCatalogScreen(
     onItemClick: (Component) -> Unit,
     onNavigateBack: () -> Unit,
+    onConfigureClick: () -> Unit,
 ) {
     composable<ComponentCatalogRoute> {
         CatalogScreen(
@@ -47,6 +52,9 @@ private fun NavGraphBuilder.componentCatalogScreen(
             onItemClick = onItemClick,
             title = "Components",
             onNavigateBack = onNavigateBack,
+            actions = {
+                ConfigureButton(onClick = onConfigureClick)
+            },
         )
     }
 }

@@ -1,5 +1,5 @@
 [versions]
-activity-compose = "1.10.0"
+activity-compose = "1.10.1"
 android-desugar-jdk-libs = "2.1.4"
 agp = "8.8.1"
 android-tools = "31.8.1"
@@ -27,6 +27,7 @@ test-parameter-injector = "1.18"
 tracing-perfetto = "1.0.0"
 uiautomator = "2.3.0"
 maven-publish = "0.30.0"
+runtime-android = "1.7.8"
 
 [libraries]
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
@@ -65,6 +66,7 @@ android-tools-common = { group = "com.android.tools", name = "common", version.r
 compose-compiler-gradle-plugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
 compose-gradle-plugin = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "compose-multiplatform" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtime-android" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

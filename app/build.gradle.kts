@@ -37,6 +37,11 @@ kotlin {
                 implementation(compose.uiTooling)
             }
         }
+        nativeMain {
+            dependencies {
+                implementation(compose.foundation)
+            }
+        }
     }
 }
 

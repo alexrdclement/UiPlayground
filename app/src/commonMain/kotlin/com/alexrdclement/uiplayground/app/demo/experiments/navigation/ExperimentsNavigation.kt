@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.alexrdclement.uiplayground.app.catalog.CatalogScreen
+import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
 import com.alexrdclement.uiplayground.app.demo.experiments.Experiment
 import com.alexrdclement.uiplayground.app.demo.popBackStackIfResumed
 import kotlinx.serialization.Serializable
@@ -17,6 +18,7 @@ object ExperimentCatalogRoute
 
 fun NavGraphBuilder.experimentsGraph(
     navController: NavController,
+    onConfigureClick: () -> Unit,
 ) {
     navigation<ExperimentsGraphRoute>(
         startDestination = ExperimentCatalogRoute,
@@ -24,9 +26,11 @@ fun NavGraphBuilder.experimentsGraph(
         experimentCatalogScreen(
             onItemClick = navController::navigateToExperiment,
             onNavigateBack = navController::popBackStackIfResumed,
+            onConfigureClick = onConfigureClick,
         )
         experimentScreen(
             onNavigateBack = navController::popBackStackIfResumed,
+            onConfigureClick = onConfigureClick,
         )
     }
 }
@@ -40,6 +44,7 @@ fun NavController.navigateToExperiments() {
 private fun NavGraphBuilder.experimentCatalogScreen(
     onItemClick: (Experiment) -> Unit,
     onNavigateBack: () -> Unit,
+    onConfigureClick: () -> Unit,
 ) {
     composable<ExperimentCatalogRoute> {
         CatalogScreen(
@@ -47,6 +52,9 @@ private fun NavGraphBuilder.experimentCatalogScreen(
             onItemClick = onItemClick,
             title = "Experiments",
             onNavigateBack = onNavigateBack,
+            actions = {
+                ConfigureButton(onClick = onConfigureClick)
+            }
         )
     }
 }
