@@ -19,7 +19,7 @@ fun Checkbox(
 ) {
     Button(
         style = ButtonStyle.Borderless,
-        onClick = { onCheckedChange(isChecked) },
+        onClick = { onCheckedChange(!isChecked) },
         modifier = modifier.semantics(mergeDescendants = true) {
             role = Role.Checkbox
         },

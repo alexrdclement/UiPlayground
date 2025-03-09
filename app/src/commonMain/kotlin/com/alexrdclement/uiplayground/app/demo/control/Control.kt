@@ -1,5 +1,8 @@
 package com.alexrdclement.uiplayground.app.demo.control
 
+import androidx.compose.foundation.text.input.TextFieldState
+import kotlinx.collections.immutable.ImmutableList
+
 sealed class Control {
     data class Slider(
         val name: String,
@@ -10,7 +13,7 @@ sealed class Control {
 
     data class Dropdown<T>(
         val name: String,
-        val values: List<DropdownItem<T>>,
+        val values: ImmutableList<DropdownItem<T>>,
         val selectedIndex: Int,
         val onValueChange: (index: Int) -> Unit
     ) : Control() {
@@ -21,5 +24,11 @@ sealed class Control {
         val name: String,
         val value: Boolean,
         val onValueChange: (Boolean) -> Unit,
+    ) : Control()
+
+    data class TextField(
+        val name: String,
+        val textFieldState: TextFieldState,
+        val includeLabel: Boolean = true,
     ) : Control()
 }

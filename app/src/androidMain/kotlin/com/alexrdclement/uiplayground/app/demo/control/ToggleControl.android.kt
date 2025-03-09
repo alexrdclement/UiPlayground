@@ -10,7 +10,7 @@ import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 
 @Preview
 @Composable
-private fun Preview() {
+private fun ToggleControlPreview() {
     UiPlaygroundPreview {
         var on by remember { mutableStateOf(false) }
         val control by remember {
@@ -23,5 +23,23 @@ private fun Preview() {
             )
         }
         ToggleControl(control = control)
+    }
+}
+
+@Preview
+@Composable
+private fun ToggleControlRowPreview() {
+    UiPlaygroundPreview {
+        var on by remember { mutableStateOf(false) }
+        val control by remember {
+            mutableStateOf(
+                Control.Toggle(
+                    name = "Color",
+                    value = on,
+                    onValueChange = { on = it }
+                )
+            )
+        }
+        ToggleControlRow(control = control)
     }
 }
