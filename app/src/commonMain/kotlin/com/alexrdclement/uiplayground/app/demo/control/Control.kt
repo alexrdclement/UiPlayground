@@ -1,6 +1,7 @@
 package com.alexrdclement.uiplayground.app.demo.control
 
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.runtime.Stable
 
 sealed class Control {
     data class Slider(
@@ -10,6 +11,7 @@ sealed class Control {
         val valueRange: ClosedFloatingPointRange<Float> = 0f..1f
     ) : Control()
 
+    @Stable
     data class Dropdown<T>(
         val name: String,
         val values: List<DropdownItem<T>>,
