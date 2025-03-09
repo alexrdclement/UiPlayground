@@ -16,6 +16,7 @@ data class ComponentRoute(
 
 fun NavGraphBuilder.componentScreen(
     onNavigateBack: () -> Unit,
+    onConfigureClick: () -> Unit,
 ) {
     composable<ComponentRoute> { backStackEntry ->
         val componentRoute: ComponentRoute = backStackEntry.toRoute()
@@ -23,6 +24,7 @@ fun NavGraphBuilder.componentScreen(
         ComponentScreen(
             component = component,
             onNavigateBack = onNavigateBack,
+            onConfigureClick = onConfigureClick,
         )
     }
 }

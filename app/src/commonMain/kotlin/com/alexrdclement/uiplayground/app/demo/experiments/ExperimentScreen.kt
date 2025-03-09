@@ -3,6 +3,7 @@ package com.alexrdclement.uiplayground.app.demo.experiments
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.button.ButtonDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.gradient.GradientDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.text.TextDemo
@@ -17,12 +18,16 @@ import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 fun ExperimentScreen(
     experiment: Experiment,
     onNavigateBack: () -> Unit,
+    onConfigureClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
             TopBar(
                 title = { Text(experiment.title, style = PlaygroundTheme.typography.titleMedium) },
                 navButton = { BackNavigationButton(onNavigateBack) },
+                actions = {
+                    ConfigureButton(onClick = onConfigureClick)
+                }
             )
         },
     ) { innerPadding ->

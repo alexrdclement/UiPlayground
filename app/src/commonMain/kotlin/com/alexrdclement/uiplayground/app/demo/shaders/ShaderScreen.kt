@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.app.demo.control.SubjectModifierBar
@@ -40,13 +41,13 @@ import com.alexrdclement.uiplayground.shaders.noise
 import com.alexrdclement.uiplayground.shaders.pixelate
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ShaderScreen(
     onNavigateBack: () -> Unit,
+    onConfigureClick: () -> Unit,
 ) {
     var demoSubject by remember { mutableStateOf(DemoSubject.Circle) }
     val demoModifiers = remember {
@@ -87,6 +88,9 @@ fun ShaderScreen(
             TopBar(
                 title = { Text("Shaders", style = PlaygroundTheme.typography.titleMedium) },
                 navButton = { BackNavigationButton(onNavigateBack) },
+                actions = {
+                    ConfigureButton(onClick = onConfigureClick)
+                }
             )
         }
     ) {
