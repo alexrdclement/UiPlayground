@@ -9,6 +9,7 @@ private fun Preview() {
     UiPlaygroundPreview {
         ShaderScreen(
             onNavigateBack = {},
+            onConfigureClick = {},
         )
     }
 }

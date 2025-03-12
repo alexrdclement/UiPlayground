@@ -24,7 +24,8 @@ fun <T : CatalogItem> CatalogScreen(
     items: List<T>,
     onItemClick: (T) -> Unit,
     title: String? = null,
-    onNavigateBack: (() -> Unit)? = null
+    onNavigateBack: (() -> Unit)? = null,
+    actions: @Composable () -> Unit = {}
 ) {
     ReportDrawn()
 
@@ -37,6 +38,7 @@ fun <T : CatalogItem> CatalogScreen(
                 navButton = onNavigateBack?.let {
                     { BackNavigationButton(onNavigateBack) }
                 },
+                actions = actions,
             )
         }
     ) {
