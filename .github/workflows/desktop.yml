@@ -1,4 +1,4 @@
-name: "build"
+name: "Build Desktop"
 on:
   push:
     branches:
@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   build_ios:
-    name: "Build iOS"
+    name: "Build Desktop"
     runs-on: macos-14
     timeout-minutes: 60
 
@@ -37,5 +37,8 @@ jobs:
           distribution: 'zulu'
           java-version: 17
 
-      - name: Build iOS Simulator app
-        run: xcodebuild -workspace iosApp/UiPlayground.xcodeproj/project.xcworkspace -configuration Debug -scheme UiPlayground -sdk iphonesimulator
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Build desktop app
+        run: ./gradlew desktopApp:assemble
