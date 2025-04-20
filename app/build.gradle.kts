@@ -6,6 +6,7 @@ plugins {
 }
 
 kotlin {
+    androidTarget()
     listOf(
         iosX64(),
         iosArm64(),
@@ -16,6 +17,9 @@ kotlin {
             isStatic = true
         }
     }
+    jvm()
+
+    applyDefaultHierarchyTemplate()
 
     sourceSets {
         commonMain.dependencies {
@@ -35,6 +39,11 @@ kotlin {
         androidMain {
             dependencies {
                 implementation(compose.uiTooling)
+            }
+        }
+        jvmMain {
+            dependencies {
+                implementation(compose.desktop.common)
             }
         }
         nativeMain {
