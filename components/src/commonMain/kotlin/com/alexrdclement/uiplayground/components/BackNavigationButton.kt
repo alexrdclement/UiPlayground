@@ -12,6 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun BackNavigationButton(
@@ -40,4 +41,16 @@ private val BackNavigationIconShape: Shape = GenericShape { size, _ ->
     lineTo(0f, size.height / 2f)
     lineTo(offsetEndX, size.height)
     lineTo(offsetEndX, 0f)
+}
+
+@Preview
+@Composable
+private fun BackNavigationButtonPreview() {
+    PlaygroundTheme {
+        Surface {
+            BackNavigationButton(
+                onClick = {},
+            )
+        }
+    }
 }

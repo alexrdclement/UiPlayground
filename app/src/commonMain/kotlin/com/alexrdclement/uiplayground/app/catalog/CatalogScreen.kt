@@ -11,6 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.BackNavigationButton
 import com.alexrdclement.uiplayground.components.Button
 import com.alexrdclement.uiplayground.components.Scaffold
@@ -18,6 +19,7 @@ import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.components.TopBar
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.core.trace.ReportDrawn
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun <T : CatalogItem> CatalogScreen(
@@ -64,3 +66,28 @@ fun <T : CatalogItem> CatalogScreen(
         }
     }
 }
+
+@Preview
+@Composable
+private fun Preview() {
+    UiPlaygroundPreview {
+        CatalogScreen(
+            items = MainCatalogItem.entries.toList(),
+            onItemClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun WithNavPreview() {
+    UiPlaygroundPreview {
+        CatalogScreen(
+            items = MainCatalogItem.entries.toList(),
+            onItemClick = {},
+            title = "Components",
+            onNavigateBack = {},
+        )
+    }
+}
+

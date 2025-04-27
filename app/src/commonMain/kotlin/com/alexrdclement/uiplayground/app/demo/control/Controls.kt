@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun Controls(
@@ -29,5 +32,26 @@ fun Controls(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    UiPlaygroundPreview {
+        Controls(
+            controls = persistentListOf(
+                Control.Slider(
+                    name = "Amount",
+                    value = 0.5f,
+                    onValueChange = {},
+                ),
+                Control.Slider(
+                    name = "Amount 2",
+                    value = 0.5f,
+                    onValueChange = {},
+                )
+            ),
+        )
     }
 }

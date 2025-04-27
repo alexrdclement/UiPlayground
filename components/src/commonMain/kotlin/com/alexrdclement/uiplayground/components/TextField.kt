@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.input.OutputTransformation
 import androidx.compose.foundation.text.input.TextFieldDecorator
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun TextField(
@@ -87,4 +89,16 @@ object TextFieldDefaults {
                 innerTextField()
             }
         }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    PlaygroundTheme {
+        Surface {
+            TextField(
+                state = rememberTextFieldState("text"),
+            )
+        }
+    }
 }

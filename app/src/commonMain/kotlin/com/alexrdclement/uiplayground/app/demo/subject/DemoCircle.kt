@@ -7,7 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
+import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun DemoCircle(
@@ -21,5 +23,13 @@ fun DemoCircle(
             .background(PlaygroundTheme.colorScheme.surface)
     ) {
         drawCircle(color, style = drawStyle, radius = size.minDimension / 4f)
+    }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    UiPlaygroundPreview {
+        DemoCircle()
     }
 }

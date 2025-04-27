@@ -12,7 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.components.preview.BoolPreviewParameterProvider
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun PlayPauseButton(
@@ -37,6 +40,34 @@ fun PlayPauseButton(
             colorFilter = ColorFilter.tint(PlaygroundTheme.colorScheme.onPrimary),
             modifier = Modifier
                 .fillMaxSize()
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PlayPreview(
+    @PreviewParameter(BoolPreviewParameterProvider::class) isEnabled: Boolean,
+) {
+    PlaygroundTheme {
+        PlayPauseButton(
+            isEnabled = isEnabled,
+            isPlaying = false,
+            onClick = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PausePreview(
+    @PreviewParameter(BoolPreviewParameterProvider::class) isEnabled: Boolean,
+) {
+    PlaygroundTheme {
+        PlayPauseButton(
+            isEnabled = isEnabled,
+            isPlaying = true,
+            onClick = {},
         )
     }
 }

@@ -20,9 +20,11 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.components.TextField
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.min
 
 internal data class DecimalFormatSymbols(
@@ -188,5 +190,14 @@ private object CurrencyAmountFieldOutputTransformation: OutputTransformation {
                 insert(intPart.length - index, groupingSeparator)
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    UiPlaygroundPreview {
+        val textFieldState = rememberTextFieldState(initialText = "")
+        CurrencyAmountField(textFieldState = textFieldState)
     }
 }

@@ -19,7 +19,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
+import com.alexrdclement.uiplayground.components.preview.BoolPreviewParameterProvider
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun Surface(
@@ -96,3 +99,31 @@ private fun Modifier.surface(
     .then(if (border != null) Modifier.border(border, shape) else Modifier)
     .background(color = backgroundColor, shape = shape)
     .clip(shape)
+
+@Preview
+@Composable
+private fun Preview(
+    @PreviewParameter(BoolPreviewParameterProvider::class) isDarkTheme: Boolean,
+) {
+    PlaygroundTheme(isDarkTheme) {
+        Surface {
+            Text("Hello world")
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewClickable(
+    @PreviewParameter(BoolPreviewParameterProvider::class) isDarkTheme: Boolean,
+    @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
+) {
+    PlaygroundTheme(isDarkTheme) {
+        Surface(
+            onClick = {},
+            enabled = enabled
+        ) {
+            Text("Hello world")
+        }
+    }
+}

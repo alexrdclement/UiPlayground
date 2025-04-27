@@ -25,6 +25,7 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.foundation)
             implementation(compose.ui)
+            implementation(compose.components.uiToolingPreview)
 
             implementation(libs.core.ktx)
             implementation(libs.kotlinx.collections.immutable)
@@ -35,11 +36,6 @@ kotlin {
             implementation(projects.core)
             implementation(projects.shaders)
             implementation(projects.theme)
-        }
-        androidMain {
-            dependencies {
-                implementation(compose.uiTooling)
-            }
         }
         jvmMain {
             dependencies {
