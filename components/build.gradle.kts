@@ -45,6 +45,7 @@ kotlin {
                 api(compose.ui)
                 implementation(compose.foundation)
                 implementation(compose.material3)
+                implementation(compose.materialIconsExtended)
 
                 implementation(libs.core.ktx)
                 implementation(libs.coil.compose)

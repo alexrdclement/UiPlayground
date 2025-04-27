@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.AutoSize
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -160,7 +160,7 @@ fun TextDemo() {
                     TextStyle.LabelMedium -> PlaygroundTheme.typography.labelMedium
                     TextStyle.LabelSmall -> PlaygroundTheme.typography.labelSmall
                 },
-                autoSize = if (autoSize) AutoSize.StepBased() else null,
+                autoSize = if (autoSize) TextAutoSize.StepBased() else null,
                 softWrap = softWrap,
                 overflow = when (overflow) {
                     Overflow.Clip -> TextOverflow.Clip
