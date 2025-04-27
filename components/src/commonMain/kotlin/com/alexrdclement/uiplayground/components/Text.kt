@@ -12,7 +12,11 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.theme.PlaygroundTypography
+import com.alexrdclement.uiplayground.theme.preview.TextStylePreviewParameterProvider
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun Text(
@@ -69,3 +73,18 @@ fun Text(
 }
 
 val LocalTextStyle = compositionLocalOf(structuralEqualityPolicy()) { PlaygroundTypography.bodyMedium }
+
+@Preview
+@Composable
+private fun Preview(
+    @PreviewParameter(TextStylePreviewParameterProvider::class) textStylePair: Pair<String, TextStyle>,
+) {
+    PlaygroundTheme {
+        Surface {
+            Text(
+                text = textStylePair.first,
+                style = textStylePair.second,
+            )
+        }
+    }
+}

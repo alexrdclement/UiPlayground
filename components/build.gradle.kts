@@ -45,6 +45,8 @@ kotlin {
                 api(compose.ui)
                 implementation(compose.foundation)
                 implementation(compose.material3)
+                implementation(compose.uiTooling)
+                implementation(compose.components.uiToolingPreview)
 
                 implementation(libs.core.ktx)
                 implementation(libs.coil.compose)
@@ -56,7 +58,6 @@ kotlin {
         }
         androidMain {
             dependencies {
-                implementation(compose.uiTooling)
                 implementation(libs.ktor.client.android)
                 implementation(libs.compose.ui.test.manifest)
             }

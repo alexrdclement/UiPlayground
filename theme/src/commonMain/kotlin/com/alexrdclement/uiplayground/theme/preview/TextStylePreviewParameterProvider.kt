@@ -1,8 +1,8 @@
 package com.alexrdclement.uiplayground.theme.preview
 
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.alexrdclement.uiplayground.theme.PlaygroundTypography
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 
 class TextStylePreviewParameterProvider : PreviewParameterProvider<Pair<String, TextStyle>> {
     override val values = sequenceOf(

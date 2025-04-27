@@ -12,8 +12,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun TextFieldDemo(
@@ -36,5 +38,14 @@ fun TextFieldDemo(
         CurrencyAmountField(
             textFieldState = textFieldState,
         )
+    }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    UiPlaygroundPreview {
+        val textFieldState = rememberTextFieldState(initialText = "123.45")
+        TextFieldDemo(textFieldState = textFieldState)
     }
 }

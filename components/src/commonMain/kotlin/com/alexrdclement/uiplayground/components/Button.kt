@@ -22,7 +22,10 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.components.preview.BoolPreviewParameterProvider
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun Button(
@@ -201,5 +204,58 @@ class ButtonColors(
         result = 31 * result + disabledContainerColor.hashCode()
         result = 31 * result + disabledContentColor.hashCode()
         return result
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewFillStyle(
+    @PreviewParameter(BoolPreviewParameterProvider::class) isDarkMode: Boolean,
+    @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
+) {
+    PlaygroundTheme {
+        Button(
+            style = ButtonStyle.Fill,
+            enabled = enabled,
+            onClick = {},
+        ) {
+            Text("Button")
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewOutlineStyle(
+    @PreviewParameter(BoolPreviewParameterProvider::class) isDarkMode: Boolean,
+    @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
+) {
+    PlaygroundTheme(isDarkMode) {
+        Button(
+            style = ButtonStyle.Outline,
+            enabled = enabled,
+            onClick = {},
+        ) {
+            Text("Button")
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewBorderlessStyle(
+    @PreviewParameter(BoolPreviewParameterProvider::class) isDarkMode: Boolean,
+    @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
+) {
+    PlaygroundTheme(isDarkMode) {
+        Surface {
+            Button(
+                style = ButtonStyle.Borderless,
+                enabled = enabled,
+                onClick = {},
+            ) {
+                Text("Button")
+            }
+        }
     }
 }

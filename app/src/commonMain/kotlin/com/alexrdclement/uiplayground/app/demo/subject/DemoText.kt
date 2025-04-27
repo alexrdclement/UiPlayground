@@ -7,8 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun DemoText(
@@ -25,5 +27,13 @@ fun DemoText(
             style = textStyle,
             modifier = modifier.align(Alignment.Center)
         )
+    }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    UiPlaygroundPreview {
+        DemoText()
     }
 }

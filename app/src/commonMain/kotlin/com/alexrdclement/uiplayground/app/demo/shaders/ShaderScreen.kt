@@ -28,6 +28,7 @@ import com.alexrdclement.uiplayground.app.demo.subject.DemoCircle
 import com.alexrdclement.uiplayground.app.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.app.demo.subject.DemoText
 import com.alexrdclement.uiplayground.app.demo.subject.DemoTextField
+import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.BackNavigationButton
 import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Scaffold
@@ -43,6 +44,7 @@ import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ShaderScreen(
@@ -273,6 +275,17 @@ private fun makeControls(
                 },
                 valueRange = 0f..100f,
             )
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    UiPlaygroundPreview {
+        ShaderScreen(
+            onNavigateBack = {},
+            onConfigureClick = {},
         )
     }
 }

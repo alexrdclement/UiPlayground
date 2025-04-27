@@ -33,11 +33,7 @@ kotlin {
                 implementation(libs.core.ktx)
                 implementation(compose.foundation)
                 implementation(compose.ui)
-            }
-        }
-        androidMain {
-            dependencies {
-                implementation(compose.uiTooling)
+                implementation(compose.components.uiToolingPreview)
             }
         }
     }

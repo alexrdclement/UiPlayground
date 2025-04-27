@@ -1,6 +1,6 @@
 package com.alexrdclement.uiplayground.shaders.preview
 
-import androidx.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@Preview(showBackground = true)
+@Preview
 internal annotation class ShaderPreview

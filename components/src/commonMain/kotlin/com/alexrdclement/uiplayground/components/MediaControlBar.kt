@@ -28,6 +28,9 @@ import androidx.compose.ui.util.trace
 import com.alexrdclement.uiplayground.components.model.Artist
 import com.alexrdclement.uiplayground.components.model.MediaItem
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 import kotlin.math.roundToInt
 
 private const val TraceName = "MediaControlBar"
@@ -126,5 +129,30 @@ fun MediaControlBar(
                 }
             }
         }
+    }
+}
+
+private class ProgressPreviewParameterProvider : PreviewParameterProvider<Float> {
+    override val values = sequenceOf(0f, 0.5f, 1f)
+}
+
+@Preview
+@Composable
+private fun Preview(
+    @PreviewParameter(ProgressPreviewParameterProvider::class) progress: Float
+) {
+    PlaygroundTheme {
+        var isPlaying by remember { mutableStateOf(false) }
+        MediaControlBar(
+            mediaItem = MediaItem(
+                artworkThumbnailUrl = null,
+                artworkLargeUrl = null,
+                title = "Title",
+                artists = listOf(Artist("Artist 1"), Artist("Artist 2")),
+            ),
+            isPlaying = isPlaying,
+            onPlayPauseClick = { isPlaying = !isPlaying },
+            progress = { progress },
+        )
     }
 }

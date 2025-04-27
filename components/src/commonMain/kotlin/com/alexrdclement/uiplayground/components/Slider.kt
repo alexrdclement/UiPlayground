@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.coroutines.coroutineScope
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -361,3 +362,14 @@ private fun scale(a1: Float, b1: Float, x1: Float, a2: Float, b2: Float) =
 // Calculate the 0..1 fraction that `pos` value represents between `a` and `b`
 private fun calcFraction(a: Float, b: Float, pos: Float) =
     (if (b - a == 0f) 0f else (pos - a) / (b - a)).coerceIn(0f, 1f)
+
+@Preview
+@Composable
+private fun Preview() {
+    PlaygroundTheme {
+        Surface {
+            val state = remember { SliderState(value = 0.5f) }
+            Slider(state = state)
+        }
+    }
+}
