@@ -30,7 +30,6 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.core.ktx)
                 implementation(compose.foundation)
                 implementation(compose.ui)
                 implementation(compose.components.uiToolingPreview)

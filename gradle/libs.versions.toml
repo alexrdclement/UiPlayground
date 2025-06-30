@@ -12,15 +12,14 @@ coil = "3.0.4"
 compose-bom = "2025.04.01"
 compose-multiplatform = "1.8.2"
 compose-ui = "1.8.3"
-core-ktx = "1.16.0"
 espresso-core = "3.6.1"
 junit = "4.13.2"
-kotlin = "2.1.0"
+kotlin = "2.2.0"
 kotlinx-collections-immutable = "0.3.8"
 kotlinx-serialization-json = "1.8.0"
 ktor = "3.0.0"
-lifecycle-runtime-ktx = "2.9.0-rc01"
-navigation-compose = "2.8.0-alpha10"
+lifecycle-runtime-ktx = "2.9.1"
+navigation-compose = "2.8.0-alpha13"
 paparazzi = "2.0.0-alpha02"
 profileinstaller = "1.4.1"
 test-parameter-injector = "1.18"
@@ -42,7 +41,6 @@ androidx-tracing-perfetto-binary = { group = "androidx.tracing", name = "tracing
 androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network-ktor3 = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coil" }
-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose-ui" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose-ui" }

@@ -48,7 +48,6 @@ kotlin {
                 implementation(compose.materialIconsExtended)
                 implementation(compose.components.uiToolingPreview)
 
-                implementation(libs.core.ktx)
                 implementation(libs.coil.compose)
                 implementation(libs.coil.network.ktor3)
 

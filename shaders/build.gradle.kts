@@ -46,7 +46,6 @@ kotlin {
                 implementation(compose.material3)
                 implementation(compose.ui)
                 implementation(compose.components.uiToolingPreview)
-                implementation(libs.core.ktx)
 
                 api(projects.core)
             }
