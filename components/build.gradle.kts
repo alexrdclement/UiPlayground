@@ -45,10 +45,9 @@ kotlin {
                 api(compose.ui)
                 implementation(compose.foundation)
                 implementation(compose.material3)
-                implementation(compose.uiTooling)
+                implementation(compose.materialIconsExtended)
                 implementation(compose.components.uiToolingPreview)
 
-                implementation(libs.core.ktx)
                 implementation(libs.coil.compose)
                 implementation(libs.coil.network.ktor3)
 
@@ -86,4 +85,8 @@ kotlin {
             }
         }
     }
+}
+
+dependencies {
+    debugImplementation(compose.uiTooling)
 }

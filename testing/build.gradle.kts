@@ -15,7 +15,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.core.ktx)
     implementation(libs.junit)
     api(libs.paparazzi)
 }

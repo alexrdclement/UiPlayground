@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.AutoSize
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -79,7 +79,7 @@ fun ButtonDemo() {
                 Text(
                     text = "Button",
                     softWrap = softWrap,
-                    autoSize = if (autoSizeText) AutoSize.StepBased() else null,
+                    autoSize = if (autoSizeText) TextAutoSize.StepBased() else null,
                 )
             }
         }

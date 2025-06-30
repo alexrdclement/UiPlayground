@@ -1,8 +1,8 @@
 package com.alexrdclement.uiplayground.components
 
-import androidx.compose.foundation.text.AutoSize
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.structuralEqualityPolicy
@@ -28,7 +28,7 @@ fun Text(
     softWrap: Boolean = true,
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
-    autoSize: AutoSize? = null,
+    autoSize: TextAutoSize? = null,
 ) {
     val color = style.color.takeOrElse { LocalContentColor.current }
     BasicText(
@@ -55,7 +55,7 @@ fun Text(
     maxLines: Int = Int.MAX_VALUE,
     minLines: Int = 1,
     inlineContent: Map<String, InlineTextContent> = mapOf(),
-    autoSize: AutoSize? = null,
+    autoSize: TextAutoSize? = null,
 ) {
     val color = style.color.takeOrElse { LocalContentColor.current }
     BasicText(
