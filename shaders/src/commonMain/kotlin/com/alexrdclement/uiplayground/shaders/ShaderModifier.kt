@@ -2,15 +2,17 @@ package com.alexrdclement.uiplayground.shaders
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.node.CompositionLocalConsumerModifierNode
 import androidx.compose.ui.node.DrawModifierNode
 import androidx.compose.ui.node.LayoutAwareModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.node.currentValueOf
+import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.compose.ui.unit.IntSize
-import com.alexrdclement.uiplayground.shaders.util.drawContentWithRenderEffect
 import com.alexrdclement.uiplayground.core.trace.trace
+import com.alexrdclement.uiplayground.shaders.util.useGraphicsLayer
 
 data class ShaderElement(
     val shader: Shader,
@@ -44,7 +46,17 @@ class ShaderNode(
                 drawContent()
                 return@trace
             }
-            drawContentWithRenderEffect(renderEffect, currentValueOf(LocalGraphicsContext))
+
+            val graphicsContext = currentValueOf(LocalGraphicsContext)
+            graphicsContext.useGraphicsLayer {
+                clip = true
+                this.renderEffect = renderEffect
+
+                record { this@draw.drawContent() }
+                drawLayer(this)
+            }
+
+            invalidateDraw()
         }
     }
 }
