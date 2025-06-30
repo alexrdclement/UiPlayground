@@ -28,15 +28,12 @@ half4 main(float2 fragCoord) {
     half4 color = composable.eval(fragCoord);
     bool isBlack = color == half4(0.0, 0.0, 0.0, 1.0);
 
-    float2 scaledCoord = fragCoord.xy / $UniformSize;
-    scaledCoord *= 1.0;
-    
-    float noiseVal = noise(fract(scaledCoord));
+    float noiseVal = noise(fragCoord);
 
     color.rgb *= 1 - noiseVal * amount; 
 
     if (colorEnabled && (!filterBlack || !isBlack) && noiseVal > 1 - amount) {
-        color.rgb = vec3(noise(scaledCoord + 0.1), noise(scaledCoord + 0.2), noise(scaledCoord + 0.3));
+        color.rgb = vec3(noise(fragCoord + 0.1), noise(fragCoord + 0.2), noise(fragCoord + 0.3));
     }
     
     return color;

@@ -3,6 +3,7 @@ package com.alexrdclement.uiplayground.shaders
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.node.CompositionLocalConsumerModifierNode
 import androidx.compose.ui.node.DrawModifierNode
 import androidx.compose.ui.node.LayoutAwareModifierNode
@@ -36,6 +37,10 @@ class ShaderNode(
     LayoutAwareModifierNode,
     CompositionLocalConsumerModifierNode {
 
+    override fun onPlaced(coordinates: LayoutCoordinates) {
+        shader.onRemeasured(coordinates.size.width, coordinates.size.height)
+    }
+
     override fun onRemeasured(size: IntSize) {
         shader.onRemeasured(size.width, size.height)
     }
@@ -49,7 +54,6 @@ class ShaderNode(
 
             val graphicsContext = currentValueOf(LocalGraphicsContext)
             graphicsContext.useGraphicsLayer {
-                clip = true
                 this.renderEffect = renderEffect
 
                 record { this@draw.drawContent() }
