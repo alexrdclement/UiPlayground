@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
+import com.alexrdclement.uiplayground.app.demo.components.demo.CurrencyAmountFieldDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.MediaControlSheetDemo
 import com.alexrdclement.uiplayground.components.BackNavigationButton
 import com.alexrdclement.uiplayground.components.Scaffold
@@ -29,6 +30,9 @@ fun ComponentScreen(
         },
     ) { innerPadding ->
         when (component) {
+            Component.CurrencyAmountField -> CurrencyAmountFieldDemo(
+                modifier = Modifier.padding(innerPadding),
+            )
             Component.MediaControlSheet -> MediaControlSheetDemo(
                 modifier = Modifier.padding(innerPadding)
             )

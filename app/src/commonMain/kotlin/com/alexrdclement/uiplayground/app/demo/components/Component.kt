@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class Component : CatalogItem {
+    CurrencyAmountField,
     MediaControlSheet;
 
     override val title = this.name
