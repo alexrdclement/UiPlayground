@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.app.demo.experiments.demo.button
+package com.alexrdclement.uiplayground.app.demo.components.demo
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

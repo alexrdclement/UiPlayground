@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.app.demo.experiments.demo.textfield
+package com.alexrdclement.uiplayground.app.demo.components.demo
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +14,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.allCaps
+import androidx.compose.foundation.text.input.byValue
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -38,20 +39,6 @@ import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
-
-private enum class TextStyle {
-    Headline,
-    Display,
-    TitleSmall,
-    TitleMedium,
-    TitleLarge,
-    BodyLarge,
-    BodyMedium,
-    BodySmall,
-    LabelLarge,
-    LabelMedium,
-    LabelSmall,
-}
 
 private val keyboardTypes = persistentListOf(
     KeyboardType.Text,
@@ -304,4 +291,8 @@ fun TextFieldDemo() {
                 .navigationBarsPadding(),
         )
     }
+}
+
+fun InputTransformation.onlyDigits() = byValue { current, proposed ->
+    proposed.filter{ it.isDigit() }
 }
