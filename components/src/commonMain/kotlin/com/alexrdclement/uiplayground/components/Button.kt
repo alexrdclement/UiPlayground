@@ -213,7 +213,7 @@ private fun PreviewFillStyle(
     @PreviewParameter(BoolPreviewParameterProvider::class) isDarkMode: Boolean,
     @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
 ) {
-    PlaygroundTheme {
+    PlaygroundTheme(isDarkMode) {
         Button(
             style = ButtonStyle.Fill,
             enabled = enabled,
