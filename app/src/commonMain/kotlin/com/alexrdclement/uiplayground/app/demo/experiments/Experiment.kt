@@ -5,7 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class Experiment : CatalogItem {
-    Gradients;
+    Fade,
+    Gradients,
+    ;
 
     override val title = this.name
 }

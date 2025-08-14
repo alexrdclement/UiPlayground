@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
+import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.FadeDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.gradient.GradientDemo
 import com.alexrdclement.uiplayground.components.BackNavigationButton
 import com.alexrdclement.uiplayground.components.Scaffold
@@ -29,7 +30,12 @@ fun ExperimentScreen(
         },
     ) { innerPadding ->
         when (experiment) {
-            Experiment.Gradients -> GradientDemo(modifier = Modifier.padding(innerPadding))
+            Experiment.Fade -> FadeDemo(
+                modifier = Modifier.padding(innerPadding),
+            )
+            Experiment.Gradients -> GradientDemo(
+                modifier = Modifier.padding(innerPadding),
+            )
         }
     }
 }
