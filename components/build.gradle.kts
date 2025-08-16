@@ -60,6 +60,7 @@ kotlin {
         androidMain {
             dependencies {
                 api(libs.ktor.client.android)
+                api(libs.ktor.client.okhttp)
                 implementation(libs.compose.ui.test.manifest)
             }
         }
