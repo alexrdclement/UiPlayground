@@ -2,7 +2,6 @@ package com.alexrdclement.uiplayground.app.demo.experiments.demo.fade
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -43,19 +42,19 @@ enum class FadeSide(val value: Int) {
 }
 
 fun Modifier.bottomFade(
-    height: Dp,
+    length: Dp,
     borderColor: Color? = null,
-) = fade(FadeSide.Bottom, height, borderColor)
+) = fade(FadeSide.Bottom, length, borderColor)
 
 fun Modifier.fade(
     side: FadeSide,
-    height: Dp,
+    length: Dp,
     borderColor: Color? = null,
-) = fade(side.value, height, borderColor)
+) = fade(side.value, length, borderColor)
 
 fun Modifier.fade(
     @FadeSideMask sides: Int,
-    height: Dp,
+    length: Dp,
     borderColor: Color? = null,
 ) = this
     .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
@@ -63,7 +62,7 @@ fun Modifier.fade(
         drawContent()
 
         val fadeSides = FadeSide.fromMask(sides)
-        val fadeSize = height.toPx()
+        val fadeLengthPx = length.toPx()
 
         for (side in fadeSides) {
             val (brush, topLeft, size) = when (side) {
@@ -71,37 +70,37 @@ fun Modifier.fade(
                     Brush.horizontalGradient(
                         listOf(Color.Transparent, Color.Black),
                         startX = 0f,
-                        endX = fadeSize
+                        endX = fadeLengthPx
                     ),
                     Offset(0f, 0f),
-                    Size(fadeSize, size.height)
+                    Size(fadeLengthPx, size.height)
                 )
                 FadeSide.Top -> Triple(
                     Brush.verticalGradient(
                         listOf(Color.Transparent, Color.Black),
                         startY = 0f,
-                        endY = fadeSize
+                        endY = fadeLengthPx
                     ),
                     Offset(0f, 0f),
-                    Size(size.width, fadeSize)
+                    Size(size.width, fadeLengthPx)
                 )
                 FadeSide.Right -> Triple(
                     Brush.horizontalGradient(
                         listOf(Color.Black, Color.Transparent),
-                        startX = size.width - fadeSize,
+                        startX = size.width - fadeLengthPx,
                         endX = size.width
                     ),
-                    Offset(size.width - fadeSize, 0f),
-                    Size(fadeSize, size.height)
+                    Offset(size.width - fadeLengthPx, 0f),
+                    Size(fadeLengthPx, size.height)
                 )
                 FadeSide.Bottom -> Triple(
                     Brush.verticalGradient(
                         listOf(Color.Black, Color.Transparent),
-                        startY = size.height - fadeSize,
+                        startY = size.height - fadeLengthPx,
                         endY = size.height
                     ),
-                    Offset(0f, size.height - fadeSize),
-                    Size(size.width, fadeSize)
+                    Offset(0f, size.height - fadeLengthPx),
+                    Size(size.width, fadeLengthPx)
                 )
             }
 
@@ -143,7 +142,7 @@ fun FadePreview() {
                     modifier = Modifier
                         .padding(size / 8)
                         .size(size / 4)
-                        .fade(side = fadeSide, height = size / 4)
+                        .fade(side = fadeSide, length = size / 4)
                         .background(Color.Black)
                         .align(alignment)
                 )
@@ -172,7 +171,7 @@ fun FadeMultipleSidePreview() {
                     modifier = Modifier
                         .padding(size / 8)
                         .size(size / 4)
-                        .fade(sides = fadeSides, height = size / 4)
+                        .fade(sides = fadeSides, length = size / 4)
                         .background(Color.Black)
                         .align(alignment)
                 )
