@@ -1,18 +1,13 @@
 package com.alexrdclement.uiplayground.app.demo.experiments
 
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
+import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.FadeDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.gradient.GradientDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.scroll.AnimateScrollItemVisibleDemo
-import com.alexrdclement.uiplayground.components.BackNavigationButton
 import com.alexrdclement.uiplayground.components.Scaffold
-import com.alexrdclement.uiplayground.components.Text
-import com.alexrdclement.uiplayground.components.TopBar
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
 fun ExperimentScreen(
@@ -22,18 +17,10 @@ fun ExperimentScreen(
 ) {
     Scaffold(
         topBar = {
-            TopBar(
-                title = {
-                    Text(
-                        text = experiment.title,
-                        style = PlaygroundTheme.typography.titleMedium,
-                        modifier = Modifier.basicMarquee(),
-                    )
-                },
-                navButton = { BackNavigationButton(onNavigateBack) },
-                actions = {
-                    ConfigureButton(onClick = onConfigureClick)
-                }
+            DemoTopBar(
+                title = experiment.title,
+                onNavigateBack = onNavigateBack,
+                onConfigureClick = onConfigureClick,
             )
         },
     ) { innerPadding ->
