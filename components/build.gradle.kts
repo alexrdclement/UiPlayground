@@ -50,8 +50,8 @@ kotlin {
                 implementation(compose.materialIconsExtended)
                 implementation(compose.components.uiToolingPreview)
 
-                implementation(libs.coil.compose)
-                implementation(libs.coil.network.ktor3)
+                api(libs.coil.compose)
+                api(libs.coil.network.ktor3)
 
                 api(projects.core)
                 api(projects.theme)
@@ -59,7 +59,7 @@ kotlin {
         }
         androidMain {
             dependencies {
-                implementation(libs.ktor.client.android)
+                api(libs.ktor.client.android)
                 implementation(libs.compose.ui.test.manifest)
             }
         }
@@ -78,12 +78,12 @@ kotlin {
         }
         appleMain {
             dependencies {
-                implementation(libs.ktor.client.darwin)
+                api(libs.ktor.client.darwin)
             }
         }
         jvmMain {
             dependencies {
-                implementation(libs.ktor.client.java)
+                api(libs.ktor.client.java)
             }
         }
     }
