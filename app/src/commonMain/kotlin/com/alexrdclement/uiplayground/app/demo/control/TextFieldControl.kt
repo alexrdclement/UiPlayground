@@ -32,6 +32,9 @@ fun TextFieldControl(
         }
         TextField(
             state = control.textFieldState,
+            enabled = control.enabled,
+            inputTransformation = control.inputTransformation,
+            keyboardOptions = control.keyboardOptions,
         )
     }
 }

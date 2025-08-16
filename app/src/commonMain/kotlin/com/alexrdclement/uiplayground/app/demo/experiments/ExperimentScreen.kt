@@ -3,16 +3,11 @@ package com.alexrdclement.uiplayground.app.demo.experiments
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
-import com.alexrdclement.uiplayground.app.demo.experiments.demo.button.ButtonDemo
+import com.alexrdclement.uiplayground.app.demo.DemoTopBar
+import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.FadeDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.gradient.GradientDemo
-import com.alexrdclement.uiplayground.app.demo.experiments.demo.text.TextDemo
-import com.alexrdclement.uiplayground.app.demo.experiments.demo.textfield.TextFieldDemo
-import com.alexrdclement.uiplayground.components.BackNavigationButton
+import com.alexrdclement.uiplayground.app.demo.experiments.demo.scroll.AnimateScrollItemVisibleDemo
 import com.alexrdclement.uiplayground.components.Scaffold
-import com.alexrdclement.uiplayground.components.Text
-import com.alexrdclement.uiplayground.components.TopBar
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
 fun ExperimentScreen(
@@ -22,20 +17,23 @@ fun ExperimentScreen(
 ) {
     Scaffold(
         topBar = {
-            TopBar(
-                title = { Text(experiment.title, style = PlaygroundTheme.typography.titleMedium) },
-                navButton = { BackNavigationButton(onNavigateBack) },
-                actions = {
-                    ConfigureButton(onClick = onConfigureClick)
-                }
+            DemoTopBar(
+                title = experiment.title,
+                onNavigateBack = onNavigateBack,
+                onConfigureClick = onConfigureClick,
             )
         },
     ) { innerPadding ->
         when (experiment) {
-            Experiment.Button -> ButtonDemo()
-            Experiment.Text -> TextDemo()
-            Experiment.TextField -> TextFieldDemo()
-            Experiment.Gradients -> GradientDemo(modifier = Modifier.padding(innerPadding))
+            Experiment.AnimateScrollItemVisible -> AnimateScrollItemVisibleDemo(
+                modifier = Modifier.padding(innerPadding),
+            )
+            Experiment.Fade -> FadeDemo(
+                modifier = Modifier.padding(innerPadding),
+            )
+            Experiment.Gradients -> GradientDemo(
+                modifier = Modifier.padding(innerPadding),
+            )
         }
     }
 }

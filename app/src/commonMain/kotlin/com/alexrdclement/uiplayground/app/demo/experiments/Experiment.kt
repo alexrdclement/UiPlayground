@@ -5,10 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class Experiment : CatalogItem {
-    Button,
-    Text,
-    TextField,
-    Gradients;
+    AnimateScrollItemVisible,
+    Fade,
+    Gradients,
+    ;
 
     override val title = this.name
 }

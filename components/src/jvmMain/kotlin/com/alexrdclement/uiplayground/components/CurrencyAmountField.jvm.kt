@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.app.demo.experiments.demo.textfield
+package com.alexrdclement.uiplayground.components
 
 internal actual fun getDecimalFormatSymbols(): DecimalFormatSymbols {
     val jvmSymbols = java.text.DecimalFormatSymbols.getInstance()

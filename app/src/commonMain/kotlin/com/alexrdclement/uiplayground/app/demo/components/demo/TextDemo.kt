@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.app.demo.experiments.demo.text
+package com.alexrdclement.uiplayground.app.demo.components.demo
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -42,20 +42,6 @@ private enum class Overflow {
     Visible,
     StartEllipsis,
     MiddleEllipsis,
-}
-
-private enum class TextStyle {
-    Headline,
-    Display,
-    TitleSmall,
-    TitleMedium,
-    TitleLarge,
-    BodyLarge,
-    BodyMedium,
-    BodySmall,
-    LabelLarge,
-    LabelMedium,
-    LabelSmall,
 }
 
 @Composable

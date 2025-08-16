@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.app.demo.experiments.demo.textfield
+package com.alexrdclement.uiplayground.components
 
 import androidx.annotation.CheckResult
 import androidx.compose.foundation.layout.Arrangement
@@ -20,9 +20,6 @@ import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
-import com.alexrdclement.uiplayground.components.Text
-import com.alexrdclement.uiplayground.components.TextField
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.min
@@ -196,7 +193,7 @@ private object CurrencyAmountFieldOutputTransformation: OutputTransformation {
 @Preview
 @Composable
 private fun Preview() {
-    UiPlaygroundPreview {
+    PlaygroundTheme {
         val textFieldState = rememberTextFieldState(initialText = "")
         CurrencyAmountField(textFieldState = textFieldState)
     }

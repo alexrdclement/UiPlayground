@@ -1,5 +1,7 @@
 package com.alexrdclement.uiplayground.app.demo.control
 
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
 import kotlinx.collections.immutable.ImmutableList
 
@@ -30,5 +32,8 @@ sealed class Control {
         val name: String,
         val textFieldState: TextFieldState,
         val includeLabel: Boolean = true,
+        val enabled: Boolean = true,
+        val keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+        val inputTransformation: InputTransformation? = null,
     ) : Control()
 }

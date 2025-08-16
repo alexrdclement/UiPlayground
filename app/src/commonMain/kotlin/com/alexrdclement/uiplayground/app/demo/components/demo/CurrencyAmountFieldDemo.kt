@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.app.demo.experiments.demo.textfield
+package com.alexrdclement.uiplayground.app.demo.components.demo
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,19 +13,21 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
+import com.alexrdclement.uiplayground.components.CurrencyAmountField
 import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun TextFieldDemo(
+fun CurrencyAmountFieldDemo(
+    modifier: Modifier = Modifier,
     textFieldState: TextFieldState = rememberTextFieldState(),
 ) {
     val text by snapshotFlow { textFieldState.text.toString() }
         .collectAsState(initial = textFieldState.text.toString())
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .systemBarsPadding(),
         verticalArrangement = Arrangement.Center,
@@ -46,6 +48,6 @@ fun TextFieldDemo(
 private fun Preview() {
     UiPlaygroundPreview {
         val textFieldState = rememberTextFieldState(initialText = "123.45")
-        TextFieldDemo(textFieldState = textFieldState)
+        CurrencyAmountFieldDemo(textFieldState = textFieldState)
     }
 }
