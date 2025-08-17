@@ -10,6 +10,7 @@ baselineprofile = "1.3.4"
 benchmark-macro-junit4 = "1.3.4"
 coil = "3.3.0"
 compose-bom = "2025.04.01"
+compose-hotreload = "1.0.0-beta05"
 compose-multiplatform = "1.8.2"
 compose-ui = "1.8.3"
 espresso-core = "3.6.1"
@@ -73,6 +74,7 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+compose-hotreload = { id = "org.jetbrains.compose.hot-reload", version.ref = "compose-hotreload" }
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
