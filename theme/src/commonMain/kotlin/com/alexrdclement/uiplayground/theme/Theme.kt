@@ -50,6 +50,7 @@ val LocalPlaygroundSpacing = staticCompositionLocalOf {
 @Composable
 fun PlaygroundTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    typography: Typography = PlaygroundTypography,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -59,7 +60,7 @@ fun PlaygroundTheme(
 
     CompositionLocalProvider(
         LocalPlaygroundColorScheme provides colorScheme,
-        LocalPlaygroundTypography provides PlaygroundTypography,
+        LocalPlaygroundTypography provides typography,
         LocalPlaygroundSpacing provides PlaygroundSpacing,
         content = content,
     )

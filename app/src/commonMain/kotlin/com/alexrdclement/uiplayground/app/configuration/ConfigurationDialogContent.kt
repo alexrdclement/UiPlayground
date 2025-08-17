@@ -1,7 +1,6 @@
 package com.alexrdclement.uiplayground.app.configuration
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,14 +12,19 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.components.Surface
+import com.alexrdclement.uiplayground.theme.FontFamily
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.PlaygroundTypographyDefaults
+import com.alexrdclement.uiplayground.theme.makePlaygroundTypography
+import com.alexrdclement.uiplayground.theme.toComposeFontFamily
+import com.alexrdclement.uiplayground.theme.toFontFamily
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-fun ConfigurationDialogContent() {
-    val configurationController = rememberConfigurationController()
-
+fun ConfigurationDialogContent(
+    configurationController: ConfigurationController,
+) {
     var colorMode by remember(configurationController) {
         mutableStateOf(configurationController.colorMode)
     }
@@ -41,12 +45,38 @@ fun ConfigurationDialogContent() {
         }
     )
 
+    var fontFamily by remember(configurationController) {
+        val composeFontFamily = configurationController.typography.headline.fontFamily
+            ?: PlaygroundTypographyDefaults.fontFamily
+        mutableStateOf(composeFontFamily.toFontFamily())
+    }
+    val fontFamilyControl = Control.Dropdown(
+        name = "Font family",
+        values = FontFamily.entries.map {
+            Control.Dropdown.DropdownItem(
+                name = it.name,
+                value = it,
+            )
+        }.toPersistentList(),
+        selectedIndex = FontFamily.entries.indexOf(fontFamily),
+        onValueChange = {
+            val newValue = FontFamily.entries[it]
+            val typography = makePlaygroundTypography(
+                fontFamily = newValue.toComposeFontFamily(),
+            )
+            if (configurationController.setTypography(typography)) {
+                fontFamily = newValue
+            }
+        }
+    )
+
     Surface(
         border = BorderStroke(1.dp, PlaygroundTheme.colorScheme.outline),
     ) {
         Controls(
             controls = persistentListOf(
                 colorModeControl,
+                fontFamilyControl,
             ),
             modifier = Modifier.padding(PlaygroundTheme.spacing.medium)
         )

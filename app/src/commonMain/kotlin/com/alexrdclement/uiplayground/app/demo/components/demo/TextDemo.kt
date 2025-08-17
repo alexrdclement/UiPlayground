@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.control.Control
@@ -42,6 +43,25 @@ private enum class Overflow {
     Visible,
     StartEllipsis,
     MiddleEllipsis,
+}
+
+private enum class LineHeightAlignment {
+    Top,
+    Center,
+    Proportional,
+    Bottom,
+}
+
+private enum class LineHeightTrim {
+    FirstLineTop,
+    LastLineBottom,
+    Both,
+    None,
+}
+
+private enum class LineHeightMode {
+    Fixed,
+    Minimum,
 }
 
 @Composable
@@ -68,6 +88,50 @@ fun TextDemo() {
         onValueChange = { style = TextStyle.entries[it] },
     )
 
+    val lineHeightStyleDefault = LineHeightStyle.Default
+
+    val lineHeightAlignmentDefault = lineHeightStyleDefault.alignment.toDomain() ?: LineHeightAlignment.Proportional
+    var lineHeightAlignment by remember { mutableStateOf(lineHeightAlignmentDefault) }
+    val lineHeightAlignmentControl = Control.Dropdown(
+        name = "Line height alignment",
+        values = LineHeightAlignment.entries.map {
+            Control.Dropdown.DropdownItem(
+                name = it.name,
+                value = it,
+            )
+        }.toPersistentList(),
+        onValueChange = { lineHeightAlignment = LineHeightAlignment.entries[it] },
+        selectedIndex = LineHeightAlignment.entries.indexOf(lineHeightAlignment),
+    )
+
+    val lineHeightTrimDefault = lineHeightStyleDefault.trim.toDomain() ?: LineHeightTrim.Both
+    var lineHeightTrim by remember { mutableStateOf(lineHeightTrimDefault) }
+    val lineHeightTrimControl = Control.Dropdown(
+        name = "Line height trim",
+        values = LineHeightTrim.entries.map {
+            Control.Dropdown.DropdownItem(
+                name = it.name,
+                value = it,
+            )
+        }.toPersistentList(),
+        onValueChange = { lineHeightTrim = LineHeightTrim.entries[it] },
+        selectedIndex = LineHeightTrim.entries.indexOf(lineHeightTrim),
+    )
+
+    val lineHeightModeDefault = lineHeightStyleDefault.mode.toDomain() ?: LineHeightMode.Fixed
+    var lineHeightMode by remember { mutableStateOf(lineHeightModeDefault) }
+    val lineHeightModeControl = Control.Dropdown(
+        name = "Line height mode",
+        values = LineHeightMode.entries.map {
+            Control.Dropdown.DropdownItem(
+                name = it.name,
+                value = it,
+            )
+        }.toPersistentList(),
+        onValueChange = { lineHeightMode = LineHeightMode.entries[it] },
+        selectedIndex = LineHeightMode.entries.indexOf(lineHeightMode),
+    )
+
     var maxWidthPx by remember { mutableIntStateOf(0) }
     val maxWidth = with(LocalDensity.current) { maxWidthPx.toDp() }
     var width by remember(maxWidth) { mutableStateOf(maxWidth) }
@@ -80,7 +144,7 @@ fun TextDemo() {
         valueRange = 0f..maxWidth.value,
     )
 
-    var autoSize by remember { mutableStateOf(true) }
+    var autoSize by remember { mutableStateOf(false) }
     val autoSizeControl = Control.Toggle(
         name = "Auto-size text",
         value = autoSize,
@@ -133,19 +197,13 @@ fun TextDemo() {
         ) {
             Text(
                 text = text,
-                style = when (style) {
-                    TextStyle.Headline -> PlaygroundTheme.typography.headline
-                    TextStyle.Display -> PlaygroundTheme.typography.display
-                    TextStyle.TitleSmall -> PlaygroundTheme.typography.titleSmall
-                    TextStyle.TitleMedium -> PlaygroundTheme.typography.titleMedium
-                    TextStyle.TitleLarge -> PlaygroundTheme.typography.titleLarge
-                    TextStyle.BodyLarge -> PlaygroundTheme.typography.bodyLarge
-                    TextStyle.BodyMedium -> PlaygroundTheme.typography.bodyMedium
-                    TextStyle.BodySmall -> PlaygroundTheme.typography.bodySmall
-                    TextStyle.LabelLarge -> PlaygroundTheme.typography.labelLarge
-                    TextStyle.LabelMedium -> PlaygroundTheme.typography.labelMedium
-                    TextStyle.LabelSmall -> PlaygroundTheme.typography.labelSmall
-                },
+                style = style.toCompose().copy(
+                    lineHeightStyle = lineHeightStyleDefault.copy(
+                        alignment = lineHeightAlignment.toCompose(),
+                        trim = lineHeightTrim.toCompose(),
+                        mode = lineHeightMode.toCompose(),
+                    )
+                ),
                 autoSize = if (autoSize) TextAutoSize.StepBased() else null,
                 softWrap = softWrap,
                 overflow = when (overflow) {
@@ -169,6 +227,9 @@ fun TextDemo() {
             controls = persistentListOf(
                 textFieldControl,
                 styleControl,
+                lineHeightAlignmentControl,
+                lineHeightTrimControl,
+                lineHeightModeControl,
                 widthControl,
                 autoSizeControl,
                 softWrapControl,
@@ -183,4 +244,45 @@ fun TextDemo() {
                 .navigationBarsPadding(),
         )
     }
+}
+
+private fun LineHeightAlignment.toCompose() = when (this) {
+    LineHeightAlignment.Top -> LineHeightStyle.Alignment.Top
+    LineHeightAlignment.Center -> LineHeightStyle.Alignment.Center
+    LineHeightAlignment.Proportional -> LineHeightStyle.Alignment.Proportional
+    LineHeightAlignment.Bottom -> LineHeightStyle.Alignment.Bottom
+}
+
+private fun LineHeightStyle.Alignment.toDomain() = when (this) {
+    LineHeightStyle.Alignment.Top -> LineHeightAlignment.Top
+    LineHeightStyle.Alignment.Center -> LineHeightAlignment.Center
+    LineHeightStyle.Alignment.Proportional -> LineHeightAlignment.Proportional
+    LineHeightStyle.Alignment.Bottom -> LineHeightAlignment.Bottom
+    else -> null
+}
+
+private fun LineHeightTrim.toCompose() = when (this) {
+    LineHeightTrim.FirstLineTop -> LineHeightStyle.Trim.FirstLineTop
+    LineHeightTrim.LastLineBottom -> LineHeightStyle.Trim.LastLineBottom
+    LineHeightTrim.Both -> LineHeightStyle.Trim.Both
+    LineHeightTrim.None -> LineHeightStyle.Trim.None
+}
+
+private fun LineHeightStyle.Trim.toDomain() = when (this) {
+    LineHeightStyle.Trim.FirstLineTop -> LineHeightTrim.FirstLineTop
+    LineHeightStyle.Trim.LastLineBottom -> LineHeightTrim.LastLineBottom
+    LineHeightStyle.Trim.Both -> LineHeightTrim.Both
+    LineHeightStyle.Trim.None -> LineHeightTrim.None
+    else -> null
+}
+
+private fun LineHeightMode.toCompose() = when (this) {
+    LineHeightMode.Fixed -> LineHeightStyle.Mode.Fixed
+    LineHeightMode.Minimum -> LineHeightStyle.Mode.Minimum
+}
+
+private fun LineHeightStyle.Mode.toDomain() = when (this) {
+    LineHeightStyle.Mode.Fixed -> LineHeightMode.Fixed
+    LineHeightStyle.Mode.Minimum -> LineHeightMode.Minimum
+    else -> null
 }

@@ -6,6 +6,7 @@ import androidx.navigation.compose.rememberNavController
 import com.alexrdclement.uiplayground.app.catalog.MainCatalogItem
 import com.alexrdclement.uiplayground.app.catalog.navigation.CatalogRoute
 import com.alexrdclement.uiplayground.app.catalog.navigation.mainCatalogScreen
+import com.alexrdclement.uiplayground.app.configuration.ConfigurationController
 import com.alexrdclement.uiplayground.app.configuration.navigation.configurationGraph
 import com.alexrdclement.uiplayground.app.configuration.navigation.navigateToConfiguration
 import com.alexrdclement.uiplayground.app.demo.components.navigation.componentsGraph
@@ -16,7 +17,9 @@ import com.alexrdclement.uiplayground.app.demo.shaders.navigation.navigateToShad
 import com.alexrdclement.uiplayground.app.demo.shaders.navigation.shadersScreen
 
 @Composable
-fun UiPlaygroundNavHost() {
+fun UiPlaygroundNavHost(
+    configurationController: ConfigurationController,
+) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -32,7 +35,9 @@ fun UiPlaygroundNavHost() {
             },
             onConfigureClick = navController::navigateToConfiguration,
         )
-        configurationGraph()
+        configurationGraph(
+            configurationController = configurationController,
+        )
         componentsGraph(
             navController = navController,
             onConfigureClick = navController::navigateToConfiguration,

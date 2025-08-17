@@ -30,7 +30,7 @@ fun ToggleControl(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (includeTitle) {
-            Text(control.name)
+            Text(control.name, style = PlaygroundTheme.typography.labelLarge)
             Spacer(modifier = Modifier.height(PlaygroundTheme.spacing.small))
         }
 
@@ -50,7 +50,7 @@ fun ToggleControlRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (includeTitle) {
-            Text(control.name)
+            Text(control.name, style = PlaygroundTheme.typography.labelLarge)
             Spacer(modifier = Modifier.height(PlaygroundTheme.spacing.small))
         }
 

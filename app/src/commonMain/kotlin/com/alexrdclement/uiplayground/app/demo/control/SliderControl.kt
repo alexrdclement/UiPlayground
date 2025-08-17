@@ -25,7 +25,7 @@ fun SliderControl(
         verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
         modifier = modifier,
     ) {
-        Text(text = control.name)
+        Text(text = control.name, style = PlaygroundTheme.typography.labelLarge)
         Slider(
             value = control.value,
             onValueChange = control.onValueChange,
