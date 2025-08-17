@@ -17,6 +17,7 @@ import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.components.model.Artist
 import com.alexrdclement.uiplayground.components.model.MediaItem
 import com.alexrdclement.uiplayground.components.rememberMediaControlSheetState
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.coroutines.launch
 
 @Composable
@@ -38,8 +39,8 @@ fun MediaControlSheetDemo(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        Text(text = "Current value ${state.currentValue}")
-        Text(text = "Target value ${state.targetValue}")
+        Text(text = "Current value ${state.currentValue}", style = PlaygroundTheme.typography.labelLarge)
+        Text(text = "Target value ${state.targetValue}", style = PlaygroundTheme.typography.labelLarge)
     }
 
     MediaControlSheet(
@@ -65,8 +66,8 @@ fun MediaControlSheetDemo(
                     alpha = state.partialToFullProgress
                 }
         ) {
-            Text(text = "Current value ${state.currentValue}")
-            Text(text = "Target value ${state.targetValue}")
+            Text(text = "Current value ${state.currentValue}", style = PlaygroundTheme.typography.labelLarge)
+            Text(text = "Target value ${state.targetValue}", style = PlaygroundTheme.typography.labelLarge)
         }
     }
 }

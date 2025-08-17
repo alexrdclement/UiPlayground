@@ -27,11 +27,12 @@ fun TextFieldControl(
             ),
     ) {
         if (control.includeLabel) {
-            Text(text = control.name)
+            Text(text = control.name, style = PlaygroundTheme.typography.labelLarge)
             Spacer(modifier = Modifier.width(PlaygroundTheme.spacing.small))
         }
         TextField(
             state = control.textFieldState,
+            textStyle = PlaygroundTheme.typography.labelLarge,
             enabled = control.enabled,
             inputTransformation = control.inputTransformation,
             keyboardOptions = control.keyboardOptions,

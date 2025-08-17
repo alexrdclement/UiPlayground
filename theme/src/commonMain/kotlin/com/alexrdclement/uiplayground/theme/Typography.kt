@@ -19,76 +19,88 @@ data class Typography(
     val labelSmall: TextStyle,
 )
 
-val PlaygroundTypography = Typography(
-    headline = TextStyle(
-        fontFamily = FontFamily.Monospace,
-        fontSize = 32.sp,
-        lineHeight = 40.sp,
-        letterSpacing = 0.sp
-    ),
-    display = TextStyle(
-        fontFamily = FontFamily.Monospace,
-        fontSize = 57.sp,
-        lineHeight = 64.sp,
-        letterSpacing = (-0.2).sp
-    ),
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Monospace,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
-    ),
-    titleMedium = TextStyle(
-        fontFamily = FontFamily.Monospace,
-        fontWeight = FontWeight.Medium,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.2.sp
-    ),
-    titleSmall = TextStyle(
-        fontFamily = FontFamily.Monospace,
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 0.1.sp
-    ),
-    labelLarge = TextStyle(
-        fontFamily = FontFamily.Monospace,
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 0.1.sp
-    ),
-    labelMedium = TextStyle(
-        fontFamily = FontFamily.Monospace,
-        fontWeight = FontWeight.Medium,
-        fontSize = 12.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
-    ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Monospace,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
-    ),
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Monospace,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    ),
-    bodyMedium = TextStyle(
-        fontFamily = FontFamily.Monospace,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 0.2.sp
-    ),
-    bodySmall = TextStyle(
-        fontFamily = FontFamily.Monospace,
-        fontSize = 12.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.4.sp
-    ),
+object PlaygroundTypographyDefaults {
+    val fontFamily = FontFamily.Monospace
+}
+
+val PlaygroundTypography = makePlaygroundTypography(
+    fontFamily = PlaygroundTypographyDefaults.fontFamily,
 )
+
+fun makePlaygroundTypography(
+    fontFamily: FontFamily = FontFamily.Monospace,
+): Typography {
+    return Typography(
+        headline = TextStyle(
+            fontFamily = fontFamily,
+            fontSize = 32.sp,
+            lineHeight = 40.sp,
+            letterSpacing = 0.sp
+        ),
+        display = TextStyle(
+            fontFamily = fontFamily,
+            fontSize = 57.sp,
+            lineHeight = 64.sp,
+            letterSpacing = (-0.2).sp
+        ),
+        titleLarge = TextStyle(
+            fontFamily = fontFamily,
+            fontSize = 22.sp,
+            lineHeight = 28.sp,
+            letterSpacing = 0.sp
+        ),
+        titleMedium = TextStyle(
+            fontFamily = fontFamily,
+            fontWeight = FontWeight.Medium,
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
+            letterSpacing = 0.2.sp
+        ),
+        titleSmall = TextStyle(
+            fontFamily = fontFamily,
+            fontWeight = FontWeight.Medium,
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
+            letterSpacing = 0.1.sp
+        ),
+        labelLarge = TextStyle(
+            fontFamily = fontFamily,
+            fontWeight = FontWeight.Medium,
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
+            letterSpacing = 0.1.sp
+        ),
+        labelMedium = TextStyle(
+            fontFamily = fontFamily,
+            fontWeight = FontWeight.Medium,
+            fontSize = 12.sp,
+            lineHeight = 16.sp,
+            letterSpacing = 0.5.sp
+        ),
+        labelSmall = TextStyle(
+            fontFamily = fontFamily,
+            fontWeight = FontWeight.Medium,
+            fontSize = 11.sp,
+            lineHeight = 16.sp,
+            letterSpacing = 0.5.sp
+        ),
+        bodyLarge = TextStyle(
+            fontFamily = fontFamily,
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
+            letterSpacing = 0.5.sp
+        ),
+        bodyMedium = TextStyle(
+            fontFamily = fontFamily,
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
+            letterSpacing = 0.2.sp
+        ),
+        bodySmall = TextStyle(
+            fontFamily = fontFamily,
+            fontSize = 12.sp,
+            lineHeight = 16.sp,
+            letterSpacing = 0.4.sp
+        ),
+    )
+}

@@ -78,6 +78,7 @@ fun ButtonDemo() {
             ) {
                 Text(
                     text = "Button",
+                    style = PlaygroundTheme.typography.labelLarge,
                     softWrap = softWrap,
                     autoSize = if (autoSizeText) TextAutoSize.StepBased() else null,
                 )

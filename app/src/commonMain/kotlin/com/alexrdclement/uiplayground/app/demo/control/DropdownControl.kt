@@ -19,7 +19,6 @@ import com.alexrdclement.uiplayground.components.Button
 import com.alexrdclement.uiplayground.components.DropdownMenu
 import com.alexrdclement.uiplayground.components.DropdownMenuItem
 import com.alexrdclement.uiplayground.components.Text
-import com.alexrdclement.uiplayground.components.VerticalDivider
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.toPersistentList
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -37,7 +36,7 @@ fun <T> DropdownControl(
 
     Column(modifier = modifier) {
         if (includeTitle) {
-            Text(control.name)
+            Text(control.name, style = PlaygroundTheme.typography.labelLarge)
             Spacer(modifier = Modifier.height(PlaygroundTheme.spacing.small))
         }
 
@@ -70,7 +69,7 @@ fun <T> DropdownControlRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (includeTitle) {
-            Text(control.name)
+            Text(control.name, style = PlaygroundTheme.typography.labelLarge)
             Spacer(modifier = Modifier.width(PlaygroundTheme.spacing.medium))
         }
 
@@ -95,7 +94,7 @@ private fun <T> DropdownMenuControlButton(
     Button(
         onClick = onClick,
     ) {
-        Text(text = selectedValue.name)
+        Text(text = selectedValue.name, style = PlaygroundTheme.typography.labelLarge)
     }
 }
 
@@ -111,7 +110,7 @@ private fun <T> DropdownControlMenu(
     ) {
         control.values.forEachIndexed { index, value ->
             DropdownMenuItem(
-                text = { Text(text = value.name) },
+                text = { Text(text = value.name, style = PlaygroundTheme.typography.labelLarge) },
                 onClick = {
                     onMenuDismissRequest()
                     control.onValueChange(index)

@@ -10,6 +10,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import coil3.compose.AsyncImage
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 private const val DisabledAlpha = 0.35f
 
@@ -36,7 +37,7 @@ fun MediaItemArtwork(
                 .background(Color.Red)
                 .clearAndSetSemantics {}
         ) {
-            Text("Art")
+            Text("Art", style = PlaygroundTheme.typography.labelLarge)
         }
     }
 }

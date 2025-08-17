@@ -213,7 +213,7 @@ private fun PreviewFillStyle(
     @PreviewParameter(BoolPreviewParameterProvider::class) isDarkMode: Boolean,
     @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
 ) {
-    PlaygroundTheme(isDarkMode) {
+    PlaygroundTheme(darkTheme = isDarkMode) {
         Button(
             style = ButtonStyle.Fill,
             enabled = enabled,
@@ -230,7 +230,7 @@ private fun PreviewOutlineStyle(
     @PreviewParameter(BoolPreviewParameterProvider::class) isDarkMode: Boolean,
     @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
 ) {
-    PlaygroundTheme(isDarkMode) {
+    PlaygroundTheme(darkTheme = isDarkMode) {
         Button(
             style = ButtonStyle.Outline,
             enabled = enabled,
@@ -247,7 +247,7 @@ private fun PreviewBorderlessStyle(
     @PreviewParameter(BoolPreviewParameterProvider::class) isDarkMode: Boolean,
     @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
 ) {
-    PlaygroundTheme(isDarkMode) {
+    PlaygroundTheme(darkTheme = isDarkMode) {
         Surface {
             Button(
                 style = ButtonStyle.Borderless,
