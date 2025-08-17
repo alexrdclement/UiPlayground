@@ -47,6 +47,10 @@ val LocalPlaygroundSpacing = staticCompositionLocalOf {
     )
 }
 
+val LocalPlaygroundIndication = staticCompositionLocalOf {
+    NoOpIndication()
+}
+
 @Composable
 fun PlaygroundTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -62,6 +66,7 @@ fun PlaygroundTheme(
         LocalPlaygroundColorScheme provides colorScheme,
         LocalPlaygroundTypography provides typography,
         LocalPlaygroundSpacing provides PlaygroundSpacing,
+        LocalPlaygroundIndication provides PlaygroundIndication,
         content = content,
     )
 

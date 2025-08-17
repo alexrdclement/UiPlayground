@@ -20,6 +20,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import com.alexrdclement.uiplayground.components.preview.BoolPreviewParameterProvider
+import com.alexrdclement.uiplayground.theme.LocalPlaygroundIndication
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
@@ -78,7 +79,7 @@ fun Surface(
                 )
                 .clickable(
                     interactionSource = interactionSource,
-                    indication = null, // TODO
+                    indication = LocalPlaygroundIndication.current,
                     enabled = enabled,
                     onClick = onClick
                 ),

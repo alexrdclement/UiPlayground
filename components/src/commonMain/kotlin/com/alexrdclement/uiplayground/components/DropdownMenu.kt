@@ -51,6 +51,7 @@ import com.alexrdclement.uiplayground.components.MenuDefaults.InTransitionDurati
 import com.alexrdclement.uiplayground.components.MenuDefaults.MenuBorderWidth
 import com.alexrdclement.uiplayground.components.MenuDefaults.OutTransitionDuration
 import com.alexrdclement.uiplayground.theme.ColorScheme
+import com.alexrdclement.uiplayground.theme.LocalPlaygroundIndication
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlin.math.max
 import kotlin.math.min
@@ -183,7 +184,7 @@ fun DropdownMenuItem(
                 enabled = enabled,
                 onClick = onClick,
                 interactionSource = interactionSource,
-                indication = null // TODO
+                indication = LocalPlaygroundIndication.current,
             )
             .fillMaxWidth()
             // Preferred min and max width used during the intrinsic measurement.
