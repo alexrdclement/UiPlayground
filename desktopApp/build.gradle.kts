@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.uiplayground.kotlin.multiplatform)
     alias(libs.plugins.uiplayground.compose.multiplatform)
+    alias(libs.plugins.compose.hotreload)
 }
 
 kotlin {

@@ -12,11 +12,12 @@ fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         state = rememberWindowState(
-            width = 1200.dp,
-            height = 960.dp,
-            position = WindowPosition.Aligned(Alignment.Center),
+            width = 500.dp,
+            height = 1000.dp,
+            position = WindowPosition.Aligned(Alignment.BottomEnd),
         ),
         title = "UiPlayground",
+        alwaysOnTop = true,
     ) {
         App()
     }

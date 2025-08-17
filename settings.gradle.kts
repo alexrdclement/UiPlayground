@@ -31,3 +31,8 @@ include(":shaders:baseline-profile")
 include(":testing")
 include(":theme")
 include(":uiautomator-fixtures")
+
+plugins {
+    // Compose Hot Reload
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
