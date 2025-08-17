@@ -198,7 +198,7 @@ fun TextDemo() {
             Text(
                 text = text,
                 style = style.toCompose().copy(
-                    lineHeightStyle = lineHeightStyleDefault?.copy(
+                    lineHeightStyle = lineHeightStyleDefault.copy(
                         alignment = lineHeightAlignment.toCompose(),
                         trim = lineHeightTrim.toCompose(),
                         mode = lineHeightMode.toCompose(),

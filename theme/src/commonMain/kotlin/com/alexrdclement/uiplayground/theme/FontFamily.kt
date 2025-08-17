@@ -1,6 +1,5 @@
 package com.alexrdclement.uiplayground.theme
 
-
 enum class FontFamily {
     Default,
     Monospace,
