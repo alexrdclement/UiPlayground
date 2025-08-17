@@ -81,6 +81,31 @@ fun TextFieldDemo() {
         includeLabel = false,
     )
 
+    var style by remember { mutableStateOf(TextStyle.Headline) }
+    val styleControl = Control.Dropdown(
+        name = "Style",
+        values = TextStyle.entries.map {
+            Control.Dropdown.DropdownItem(
+                name = it.name,
+                value = it,
+            )
+        }.toPersistentList(),
+        selectedIndex = TextStyle.entries.indexOf(style),
+        onValueChange = { style = TextStyle.entries[it] },
+    )
+
+    var maxWidthPx by remember { mutableIntStateOf(0) }
+    val maxWidth = with(LocalDensity.current) { maxWidthPx.toDp() }
+    var width by remember(maxWidth) { mutableStateOf(maxWidth) }
+    val widthControl = Control.Slider(
+        name = "Width",
+        value = width.value,
+        onValueChange = {
+            width = it.dp
+        },
+        valueRange = 0f..maxWidth.value,
+    )
+
     var enabled by remember { mutableStateOf(true) }
     val enabledControl = Control.Toggle(
         name = "Enabled",
@@ -192,31 +217,6 @@ fun TextFieldDemo() {
         }
     )
 
-    var style by remember { mutableStateOf(TextStyle.Headline) }
-    val styleControl = Control.Dropdown(
-        name = "Style",
-        values = TextStyle.entries.map {
-            Control.Dropdown.DropdownItem(
-                name = it.name,
-                value = it,
-            )
-        }.toPersistentList(),
-        selectedIndex = TextStyle.entries.indexOf(style),
-        onValueChange = { style = TextStyle.entries[it] },
-    )
-
-    var maxWidthPx by remember { mutableIntStateOf(0) }
-    val maxWidth = with(LocalDensity.current) { maxWidthPx.toDp() }
-    var width by remember(maxWidth) { mutableStateOf(maxWidth) }
-    val widthControl = Control.Slider(
-        name = "Width",
-        value = width.value,
-        onValueChange = {
-            width = it.dp
-        },
-        valueRange = 0f..maxWidth.value,
-    )
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -249,19 +249,7 @@ fun TextFieldDemo() {
                     InputTransformations.AllCaps -> InputTransformation.allCaps(Locale.current)
                     InputTransformations.OnlyDigits -> InputTransformation.onlyDigits()
                 },
-                textStyle = when (style) {
-                    TextStyle.Headline -> PlaygroundTheme.typography.headline
-                    TextStyle.Display -> PlaygroundTheme.typography.display
-                    TextStyle.TitleSmall -> PlaygroundTheme.typography.titleSmall
-                    TextStyle.TitleMedium -> PlaygroundTheme.typography.titleMedium
-                    TextStyle.TitleLarge -> PlaygroundTheme.typography.titleLarge
-                    TextStyle.BodyLarge -> PlaygroundTheme.typography.bodyLarge
-                    TextStyle.BodyMedium -> PlaygroundTheme.typography.bodyMedium
-                    TextStyle.BodySmall -> PlaygroundTheme.typography.bodySmall
-                    TextStyle.LabelLarge -> PlaygroundTheme.typography.labelLarge
-                    TextStyle.LabelMedium -> PlaygroundTheme.typography.labelMedium
-                    TextStyle.LabelSmall -> PlaygroundTheme.typography.labelSmall
-                },
+                textStyle = style.toCompose(),
                 modifier = Modifier
                     .width(width)
                     .padding(vertical = PlaygroundTheme.spacing.medium)
@@ -271,6 +259,8 @@ fun TextFieldDemo() {
         Controls(
             controls = persistentListOf(
                 textFieldControl,
+                styleControl,
+                widthControl,
                 enabledControl,
                 keyboardTypeControl,
                 keyboardCapitalizationControl,
@@ -280,8 +270,6 @@ fun TextFieldDemo() {
                 minHeightInLinesControl,
                 maxHeightInLinesControl,
                 inputTransformationControl,
-                styleControl,
-                widthControl,
             ),
             modifier = Modifier
                 .fillMaxWidth()
