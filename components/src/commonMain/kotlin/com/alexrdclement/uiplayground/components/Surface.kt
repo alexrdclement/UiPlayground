@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
@@ -116,13 +118,22 @@ private fun Preview(
 @Preview
 @Composable
 private fun PreviewClickable(
-    @PreviewParameter(BoolPreviewParameterProvider::class) isDarkTheme: Boolean,
-    @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
+//    @PreviewParameter(BoolPreviewParameterProvider::class) isDarkTheme: Boolean,
+//    @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
 ) {
+    val isDarkTheme = false
+    val enabled = true
+    val interactionSource = remember {
+        MutableInteractionSource().apply {
+            tryEmit(PressInteraction.Press(Offset.Zero))
+        }
+    }
+
     PlaygroundTheme(darkTheme = isDarkTheme) {
         Surface(
             onClick = {},
-            enabled = enabled
+            enabled = enabled,
+            interactionSource = interactionSource,
         ) {
             Text("Hello world")
         }

@@ -1,5 +1,6 @@
 package com.alexrdclement.uiplayground.theme
 
+import androidx.compose.foundation.Indication
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -47,7 +48,7 @@ val LocalPlaygroundSpacing = staticCompositionLocalOf {
     )
 }
 
-val LocalPlaygroundIndication = staticCompositionLocalOf {
+val LocalPlaygroundIndication = staticCompositionLocalOf<Indication> {
     NoOpIndication()
 }
 
@@ -55,6 +56,7 @@ val LocalPlaygroundIndication = staticCompositionLocalOf {
 fun PlaygroundTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     typography: Typography = PlaygroundTypography,
+    indication: Indication = PlaygroundIndication,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -66,7 +68,7 @@ fun PlaygroundTheme(
         LocalPlaygroundColorScheme provides colorScheme,
         LocalPlaygroundTypography provides typography,
         LocalPlaygroundSpacing provides PlaygroundSpacing,
-        LocalPlaygroundIndication provides PlaygroundIndication,
+        LocalPlaygroundIndication provides indication,
         content = content,
     )
 

@@ -2,6 +2,7 @@ package com.alexrdclement.uiplayground.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
@@ -252,6 +254,29 @@ private fun PreviewBorderlessStyle(
             Button(
                 style = ButtonStyle.Borderless,
                 enabled = enabled,
+                onClick = {},
+            ) {
+                Text("Button")
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun ButtonPreview() {
+    val isDarkMode = true
+    val enabled = true
+    val interactionSource = MutableInteractionSource().apply {
+        this.tryEmit(PressInteraction.Press(Offset.Zero))
+    }
+
+    PlaygroundTheme(darkTheme = isDarkMode) {
+        Surface {
+            Button(
+                style = ButtonStyle.Outline,
+                enabled = enabled,
+                interactionSource = interactionSource,
                 onClick = {},
             ) {
                 Text("Button")
