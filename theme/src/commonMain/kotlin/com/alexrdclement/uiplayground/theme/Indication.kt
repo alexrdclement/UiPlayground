@@ -1,7 +1,6 @@
 package com.alexrdclement.uiplayground.theme
 
 import androidx.compose.foundation.Indication
-import androidx.compose.foundation.IndicationNodeFactory
 import androidx.compose.foundation.interaction.HoverInteraction
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
@@ -84,18 +83,8 @@ fun PlaygroundIndicationType.toIndication(): Indication = when (this) {
     )
 }
 
-class NoOpIndication(): IndicationNodeFactory {
+data class NoOpIndication(): Indication {
     override fun create(interactionSource: InteractionSource): DelegatableNode {
-        return NoOpIndicationNode()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return other === this
-    }
-
-    override fun hashCode(): Int {
-        return NoOpIndication::class.hashCode()
+        return Modifier.Node()
     }
 }
-
-class NoOpIndicationNode: Modifier.Node()
