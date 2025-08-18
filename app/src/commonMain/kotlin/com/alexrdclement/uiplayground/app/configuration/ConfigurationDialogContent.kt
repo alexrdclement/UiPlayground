@@ -13,11 +13,14 @@ import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.components.Surface
 import com.alexrdclement.uiplayground.theme.FontFamily
+import com.alexrdclement.uiplayground.theme.PlaygroundIndicationType
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.theme.PlaygroundTypographyDefaults
 import com.alexrdclement.uiplayground.theme.makePlaygroundTypography
 import com.alexrdclement.uiplayground.theme.toComposeFontFamily
 import com.alexrdclement.uiplayground.theme.toFontFamily
+import com.alexrdclement.uiplayground.theme.toIndication
+import com.alexrdclement.uiplayground.theme.toPlaygroundIndicationType
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
@@ -70,6 +73,26 @@ fun ConfigurationDialogContent(
         }
     )
 
+    var indicationType by remember(configurationController) {
+        mutableStateOf(configurationController.indication.toPlaygroundIndicationType())
+    }
+    val indicationControl = Control.Dropdown(
+        name = "Indication",
+        values = PlaygroundIndicationType.entries.map {
+            Control.Dropdown.DropdownItem(
+                name = it.name,
+                value = it,
+            )
+        }.toPersistentList(),
+        selectedIndex = PlaygroundIndicationType.entries.indexOf(indicationType),
+        onValueChange = {
+            val newValue = PlaygroundIndicationType.entries[it]
+            if (configurationController.setIndication(newValue.toIndication())) {
+                indicationType = newValue
+            }
+        }
+    )
+
     Surface(
         border = BorderStroke(1.dp, PlaygroundTheme.colorScheme.outline),
     ) {
@@ -77,6 +100,7 @@ fun ConfigurationDialogContent(
             controls = persistentListOf(
                 colorModeControl,
                 fontFamilyControl,
+                indicationControl,
             ),
             modifier = Modifier.padding(PlaygroundTheme.spacing.medium)
         )
