@@ -15,7 +15,7 @@ import com.alexrdclement.uiplayground.shaders.NoiseIndication
 import com.alexrdclement.uiplayground.shaders.PixelateIndication
 
 enum class PlaygroundIndicationType {
-    NoOp,
+    None,
     ColorInvert,
     ColorSplit,
     Noise,
@@ -26,7 +26,7 @@ val PlaygroundIndication: Indication = PlaygroundIndicationType.ColorSplit.toInd
 
 fun Indication.toPlaygroundIndicationType(): PlaygroundIndicationType {
     return when (this) {
-        is NoOpIndication -> PlaygroundIndicationType.NoOp
+        is NoOpIndication -> PlaygroundIndicationType.None
         is ColorInvertIndication -> PlaygroundIndicationType.ColorInvert
         is ColorSplitIndication -> PlaygroundIndicationType.ColorSplit
         is NoiseIndication -> PlaygroundIndicationType.Noise
@@ -36,7 +36,7 @@ fun Indication.toPlaygroundIndicationType(): PlaygroundIndicationType {
 }
 
 fun PlaygroundIndicationType.toIndication(): Indication = when (this) {
-    PlaygroundIndicationType.NoOp -> NoOpIndication()
+    PlaygroundIndicationType.None -> NoOpIndication()
     PlaygroundIndicationType.ColorInvert -> ColorInvertIndication(
         amount = { interaction ->
             when (interaction) {
