@@ -49,7 +49,7 @@ val LocalPlaygroundSpacing = staticCompositionLocalOf {
 }
 
 val LocalPlaygroundIndication = staticCompositionLocalOf<Indication> {
-    NoOpIndication()
+    NoOpIndication
 }
 
 @Composable

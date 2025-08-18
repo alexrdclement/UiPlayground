@@ -1,6 +1,7 @@
 package com.alexrdclement.uiplayground.theme
 
 import androidx.compose.foundation.Indication
+import androidx.compose.foundation.IndicationNodeFactory
 import androidx.compose.foundation.interaction.HoverInteraction
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
@@ -23,8 +24,19 @@ enum class PlaygroundIndicationType {
 
 val PlaygroundIndication: Indication = PlaygroundIndicationType.ColorSplit.toIndication()
 
+fun Indication.toPlaygroundIndicationType(): PlaygroundIndicationType {
+    return when (this) {
+        is NoOpIndication -> PlaygroundIndicationType.None
+        is ColorInvertIndication -> PlaygroundIndicationType.ColorInvert
+        is ColorSplitIndication -> PlaygroundIndicationType.ColorSplit
+        is NoiseIndication -> PlaygroundIndicationType.Noise
+        is PixelateIndication -> PlaygroundIndicationType.Pixelate
+        else -> throw IllegalArgumentException("Unknown indication type: $this")
+    }
+}
+
 fun PlaygroundIndicationType.toIndication(): Indication = when (this) {
-    PlaygroundIndicationType.None -> NoOpIndication()
+    PlaygroundIndicationType.None -> NoOpIndication
     PlaygroundIndicationType.ColorInvert -> ColorInvertIndication(
         amount = { interaction ->
             when (interaction) {
@@ -72,19 +84,8 @@ fun PlaygroundIndicationType.toIndication(): Indication = when (this) {
     )
 }
 
-fun Indication.toPlaygroundIndicationType(): PlaygroundIndicationType {
-    return when (this) {
-        is NoOpIndication -> PlaygroundIndicationType.None
-        is ColorInvertIndication -> PlaygroundIndicationType.ColorInvert
-        is ColorSplitIndication -> PlaygroundIndicationType.ColorSplit
-        is NoiseIndication -> PlaygroundIndicationType.Noise
-        is PixelateIndication -> PlaygroundIndicationType.Pixelate
-        else -> throw IllegalArgumentException("Unknown indication type: $this")
-    }
-}
-
-data class NoOpIndication(): Indication {
+data object NoOpIndication: IndicationNodeFactory {
     override fun create(interactionSource: InteractionSource): DelegatableNode {
-        return Modifier.Node()
+        return object : Modifier.Node() {}
     }
 }
