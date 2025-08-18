@@ -23,13 +23,35 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.components.Button
+import com.alexrdclement.uiplayground.components.ButtonStyle
 import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ButtonDemo() {
+    var enabled by remember { mutableStateOf(true) }
+    val enabledControl = Control.Toggle(
+        name = "Enabled",
+        value = enabled,
+        onValueChange = { enabled = it },
+    )
+
+    var style by remember { mutableStateOf(ButtonStyle.Outline) }
+    val styleControl = Control.Dropdown(
+        name = "Style",
+        values = ButtonStyle.entries.map {
+            Control.Dropdown.DropdownItem(
+                name = it.name,
+                value = it,
+            )
+        }.toPersistentList(),
+        onValueChange = { style = ButtonStyle.entries[it] },
+        selectedIndex = ButtonStyle.entries.indexOf(style),
+    )
+
     var maxWidthPx by remember { mutableIntStateOf(0) }
     val maxWidth = with(LocalDensity.current) { maxWidthPx.toDp() }
     var width by remember(maxWidth) { mutableStateOf(maxWidth) }
@@ -74,6 +96,8 @@ fun ButtonDemo() {
         ) {
             Button(
                 onClick = {},
+                style = style,
+                enabled = enabled,
                 modifier = Modifier.width(width)
             ) {
                 Text(
@@ -87,6 +111,8 @@ fun ButtonDemo() {
         HorizontalDivider(modifier = Modifier.fillMaxWidth())
         Controls(
             controls = persistentListOf(
+                enabledControl,
+                styleControl,
                 widthControl,
                 autoSizeControl,
                 softWrapControl,

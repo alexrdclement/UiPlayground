@@ -15,22 +15,22 @@ import androidx.compose.ui.unit.IntSize
 import com.alexrdclement.uiplayground.core.trace.trace
 import com.alexrdclement.uiplayground.shaders.util.useGraphicsLayer
 
-data class ShaderElement(
-    val shader: Shader,
+data class ShaderElement<T: Shader>(
+    val shader: T,
     val traceLabel: String,
-) : ModifierNodeElement<ShaderNode>() {
+) : ModifierNodeElement<ShaderNode<T>>() {
     override fun create() = ShaderNode(
         shader = shader,
         traceLabel = traceLabel,
     )
-    override fun update(node: ShaderNode) {
+    override fun update(node: ShaderNode<T>) {
         node.shader = shader
         node.traceLabel = traceLabel
     }
 }
 
-class ShaderNode(
-    var shader: Shader,
+open class ShaderNode<T: Shader>(
+    var shader: T,
     var traceLabel: String,
 ) : Modifier.Node(),
     DrawModifierNode,

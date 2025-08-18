@@ -33,6 +33,8 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.ui)
                 implementation(compose.components.uiToolingPreview)
+
+                implementation(projects.shaders)
             }
         }
     }

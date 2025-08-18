@@ -12,6 +12,7 @@ fun App() {
 
     PlaygroundTheme(
         typography = configurationController.typography,
+        indication = configurationController.indication,
     ) {
         Surface {
             UiPlaygroundNavHost(
