@@ -24,7 +24,7 @@ Media Control Sheet is an interactive component that shows simple media informat
 
 ## Shaders
 
-[Runtime Shaders](https://developer.android.com/reference/android/graphics/RuntimeShader) enable detailed control over how individual pixels are rendered on the screen. Below are shaders I've written, ported, or adapted as [Modifiers](https://developer.android.com/jetpack/compose/modifiers) that can be applied to any Composable that exposes a Modifier.
+[Runtime Shaders](https://developer.android.com/reference/android/graphics/RuntimeShader) enable detailed control over how individual pixels are rendered on the screen. Below are shaders I've written, ported, or adapted as [Modifiers](https://developer.android.com/jetpack/compose/modifiers) that can be applied to any Composable that accepts a Modifier.
 
 On Android, these shaders are powered by the RuntimeShader library and the [Android Graphics Shader Language (AGSL)](https://developer.android.com/develop/ui/views/graphics/agsl). On non-Android platforms, the shaders are powered by [Skiko](https://github.com/JetBrains/skiko) and the [Skia Shader Language (SkSL)](https://skia.org/docs/user/sksl/).
 
