@@ -44,7 +44,11 @@ jobs:
           java-version: 17
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v4
+        with:
+            build-scan-publish: true
+            build-scan-terms-of-use-url: 'https://gradle.com/terms-of-service'
+            build-scan-terms-of-use-agree: 'yes'
 
       - name: Run screenshot tests
         id: verifyScreenshots
@@ -74,7 +78,7 @@ jobs:
 
       - name: Run local tests
         if: always()
-        run: ./gradlew testDebug --scan
+        run: ./gradlew testDebug
 
       - name: Build all build type and flavor permutations
         run: ./gradlew :androidApp:assemble
