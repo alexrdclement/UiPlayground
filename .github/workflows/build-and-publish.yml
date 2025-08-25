@@ -74,7 +74,7 @@ jobs:
 
       - name: Run local tests
         if: always()
-        run: ./gradlew testDebug
+        run: ./gradlew testDebug --scan
 
       - name: Build all build type and flavor permutations
         run: ./gradlew :androidApp:assemble
