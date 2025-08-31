@@ -1,5 +1,6 @@
 package com.alexrdclement.uiplayground.app.demo.components.demo
 
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
@@ -100,6 +102,16 @@ fun GridSphereDemo(
                 .fillMaxWidth()
                 .weight(1f)
                 .padding(PlaygroundTheme.spacing.medium)
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consume()
+                        val (dx, dy) = dragAmount
+                        viewingAngle = viewingAngle.copy(
+                            rotationZ = (viewingAngle.rotationZ - dx / 10f) % 360f,
+                            rotationX = (viewingAngle.rotationX + dy / 10f) % 360f,
+                        )
+                    }
+                }
         )
         HorizontalDivider(modifier = Modifier.fillMaxWidth())
         Controls(
