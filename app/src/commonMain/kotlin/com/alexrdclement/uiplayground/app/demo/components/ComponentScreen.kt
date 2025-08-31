@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.components.demo.ButtonDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.CurrencyAmountFieldDemo
+import com.alexrdclement.uiplayground.app.demo.components.demo.GridDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.MediaControlSheetDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.TextDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.TextFieldDemo
@@ -29,6 +30,9 @@ fun ComponentScreen(
         when (component) {
             Component.Button -> ButtonDemo()
             Component.CurrencyAmountField -> CurrencyAmountFieldDemo()
+            Component.Grid -> GridDemo(
+                modifier = Modifier.padding(innerPadding),
+            )
             Component.MediaControlSheet -> MediaControlSheetDemo(
                 modifier = Modifier.padding(innerPadding)
             )
