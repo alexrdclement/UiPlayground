@@ -3,6 +3,7 @@ package com.alexrdclement.uiplayground.components
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -35,6 +36,10 @@ fun GridSphere(
     val latSteps = (360 / numLatitudeLines).coerceAtLeast(2)
     val lonSteps = (180 / numLongitudeLines).coerceAtLeast(2)
 
+    val rotationCache = remember(viewingAngle) {
+        mutableMapOf<Pair<Int, Int>, Point3D>()
+    }
+
     Canvas(
         modifier = modifier
     ) {
@@ -47,6 +52,27 @@ fun GridSphere(
         val rotY = viewingAngle.rotationY.toRadians()
         val rotZ = viewingAngle.rotationZ.toRadians()
 
+        val cosX = cos(rotX)
+        val sinX = sin(rotX)
+        val cosY = cos(rotY)
+        val sinY = sin(rotY)
+        val cosZ = cos(rotZ)
+        val sinZ = sin(rotZ)
+
+        fun getRotatedPoint(lat: Int, lon: Int): Point3D {
+            val key = lat to lon
+            return rotationCache.getOrPut(key) {
+                val latRad = lat.toRadians()
+                val lonRad = lon.toRadians()
+
+                val x = radius * cos(latRad) * cos(lonRad)
+                val y = radius * cos(latRad) * sin(lonRad)
+                val z = radius * sin(latRad)
+
+                rotatePoint3D(x, y, z, cosX, sinX, cosY, sinY, cosZ, sinZ)
+            }
+        }
+
         drawCircle(
             color = color,
             center = center,
@@ -56,17 +82,10 @@ fun GridSphere(
 
         for (lon in 0..360 step lonSteps) {
             val path = Path()
-            val lonRad = lon.toRadians()
             var pathStarted = false
 
             for (lat in -90..90 step precisionDegree) {
-                val latRad = lat.toRadians()
-
-                val x = radius * cos(latRad) * cos(lonRad)
-                val y = radius * cos(latRad) * sin(lonRad)
-                val z = radius * sin(latRad)
-
-                val rotatedPoint = rotatePoint3D(x, y, z, rotX, rotY, rotZ)
+                val rotatedPoint = getRotatedPoint(lat, lon)
 
                 val projectedX = center.x + rotatedPoint.x.toFloat()
                 val projectedY = center.y + rotatedPoint.z.toFloat()
@@ -90,18 +109,13 @@ fun GridSphere(
             )
         }
 
+        // Draw latitude lines (parallels)
         for (lat in -90..90 step latSteps) {
             val path = Path()
-            val latRad = lat.toRadians()
             var pathStarted = false
 
             for (lon in 0..360 step precisionDegree) {
-                val lonRad = lon.toRadians()
-                val x = radius * cos(latRad) * cos(lonRad)
-                val y = radius * cos(latRad) * sin(lonRad)
-                val z = radius * sin(latRad)
-
-                val rotatedPoint = rotatePoint3D(x, y, z, rotX, rotY, rotZ)
+                val rotatedPoint = getRotatedPoint(lat, lon)
 
                 val projectedX = center.x + rotatedPoint.x.toFloat()
                 val projectedY = center.y + rotatedPoint.z.toFloat()
@@ -133,22 +147,19 @@ private fun rotatePoint3D(
     x: Double,
     y: Double,
     z: Double,
-    rotX: Double,
-    rotY: Double,
-    rotZ: Double,
+    cosX: Double,
+    sinX: Double,
+    cosY: Double,
+    sinY: Double,
+    cosZ: Double,
+    sinZ: Double,
 ): Point3D {
-    val cosX = cos(rotX)
-    val sinX = sin(rotX)
     val y1 = y * cosX - z * sinX
     val z1 = y * sinX + z * cosX
 
-    val cosY = cos(rotY)
-    val sinY = sin(rotY)
     val x2 = x * cosY + z1 * sinY
     val z2 = -x * sinY + z1 * cosY
 
-    val cosZ = cos(rotZ)
-    val sinZ = sin(rotZ)
     val x3 = x2 * cosZ - y1 * sinZ
     val y3 = x2 * sinZ + y1 * cosZ
 
