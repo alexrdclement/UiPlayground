@@ -18,9 +18,10 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
@@ -30,11 +31,10 @@ import com.alexrdclement.uiplayground.app.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.app.demo.subject.DemoText
 import com.alexrdclement.uiplayground.app.demo.subject.DemoTextField
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
-import com.alexrdclement.uiplayground.components.BackNavigationButton
+import com.alexrdclement.uiplayground.components.Grid
+import com.alexrdclement.uiplayground.components.GridStyle
 import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Scaffold
-import com.alexrdclement.uiplayground.components.Text
-import com.alexrdclement.uiplayground.components.TopBar
 import com.alexrdclement.uiplayground.shaders.ColorSplitMode
 import com.alexrdclement.uiplayground.shaders.NoiseColorMode
 import com.alexrdclement.uiplayground.shaders.colorInvert
@@ -128,6 +128,41 @@ fun ShaderScreen(
                 when (demoSubject) {
                     DemoSubject.Circle -> DemoCircle(modifier = modifier)
                     DemoSubject.CircleOutline -> DemoCircle(drawStyle = Stroke(2f), modifier = modifier)
+                    DemoSubject.GridLine -> Grid(
+                        style = GridStyle.Line(
+                            color = PlaygroundTheme.colorScheme.primary,
+                            strokeWidth = 1.dp,
+                        ),
+                        spacing = 20.dp,
+                        modifier = modifier.fillMaxSize(),
+                    )
+                    DemoSubject.GridDot -> Grid(
+                        style = GridStyle.Vertex.Oval(
+                            color = PlaygroundTheme.colorScheme.primary,
+                            size = DpSize(4.dp, 4.dp),
+                            drawStyle = Fill,
+                        ),
+                        spacing = 20.dp,
+                        modifier = modifier.fillMaxSize(),
+                    )
+                    DemoSubject.GridRect -> Grid(
+                        style = GridStyle.Vertex.Rect(
+                            color = PlaygroundTheme.colorScheme.primary,
+                            size = DpSize(4.dp, 4.dp),
+                            drawStyle = Fill,
+                        ),
+                        spacing = 20.dp,
+                        modifier = modifier.fillMaxSize(),
+                    )
+                    DemoSubject.GridPlus -> Grid(
+                        style = GridStyle.Vertex.Plus(
+                            color = PlaygroundTheme.colorScheme.primary,
+                            size = DpSize(8.dp, 8.dp),
+                            strokeWidth = 1.dp,
+                        ),
+                        spacing = 20.dp,
+                        modifier = modifier.fillMaxSize(),
+                    )
                     DemoSubject.Text -> DemoText(modifier = modifier)
                     DemoSubject.TextField -> DemoTextField(modifier = modifier)
                 }
