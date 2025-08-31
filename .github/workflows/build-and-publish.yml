@@ -22,6 +22,7 @@ jobs:
 
     permissions:
       contents: write
+      pull-requests: write
 
     timeout-minutes: 60
 
@@ -30,9 +31,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           lfs: 'true'
-
-      - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1
 
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
@@ -44,7 +42,12 @@ jobs:
           java-version: 17
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v4
+        with:
+            add-job-summary-as-pr-comment: 'always'
+            build-scan-publish: true
+            build-scan-terms-of-use-url: 'https://gradle.com/terms-of-service'
+            build-scan-terms-of-use-agree: 'yes'
 
       - name: Run screenshot tests
         id: verifyScreenshots
@@ -74,7 +77,7 @@ jobs:
 
       - name: Run local tests
         if: always()
-        run: ./gradlew testDebug --scan
+        run: ./gradlew testDebug
 
       - name: Build all build type and flavor permutations
         run: ./gradlew :androidApp:assemble
