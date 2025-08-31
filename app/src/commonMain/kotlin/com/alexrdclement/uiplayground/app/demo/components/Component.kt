@@ -8,6 +8,7 @@ enum class Component : CatalogItem {
     Button,
     CurrencyAmountField,
     Grid,
+    GridSphere,
     MediaControlSheet,
     Text,
     TextField,
