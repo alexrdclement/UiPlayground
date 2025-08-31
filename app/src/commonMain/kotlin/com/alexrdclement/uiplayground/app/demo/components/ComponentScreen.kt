@@ -10,6 +10,7 @@ import com.alexrdclement.uiplayground.app.demo.components.demo.GridDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.MediaControlSheetDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.TextDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.TextFieldDemo
+import com.alexrdclement.uiplayground.app.demo.components.demo.WebDemo
 import com.alexrdclement.uiplayground.components.Scaffold
 
 @Composable
@@ -38,6 +39,9 @@ fun ComponentScreen(
             )
             Component.Text -> TextDemo()
             Component.TextField -> TextFieldDemo()
+            Component.Web -> WebDemo(
+                modifier = Modifier.padding(innerPadding)
+            )
         }
     }
 }

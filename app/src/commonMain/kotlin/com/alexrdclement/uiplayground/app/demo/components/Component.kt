@@ -11,6 +11,7 @@ enum class Component : CatalogItem {
     MediaControlSheet,
     Text,
     TextField,
+    Web,
     ;
 
     override val title = this.name
