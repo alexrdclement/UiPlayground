@@ -1,5 +1,6 @@
 package com.alexrdclement.uiplayground.app.demo.shaders
 
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,8 +19,10 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
@@ -41,6 +44,7 @@ import com.alexrdclement.uiplayground.shaders.colorInvert
 import com.alexrdclement.uiplayground.shaders.colorSplit
 import com.alexrdclement.uiplayground.shaders.noise
 import com.alexrdclement.uiplayground.shaders.pixelate
+import com.alexrdclement.uiplayground.shaders.warp
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -70,6 +74,10 @@ fun ShaderScreen(
             ),
             DemoModifier.Noise(amount = 0f, colorMode = NoiseColorMode.Monochrome),
             DemoModifier.Pixelate(subdivisions = 0),
+            DemoModifier.Warp(
+                radius = 200.dp,
+                amount = .5f,
+            ),
         )
     }
     var demoModifierIndex by remember { mutableIntStateOf(0) }
@@ -103,6 +111,7 @@ fun ShaderScreen(
             Box(
                 modifier = Modifier.weight(1f)
             ) {
+                var pointerOffset: Offset by remember { mutableStateOf(Offset.Zero) }
                 val modifier = when (val innerModifier = demoModifier) {
                     DemoModifier.None -> Modifier
                     is DemoModifier.Blur -> Modifier.blur(
@@ -124,6 +133,16 @@ fun ShaderScreen(
                     is DemoModifier.Pixelate -> Modifier.pixelate(
                         subdivisions = { innerModifier.subdivisions },
                     )
+                    is DemoModifier.Warp -> Modifier.warp(
+                        offset = { pointerOffset },
+                        radius = { innerModifier.radius },
+                        amount = { innerModifier.amount },
+                    )
+                }.pointerInput(Unit) {
+                    detectDragGestures { change, _ ->
+                        change.consume()
+                        pointerOffset = change.position
+                    }
                 }
                 when (demoSubject) {
                     DemoSubject.Circle -> DemoCircle(modifier = modifier)
@@ -309,6 +328,25 @@ private fun makeControls(
                 },
                 valueRange = 0f..100f,
             )
+        )
+        is DemoModifier.Warp -> persistentListOf(
+            Control.Slider(
+                name = "Amount",
+                value = demoModifier.amount,
+                onValueChange = {
+                    demoModifiers[demoModifierIndex] = demoModifier.copy(amount = it)
+                },
+                valueRange = -5f..5f,
+            ),
+            Control.Slider(
+                name = "Radius",
+                value = demoModifier.radius.value,
+                onValueChange = {
+                    demoModifiers[demoModifierIndex] =
+                        demoModifier.copy(radius = it.dp)
+                },
+                valueRange = 0f..500f
+            ),
         )
     }
 }
