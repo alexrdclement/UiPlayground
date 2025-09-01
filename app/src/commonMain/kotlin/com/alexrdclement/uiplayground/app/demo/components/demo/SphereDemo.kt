@@ -104,7 +104,7 @@ fun SphereDemo(
 
     var precisionDegree by remember { mutableStateOf(1) }
     val precisionDegreeControl = Control.Slider(
-        name = "Precision steps",
+        name = "Precision degrees",
         value = precisionDegree.toFloat(),
         valueRange = 1f..100f,
         onValueChange = { precisionDegree = it.roundToInt() },

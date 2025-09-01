@@ -1,5 +1,6 @@
 package com.alexrdclement.uiplayground.app.demo.components.demo
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -127,12 +128,13 @@ fun WebDemo(
             .fillMaxSize()
     ) {
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
                 .weight(1f)
-                .padding(PlaygroundTheme.spacing.medium),
-            horizontalAlignment = Alignment.CenterHorizontally,
+                .padding(PlaygroundTheme.spacing.medium)
         ) {
             val modifier = Modifier
                 .fillMaxWidth()

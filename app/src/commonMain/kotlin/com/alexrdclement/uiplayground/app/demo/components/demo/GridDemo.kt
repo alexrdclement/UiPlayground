@@ -122,23 +122,23 @@ fun GridDemo(
         valueRange = 0f..200f,
     )
 
+    val drawStyles = mapOf(
+        Stroke::class to "Stroke",
+        Fill::class to "Fill",
+    )
     val drawStyleControl = Control.Dropdown(
         name = "Draw Style",
-        values = persistentListOf(
+        values = drawStyles.map { (kclass, name) ->
             Control.Dropdown.DropdownItem(
-                name = "Stroke",
-                value = Stroke::class,
-            ),
-            Control.Dropdown.DropdownItem(
-                name = "Fill",
-                value = DrawStyle::class,
-            ),
-        ),
-        selectedIndex = if (drawStyle is Stroke) 0 else 1,
+                name = name,
+                value = kclass,
+            )
+        }.toPersistentList(),
+        selectedIndex = drawStyles.keys.indexOf(drawStyle::class),
         onValueChange = { index ->
-            drawStyle = when (index) {
-                0 -> Stroke(width = strokeWidthPx)
-                1 -> Fill
+            drawStyle = when (drawStyles.keys.elementAt(index)) {
+                Stroke::class -> Stroke(width = strokeWidthPx)
+                Fill::class -> Fill
                 else -> Stroke(width = strokeWidthPx)
             }
             gridStyle = when (val gridStyle = gridStyle) {
