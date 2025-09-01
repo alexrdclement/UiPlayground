@@ -8,7 +8,7 @@ import com.alexrdclement.uiplayground.app.demo.components.demo.ButtonDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.CurrencyAmountFieldDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.GridDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.MediaControlSheetDemo
-import com.alexrdclement.uiplayground.app.demo.components.demo.GridSphereDemo
+import com.alexrdclement.uiplayground.app.demo.components.demo.SphereDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.TextDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.TextFieldDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.WebDemo
@@ -38,7 +38,7 @@ fun ComponentScreen(
             Component.MediaControlSheet -> MediaControlSheetDemo(
                 modifier = Modifier.padding(innerPadding)
             )
-            Component.GridSphere -> GridSphereDemo()
+            Component.Sphere -> SphereDemo()
             Component.Text -> TextDemo()
             Component.TextField -> TextFieldDemo()
             Component.Web -> WebDemo(

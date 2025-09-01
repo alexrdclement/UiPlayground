@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -17,11 +18,38 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-data class ViewingAngle(
-    val rotationX: Float = 0f,
-    val rotationY: Float = 0f,
-    val rotationZ: Float = 0f,
-)
+sealed class SphereStyle {
+    data class Grid(
+        val numLatitudeLines: Int,
+        val numLongitudeLines: Int,
+        val strokeColor: Color,
+        val strokeWidth: Dp = Dp.Hairline,
+        val faceColor: Color? = null,
+    ) : SphereStyle()
+}
+
+@Composable
+fun Sphere(
+    style: SphereStyle,
+    modifier: Modifier = Modifier,
+    viewingAngle: ViewingAngle = ViewingAngle(),
+    precisionDegree: Int = 1,
+) {
+    when (style) {
+        is SphereStyle.Grid -> {
+            GridSphere(
+                numLatitudeLines = style.numLatitudeLines,
+                numLongitudeLines = style.numLongitudeLines,
+                modifier = modifier,
+                viewingAngle = viewingAngle,
+                precisionDegree = precisionDegree,
+                strokeColor = style.strokeColor,
+                strokeWidth = style.strokeWidth,
+                faceColor = style.faceColor,
+            )
+        }
+    }
+}
 
 @Composable
 fun GridSphere(
@@ -30,8 +58,9 @@ fun GridSphere(
     modifier: Modifier = Modifier,
     viewingAngle: ViewingAngle = ViewingAngle(),
     precisionDegree: Int = 1,
-    color: Color = PlaygroundTheme.colorScheme.primary,
+    strokeColor: Color = PlaygroundTheme.colorScheme.primary,
     strokeWidth: Dp = Dp.Hairline,
+    faceColor: Color? = PlaygroundTheme.colorScheme.primary.copy(alpha = 0.1f),
 ) {
     val latSteps = (360 / numLatitudeLines).coerceAtLeast(2)
     val lonSteps = (180 / numLongitudeLines).coerceAtLeast(2)
@@ -73,8 +102,17 @@ fun GridSphere(
             }
         }
 
+        faceColor?.let {
+            drawCircle(
+                color = it,
+                center = center,
+                radius = radius,
+                style = Fill,
+            )
+        }
+
         drawCircle(
-            color = color,
+            color = strokeColor,
             center = center,
             radius = radius,
             style = drawStyle,
@@ -104,12 +142,11 @@ fun GridSphere(
 
             drawPath(
                 path = path,
-                color = color,
+                color = strokeColor,
                 style = drawStyle,
             )
         }
 
-        // Draw latitude lines (parallels)
         for (lat in -90..90 step latSteps) {
             val path = Path()
             var pathStarted = false
@@ -134,36 +171,11 @@ fun GridSphere(
 
             drawPath(
                 path = path,
-                color = color,
+                color = strokeColor,
                 style = drawStyle,
             )
         }
     }
-}
-
-private data class Point3D(val x: Double, val y: Double, val z: Double)
-
-private fun rotatePoint3D(
-    x: Double,
-    y: Double,
-    z: Double,
-    cosX: Double,
-    sinX: Double,
-    cosY: Double,
-    sinY: Double,
-    cosZ: Double,
-    sinZ: Double,
-): Point3D {
-    val y1 = y * cosX - z * sinX
-    val z1 = y * sinX + z * cosX
-
-    val x2 = x * cosY + z1 * sinY
-    val z2 = -x * sinY + z1 * cosY
-
-    val x3 = x2 * cosZ - y1 * sinZ
-    val y3 = x2 * sinZ + y1 * cosZ
-
-    return Point3D(x3, y3, z2)
 }
 
 fun Int.toRadians(): Double {

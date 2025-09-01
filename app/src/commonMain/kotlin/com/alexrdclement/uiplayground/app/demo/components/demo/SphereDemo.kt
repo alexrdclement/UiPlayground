@@ -1,6 +1,7 @@
 package com.alexrdclement.uiplayground.app.demo.components.demo
 
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,17 +21,42 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
-import com.alexrdclement.uiplayground.components.GridSphere
 import com.alexrdclement.uiplayground.components.HorizontalDivider
+import com.alexrdclement.uiplayground.components.Sphere
+import com.alexrdclement.uiplayground.components.SphereStyle
 import com.alexrdclement.uiplayground.components.ViewingAngle
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
 import kotlin.math.roundToInt
 
 @Composable
-fun GridSphereDemo(
+fun SphereDemo(
     modifier: Modifier = Modifier,
 ) {
+    val initialStyle = SphereStyle.Grid(
+        numLatitudeLines = 16,
+        numLongitudeLines = 8,
+        strokeWidth = 2.dp,
+        strokeColor = PlaygroundTheme.colorScheme.primary,
+        faceColor = null,
+    )
+    var style: SphereStyle by remember { mutableStateOf(initialStyle) }
+
+    var fill by remember { mutableStateOf(false) }
+    val faceColor =PlaygroundTheme.colorScheme.primary.copy(alpha = 0.2f)
+    val fillControl = Control.Toggle(
+        name = "Fill",
+        value = fill,
+        onValueChange = {
+            fill = it
+            style = when (val style = style) {
+                is SphereStyle.Grid -> style.copy(
+                    faceColor = if (fill) faceColor else null,
+                )
+            }
+        },
+    )
+
     var viewingAngle by remember { mutableStateOf(ViewingAngle()) }
 
     val xRotationControl = Control.Slider(
@@ -52,7 +78,7 @@ fun GridSphereDemo(
         onValueChange = { viewingAngle = viewingAngle.copy(rotationZ = it) },
     )
 
-    var numLatitudeLines by remember { mutableStateOf(16) }
+    var numLatitudeLines by remember { mutableStateOf(initialStyle.numLatitudeLines) }
     val numLatitudeLinesControl = Control.Slider(
         name = "Latitude lines",
         value = numLatitudeLines.toFloat(),
@@ -60,20 +86,12 @@ fun GridSphereDemo(
         onValueChange = { numLatitudeLines = it.roundToInt() },
     )
 
-    var numLongitudeLines by remember { mutableStateOf(8) }
+    var numLongitudeLines by remember { mutableStateOf(initialStyle.numLongitudeLines) }
     val numLongitudeLinesControl = Control.Slider(
         name = "Longitude lines",
         value = numLongitudeLines.toFloat(),
         valueRange = 2f..100f,
         onValueChange = { numLongitudeLines = it.roundToInt() },
-    )
-
-    var precisionDegree by remember { mutableStateOf(1) }
-    val precisionDegreeControl = Control.Slider(
-        name = "Precision steps",
-        value = precisionDegree.toFloat(),
-        valueRange = 1f..100f,
-        onValueChange = { precisionDegree = it.roundToInt() },
     )
 
     var strokeWidth by remember { mutableStateOf(2.dp) }
@@ -84,36 +102,50 @@ fun GridSphereDemo(
         onValueChange = { strokeWidth = it.dp },
     )
 
+    var precisionDegree by remember { mutableStateOf(1) }
+    val precisionDegreeControl = Control.Slider(
+        name = "Precision steps",
+        value = precisionDegree.toFloat(),
+        valueRange = 1f..100f,
+        onValueChange = { precisionDegree = it.roundToInt() },
+    )
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
+            .padding(vertical = PlaygroundTheme.spacing.medium),
     ) {
-        GridSphere(
-            numLatitudeLines = numLatitudeLines,
-            numLongitudeLines = numLongitudeLines,
-            precisionDegree = precisionDegree,
-            viewingAngle = viewingAngle,
-            color = PlaygroundTheme.colorScheme.primary,
-            strokeWidth = strokeWidth,
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .padding(PlaygroundTheme.spacing.medium)
-                .pointerInput(Unit) {
-                    detectDragGestures { change, dragAmount ->
-                        change.consume()
-                        val (dx, dy) = dragAmount
-                        viewingAngle = viewingAngle.copy(
-                            rotationZ = (viewingAngle.rotationZ - dx / 10f) % 360f,
-                            rotationX = (viewingAngle.rotationX + dy / 10f) % 360f,
-                        )
+                .padding(horizontal = PlaygroundTheme.spacing.medium),
+            contentAlignment = Alignment.Center,
+        ) {
+            Sphere(
+                style = style,
+                precisionDegree = precisionDegree,
+                viewingAngle = viewingAngle,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = PlaygroundTheme.spacing.large)
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, dragAmount ->
+                            change.consume()
+                            val (dx, dy) = dragAmount
+                            viewingAngle = viewingAngle.copy(
+                                rotationZ = (viewingAngle.rotationZ - dx / 10f) % 360f,
+                                rotationX = (viewingAngle.rotationX + dy / 10f) % 360f,
+                            )
+                        }
                     }
-                }
-        )
+            )
+        }
         HorizontalDivider(modifier = Modifier.fillMaxWidth())
         Controls(
             controls = persistentListOf(
+                fillControl,
                 xRotationControl,
                 yRotationControl,
                 zRotationControl,
