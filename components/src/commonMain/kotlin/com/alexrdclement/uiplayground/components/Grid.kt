@@ -68,7 +68,7 @@ fun Grid(
     when (style) {
         is GridStyle.Line -> LineGrid(
             color = style.color,
-            width = style.strokeWidth,
+            strokeWidth = style.strokeWidth,
             spacing = spacing,
             modifier = modifier,
             offset = offset,
@@ -136,7 +136,7 @@ fun Grid(
 @Composable
 fun LineGrid(
     color: Color,
-    width: Dp,
+    strokeWidth: Dp,
     spacing: Dp,
     modifier: Modifier = Modifier,
     offset: Offset = Offset.Zero,
@@ -144,7 +144,7 @@ fun LineGrid(
     Canvas(
         modifier = modifier
     ) {
-        val widthPX = width.toPx()
+        val strokeWidthPX = strokeWidth.toPx()
         val spacingPx = spacing.toPx()
         val offset = Offset(
             x = offset.x % spacingPx,
@@ -157,7 +157,7 @@ fun LineGrid(
                 color = color,
                 start = Offset(x + offset.x, 0f),
                 end = Offset(x + offset.x, size.height),
-                strokeWidth = widthPX
+                strokeWidth = strokeWidthPX
             )
             x += spacingPx
         }
@@ -168,7 +168,7 @@ fun LineGrid(
                 color = color,
                 start = Offset(0f, y + offset.y),
                 end = Offset(size.width, y + offset.y),
-                strokeWidth = widthPX
+                strokeWidth = strokeWidthPX
             )
             y += spacingPx
         }
