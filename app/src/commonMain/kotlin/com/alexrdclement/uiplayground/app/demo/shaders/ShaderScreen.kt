@@ -1,6 +1,8 @@
 package com.alexrdclement.uiplayground.app.demo.shaders
 
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -76,7 +78,7 @@ fun ShaderScreen(
             DemoModifier.Pixelate(subdivisions = 0),
             DemoModifier.Warp(
                 radius = 200.dp,
-                amount = .5f,
+                amount = .2f,
             ),
         )
     }
@@ -137,6 +139,11 @@ fun ShaderScreen(
                         offset = { pointerOffset },
                         radius = { innerModifier.radius },
                         amount = { innerModifier.amount },
+                    )
+                }.pointerInput(Unit) {
+                    detectTapGestures(
+                        onPress =  { pointerOffset = it },
+                        onTap = { pointerOffset = it },
                     )
                 }.pointerInput(Unit) {
                     detectDragGestures { change, _ ->
@@ -345,7 +352,7 @@ private fun makeControls(
                     demoModifiers[demoModifierIndex] =
                         demoModifier.copy(radius = it.dp)
                 },
-                valueRange = 0f..500f
+                valueRange = 0f..1000f
             ),
         )
     }

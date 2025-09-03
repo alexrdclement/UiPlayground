@@ -100,7 +100,7 @@ fun PlaygroundIndicationType.toIndication(): Indication = when (this) {
         },
         radius = { interaction ->
             when (interaction) {
-                is PressInteraction.Press -> 50.dp
+                is PressInteraction.Press -> 100.dp
                 else -> 0.dp
             }
         },

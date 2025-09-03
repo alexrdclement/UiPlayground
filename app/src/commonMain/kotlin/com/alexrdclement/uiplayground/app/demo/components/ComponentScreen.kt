@@ -38,7 +38,9 @@ fun ComponentScreen(
             Component.MediaControlSheet -> MediaControlSheetDemo(
                 modifier = Modifier.padding(innerPadding)
             )
-            Component.Sphere -> SphereDemo()
+            Component.Sphere -> SphereDemo(
+                modifier = Modifier.padding(innerPadding)
+            )
             Component.Text -> TextDemo()
             Component.TextField -> TextFieldDemo()
             Component.Web -> WebDemo(

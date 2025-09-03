@@ -1,6 +1,7 @@
 package com.alexrdclement.uiplayground.shaders
 
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Slider
@@ -107,6 +108,12 @@ private fun Preview() {
                     radius = { radius },
                     amount = { amount },
                 )
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onPress =  { point = it },
+                        onTap = { point = it },
+                    )
+                }
                 .pointerInput(Unit) {
                     detectDragGestures { change, _ ->
                         change.consume()

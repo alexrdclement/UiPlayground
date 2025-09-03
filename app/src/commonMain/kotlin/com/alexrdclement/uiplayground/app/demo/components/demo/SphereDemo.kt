@@ -43,7 +43,7 @@ fun SphereDemo(
     var style: SphereStyle by remember { mutableStateOf(initialStyle) }
 
     var fill by remember { mutableStateOf(false) }
-    val faceColor =PlaygroundTheme.colorScheme.primary.copy(alpha = 0.2f)
+    val faceColor = PlaygroundTheme.colorScheme.primary.copy(alpha = 0.3f)
     val fillControl = Control.Toggle(
         name = "Fill",
         value = fill,
@@ -83,7 +83,12 @@ fun SphereDemo(
         name = "Latitude lines",
         value = numLatitudeLines.toFloat(),
         valueRange = 2f..100f,
-        onValueChange = { numLatitudeLines = it.roundToInt() },
+        onValueChange = {
+            numLatitudeLines = it.roundToInt()
+            style = when (val style = style) {
+                is SphereStyle.Grid -> style.copy(numLatitudeLines = numLatitudeLines)
+            }
+        },
     )
 
     var numLongitudeLines by remember { mutableStateOf(initialStyle.numLongitudeLines) }
@@ -91,7 +96,12 @@ fun SphereDemo(
         name = "Longitude lines",
         value = numLongitudeLines.toFloat(),
         valueRange = 2f..100f,
-        onValueChange = { numLongitudeLines = it.roundToInt() },
+        onValueChange = {
+            numLongitudeLines = it.roundToInt()
+            style = when (val style = style) {
+                is SphereStyle.Grid -> style.copy(numLongitudeLines = numLongitudeLines)
+            }
+        },
     )
 
     var strokeWidth by remember { mutableStateOf(2.dp) }
@@ -99,7 +109,12 @@ fun SphereDemo(
         name = "Stroke width",
         value = strokeWidth.value,
         valueRange = 1f..100f,
-        onValueChange = { strokeWidth = it.dp },
+        onValueChange = {
+            strokeWidth = it.dp
+            style = when (val style = style) {
+                is SphereStyle.Grid -> style.copy(strokeWidth = strokeWidth)
+            }
+        },
     )
 
     var precisionDegree by remember { mutableStateOf(1) }
@@ -114,14 +129,13 @@ fun SphereDemo(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
-            .padding(vertical = PlaygroundTheme.spacing.medium),
     ) {
         Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .padding(horizontal = PlaygroundTheme.spacing.medium),
-            contentAlignment = Alignment.Center,
+                .padding(horizontal = PlaygroundTheme.spacing.medium)
         ) {
             Sphere(
                 style = style,
@@ -129,7 +143,6 @@ fun SphereDemo(
                 viewingAngle = viewingAngle,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = PlaygroundTheme.spacing.large)
                     .pointerInput(Unit) {
                         detectDragGestures { change, dragAmount ->
                             change.consume()
