@@ -18,48 +18,6 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 @Composable
-fun CircularWeb(
-    numCircles: Int,
-    numRadialLines: Int,
-    strokeWidth: Dp,
-    color: Color,
-    modifier: Modifier = Modifier,
-) {
-    Canvas(
-        modifier = modifier,
-    ) {
-        val width = size.width
-        val height = size.height
-        val centerX = width / 2
-        val centerY = height / 2
-        val radius = minOf(centerX, centerY)
-        val strokeWidthPx = strokeWidth.toPx()
-
-        for (i in 1..numCircles) {
-            val r = radius * i / numCircles
-            drawCircle(
-                radius = r,
-                color = color,
-                center = Offset(centerX, centerY),
-                style = Stroke(width = strokeWidthPx)
-            )
-        }
-
-        for (i in 0 until numRadialLines) {
-            val angle = (2 * PI / numRadialLines) * i
-            val endX = centerX + radius * cos(angle).toFloat()
-            val endY = centerY + radius * sin(angle).toFloat()
-            drawLine(
-                start = Offset(centerX, centerY),
-                end = Offset(endX, endY),
-                color = color,
-                strokeWidth = strokeWidthPx,
-            )
-        }
-    }
-}
-
-@Composable
 fun AngleWeb(
     start: Offset,
     vertex: Offset,
@@ -277,22 +235,6 @@ private fun DrawScope.drawAngleWebPath(
         color = color,
         style = Stroke(width = strokeWidth),
     )
-}
-
-@Preview
-@Composable
-fun CircularWebPreview() {
-    PlaygroundTheme {
-        Surface {
-            CircularWeb(
-                numCircles = 9,
-                numRadialLines = 12,
-                strokeWidth = Dp.Hairline,
-                color = PlaygroundTheme.colorScheme.primary,
-                modifier = Modifier.size(200.dp),
-            )
-        }
-    }
 }
 
 @Preview

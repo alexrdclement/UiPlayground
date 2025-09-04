@@ -25,13 +25,17 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.components.Grid
-import com.alexrdclement.uiplayground.components.GridStyle
+import com.alexrdclement.uiplayground.components.GridCoordinateSystem
+import com.alexrdclement.uiplayground.components.GridLineStyle
+import com.alexrdclement.uiplayground.components.GridVertex
 import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Surface
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlin.math.PI
+import kotlin.reflect.KClass
 
 @Composable
 fun GridDemo(
@@ -39,71 +43,132 @@ fun GridDemo(
 ) {
     val color = PlaygroundTheme.colorScheme.primary
 
-    var strokeWidthPx by remember { mutableStateOf(1f) }
-    val strokeWidth = with(LocalDensity.current) { strokeWidthPx.toDp() }
-    var drawStyle by remember { mutableStateOf<DrawStyle>(Stroke(width = strokeWidthPx)) }
+    var gridSpacingPx by remember { mutableStateOf(100f) }
+    val gridSpacing = with(LocalDensity.current) { gridSpacingPx.toDp() }
 
-    var vertexWidthPx by remember { mutableStateOf(10f) }
-    val vertexWidth = with(LocalDensity.current) { vertexWidthPx.toDp() }
-    var vertexHeightPx by remember { mutableStateOf(10f) }
-    val vertexHeight = with(LocalDensity.current) { vertexHeightPx.toDp() }
-    val size = DpSize(vertexWidth, vertexHeight)
+    var theta by remember { mutableStateOf(1f) }
 
-
-    val initialGridStyle = GridStyle.Line(
-        color = color,
-        strokeWidth = strokeWidth,
+    val coordinateSystems = mapOf(
+        GridCoordinateSystem.Cartesian::class to "Cartesian",
+        GridCoordinateSystem.Polar::class to "Polar",
     )
-    var gridStyle: GridStyle by remember { mutableStateOf(initialGridStyle) }
-
-    val gridStyleItems = mapOf(
-        GridStyle.Line::class to "Line",
-        GridStyle.Vertex.Oval::class to "Oval",
-        GridStyle.Vertex.Rect::class to "Rect",
-        GridStyle.Vertex.Plus::class to "Plus",
-    )
-    val gridStyleControl = Control.Dropdown(
-        name = "Grid Style",
-        values = gridStyleItems.map { (kclass, name) ->
+    val initialCoordinateSystem = GridCoordinateSystem.Cartesian(spacing = gridSpacing)
+    var coordinateSystem: GridCoordinateSystem by remember { mutableStateOf(initialCoordinateSystem) }
+    val coordinateSystemControl = Control.Dropdown(
+        name = "Coordinate System",
+        values = coordinateSystems.map { (kclass, name) ->
             Control.Dropdown.DropdownItem(
                 name = name,
                 value = kclass,
             )
         }.toPersistentList(),
-        selectedIndex = gridStyleItems.keys.indexOf(gridStyle::class),
+        selectedIndex = coordinateSystems.keys.indexOf(coordinateSystem::class),
         onValueChange = { index ->
-            gridStyle = when (gridStyleItems.keys.elementAt(index)) {
-                GridStyle.Line::class -> GridStyle.Line(
-                    color = color,
-                    strokeWidth = strokeWidth,
+            coordinateSystem = when (coordinateSystems.keys.elementAt(index)) {
+                GridCoordinateSystem.Cartesian::class -> GridCoordinateSystem.Cartesian(
+                    spacing = gridSpacing,
                 )
-                GridStyle.Vertex.Oval::class -> GridStyle.Vertex.Oval(
-                    color = color,
-                    size = size,
-                    drawStyle = drawStyle,
+                GridCoordinateSystem.Polar::class -> GridCoordinateSystem.Polar(
+                    radiusSpacing = gridSpacing,
+                    theta = theta,
                 )
-                GridStyle.Vertex.Rect::class -> GridStyle.Vertex.Rect(
-                    color = color,
-                    size = size,
-                    drawStyle = drawStyle,
-                )
-                GridStyle.Vertex.Plus::class -> GridStyle.Vertex.Plus(
-                    color = color,
-                    size = size,
-                    strokeWidth = strokeWidth,
-                )
-                else -> initialGridStyle
+                else -> initialCoordinateSystem
             }
         }
     )
 
-    var gridSpacingPx by remember { mutableStateOf(100f) }
-    val gridSpacing = with(LocalDensity.current) { gridSpacingPx.toDp() }
     val gridSpacingControl = Control.Slider(
         name = "Spacing",
         value = gridSpacingPx,
-        onValueChange = { gridSpacingPx = it },
+        onValueChange = {
+            gridSpacingPx = it
+            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
+                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
+                    xSpacing = gridSpacing,
+                    ySpacing = gridSpacing,
+                )
+                is GridCoordinateSystem.Polar -> coordinateSystem.copy(
+                    radiusSpacing = gridSpacing,
+                )
+            }
+        },
         valueRange = 0f..200f,
+    )
+    val thetaControl = Control.Slider(
+        name = "Theta",
+        value = theta,
+        onValueChange = {
+            theta = it
+            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
+                is GridCoordinateSystem.Cartesian -> coordinateSystem
+                is GridCoordinateSystem.Polar -> coordinateSystem.copy(
+                    theta = theta,
+                )
+            }
+        },
+        valueRange = 0f..(PI * 2f).toFloat(),
+    )
+
+    var strokeWidthPx by remember { mutableStateOf(1f) }
+    val strokeWidth = with(LocalDensity.current) { strokeWidthPx.toDp() }
+
+    var showLines by remember { mutableStateOf(true) }
+    val showLinesControl = Control.Toggle(
+        name = "Show Lines",
+        value = showLines,
+        onValueChange = { showLines = it },
+    )
+
+    var vertexDrawStyle by remember { mutableStateOf<DrawStyle>(Stroke(width = strokeWidthPx)) }
+    var vertexWidthPx by remember { mutableStateOf(10f) }
+    val vertexWidth = with(LocalDensity.current) { vertexWidthPx.toDp() }
+    var vertexHeightPx by remember { mutableStateOf(10f) }
+    val vertexHeight = with(LocalDensity.current) { vertexHeightPx.toDp() }
+    val vertexSize = DpSize(vertexWidth, vertexHeight)
+
+    val initialLineStyle = GridLineStyle(
+        color = color,
+        stroke = Stroke(width = strokeWidthPx),
+    )
+    var lineStyle: GridLineStyle by remember { mutableStateOf(initialLineStyle) }
+
+    var vertex by remember { mutableStateOf<GridVertex?>(null) }
+    val vertexItems = mapOf(
+        null to "None",
+        GridVertex.Oval::class to "Oval",
+        GridVertex.Rect::class to "Rect",
+        GridVertex.Plus::class to "Plus",
+    )
+    val vertexControl = Control.Dropdown(
+        name = "Vertex",
+        values = vertexItems.map { (kclass, name) ->
+            Control.Dropdown.DropdownItem(
+                name = name,
+                value = kclass,
+            )
+        }.toPersistentList(),
+        selectedIndex = vertexItems.keys.indexOf<KClass<out Any>?>(vertex?.let { it::class })
+            .coerceAtLeast(0), // -1 to null
+        onValueChange = { index ->
+            vertex = when (vertexItems.keys.elementAt(index)) {
+                GridVertex.Oval::class -> GridVertex.Oval(
+                    color = color,
+                    size = vertexSize,
+                    drawStyle = vertexDrawStyle,
+                )
+                GridVertex.Rect::class -> GridVertex.Rect(
+                    color = color,
+                    size = vertexSize,
+                    drawStyle = vertexDrawStyle,
+                )
+                GridVertex.Plus::class -> GridVertex.Plus(
+                    color = color,
+                    size = vertexSize,
+                    strokeWidth = strokeWidth,
+                )
+                else -> null
+            }
+        }
     )
 
     var offsetXPx by remember { mutableStateOf(0f) }
@@ -122,34 +187,34 @@ fun GridDemo(
         valueRange = 0f..200f,
     )
 
-    val drawStyles = mapOf(
+    val vertexDrawStyles = mapOf(
         Stroke::class to "Stroke",
         Fill::class to "Fill",
     )
-    val drawStyleControl = Control.Dropdown(
-        name = "Draw Style",
-        values = drawStyles.map { (kclass, name) ->
+    val vertexDrawStyleControl = Control.Dropdown(
+        name = "Vertex Draw Style",
+        values = vertexDrawStyles.map { (kclass, name) ->
             Control.Dropdown.DropdownItem(
                 name = name,
                 value = kclass,
             )
         }.toPersistentList(),
-        selectedIndex = drawStyles.keys.indexOf(drawStyle::class),
+        selectedIndex = vertexDrawStyles.keys.indexOf(vertexDrawStyle::class),
         onValueChange = { index ->
-            drawStyle = when (drawStyles.keys.elementAt(index)) {
+            vertexDrawStyle = when (vertexDrawStyles.keys.elementAt(index)) {
                 Stroke::class -> Stroke(width = strokeWidthPx)
                 Fill::class -> Fill
                 else -> Stroke(width = strokeWidthPx)
             }
-            gridStyle = when (val gridStyle = gridStyle) {
-                is GridStyle.Line -> gridStyle
-                is GridStyle.Vertex.Oval -> gridStyle.copy(
-                    drawStyle = drawStyle,
+            vertex = when (vertex) {
+                is GridVertex.Oval -> (vertex as GridVertex.Oval).copy(
+                    drawStyle = vertexDrawStyle,
                 )
-                is GridStyle.Vertex.Rect -> gridStyle.copy(
-                    drawStyle = drawStyle,
+                is GridVertex.Rect -> (vertex as GridVertex.Rect).copy(
+                    drawStyle = vertexDrawStyle,
                 )
-                is GridStyle.Vertex.Plus -> gridStyle
+                is GridVertex.Plus -> vertex // Plus doesn't use drawStyle
+                null -> null
             }
         }
     )
@@ -159,20 +224,21 @@ fun GridDemo(
         value = strokeWidthPx,
         onValueChange = {
             strokeWidthPx = it
-            drawStyle = Stroke(width = strokeWidthPx)
-            gridStyle = when (val gridStyle = gridStyle) {
-                is GridStyle.Line -> gridStyle.copy(
+            vertexDrawStyle = Stroke(width = strokeWidthPx)
+            lineStyle = lineStyle.copy(
+                stroke = Stroke(width = strokeWidthPx),
+            )
+            vertex = when (vertex) {
+                is GridVertex.Oval -> (vertex as GridVertex.Oval).copy(
+                    drawStyle = vertexDrawStyle,
+                )
+                is GridVertex.Rect -> (vertex as GridVertex.Rect).copy(
+                    drawStyle = vertexDrawStyle,
+                )
+                is GridVertex.Plus -> (vertex as GridVertex.Plus).copy(
                     strokeWidth = strokeWidth,
                 )
-                is GridStyle.Vertex.Oval -> gridStyle.copy(
-                    drawStyle = Stroke(width = strokeWidthPx),
-                )
-                is GridStyle.Vertex.Rect -> gridStyle.copy(
-                    drawStyle = Stroke(width = strokeWidthPx),
-                )
-                is GridStyle.Vertex.Plus -> gridStyle.copy(
-                    strokeWidth = strokeWidth,
-                )
+                null -> null
             }
         },
         valueRange = 1f..100f,
@@ -184,17 +250,17 @@ fun GridDemo(
         onValueChange = {
             vertexWidthPx = it
             vertexHeightPx = it
-            gridStyle = when (val gridStyle = gridStyle) {
-                is GridStyle.Line -> gridStyle
-                is GridStyle.Vertex.Oval -> gridStyle.copy(
+            vertex = when (vertex) {
+                is GridVertex.Oval -> (vertex as GridVertex.Oval).copy(
                     size = DpSize(vertexWidth, vertexHeight),
                 )
-                is GridStyle.Vertex.Rect -> gridStyle.copy(
+                is GridVertex.Rect -> (vertex as GridVertex.Rect).copy(
                     size = DpSize(vertexWidth, vertexHeight),
                 )
-                is GridStyle.Vertex.Plus -> gridStyle.copy(
+                is GridVertex.Plus -> (vertex as GridVertex.Plus).copy(
                     size = DpSize(vertexWidth, vertexHeight),
                 )
+                null -> null
             }
         },
         valueRange = 1f..100f,
@@ -205,23 +271,17 @@ fun GridDemo(
         value = vertexWidthPx,
         onValueChange = {
             vertexWidthPx = it
-            gridStyle = when (val gridStyle = gridStyle) {
-                is GridStyle.Line -> gridStyle
-                is GridStyle.Vertex.Oval -> gridStyle.copy(
-                    size = gridStyle.size.copy(
-                        width = vertexWidth,
-                    ),
+            vertex = when (vertex) {
+                is GridVertex.Oval -> (vertex as GridVertex.Oval).copy(
+                    size = DpSize(vertexWidth, vertexHeight),
                 )
-                is GridStyle.Vertex.Rect -> gridStyle.copy(
-                    size = gridStyle.size.copy(
-                        width = vertexWidth,
-                    ),
+                is GridVertex.Rect -> (vertex as GridVertex.Rect).copy(
+                    size = DpSize(vertexWidth, vertexHeight),
                 )
-                is GridStyle.Vertex.Plus -> gridStyle.copy(
-                    size = gridStyle.size.copy(
-                        width = vertexWidth,
-                    ),
+                is GridVertex.Plus -> (vertex as GridVertex.Plus).copy(
+                    size = DpSize(vertexWidth, vertexHeight),
                 )
+                null -> null
             }
         },
         valueRange = 1f..100f,
@@ -231,23 +291,17 @@ fun GridDemo(
         value = vertexHeightPx,
         onValueChange = {
             vertexHeightPx = it
-            gridStyle = when (val gridStyle = gridStyle) {
-                is GridStyle.Line -> gridStyle
-                is GridStyle.Vertex.Oval -> gridStyle.copy(
-                    size = gridStyle.size.copy(
-                        height = vertexHeight,
-                    ),
+            vertex = when (vertex) {
+                is GridVertex.Oval -> (vertex as GridVertex.Oval).copy(
+                    size = DpSize(vertexWidth, vertexHeight),
                 )
-                is GridStyle.Vertex.Rect -> gridStyle.copy(
-                    size = gridStyle.size.copy(
-                        height = vertexHeight,
-                    ),
+                is GridVertex.Rect -> (vertex as GridVertex.Rect).copy(
+                    size = DpSize(vertexWidth, vertexHeight),
                 )
-                is GridStyle.Vertex.Plus -> gridStyle.copy(
-                    size = gridStyle.size.copy(
-                        height = vertexHeight,
-                    ),
+                is GridVertex.Plus -> (vertex as GridVertex.Plus).copy(
+                    size = DpSize(vertexWidth, vertexHeight),
                 )
+                null -> null
             }
         },
         valueRange = 1f..100f,
@@ -266,8 +320,9 @@ fun GridDemo(
             .fillMaxSize()
     ) {
         Grid(
-            style = gridStyle,
-            spacing = gridSpacing,
+            lineStyle = lineStyle.takeIf { showLines },
+            vertex = vertex,
+            coordinateSystem = coordinateSystem,
             offset = Offset(offsetXPx, offsetYPx),
             clipToBounds = clipToBounds,
             modifier = Modifier
@@ -277,10 +332,13 @@ fun GridDemo(
         HorizontalDivider(modifier = Modifier.fillMaxWidth())
         Controls(
             controls = persistentListOf(
-                gridStyleControl,
-                drawStyleControl,
-                strokeWidthControl,
+                coordinateSystemControl,
+                showLinesControl,
                 gridSpacingControl,
+                thetaControl,
+                strokeWidthControl,
+                vertexControl,
+                vertexDrawStyleControl,
                 vertexSizeControl,
                 vertexWidthControl,
                 vertexHeightControl,

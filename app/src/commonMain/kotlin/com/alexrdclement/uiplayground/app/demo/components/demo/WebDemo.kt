@@ -27,7 +27,6 @@ import com.alexrdclement.uiplayground.components.AngleWeb
 import com.alexrdclement.uiplayground.components.AngleWebPointedShape
 import com.alexrdclement.uiplayground.components.AngleWebShape
 import com.alexrdclement.uiplayground.components.AngleWebStar
-import com.alexrdclement.uiplayground.components.CircularWeb
 import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Surface
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
@@ -140,14 +139,6 @@ fun WebDemo(
                 .fillMaxWidth()
                 .aspectRatio(1f)
                 .graphicsLayer { this.rotationZ = rotation }
-
-            CircularWeb(
-                numCircles = numCircles,
-                numRadialLines = numLines,
-                strokeWidth = strokeWidth,
-                color = PlaygroundTheme.colorScheme.primary,
-                modifier = modifier,
-            )
             AngleWeb(
                 start = Offset(0f, 0f),
                 vertex = Offset(0f, 1f),

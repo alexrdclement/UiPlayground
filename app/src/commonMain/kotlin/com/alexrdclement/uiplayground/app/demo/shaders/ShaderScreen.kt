@@ -2,7 +2,6 @@ package com.alexrdclement.uiplayground.app.demo.shaders
 
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,7 +36,10 @@ import com.alexrdclement.uiplayground.app.demo.subject.DemoText
 import com.alexrdclement.uiplayground.app.demo.subject.DemoTextField
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.Grid
-import com.alexrdclement.uiplayground.components.GridStyle
+import com.alexrdclement.uiplayground.components.CartesianGrid
+import com.alexrdclement.uiplayground.components.GridCoordinateSystem
+import com.alexrdclement.uiplayground.components.GridLineStyle
+import com.alexrdclement.uiplayground.components.GridVertex
 import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Scaffold
 import com.alexrdclement.uiplayground.shaders.ColorSplitMode
@@ -155,38 +157,49 @@ fun ShaderScreen(
                     DemoSubject.Circle -> DemoCircle(modifier = modifier)
                     DemoSubject.CircleOutline -> DemoCircle(drawStyle = Stroke(2f), modifier = modifier)
                     DemoSubject.GridLine -> Grid(
-                        style = GridStyle.Line(
-                            color = PlaygroundTheme.colorScheme.primary,
-                            strokeWidth = 1.dp,
+                        coordinateSystem = GridCoordinateSystem.Cartesian(
+                            spacing = 20.dp,
                         ),
-                        spacing = 20.dp,
+                        lineStyle = GridLineStyle(
+                            color = PlaygroundTheme.colorScheme.primary,
+                            stroke = Stroke(width = 1f),
+                        ),
                         modifier = modifier.fillMaxSize(),
                     )
                     DemoSubject.GridDot -> Grid(
-                        style = GridStyle.Vertex.Oval(
+                        coordinateSystem = GridCoordinateSystem.Cartesian(
+                            spacing = 20.dp,
+                        ),
+                        lineStyle = null,
+                        vertex = GridVertex.Oval(
                             color = PlaygroundTheme.colorScheme.primary,
                             size = DpSize(4.dp, 4.dp),
                             drawStyle = Fill,
                         ),
-                        spacing = 20.dp,
                         modifier = modifier.fillMaxSize(),
                     )
                     DemoSubject.GridRect -> Grid(
-                        style = GridStyle.Vertex.Rect(
+                        coordinateSystem = GridCoordinateSystem.Cartesian(
+                            spacing = 20.dp,
+                        ),
+                        lineStyle = null,
+                        vertex = GridVertex.Rect(
                             color = PlaygroundTheme.colorScheme.primary,
                             size = DpSize(4.dp, 4.dp),
                             drawStyle = Fill,
                         ),
-                        spacing = 20.dp,
                         modifier = modifier.fillMaxSize(),
                     )
                     DemoSubject.GridPlus -> Grid(
-                        style = GridStyle.Vertex.Plus(
+                        coordinateSystem = GridCoordinateSystem.Cartesian(
+                            spacing = 20.dp,
+                        ),
+                        lineStyle = null,
+                        vertex = GridVertex.Plus(
                             color = PlaygroundTheme.colorScheme.primary,
                             size = DpSize(8.dp, 8.dp),
                             strokeWidth = 1.dp,
                         ),
-                        spacing = 20.dp,
                         modifier = modifier.fillMaxSize(),
                     )
                     DemoSubject.Text -> DemoText(modifier = modifier)
