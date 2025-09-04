@@ -23,10 +23,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
-import com.alexrdclement.uiplayground.components.AngleWeb
-import com.alexrdclement.uiplayground.components.AngleWebPointedShape
-import com.alexrdclement.uiplayground.components.AngleWebShape
-import com.alexrdclement.uiplayground.components.AngleWebStar
+import com.alexrdclement.uiplayground.components.CurveStitch
+import com.alexrdclement.uiplayground.components.CurveStitchStarShape
+import com.alexrdclement.uiplayground.components.CurveStitchShape
+import com.alexrdclement.uiplayground.components.CurveStitchStar
 import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Surface
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
@@ -35,19 +35,18 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.roundToInt
 
 @Composable
-fun WebDemo(
+fun CurveStitchDemo(
     modifier: Modifier = Modifier,
 ) {
     var strokeWidthPx by remember { mutableStateOf(1f) }
     val strokeWidth = with(LocalDensity.current) { strokeWidthPx.toDp() }
 
     var numLines by remember { mutableStateOf(8) }
-    var numCircles by remember { mutableStateOf(16) }
     var numPoints by remember { mutableStateOf(4) }
 
     var innerRadius by remember { mutableStateOf(0.5f) }
-    var webInsidePoints by remember { mutableStateOf(true) }
-    var webOutsidePoints by remember { mutableStateOf(true) }
+    var starShapeInsidePoints by remember { mutableStateOf(true) }
+    var starShapeOutsidePoints by remember { mutableStateOf(true) }
 
     var rotation by remember { mutableStateOf(0f) }
 
@@ -56,15 +55,6 @@ fun WebDemo(
         value = numLines.toFloat(),
         onValueChange = {
             numLines = it.toInt()
-        },
-        valueRange = 1f..100f,
-    )
-
-    val numCirclesControl = Control.Slider(
-        name = "Circles",
-        value = numCircles.toFloat(),
-        onValueChange = {
-            numCircles = it.toInt()
         },
         valueRange = 1f..100f,
     )
@@ -87,19 +77,19 @@ fun WebDemo(
         valueRange = 0f..1f,
     )
 
-    val webInsidePointsControl = Control.Toggle(
+    val starShapeInsidePointsControl = Control.Toggle(
         name = "Inside points",
-        value = webInsidePoints,
+        value = starShapeInsidePoints,
         onValueChange = {
-            webInsidePoints = it
+            starShapeInsidePoints = it
         },
     )
 
-    val webOutsidePointsControl = Control.Toggle(
+    val starShapeOutsidePointsControl = Control.Toggle(
         name = "Outside points",
-        value = webOutsidePoints,
+        value = starShapeOutsidePoints,
         onValueChange = {
-            webOutsidePoints = it
+            starShapeOutsidePoints = it
         },
     )
 
@@ -139,7 +129,7 @@ fun WebDemo(
                 .fillMaxWidth()
                 .aspectRatio(1f)
                 .graphicsLayer { this.rotationZ = rotation }
-            AngleWeb(
+            CurveStitch(
                 start = Offset(0f, 0f),
                 vertex = Offset(0f, 1f),
                 end = Offset(1f, 1f),
@@ -148,23 +138,23 @@ fun WebDemo(
                 color = PlaygroundTheme.colorScheme.primary,
                 modifier = modifier,
             )
-            AngleWebStar(
+            CurveStitchStar(
                 numLines = numLines,
                 numPoints = numPoints,
                 strokeWidth = strokeWidth,
                 color = PlaygroundTheme.colorScheme.primary,
                 modifier = modifier,
             )
-            AngleWebShape(
+            CurveStitchShape(
                 numLines = numLines,
                 numPoints = numPoints,
                 strokeWidth = strokeWidth,
                 color = PlaygroundTheme.colorScheme.primary,
                 modifier = modifier,
             )
-            AngleWebPointedShape(
-                webInsidePoints = webInsidePoints,
-                webOutsidePoints = webOutsidePoints,
+            CurveStitchStarShape(
+                drawInsidePoints = starShapeInsidePoints,
+                drawOutsidePoints = starShapeOutsidePoints,
                 numLines = numLines,
                 numPoints = numPoints,
                 innerRadius = innerRadius,
@@ -176,12 +166,11 @@ fun WebDemo(
         HorizontalDivider(modifier = Modifier.fillMaxWidth())
         Controls(
             controls = persistentListOf(
-                numCirclesControl,
                 numLinesControl,
                 numPointsControl,
                 innerRadiusControl,
-                webInsidePointsControl,
-                webOutsidePointsControl,
+                starShapeInsidePointsControl,
+                starShapeOutsidePointsControl,
                 rotationControl,
                 strokeWidthControl,
             ),
@@ -197,10 +186,10 @@ fun WebDemo(
 
 @Preview
 @Composable
-fun WebDemoPreview() {
+fun CurveStitchDemoPreview() {
     PlaygroundTheme {
         Surface {
-            WebDemo()
+            CurveStitchDemo()
         }
     }
 }

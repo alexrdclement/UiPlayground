@@ -18,7 +18,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 @Composable
-fun AngleWeb(
+fun CurveStitch(
     start: Offset,
     vertex: Offset,
     end: Offset,
@@ -31,7 +31,7 @@ fun AngleWeb(
         modifier = modifier,
     ) {
         val strokeWidthPx = strokeWidth.toPx()
-        drawAngleWebPath(
+        drawCurveStitch(
             start = start,
             vertex = vertex,
             end = end,
@@ -43,7 +43,7 @@ fun AngleWeb(
 }
 
 @Composable
-fun AngleWebStar(
+fun CurveStitchStar(
     numLines: Int,
     numPoints: Int,
     strokeWidth: Dp,
@@ -73,7 +73,7 @@ fun AngleWebStar(
             val endX = centerX + radius * cos(nextAngle)
             val endY = centerY + radius * sin(nextAngle)
 
-            drawAngleWebPath(
+            drawCurveStitch(
                 start = Offset(startX / size.width, startY / size.height),
                 vertex = Offset(vertexX / size.width, vertexY / size.height),
                 end = Offset(endX / size.width, endY / size.height),
@@ -86,7 +86,7 @@ fun AngleWebStar(
 }
 
 @Composable
-fun AngleWebShape(
+fun CurveStitchShape(
     numLines: Int,
     numPoints: Int,
     strokeWidth: Dp,
@@ -118,7 +118,7 @@ fun AngleWebShape(
             val vertex = vertices[(i + 1) % vertices.size]
             val end = vertices[(i + 2) % vertices.size]
 
-            drawAngleWebPath(
+            drawCurveStitch(
                 start = Offset(start.x / size.width, start.y / size.height),
                 vertex = Offset(vertex.x / size.width, vertex.y / size.height),
                 end = Offset(end.x / size.width, end.y / size.height),
@@ -131,13 +131,13 @@ fun AngleWebShape(
 }
 
 @Composable
-fun AngleWebPointedShape(
+fun CurveStitchStarShape(
     numLines: Int,
     numPoints: Int,
     strokeWidth: Dp,
     color: Color,
-    webInsidePoints: Boolean = true,
-    webOutsidePoints: Boolean = true,
+    drawInsidePoints: Boolean = true,
+    drawOutsidePoints: Boolean = true,
     innerRadius: Float = 0.5f,
     modifier: Modifier = Modifier,
 ) {
@@ -171,14 +171,14 @@ fun AngleWebPointedShape(
             listOf(outerVertices[i], innerVertices[i])
         }.flatten()
 
-        if (webInsidePoints) {
+        if (drawInsidePoints) {
             for (i in 0 until numPoints) {
                 val index = i * 2 + 1
                 val start = vertices[index]
                 val vertex = vertices[(index + 1) % vertices.size]
                 val end = vertices[(index + 2) % vertices.size]
 
-                drawAngleWebPath(
+                drawCurveStitch(
                     start = Offset(start.x / size.width, start.y / size.height),
                     vertex = Offset(vertex.x / size.width, vertex.y / size.height),
                     end = Offset(end.x / size.width, end.y / size.height),
@@ -189,14 +189,14 @@ fun AngleWebPointedShape(
             }
         }
 
-        if (webOutsidePoints) {
+        if (drawOutsidePoints) {
             for (i in 0 until numPoints) {
                 val index = i * 2
                 val start = vertices[index]
                 val vertex = vertices[(index + 1) % vertices.size]
                 val end = vertices[(index + 2) % vertices.size]
 
-                drawAngleWebPath(
+                drawCurveStitch(
                     start = Offset(start.x / size.width, start.y / size.height),
                     vertex = Offset(vertex.x / size.width, vertex.y / size.height),
                     end = Offset(end.x / size.width, end.y / size.height),
@@ -209,7 +209,7 @@ fun AngleWebPointedShape(
     }
 }
 
-private fun DrawScope.drawAngleWebPath(
+private fun DrawScope.drawCurveStitch(
     start: Offset,
     vertex: Offset,
     end: Offset,
@@ -239,10 +239,10 @@ private fun DrawScope.drawAngleWebPath(
 
 @Preview
 @Composable
-fun AngleWebPreview() {
+fun CurveStitchPreview() {
     PlaygroundTheme {
         Surface {
-            AngleWeb(
+            CurveStitch(
                 start = Offset(0.1f, 0.1f),
                 vertex = Offset(0.1f, 0.9f),
                 end = Offset(0.9f, 0.9f),
@@ -257,10 +257,10 @@ fun AngleWebPreview() {
 
 @Preview
 @Composable
-fun AngleWebStarPreview() {
+fun CurveStitchStarPreview() {
     PlaygroundTheme {
         Surface {
-            AngleWebStar(
+            CurveStitchStar(
                 numLines = 12,
                 numPoints = 5,
                 strokeWidth = Dp.Hairline,
@@ -273,10 +273,10 @@ fun AngleWebStarPreview() {
 
 @Preview
 @Composable
-fun AngleWebConvexShapePreview() {
+fun CurveStitchShapePreview() {
     PlaygroundTheme {
         Surface {
-            AngleWebShape(
+            CurveStitchShape(
                 numLines = 12,
                 numPoints = 4,
                 strokeWidth = Dp.Hairline,
@@ -289,11 +289,11 @@ fun AngleWebConvexShapePreview() {
 
 @Preview
 @Composable
-fun AngleWebPointedShapeInsideOnlyPreview() {
+fun CurveStitchStarShapeInsideOnlyPreview() {
     PlaygroundTheme {
         Surface {
-            AngleWebPointedShape(
-                webOutsidePoints = false,
+            CurveStitchStarShape(
+                drawOutsidePoints = false,
                 numLines = 12,
                 numPoints = 6,
                 strokeWidth = Dp.Hairline,
@@ -306,11 +306,11 @@ fun AngleWebPointedShapeInsideOnlyPreview() {
 
 @Preview
 @Composable
-fun AngleWebPointedShapeOutsideOnlyPreview() {
+fun CurveStitchStarShapeOutsideOnlyPreview() {
     PlaygroundTheme {
         Surface {
-            AngleWebPointedShape(
-                webInsidePoints = false,
+            CurveStitchStarShape(
+                drawInsidePoints = false,
                 numLines = 12,
                 numPoints = 6,
                 strokeWidth = Dp.Hairline,
@@ -323,12 +323,12 @@ fun AngleWebPointedShapeOutsideOnlyPreview() {
 
 @Preview
 @Composable
-fun AngleWebPointedShapePreview() {
+fun CurveStitchStarShapePreview() {
     PlaygroundTheme {
         Surface {
-            AngleWebPointedShape(
-                webInsidePoints = true,
-                webOutsidePoints = true,
+            CurveStitchStarShape(
+                drawInsidePoints = true,
+                drawOutsidePoints = true,
                 numLines = 12,
                 numPoints = 6,
                 strokeWidth = Dp.Hairline,

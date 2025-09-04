@@ -11,7 +11,7 @@ import com.alexrdclement.uiplayground.app.demo.components.demo.MediaControlSheet
 import com.alexrdclement.uiplayground.app.demo.components.demo.SphereDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.TextDemo
 import com.alexrdclement.uiplayground.app.demo.components.demo.TextFieldDemo
-import com.alexrdclement.uiplayground.app.demo.components.demo.WebDemo
+import com.alexrdclement.uiplayground.app.demo.components.demo.CurveStitchDemo
 import com.alexrdclement.uiplayground.components.Scaffold
 
 @Composable
@@ -32,6 +32,9 @@ fun ComponentScreen(
         when (component) {
             Component.Button -> ButtonDemo()
             Component.CurrencyAmountField -> CurrencyAmountFieldDemo()
+            Component.CurveStitch -> CurveStitchDemo(
+                modifier = Modifier.padding(innerPadding)
+            )
             Component.Grid -> GridDemo(
                 modifier = Modifier.padding(innerPadding),
             )
@@ -43,9 +46,6 @@ fun ComponentScreen(
             )
             Component.Text -> TextDemo()
             Component.TextField -> TextFieldDemo()
-            Component.Web -> WebDemo(
-                modifier = Modifier.padding(innerPadding)
-            )
         }
     }
 }
