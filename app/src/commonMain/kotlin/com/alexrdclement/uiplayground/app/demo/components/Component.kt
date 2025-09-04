@@ -7,7 +7,10 @@ import kotlinx.serialization.Serializable
 enum class Component : CatalogItem {
     Button,
     CurrencyAmountField,
+    CurveStitch,
+    Grid,
     MediaControlSheet,
+    Sphere,
     Text,
     TextField,
     ;
