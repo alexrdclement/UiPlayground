@@ -12,6 +12,9 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.components.util.Point3D
+import com.alexrdclement.uiplayground.components.util.ViewingAngle
+import com.alexrdclement.uiplayground.components.util.rotatePoint3D
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.PI

@@ -24,7 +24,7 @@ import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Sphere
 import com.alexrdclement.uiplayground.components.SphereStyle
-import com.alexrdclement.uiplayground.components.ViewingAngle
+import com.alexrdclement.uiplayground.components.util.ViewingAngle
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
 import kotlin.math.roundToInt

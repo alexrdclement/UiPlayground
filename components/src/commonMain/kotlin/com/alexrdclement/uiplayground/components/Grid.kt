@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.components.util.rotate
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.PI
@@ -25,8 +26,12 @@ sealed class GridCoordinateSystem {
     data class Cartesian(
         val xSpacing: Dp,
         val ySpacing: Dp,
+        val rotationDegrees: Float = 0f,
     ) : GridCoordinateSystem() {
-        constructor(spacing: Dp) : this(
+        constructor(
+            spacing: Dp,
+            rotationDegrees: Float = 0f,
+        ) : this(
             xSpacing = spacing,
             ySpacing = spacing,
         )
@@ -35,6 +40,7 @@ sealed class GridCoordinateSystem {
     data class Polar(
         val radiusSpacing: Dp,
         val theta: Float, // angle step in radians
+        val rotationDegrees: Float = 0f,
     ) : GridCoordinateSystem()
 }
 
@@ -45,29 +51,46 @@ data class GridLineStyle(
 
 sealed class GridVertex(
     open val size: DpSize,
+    open val rotationDegrees: Float,
 ) {
     data class Oval(
         override val size: DpSize,
         val color: Color,
         val drawStyle: DrawStyle,
+        override val rotationDegrees: Float = 0f,
     ) : GridVertex(
         size = size,
+        rotationDegrees = rotationDegrees,
     )
 
     data class Rect(
         override val size: DpSize,
         val color: Color,
         val drawStyle: DrawStyle,
+        override val rotationDegrees: Float = 0f,
     ) : GridVertex(
         size = size,
+        rotationDegrees = rotationDegrees
     )
 
     data class Plus(
         override val size: DpSize,
         val color: Color,
         val strokeWidth: Dp,
+        override val rotationDegrees: Float = 0f,
     ) : GridVertex(
         size = size,
+        rotationDegrees = rotationDegrees,
+    )
+
+    data class X(
+        override val size: DpSize,
+        val color: Color,
+        val strokeWidth: Dp,
+        override val rotationDegrees: Float = 0f,
+    ) : GridVertex(
+        size = size,
+        rotationDegrees,
     )
 }
 
@@ -93,6 +116,7 @@ fun Grid(
             lineStyle = lineStyle,
             modifier = modifier,
             offset = offset,
+            rotationDegrees = coordinateSystem.rotationDegrees,
             drawVertex = vertex?.let { vertex ->
                 { x, y -> drawVertex(vertex, x, y, density) }
             },
@@ -103,6 +127,7 @@ fun Grid(
             lineStyle = lineStyle,
             modifier = modifier,
             offset = offset,
+            rotationDegrees = coordinateSystem.rotationDegrees,
             drawVertex = vertex?.let { vertex ->
                 { x, y -> drawVertex(vertex, x, y, density) }
             },
@@ -116,6 +141,7 @@ fun CartesianGrid(
     ySpacing: Dp,
     lineStyle: GridLineStyle?,
     modifier: Modifier = Modifier,
+    rotationDegrees: Float = 0f,
     offset: Offset = Offset.Zero,
     drawVertex: (DrawScope.(Float, Float) -> Unit)? = null,
 ) {
@@ -127,6 +153,11 @@ fun CartesianGrid(
         val offset = Offset(
             x = offset.x % xSpacingPx,
             y = offset.y % ySpacingPx
+        )
+
+        drawContext.transform.rotate(
+            degrees = rotationDegrees,
+            pivot = Offset(size.width / 2f + offset.x, size.height / 2f + offset.y),
         )
 
         lineStyle?.let {
@@ -174,6 +205,7 @@ fun PolarGrid(
     lineStyle: GridLineStyle?,
     modifier: Modifier = Modifier,
     offset: Offset = Offset.Zero,
+    rotationDegrees: Float = 0f,
     clipLinesToRadius: Boolean = true,
     precision: Float = 0.001f,
     drawVertex: (DrawScope.(Float, Float) -> Unit)? = null,
@@ -193,6 +225,11 @@ fun PolarGrid(
         } else {
             minOf(centerX, centerY)
         }
+
+        drawContext.transform.rotate(
+            degrees = rotationDegrees,
+            pivot = Offset(centerX, centerY),
+        )
 
         lineStyle?.let {
             var currentRadius = radiusSpacingPx
@@ -242,45 +279,68 @@ fun DrawScope.drawVertex(
     y: Float,
     density: Density,
 ) {
-    when (vertex) {
-        is GridVertex.Oval -> {
-            val size = vertex.size.toSize()
-            val radiusXPx = size.width / 2f
-            val radiusYPx = size.height / 2f
-            drawOval(
-                color = vertex.color,
-                topLeft = Offset(x - radiusXPx, y - radiusYPx),
-                size = size,
-                style = vertex.drawStyle,
-            )
-        }
+    drawContext.transform.rotate(
+        degrees = vertex.rotationDegrees,
+        pivot = Offset(x, y),
+    ) {
+        when (vertex) {
+            is GridVertex.Oval -> {
+                val size = vertex.size.toSize()
+                val radiusXPx = size.width / 2f
+                val radiusYPx = size.height / 2f
+                drawOval(
+                    color = vertex.color,
+                    topLeft = Offset(x - radiusXPx, y - radiusYPx),
+                    size = size,
+                    style = vertex.drawStyle,
+                )
+            }
 
-        is GridVertex.Rect -> {
-            val size = vertex.size.toSize()
-            drawRect(
-                color = vertex.color,
-                topLeft = Offset(x - size.width / 2f, y - size.height / 2f),
-                size = size,
-                style = vertex.drawStyle,
-            )
-        }
+            is GridVertex.Rect -> {
+                val size = vertex.size.toSize()
+                drawRect(
+                    color = vertex.color,
+                    topLeft = Offset(x - size.width / 2f, y - size.height / 2f),
+                    size = size,
+                    style = vertex.drawStyle,
+                )
+            }
 
-        is GridVertex.Plus -> {
-            val size = vertex.size.toSize()
-            val halfPlusWidthPx = size.width / 2f
-            val halfPlusHeightPx = size.height / 2f
-            drawLine(
-                color = vertex.color,
-                start = Offset(x - halfPlusWidthPx, y),
-                end = Offset(x + halfPlusWidthPx, y),
-                strokeWidth = with(density) { vertex.strokeWidth.toPx() },
-            )
-            drawLine(
-                color = vertex.color,
-                start = Offset(x, y - halfPlusHeightPx),
-                end = Offset(x, y + halfPlusHeightPx),
-                strokeWidth = with(density) { vertex.strokeWidth.toPx() }
-            )
+            is GridVertex.Plus -> {
+                val size = vertex.size.toSize()
+                val halfPlusWidthPx = size.width / 2f
+                val halfPlusHeightPx = size.height / 2f
+                drawLine(
+                    color = vertex.color,
+                    start = Offset(x - halfPlusWidthPx, y),
+                    end = Offset(x + halfPlusWidthPx, y),
+                    strokeWidth = with(density) { vertex.strokeWidth.toPx() },
+                )
+                drawLine(
+                    color = vertex.color,
+                    start = Offset(x, y - halfPlusHeightPx),
+                    end = Offset(x, y + halfPlusHeightPx),
+                    strokeWidth = with(density) { vertex.strokeWidth.toPx() }
+                )
+            }
+
+            is GridVertex.X -> {
+                val size = vertex.size.toSize()
+                val halfXWidthPx = size.width / 2f
+                val halfXHeightPx = size.height / 2f
+                drawLine(
+                    color = vertex.color,
+                    start = Offset(x - halfXWidthPx, y - halfXHeightPx),
+                    end = Offset(x + halfXWidthPx, y + halfXHeightPx),
+                    strokeWidth = with(density) { vertex.strokeWidth.toPx() },
+                )
+                drawLine(
+                    color = vertex.color,
+                    start = Offset(x - halfXWidthPx, y + halfXHeightPx),
+                    end = Offset(x + halfXWidthPx, y - halfXHeightPx),
+                    strokeWidth = with(density) { vertex.strokeWidth.toPx() }
+                )
+            }
         }
     }
 }

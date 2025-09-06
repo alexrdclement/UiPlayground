@@ -46,6 +46,8 @@ fun GridDemo(
     var gridSpacingPx by remember { mutableStateOf(100f) }
     val gridSpacing = with(LocalDensity.current) { gridSpacingPx.toDp() }
 
+    var rotationDegrees by remember { mutableStateOf(0f) }
+
     var theta by remember { mutableStateOf((PI / 3f).toFloat()) }
 
     val coordinateSystems = mapOf(
@@ -67,10 +69,12 @@ fun GridDemo(
             coordinateSystem = when (coordinateSystems.keys.elementAt(index)) {
                 GridCoordinateSystem.Cartesian::class -> GridCoordinateSystem.Cartesian(
                     spacing = gridSpacing,
+                    rotationDegrees = rotationDegrees,
                 )
                 GridCoordinateSystem.Polar::class -> GridCoordinateSystem.Polar(
                     radiusSpacing = gridSpacing,
                     theta = theta,
+                    rotationDegrees = rotationDegrees,
                 )
                 else -> initialCoordinateSystem
             }
@@ -110,8 +114,31 @@ fun GridDemo(
         valueRange = thetaRange,
     )
 
+    val rotationDegreesControl = Control.Slider(
+        name = "Rotation",
+        value = rotationDegrees,
+        onValueChange = {
+            rotationDegrees = it
+            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
+                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
+                    rotationDegrees = rotationDegrees,
+                )
+                is GridCoordinateSystem.Polar -> coordinateSystem.copy(
+                    rotationDegrees = rotationDegrees,
+                )
+            }
+        },
+        valueRange = 0f..360f,
+    )
+
     var strokeWidthPx by remember { mutableStateOf(1f) }
     val strokeWidth = with(LocalDensity.current) { strokeWidthPx.toDp() }
+
+    val initialLineStyle = GridLineStyle(
+        color = color,
+        stroke = Stroke(width = strokeWidthPx),
+    )
+    var lineStyle: GridLineStyle by remember { mutableStateOf(initialLineStyle) }
 
     var showLines by remember { mutableStateOf(true) }
     val showLinesControl = Control.Toggle(
@@ -126,12 +153,7 @@ fun GridDemo(
     var vertexHeightPx by remember { mutableStateOf(10f) }
     val vertexHeight = with(LocalDensity.current) { vertexHeightPx.toDp() }
     val vertexSize = DpSize(vertexWidth, vertexHeight)
-
-    val initialLineStyle = GridLineStyle(
-        color = color,
-        stroke = Stroke(width = strokeWidthPx),
-    )
-    var lineStyle: GridLineStyle by remember { mutableStateOf(initialLineStyle) }
+    var vertexRotationDegrees by remember { mutableStateOf(0f) }
 
     var vertex by remember { mutableStateOf<GridVertex?>(null) }
     val vertexItems = mapOf(
@@ -139,6 +161,7 @@ fun GridDemo(
         GridVertex.Oval::class to "Oval",
         GridVertex.Rect::class to "Rect",
         GridVertex.Plus::class to "Plus",
+        GridVertex.X::class to "X",
     )
     val vertexControl = Control.Dropdown(
         name = "Vertex",
@@ -156,36 +179,29 @@ fun GridDemo(
                     color = color,
                     size = vertexSize,
                     drawStyle = vertexDrawStyle,
+                    rotationDegrees = vertexRotationDegrees,
                 )
                 GridVertex.Rect::class -> GridVertex.Rect(
                     color = color,
                     size = vertexSize,
                     drawStyle = vertexDrawStyle,
+                    rotationDegrees = vertexRotationDegrees,
                 )
                 GridVertex.Plus::class -> GridVertex.Plus(
                     color = color,
                     size = vertexSize,
                     strokeWidth = strokeWidth,
+                    rotationDegrees = vertexRotationDegrees,
+                )
+                GridVertex.X::class -> GridVertex.X(
+                    color = color,
+                    size = vertexSize,
+                    strokeWidth = strokeWidth,
+                    rotationDegrees = vertexRotationDegrees,
                 )
                 else -> null
             }
         }
-    )
-
-    var offsetXPx by remember { mutableStateOf(0f) }
-    val offsetXControl = Control.Slider(
-        name = "Offset X",
-        value = offsetXPx,
-        onValueChange = { offsetXPx = it },
-        valueRange = 0f..200f,
-    )
-
-    var offsetYPx by remember { mutableStateOf(0f) }
-    val offsetYControl = Control.Slider(
-        name = "Offset Y",
-        value = offsetYPx,
-        onValueChange = { offsetYPx = it },
-        valueRange = 0f..200f,
     )
 
     val vertexDrawStyles = mapOf(
@@ -207,17 +223,43 @@ fun GridDemo(
                 Fill::class -> Fill
                 else -> Stroke(width = strokeWidthPx)
             }
-            vertex = when (vertex) {
-                is GridVertex.Oval -> (vertex as GridVertex.Oval).copy(
+            vertex = when (val vertex = vertex) {
+                is GridVertex.Oval -> vertex.copy(
                     drawStyle = vertexDrawStyle,
                 )
-                is GridVertex.Rect -> (vertex as GridVertex.Rect).copy(
+                is GridVertex.Rect -> vertex.copy(
                     drawStyle = vertexDrawStyle,
                 )
-                is GridVertex.Plus -> vertex // Plus doesn't use drawStyle
+                is GridVertex.Plus,
+                is GridVertex.X,
+                -> vertex
                 null -> null
             }
         }
+    )
+
+    val vertexRotationControl = Control.Slider(
+        name = "Vertex Rotation",
+        value = vertexRotationDegrees,
+        onValueChange = {
+            vertexRotationDegrees = it
+            vertex = when (val vertex = vertex) {
+                is GridVertex.Oval -> vertex.copy(
+                    rotationDegrees = vertexRotationDegrees,
+                )
+                is GridVertex.Rect -> vertex.copy(
+                    rotationDegrees = vertexRotationDegrees,
+                )
+                is GridVertex.Plus -> vertex.copy(
+                    rotationDegrees = vertexRotationDegrees,
+                )
+                is GridVertex.X -> vertex.copy(
+                    rotationDegrees = vertexRotationDegrees,
+                )
+                null -> null
+            }
+        },
+        valueRange = 0f..360f,
     )
 
     val strokeWidthControl = Control.Slider(
@@ -239,6 +281,9 @@ fun GridDemo(
                 is GridVertex.Plus -> (vertex as GridVertex.Plus).copy(
                     strokeWidth = strokeWidth,
                 )
+                is GridVertex.X -> (vertex as GridVertex.X).copy(
+                    strokeWidth = strokeWidth,
+                )
                 null -> null
             }
         },
@@ -251,14 +296,17 @@ fun GridDemo(
         onValueChange = {
             vertexWidthPx = it
             vertexHeightPx = it
-            vertex = when (vertex) {
-                is GridVertex.Oval -> (vertex as GridVertex.Oval).copy(
+            vertex = when (val vertex = vertex) {
+                is GridVertex.Oval -> vertex.copy(
                     size = DpSize(vertexWidth, vertexHeight),
                 )
-                is GridVertex.Rect -> (vertex as GridVertex.Rect).copy(
+                is GridVertex.Rect -> vertex.copy(
                     size = DpSize(vertexWidth, vertexHeight),
                 )
-                is GridVertex.Plus -> (vertex as GridVertex.Plus).copy(
+                is GridVertex.Plus -> vertex.copy(
+                    size = DpSize(vertexWidth, vertexHeight),
+                )
+                is GridVertex.X -> vertex.copy(
                     size = DpSize(vertexWidth, vertexHeight),
                 )
                 null -> null
@@ -272,14 +320,17 @@ fun GridDemo(
         value = vertexWidthPx,
         onValueChange = {
             vertexWidthPx = it
-            vertex = when (vertex) {
-                is GridVertex.Oval -> (vertex as GridVertex.Oval).copy(
+            vertex = when (val vertex = vertex) {
+                is GridVertex.Oval -> vertex.copy(
                     size = DpSize(vertexWidth, vertexHeight),
                 )
-                is GridVertex.Rect -> (vertex as GridVertex.Rect).copy(
+                is GridVertex.Rect -> vertex.copy(
                     size = DpSize(vertexWidth, vertexHeight),
                 )
-                is GridVertex.Plus -> (vertex as GridVertex.Plus).copy(
+                is GridVertex.Plus -> vertex.copy(
+                    size = DpSize(vertexWidth, vertexHeight),
+                )
+                is GridVertex.X -> vertex.copy(
                     size = DpSize(vertexWidth, vertexHeight),
                 )
                 null -> null
@@ -302,10 +353,29 @@ fun GridDemo(
                 is GridVertex.Plus -> (vertex as GridVertex.Plus).copy(
                     size = DpSize(vertexWidth, vertexHeight),
                 )
+                is GridVertex.X -> (vertex as GridVertex.X).copy(
+                    size = DpSize(vertexWidth, vertexHeight),
+                )
                 null -> null
             }
         },
         valueRange = 1f..100f,
+    )
+
+    var offsetXPx by remember { mutableStateOf(0f) }
+    val offsetXControl = Control.Slider(
+        name = "Offset X",
+        value = offsetXPx,
+        onValueChange = { offsetXPx = it },
+        valueRange = 0f..200f,
+    )
+
+    var offsetYPx by remember { mutableStateOf(0f) }
+    val offsetYControl = Control.Slider(
+        name = "Offset Y",
+        value = offsetYPx,
+        onValueChange = { offsetYPx = it },
+        valueRange = 0f..200f,
     )
 
     var clipToBounds by remember { mutableStateOf(true) }
@@ -337,12 +407,14 @@ fun GridDemo(
                 showLinesControl,
                 gridSpacingControl,
                 thetaControl,
+                rotationDegreesControl,
                 strokeWidthControl,
                 vertexControl,
                 vertexDrawStyleControl,
                 vertexSizeControl,
                 vertexWidthControl,
                 vertexHeightControl,
+                vertexRotationControl,
                 offsetXControl,
                 offsetYControl,
                 clipControl,
