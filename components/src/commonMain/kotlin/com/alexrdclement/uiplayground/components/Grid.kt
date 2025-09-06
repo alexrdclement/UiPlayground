@@ -41,7 +41,7 @@ sealed class GridCoordinateSystem {
     }
 
     data class Polar(
-        val radiusSpacing: Dp,
+        val radiusScale: GridScale,
         val theta: Float, // angle step in radians
         val rotationDegrees: Float = 0f,
     ) : GridCoordinateSystem()
@@ -71,6 +71,28 @@ sealed class GridScale {
         val spacing: Dp,
         val exponent: Float = 10f,
     ) : GridScale()
+
+    fun scale(interval: Int, density: Density): Float = with(density) {
+        return when (this@GridScale) {
+            is Linear -> spacing.toPx()
+            is Logarithmic -> if (interval <= 0f) 1f else {
+                val scaling = ln(base.toDouble()).toFloat() * interval
+                spacing.toPx() * scaling
+            }
+            is LogarithmicDecay -> if (interval <= 0f) 1f else {
+                val scaling = 1 / (ln(base.toDouble()).toFloat() * interval)
+                (spacing.toPx() * scaling).coerceAtLeast(1f)
+            }
+            is Exponential -> if (interval <= 0f) spacing.toPx() else {
+                val scaling = exponent.toDouble().pow(interval.toDouble()).toFloat()
+                spacing.toPx() * scaling
+            }
+            is ExponentialDecay -> if (interval <= 0f) spacing.toPx() else {
+                val scaling = 1 / exponent.toDouble().pow(interval.toDouble()).toFloat()
+                (spacing.toPx() * scaling).coerceAtLeast(1f)
+            }
+        }
+    }
 }
 
 data class GridLineStyle(
@@ -140,48 +162,8 @@ fun Grid(
     }
     when (coordinateSystem) {
         is GridCoordinateSystem.Cartesian -> CartesianGrid(
-            xSpacing = {
-                when (val scaleX = coordinateSystem.scaleX)  {
-                    is GridScale.Linear -> scaleX.spacing.toPx()
-                    is GridScale.Logarithmic -> if (it == 0) 1f else {
-                        val scaling = ln(scaleX.base.toDouble()).toFloat() * it
-                        scaleX.spacing.toPx() * scaling
-                    }
-                    is GridScale.LogarithmicDecay -> if (it == 0) 1f else {
-                        val scaling = 1 / (ln(scaleX.base.toDouble()).toFloat() * it)
-                        (scaleX.spacing.toPx() * scaling).coerceAtLeast(1f)
-                    }
-                    is GridScale.Exponential -> if (it == 0) scaleX.spacing.toPx() else {
-                        val scaling = scaleX.exponent.toDouble().pow(it.toDouble()).toFloat()
-                        scaleX.spacing.toPx() * scaling
-                    }
-                    is GridScale.ExponentialDecay -> if (it == 0) scaleX.spacing.toPx() else {
-                        val scaling = 1 / scaleX.exponent.toDouble().pow(it.toDouble()).toFloat()
-                        (scaleX.spacing.toPx() * scaling).coerceAtLeast(1f)
-                    }
-                }
-            },
-            ySpacing = {
-                when (val scaleY = coordinateSystem.scaleY)  {
-                    is GridScale.Linear -> scaleY.spacing.toPx()
-                    is GridScale.Logarithmic -> if (it == 0) 1f else {
-                        val scaling = ln(scaleY.base.toDouble()).toFloat() * it
-                        scaleY.spacing.toPx() * scaling
-                    }
-                    is GridScale.LogarithmicDecay -> if (it == 0) 1f else {
-                        val scaling = 1 / (ln(scaleY.base.toDouble()).toFloat() * it)
-                        (scaleY.spacing.toPx() * scaling).coerceAtLeast(1f)
-                    }
-                    is GridScale.Exponential -> if (it == 0) scaleY.spacing.toPx() else {
-                        val scaling = scaleY.exponent.toDouble().pow(it.toDouble()).toFloat()
-                        scaleY.spacing.toPx() * scaling
-                    }
-                    is GridScale.ExponentialDecay -> if (it == 0) scaleY.spacing.toPx() else {
-                        val scaling = 1 / scaleY.exponent.toDouble().pow(it.toDouble()).toFloat()
-                        (scaleY.spacing.toPx() * scaling).coerceAtLeast(1f)
-                    }
-                }
-            },
+            xSpacing = { coordinateSystem.scaleX.scale(it, this) },
+            ySpacing = {coordinateSystem.scaleY.scale(it, this) },
             lineStyle = lineStyle,
             modifier = modifier,
             offset = offset,
@@ -191,8 +173,8 @@ fun Grid(
             },
         )
         is GridCoordinateSystem.Polar -> PolarGrid(
-            radiusSpacing = coordinateSystem.radiusSpacing,
-            theta = coordinateSystem.theta,
+            radiusSpacing = { coordinateSystem.radiusScale.scale(it, this) },
+            theta = { coordinateSystem.theta },
             lineStyle = lineStyle,
             modifier = modifier,
             offset = offset,
@@ -275,8 +257,8 @@ fun CartesianGrid(
 
 @Composable
 fun PolarGrid(
-    radiusSpacing: Dp,
-    theta: Float, // angle step in radians
+    radiusSpacing: Density.(Int) -> Float,
+    theta: (Int) -> Float, // return angle step in radians
     lineStyle: GridLineStyle?,
     modifier: Modifier = Modifier,
     offset: Offset = Offset.Zero,
@@ -292,10 +274,10 @@ fun PolarGrid(
         val height = size.height
         val centerX = width / 2 + offset.x
         val centerY = height / 2 + offset.y
-        val radiusSpacingPx = radiusSpacing.toPx()
+        val radiusSpacingInitial = radiusSpacing(0)
         val radius = if (clipLinesToRadius) {
-            val maxRadiusFromX = (centerX / radiusSpacingPx).toInt() * radiusSpacingPx
-            val maxRadiusFromY = (centerY / radiusSpacingPx).toInt() * radiusSpacingPx
+            val maxRadiusFromX = (centerX / radiusSpacingInitial).toInt() * radiusSpacingInitial
+            val maxRadiusFromY = (centerY / radiusSpacingInitial).toInt() * radiusSpacingInitial
             minOf(maxRadiusFromX, maxRadiusFromY)
         } else {
             minOf(centerX, centerY)
@@ -307,7 +289,8 @@ fun PolarGrid(
         )
 
         lineStyle?.let {
-            var currentRadius = radiusSpacingPx
+            var currentRadius = radiusSpacingInitial
+            var radiusInterval = 0
             while (currentRadius - radius <= precision) {
                 drawCircle(
                     radius = currentRadius,
@@ -315,34 +298,46 @@ fun PolarGrid(
                     center = Offset(centerX, centerY),
                     style = lineStyle.stroke,
                 )
-                currentRadius += radiusSpacingPx
+                currentRadius += radiusSpacing(radiusInterval)
+                radiusInterval += 1
             }
 
             var currentLineAngle = 0f
+            var thetaInterval = 0
+            val lineLength = when {
+                !clipLinesToRadius -> maxOf(width, height)
+                currentRadius > radius -> currentRadius - radiusSpacing(radiusInterval - 1)
+                else -> currentRadius
+            }
             while (currentLineAngle < 2 * PI) {
-                val endX = centerX + radius * cos(currentLineAngle)
-                val endY = centerY + radius * sin(currentLineAngle)
+                val endX = centerX + lineLength * cos(currentLineAngle)
+                val endY = centerY + lineLength * sin(currentLineAngle)
                 drawLine(
                     color = lineStyle.color,
                     start = Offset(centerX, centerY),
                     end = Offset(endX, endY),
                     strokeWidth = lineStyle.stroke.width,
                 )
-                currentLineAngle += theta
+                currentLineAngle += theta(thetaInterval)
+                thetaInterval += 1
             }
         }
 
         drawVertex?.let { drawVertex ->
-            var currentRadius = radiusSpacingPx
+            var currentRadius = radiusSpacingInitial
+            var radiusInterval = 0
             while (currentRadius - radius <= precision) {
                 var currentLineAngle = 0f
+                var thetaInterval = 0
                 while (currentLineAngle < 2 * PI) {
                     val endX = centerX + currentRadius * cos(currentLineAngle)
                     val endY = centerY + currentRadius * sin(currentLineAngle)
                     drawVertex(endX, endY)
-                    currentLineAngle += theta
+                    currentLineAngle += theta(thetaInterval)
+                    thetaInterval += 1
                 }
-                currentRadius += radiusSpacingPx
+                currentRadius += radiusSpacing(radiusInterval)
+                radiusInterval += 1
             }
         }
     }
@@ -525,8 +520,8 @@ fun PolarGridPreview() {
     PlaygroundTheme {
         Surface {
             PolarGrid(
-                radiusSpacing = 30.dp,
-                theta = (PI / 3).toFloat(),
+                radiusSpacing = { 30.dp.toPx() },
+                theta = { (PI / 3).toFloat() },
                 lineStyle = GridLineStyle(
                     color = PlaygroundTheme.colorScheme.primary,
                     stroke = Stroke(width = 1f),
