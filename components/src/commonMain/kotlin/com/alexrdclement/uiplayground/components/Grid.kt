@@ -20,20 +20,23 @@ import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.PI
 import kotlin.math.cos
+import kotlin.math.ln
+import kotlin.math.pow
 import kotlin.math.sin
 
 sealed class GridCoordinateSystem {
     data class Cartesian(
-        val xSpacing: Dp,
-        val ySpacing: Dp,
+        val scaleX: GridScale,
+        val scaleY: GridScale,
         val rotationDegrees: Float = 0f,
     ) : GridCoordinateSystem() {
         constructor(
             spacing: Dp,
             rotationDegrees: Float = 0f,
         ) : this(
-            xSpacing = spacing,
-            ySpacing = spacing,
+            scaleX = GridScale.Linear(spacing = spacing),
+            scaleY = GridScale.Linear(spacing = spacing),
+            rotationDegrees = rotationDegrees,
         )
     }
 
@@ -42,6 +45,32 @@ sealed class GridCoordinateSystem {
         val theta: Float, // angle step in radians
         val rotationDegrees: Float = 0f,
     ) : GridCoordinateSystem()
+}
+
+sealed class GridScale {
+    data class Linear(
+        val spacing: Dp,
+    ) : GridScale()
+
+    data class Logarithmic(
+        val spacing: Dp,
+        val base: Float = 10f,
+    ) : GridScale()
+
+    data class LogarithmicDecay(
+        val spacing: Dp,
+        val base: Float = 10f,
+    ) : GridScale()
+
+    data class ExponentialDecay(
+        val spacing: Dp,
+        val exponent: Float = 10f,
+    ) : GridScale()
+
+    data class Exponential(
+        val spacing: Dp,
+        val exponent: Float = 10f,
+    ) : GridScale()
 }
 
 data class GridLineStyle(
@@ -111,8 +140,48 @@ fun Grid(
     }
     when (coordinateSystem) {
         is GridCoordinateSystem.Cartesian -> CartesianGrid(
-            xSpacing = coordinateSystem.xSpacing,
-            ySpacing = coordinateSystem.ySpacing,
+            xSpacing = {
+                when (val scaleX = coordinateSystem.scaleX)  {
+                    is GridScale.Linear -> scaleX.spacing.toPx()
+                    is GridScale.Logarithmic -> if (it == 0) 1f else {
+                        val scaling = ln(scaleX.base.toDouble()).toFloat() * it
+                        scaleX.spacing.toPx() * scaling
+                    }
+                    is GridScale.LogarithmicDecay -> if (it == 0) 1f else {
+                        val scaling = 1 / (ln(scaleX.base.toDouble()).toFloat() * it)
+                        (scaleX.spacing.toPx() * scaling).coerceAtLeast(1f)
+                    }
+                    is GridScale.Exponential -> if (it == 0) scaleX.spacing.toPx() else {
+                        val scaling = scaleX.exponent.toDouble().pow(it.toDouble()).toFloat()
+                        scaleX.spacing.toPx() * scaling
+                    }
+                    is GridScale.ExponentialDecay -> if (it == 0) scaleX.spacing.toPx() else {
+                        val scaling = 1 / scaleX.exponent.toDouble().pow(it.toDouble()).toFloat()
+                        (scaleX.spacing.toPx() * scaling).coerceAtLeast(1f)
+                    }
+                }
+            },
+            ySpacing = {
+                when (val scaleY = coordinateSystem.scaleY)  {
+                    is GridScale.Linear -> scaleY.spacing.toPx()
+                    is GridScale.Logarithmic -> if (it == 0) 1f else {
+                        val scaling = ln(scaleY.base.toDouble()).toFloat() * it
+                        scaleY.spacing.toPx() * scaling
+                    }
+                    is GridScale.LogarithmicDecay -> if (it == 0) 1f else {
+                        val scaling = 1 / (ln(scaleY.base.toDouble()).toFloat() * it)
+                        (scaleY.spacing.toPx() * scaling).coerceAtLeast(1f)
+                    }
+                    is GridScale.Exponential -> if (it == 0) scaleY.spacing.toPx() else {
+                        val scaling = scaleY.exponent.toDouble().pow(it.toDouble()).toFloat()
+                        scaleY.spacing.toPx() * scaling
+                    }
+                    is GridScale.ExponentialDecay -> if (it == 0) scaleY.spacing.toPx() else {
+                        val scaling = 1 / scaleY.exponent.toDouble().pow(it.toDouble()).toFloat()
+                        (scaleY.spacing.toPx() * scaling).coerceAtLeast(1f)
+                    }
+                }
+            },
             lineStyle = lineStyle,
             modifier = modifier,
             offset = offset,
@@ -137,8 +206,8 @@ fun Grid(
 
 @Composable
 fun CartesianGrid(
-    xSpacing: Dp,
-    ySpacing: Dp,
+    xSpacing: Density.(Int) -> Float,
+    ySpacing: Density.(Int) -> Float,
     lineStyle: GridLineStyle?,
     modifier: Modifier = Modifier,
     rotationDegrees: Float = 0f,
@@ -148,11 +217,9 @@ fun CartesianGrid(
     Canvas(
         modifier = modifier
     ) {
-        val xSpacingPx = xSpacing.toPx()
-        val ySpacingPx = ySpacing.toPx()
         val offset = Offset(
-            x = offset.x % xSpacingPx,
-            y = offset.y % ySpacingPx
+            x = offset.x % xSpacing(1),
+            y = offset.y % ySpacing(1),
         )
 
         drawContext.transform.rotate(
@@ -161,6 +228,7 @@ fun CartesianGrid(
         )
 
         lineStyle?.let {
+            var xInterval = 0
             var x = 0f
             while (x <= size.width) {
                 drawLine(
@@ -169,9 +237,11 @@ fun CartesianGrid(
                     end = Offset(x + offset.x, size.height),
                     strokeWidth = lineStyle.stroke.width,
                 )
-                x += xSpacingPx
+                x += xSpacing(xInterval)
+                xInterval += 1
             }
 
+            var yInterval = 0
             var y = 0f
             while (y <= size.height) {
                 drawLine(
@@ -180,19 +250,24 @@ fun CartesianGrid(
                     end = Offset(size.width, y + offset.y),
                     strokeWidth = lineStyle.stroke.width
                 )
-                y += ySpacingPx
+                y += ySpacing(yInterval)
+                yInterval += 1
             }
         }
 
         drawVertex?.let { drawVertex ->
             var x = 0f
+            var xInterval = 0
             while (x <= size.width) {
                 var y = 0f
+                var yInterval = 0
                 while (y <= size.height) {
                     drawVertex(x + offset.x, y + offset.y)
-                    y += ySpacingPx
+                    y += ySpacing(yInterval)
+                    yInterval += 1
                 }
-                x += xSpacingPx
+                x += xSpacing(xInterval)
+                xInterval += 1
             }
         }
     }
@@ -351,8 +426,8 @@ fun CartesianGridPreview() {
     PlaygroundTheme {
         Surface {
             CartesianGrid(
-                xSpacing = 20.dp,
-                ySpacing = 20.dp,
+                xSpacing = { 20.dp.toPx() },
+                ySpacing = { 20.dp.toPx() },
                 lineStyle = GridLineStyle(
                     color = PlaygroundTheme.colorScheme.primary,
                     stroke = Stroke(width = 1f),
@@ -364,6 +439,85 @@ fun CartesianGridPreview() {
     }
 }
 
+@Preview
+@Composable
+fun CartesianGridLogarithmicScalePreview() {
+    PlaygroundTheme {
+        Surface {
+            Grid(
+                coordinateSystem = GridCoordinateSystem.Cartesian(
+                    scaleX = GridScale.Logarithmic(spacing = 1.dp, base = 2f),
+                    scaleY = GridScale.Logarithmic(spacing = 1.dp, base = 2f),
+                ),
+                lineStyle = GridLineStyle(
+                    color = PlaygroundTheme.colorScheme.primary,
+                    stroke = Stroke(width = 1f),
+                ),
+                modifier = Modifier.size(200.dp),
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun CartesianGridLogarithmicDecayScalePreview() {
+    PlaygroundTheme {
+        Surface {
+            Grid(
+                coordinateSystem = GridCoordinateSystem.Cartesian(
+                    scaleX = GridScale.LogarithmicDecay(spacing = 50.dp, base = 2f),
+                    scaleY = GridScale.LogarithmicDecay(spacing = 50.dp, base = 2f),
+                ),
+                lineStyle = GridLineStyle(
+                    color = PlaygroundTheme.colorScheme.primary,
+                    stroke = Stroke(width = 1f),
+                ),
+                modifier = Modifier.size(200.dp),
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun CartesianGridExponentialScalePreview() {
+    PlaygroundTheme {
+        Surface {
+            Grid(
+                coordinateSystem = GridCoordinateSystem.Cartesian(
+                    scaleX = GridScale.Exponential(spacing = 1.dp, exponent = 2f),
+                    scaleY = GridScale.Exponential(spacing = 1.dp, exponent = 2f),
+                ),
+                lineStyle = GridLineStyle(
+                    color = PlaygroundTheme.colorScheme.primary,
+                    stroke = Stroke(width = 1f),
+                ),
+                modifier = Modifier.size(200.dp),
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun CartesianGridExponentialDecayScalePreview() {
+    PlaygroundTheme {
+        Surface {
+            Grid(
+                coordinateSystem = GridCoordinateSystem.Cartesian(
+                    scaleX = GridScale.ExponentialDecay(spacing = 100.dp, exponent = 2f),
+                    scaleY = GridScale.ExponentialDecay(spacing = 100.dp, exponent = 2f),
+                ),
+                lineStyle = GridLineStyle(
+                    color = PlaygroundTheme.colorScheme.primary,
+                    stroke = Stroke(width = 1f),
+                ),
+                modifier = Modifier.size(200.dp),
+            )
+        }
+    }
+}
 
 @Preview
 @Composable

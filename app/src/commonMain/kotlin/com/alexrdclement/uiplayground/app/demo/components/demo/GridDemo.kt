@@ -27,6 +27,7 @@ import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.components.Grid
 import com.alexrdclement.uiplayground.components.GridCoordinateSystem
 import com.alexrdclement.uiplayground.components.GridLineStyle
+import com.alexrdclement.uiplayground.components.GridScale
 import com.alexrdclement.uiplayground.components.GridVertex
 import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Surface
@@ -43,8 +44,17 @@ fun GridDemo(
 ) {
     val color = PlaygroundTheme.colorScheme.primary
 
-    var gridSpacingPx by remember { mutableStateOf(100f) }
-    val gridSpacing = with(LocalDensity.current) { gridSpacingPx.toDp() }
+    var gridSpacingXPx by remember { mutableStateOf(100f) }
+    val gridSpacingX = with(LocalDensity.current) { gridSpacingXPx.toDp() }
+    var gridSpacingYPx by remember { mutableStateOf(100f) }
+    val gridSpacingY = with(LocalDensity.current) { gridSpacingYPx.toDp() }
+
+    var gridScaleX: GridScale by remember { mutableStateOf(GridScale.Linear(gridSpacingX)) }
+    var gridScaleY: GridScale by remember { mutableStateOf(GridScale.Linear(gridSpacingY)) }
+    var gridScaleXBase: Float by remember { mutableStateOf(2f) }
+    var gridScaleYBase: Float by remember { mutableStateOf(2f) }
+    var gridScaleXExponent: Float by remember { mutableStateOf(2f) }
+    var gridScaleYExponent: Float by remember { mutableStateOf(2f) }
 
     var rotationDegrees by remember { mutableStateOf(0f) }
 
@@ -54,7 +64,11 @@ fun GridDemo(
         GridCoordinateSystem.Cartesian::class to "Cartesian",
         GridCoordinateSystem.Polar::class to "Polar",
     )
-    val initialCoordinateSystem = GridCoordinateSystem.Cartesian(spacing = gridSpacing)
+    val initialCoordinateSystem = GridCoordinateSystem.Cartesian(
+        scaleX = gridScaleX,
+        scaleY = gridScaleY,
+        rotationDegrees = rotationDegrees,
+    )
     var coordinateSystem: GridCoordinateSystem by remember { mutableStateOf(initialCoordinateSystem) }
     val coordinateSystemControl = Control.Dropdown(
         name = "Coordinate System",
@@ -68,11 +82,12 @@ fun GridDemo(
         onValueChange = { index ->
             coordinateSystem = when (coordinateSystems.keys.elementAt(index)) {
                 GridCoordinateSystem.Cartesian::class -> GridCoordinateSystem.Cartesian(
-                    spacing = gridSpacing,
+                    scaleX = gridScaleX,
+                    scaleY = gridScaleY,
                     rotationDegrees = rotationDegrees,
                 )
                 GridCoordinateSystem.Polar::class -> GridCoordinateSystem.Polar(
-                    radiusSpacing = gridSpacing,
+                    radiusSpacing = gridSpacingX,
                     theta = theta,
                     rotationDegrees = rotationDegrees,
                 )
@@ -81,23 +96,233 @@ fun GridDemo(
         }
     )
 
-    val gridSpacingControl = Control.Slider(
-        name = "Spacing",
-        value = gridSpacingPx,
+    val gridSpacingXControl = Control.Slider(
+        name = "Spacing X",
+        value = gridSpacingXPx,
         onValueChange = {
-            gridSpacingPx = it
+            gridSpacingXPx = it
+            gridScaleX = when (val gridScaleX = gridScaleX) {
+                is GridScale.Linear -> gridScaleX.copy(gridSpacingX)
+                is GridScale.Logarithmic -> gridScaleX.copy(spacing= gridSpacingX)
+                is GridScale.LogarithmicDecay -> gridScaleX.copy(spacing= gridSpacingX)
+                is GridScale.Exponential -> gridScaleX.copy(spacing= gridSpacingX)
+                is GridScale.ExponentialDecay -> gridScaleX.copy(spacing= gridSpacingX)
+            }
+            gridScaleY = when (val gridScaleY = gridScaleY) {
+                is GridScale.Linear -> gridScaleY.copy(spacing = gridSpacingX)
+                is GridScale.Logarithmic -> gridScaleY.copy(spacing = gridSpacingX)
+                is GridScale.LogarithmicDecay -> gridScaleY.copy(spacing = gridSpacingX)
+                is GridScale.Exponential -> gridScaleY.copy(spacing = gridSpacingX)
+                is GridScale.ExponentialDecay -> gridScaleY.copy(spacing = gridSpacingX)
+            }
             coordinateSystem = when (val coordinateSystem = coordinateSystem) {
                 is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
-                    xSpacing = gridSpacing,
-                    ySpacing = gridSpacing,
+                    scaleX = gridScaleX,
                 )
                 is GridCoordinateSystem.Polar -> coordinateSystem.copy(
-                    radiusSpacing = gridSpacing,
+                    radiusSpacing = gridSpacingX,
                 )
             }
         },
         valueRange = 0f..200f,
     )
+    val gridSpacingYControl = Control.Slider(
+        name = "Spacing Y",
+        value = gridSpacingYPx,
+        onValueChange = {
+            gridSpacingYPx = it
+            gridScaleY = when (val gridScaleY = gridScaleY) {
+                is GridScale.Linear -> gridScaleY.copy(gridSpacingY)
+                is GridScale.Logarithmic -> gridScaleY.copy(spacing= gridSpacingY)
+                is GridScale.LogarithmicDecay -> gridScaleY.copy(spacing= gridSpacingY)
+                is GridScale.Exponential -> gridScaleY.copy(spacing= gridSpacingY)
+                is GridScale.ExponentialDecay -> gridScaleY.copy(spacing= gridSpacingY)
+            }
+            gridScaleY = when (val gridScaleY = gridScaleY) {
+                is GridScale.Linear -> gridScaleY.copy(spacing = gridSpacingY)
+                is GridScale.Logarithmic -> gridScaleY.copy(spacing = gridSpacingY)
+                is GridScale.LogarithmicDecay -> gridScaleY.copy(spacing = gridSpacingY)
+                is GridScale.Exponential -> gridScaleY.copy(spacing = gridSpacingY)
+                is GridScale.ExponentialDecay -> gridScaleY.copy(spacing = gridSpacingY)
+            }
+            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
+                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
+                    scaleY = gridScaleY,
+                )
+                else -> coordinateSystem
+            }
+        },
+        valueRange = 0f..200f,
+    )
+
+    val gridScales = listOf(
+        GridScale.Linear::class to "Linear",
+        GridScale.Logarithmic::class to "Logarithmic",
+        GridScale.LogarithmicDecay::class to "Logarithmic Decay",
+        GridScale.Exponential::class to "Exponential",
+        GridScale.ExponentialDecay::class to "Exponential Decay",
+    )
+    val gridScaleXControl = Control.Dropdown(
+        name = "Grid Scale X",
+        values = gridScales.map { (kclass, name) ->
+            Control.Dropdown.DropdownItem(
+                name = name,
+                value = kclass,
+            )
+        }.toPersistentList(),
+        selectedIndex = gridScales.indexOfFirst { it.first == gridScaleX::class },
+        onValueChange = { index ->
+            gridScaleX = when (gridScales[index].first) {
+                GridScale.Linear::class -> GridScale.Linear(
+                    spacing = gridSpacingX,
+                )
+                GridScale.Logarithmic::class -> GridScale.Logarithmic(
+                    spacing = gridSpacingX,
+                    base = gridScaleXBase,
+                )
+                GridScale.LogarithmicDecay::class -> GridScale.LogarithmicDecay(
+                    spacing = gridSpacingX,
+                    base = gridScaleXBase,
+                )
+                GridScale.Exponential::class -> GridScale.Exponential(
+                    spacing = gridSpacingX,
+                    exponent = gridScaleXExponent,
+                )
+                GridScale.ExponentialDecay::class -> GridScale.ExponentialDecay(
+                    spacing = gridSpacingX,
+                    exponent = gridScaleXExponent,
+                )
+                else -> GridScale.Linear(gridSpacingX)
+            }
+            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
+                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
+                    scaleX = gridScaleX,
+                )
+                is GridCoordinateSystem.Polar -> coordinateSystem
+            }
+        }
+    )
+    val gridScaleYControl = Control.Dropdown(
+        name = "Grid Scale Y",
+        values = gridScales.map { (kclass, name) ->
+            Control.Dropdown.DropdownItem(
+                name = name,
+                value = kclass,
+            )
+        }.toPersistentList(),
+        selectedIndex = gridScales.indexOfFirst { it.first == gridScaleY::class },
+        onValueChange = { index ->
+            gridScaleY = when (gridScales[index].first) {
+                GridScale.Linear::class -> GridScale.Linear(
+                    spacing = gridSpacingY,
+                )
+                GridScale.Logarithmic::class -> GridScale.Logarithmic(
+                    spacing = gridSpacingY,
+                    base = gridScaleYBase,
+                )
+                GridScale.LogarithmicDecay::class -> GridScale.LogarithmicDecay(
+                    spacing = gridSpacingY,
+                    base = gridScaleYBase,
+                )
+                GridScale.Exponential::class -> GridScale.Exponential(
+                    spacing = gridSpacingY,
+                    exponent = gridScaleYExponent,
+                )
+                GridScale.ExponentialDecay::class -> GridScale.ExponentialDecay(
+                    spacing = gridSpacingY,
+                    exponent = gridScaleYExponent,
+                )
+                else -> GridScale.Linear(gridSpacingY)
+            }
+            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
+                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
+                    scaleY = gridScaleY,
+                )
+                is GridCoordinateSystem.Polar -> coordinateSystem
+            }
+        }
+    )
+    val scaleBaseRange = 1f..10f
+    val gridScaleXBaseControl = Control.Slider(
+        name = "Grid Scale X Log Base",
+        value = logToLinearScale(gridScaleXBase, scaleBaseRange),
+        onValueChange = {
+            gridScaleXBase = linearToLogScale(it, scaleBaseRange)
+            gridScaleX = when (val gridScaleX = gridScaleX) {
+                is GridScale.Logarithmic -> gridScaleX.copy(base = gridScaleXBase)
+                is GridScale.LogarithmicDecay -> gridScaleX.copy(base = gridScaleXBase)
+                else -> gridScaleX
+            }
+            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
+                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
+                    scaleX = gridScaleX,
+                )
+                is GridCoordinateSystem.Polar -> coordinateSystem
+            }
+        },
+        valueRange = scaleBaseRange,
+    )
+    val gridScaleYBaseControl = Control.Slider(
+        name = "Grid Scale Y Log Base",
+        value = logToLinearScale(gridScaleYBase, scaleBaseRange),
+        onValueChange = {
+            gridScaleYBase = linearToLogScale(it, scaleBaseRange)
+            gridScaleY = when (val gridScaleY = gridScaleY) {
+                is GridScale.Logarithmic -> gridScaleY.copy(base = gridScaleYBase)
+                is GridScale.LogarithmicDecay -> gridScaleY.copy(base = gridScaleYBase)
+                else -> gridScaleY
+            }
+            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
+                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
+                    scaleX = gridScaleX,
+                    scaleY = gridScaleY,
+                )
+                is GridCoordinateSystem.Polar -> coordinateSystem
+            }
+        },
+        valueRange = scaleBaseRange,
+    )
+
+    val scaleExponentRange = 1.001f..10f
+    val gridScaleXExponentControl = Control.Slider(
+        name = "Grid Scale X Exponent",
+        value = logToLinearScale(gridScaleXExponent, scaleExponentRange),
+        onValueChange = {
+            gridScaleXExponent = linearToLogScale(it, scaleExponentRange)
+            gridScaleX = when (val gridScaleX = gridScaleX) {
+                is GridScale.Exponential -> gridScaleX.copy(exponent = gridScaleXExponent)
+                is GridScale.ExponentialDecay -> gridScaleX.copy(exponent = gridScaleXExponent)
+                else -> gridScaleX
+            }
+            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
+                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
+                    scaleX = gridScaleX,
+                )
+                is GridCoordinateSystem.Polar -> coordinateSystem
+            }
+        },
+        valueRange = scaleExponentRange,
+    )
+    val gridScaleYExponentControl = Control.Slider(
+        name = "Grid Scale Y Exponent",
+        value = logToLinearScale(gridScaleYExponent, scaleExponentRange),
+        onValueChange = {
+            gridScaleYExponent = linearToLogScale(it, scaleExponentRange)
+            gridScaleY = when (val gridScaleY = gridScaleY) {
+                is GridScale.Exponential -> gridScaleY.copy(exponent = gridScaleYExponent)
+                is GridScale.ExponentialDecay -> gridScaleY.copy(exponent = gridScaleYExponent)
+                else -> gridScaleY
+            }
+            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
+                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
+                    scaleY = gridScaleY,
+                )
+                is GridCoordinateSystem.Polar -> coordinateSystem
+            }
+        },
+        valueRange = scaleExponentRange,
+    )
+
     val thetaRange = (0.01f..(PI * 2f).toFloat())
     val thetaControl = Control.Slider(
         name = "Theta",
@@ -404,19 +629,26 @@ fun GridDemo(
         Controls(
             controls = persistentListOf(
                 coordinateSystemControl,
-                showLinesControl,
-                gridSpacingControl,
+                gridScaleXControl,
+                gridSpacingXControl,
+                gridScaleXBaseControl,
+                gridScaleXExponentControl,
+                offsetXControl,
+                gridScaleYControl,
+                gridSpacingYControl,
+                gridScaleYBaseControl,
+                gridScaleYExponentControl,
+                offsetYControl,
                 thetaControl,
-                rotationDegreesControl,
-                strokeWidthControl,
+                showLinesControl,
                 vertexControl,
                 vertexDrawStyleControl,
                 vertexSizeControl,
                 vertexWidthControl,
                 vertexHeightControl,
                 vertexRotationControl,
-                offsetXControl,
-                offsetYControl,
+                strokeWidthControl,
+                rotationDegreesControl,
                 clipControl,
             ),
             modifier = Modifier
