@@ -46,7 +46,7 @@ fun GridDemo(
     var gridSpacingPx by remember { mutableStateOf(100f) }
     val gridSpacing = with(LocalDensity.current) { gridSpacingPx.toDp() }
 
-    var theta by remember { mutableStateOf(1f) }
+    var theta by remember { mutableStateOf((PI / 3f).toFloat()) }
 
     val coordinateSystems = mapOf(
         GridCoordinateSystem.Cartesian::class to "Cartesian",
@@ -94,11 +94,12 @@ fun GridDemo(
         },
         valueRange = 0f..200f,
     )
+    val thetaRange = (0.01f..(PI * 2f).toFloat())
     val thetaControl = Control.Slider(
         name = "Theta",
-        value = theta,
+        value = logToLinearScale(theta, thetaRange),
         onValueChange = {
-            theta = it
+            theta = linearToLogScale(it, thetaRange)
             coordinateSystem = when (val coordinateSystem = coordinateSystem) {
                 is GridCoordinateSystem.Cartesian -> coordinateSystem
                 is GridCoordinateSystem.Polar -> coordinateSystem.copy(
@@ -106,7 +107,7 @@ fun GridDemo(
                 )
             }
         },
-        valueRange = 0f..(PI * 2f).toFloat(),
+        valueRange = thetaRange,
     )
 
     var strokeWidthPx by remember { mutableStateOf(1f) }
