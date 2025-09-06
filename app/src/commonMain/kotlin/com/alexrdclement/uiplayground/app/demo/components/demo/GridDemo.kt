@@ -367,7 +367,7 @@ fun GridDemo(
         name = "Offset X",
         value = offsetXPx,
         onValueChange = { offsetXPx = it },
-        valueRange = 0f..200f,
+        valueRange = -200f..200f,
     )
 
     var offsetYPx by remember { mutableStateOf(0f) }
@@ -375,7 +375,7 @@ fun GridDemo(
         name = "Offset Y",
         value = offsetYPx,
         onValueChange = { offsetYPx = it },
-        valueRange = 0f..200f,
+        valueRange = -200f..200f,
     )
 
     var clipToBounds by remember { mutableStateOf(true) }
