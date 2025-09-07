@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.shaders.preview.DemoGrid
 import com.alexrdclement.uiplayground.testing.PaparazziTestRule
@@ -29,14 +30,18 @@ class WarpTest(
     @Test
     fun gridWhite() {
         paparazzi.snapshot {
+            val (width, height) = 400.dp to 800.dp
+            val (offsetX, offsetY) = with(LocalDensity.current) {
+                (width / 2f).toPx() to (height / 2f).toPx()
+            }
             DemoGrid(
                 color = Color.White,
                 background = Color.Black,
                 modifier = Modifier
-                    .size(400.dp, 800.dp)
+                    .size(width, height)
                     .warp(
-                        offset = { Offset(200f, 400f) },
-                        radius = { 200.dp },
+                        offset = { Offset(offsetX, offsetY) },
+                        radius = { width / 2f },
                         amount = { amount },
                     )
             )
@@ -46,14 +51,18 @@ class WarpTest(
     @Test
     fun gridBlack() {
         paparazzi.snapshot {
+            val (width, height) = 400.dp to 800.dp
+            val (offsetX, offsetY) = with(LocalDensity.current) {
+                (width / 2f).toPx() to (height / 2f).toPx()
+            }
             DemoGrid(
                 color = Color.Black,
                 background = Color.White,
                 modifier = Modifier
-                    .size(400.dp, 800.dp)
+                    .size(width, height)
                     .warp(
-                        offset = { Offset(200f, 400f) },
-                        radius = { 200.dp },
+                        offset = { Offset(offsetX, offsetY) },
+                        radius = { width / 2f },
                         amount = { amount },
                     )
             )

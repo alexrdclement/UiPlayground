@@ -2,6 +2,7 @@ package com.alexrdclement.uiplayground.shaders
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.RenderEffect
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 
 private const val UniformShaderName = "composable"
@@ -43,9 +44,18 @@ class WarpShaderImpl(
     configure: WarpShader.() -> Unit
 ): WarpShader {
     private val control = createShaderControl(ShaderSource, UniformShaderName, configure = { configure() })
+    private var density: Density = Density(1f)
 
     override fun createRenderEffect(): RenderEffect? {
         return control.createRenderEffect()
+    }
+
+    override fun onRemeasured(width: Int, height: Int) {
+        control.setFloatUniform(UniformSize, width.toFloat(), height.toFloat())
+    }
+
+    override fun onDensityChanged(density: Density) {
+        this.density = density
     }
 
     override fun setOffset(offset: Offset) {
@@ -53,7 +63,8 @@ class WarpShaderImpl(
     }
 
     override fun setRadius(radius: Dp) {
-        control.setFloatUniform(UniformRadius, radius.value)
+        val radiusPx = with(density) { radius.toPx() }
+        control.setFloatUniform(UniformRadius, radiusPx)
     }
 
     override fun setAmount(amount: Float) {
