@@ -75,19 +75,19 @@ sealed class GridScale {
     fun scale(interval: Int, density: Density): Float = with(density) {
         return when (this@GridScale) {
             is Linear -> spacing.toPx()
-            is Logarithmic -> if (interval <= 0f) 1f else {
+            is Logarithmic -> if (interval == 0) 1f else {
                 val scaling = ln(base.toDouble()).toFloat() * interval
                 spacing.toPx() * scaling
             }
-            is LogarithmicDecay -> if (interval <= 0f) 1f else {
+            is LogarithmicDecay -> if (interval == 0) 1f else {
                 val scaling = 1 / (ln(base.toDouble()).toFloat() * interval)
                 (spacing.toPx() * scaling).coerceAtLeast(1f)
             }
-            is Exponential -> if (interval <= 0f) spacing.toPx() else {
+            is Exponential -> if (interval == 0) spacing.toPx() else {
                 val scaling = exponent.toDouble().pow(interval.toDouble()).toFloat()
                 spacing.toPx() * scaling
             }
-            is ExponentialDecay -> if (interval <= 0f) spacing.toPx() else {
+            is ExponentialDecay -> if (interval == 0) spacing.toPx() else {
                 val scaling = 1 / exponent.toDouble().pow(interval.toDouble()).toFloat()
                 (spacing.toPx() * scaling).coerceAtLeast(1f)
             }
@@ -199,56 +199,121 @@ fun CartesianGrid(
     Canvas(
         modifier = modifier
     ) {
-        val offset = Offset(
-            x = offset.x % xSpacing(1),
-            y = offset.y % ySpacing(1),
-        )
-
         drawContext.transform.rotate(
             degrees = rotationDegrees,
             pivot = Offset(size.width / 2f + offset.x, size.height / 2f + offset.y),
         )
 
         lineStyle?.let {
+            var x = offset.x
             var xInterval = 0
-            var x = 0f
+
+            // Positive X direction
             while (x <= size.width) {
                 drawLine(
                     color = lineStyle.color,
-                    start = Offset(x + offset.x, 0f),
-                    end = Offset(x + offset.x, size.height),
+                    start = Offset(x, 0f),
+                    end = Offset(x, size.height),
                     strokeWidth = lineStyle.stroke.width,
                 )
                 x += xSpacing(xInterval)
                 xInterval += 1
             }
 
+            // Negative X direction
+            x = offset.x
+            xInterval = 0
+            while (x + offset.x >= 0f) {
+                drawLine(
+                    color = lineStyle.color,
+                    start = Offset(x, 0f),
+                    end = Offset(x, size.height),
+                    strokeWidth = lineStyle.stroke.width,
+                )
+                x -= xSpacing(xInterval)
+                xInterval += 1
+            }
+
+            var y = offset.y
             var yInterval = 0
-            var y = 0f
+
+            // Positive Y
             while (y <= size.height) {
                 drawLine(
                     color = lineStyle.color,
-                    start = Offset(0f, y + offset.y),
-                    end = Offset(size.width, y + offset.y),
+                    start = Offset(0f, y),
+                    end = Offset(size.width, y),
                     strokeWidth = lineStyle.stroke.width
                 )
                 y += ySpacing(yInterval)
                 yInterval += 1
             }
+
+            // Negative Y
+            y = offset.y
+            yInterval = 0
+            while (y + offset.y >= 0f) {
+                drawLine(
+                    color = lineStyle.color,
+                    start = Offset(0f, y),
+                    end = Offset(size.width, y),
+                    strokeWidth = lineStyle.stroke.width
+                )
+                y -= ySpacing(yInterval)
+                yInterval += 1
+            }
         }
 
         drawVertex?.let { drawVertex ->
-            var x = 0f
+            var x = offset.x
             var xInterval = 0
+            // Positive X
             while (x <= size.width) {
-                var y = 0f
+                var y = offset.y
                 var yInterval = 0
+                // Positive Y
                 while (y <= size.height) {
-                    drawVertex(x + offset.x, y + offset.y)
+                    drawVertex(x, y)
                     y += ySpacing(yInterval)
                     yInterval += 1
                 }
+
+                // Negative Y
+                y = offset.y
+                yInterval = 0
+                while (y + offset.y >= 0f) {
+                    drawVertex(x, y)
+                    y -= ySpacing(yInterval)
+                    yInterval += 1
+                }
+
                 x += xSpacing(xInterval)
+                xInterval += 1
+            }
+
+            // Negative X
+            x = offset.x
+            xInterval = 0
+            while (x + offset.x >= 0f) {
+                var y = offset.y
+                var yInterval = 0
+                // Positive Y
+                while (y <= size.height) {
+                    drawVertex(x, y)
+                    y += ySpacing(yInterval)
+                    yInterval += 1
+                }
+
+                // Negative Y
+                y = offset.y
+                yInterval = 0
+                while (y + offset.y >= 0f) {
+                    drawVertex(x, y)
+                    y -= ySpacing(yInterval)
+                    yInterval += 1
+                }
+
+                x -= xSpacing(xInterval)
                 xInterval += 1
             }
         }
