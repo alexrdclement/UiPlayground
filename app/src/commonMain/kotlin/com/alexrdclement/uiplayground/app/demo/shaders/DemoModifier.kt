@@ -2,8 +2,8 @@ package com.alexrdclement.uiplayground.app.demo.shaders
 
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.unit.Dp
-import com.alexrdclement.uiplayground.shaders.NoiseColorMode
 import com.alexrdclement.uiplayground.shaders.ColorSplitMode
+import com.alexrdclement.uiplayground.shaders.NoiseColorMode
 
 sealed class DemoModifier(open val name: String) {
     data object None : DemoModifier(name = "None")
@@ -31,4 +31,9 @@ sealed class DemoModifier(open val name: String) {
     data class Pixelate(
         val subdivisions: Int,
     ) : DemoModifier(name = "Pixelate")
+
+    data class Warp(
+        val radius: Dp,
+        val amount: Float,
+    ) : DemoModifier(name = "Warp")
 }

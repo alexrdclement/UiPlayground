@@ -10,6 +10,7 @@ import androidx.compose.ui.node.LayoutAwareModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.node.currentValueOf
 import androidx.compose.ui.node.invalidateDraw
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.compose.ui.unit.IntSize
 import com.alexrdclement.uiplayground.core.trace.trace
@@ -43,6 +44,10 @@ open class ShaderNode<T: Shader>(
 
     override fun onRemeasured(size: IntSize) {
         shader.onRemeasured(size.width, size.height)
+    }
+
+    override fun onDensityChange() {
+        shader.onDensityChanged(currentValueOf(LocalDensity))
     }
 
     override fun ContentDrawScope.draw() {
