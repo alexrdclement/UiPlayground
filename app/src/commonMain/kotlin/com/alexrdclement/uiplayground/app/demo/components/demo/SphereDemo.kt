@@ -33,17 +33,21 @@ import kotlin.math.roundToInt
 fun SphereDemo(
     modifier: Modifier = Modifier,
 ) {
+    val strokeColor = PlaygroundTheme.colorScheme.primary
+    val outlineStrokeColor = strokeColor
     val initialStyle = SphereStyle.Grid(
-        numLatitudeLines = 16,
-        numLongitudeLines = 8,
+        numLatitudeLines = 12,
+        numLongitudeLines = 12,
         strokeWidth = 2.dp,
-        strokeColor = PlaygroundTheme.colorScheme.primary,
+        strokeColor = strokeColor,
+        outlineStrokeColor = outlineStrokeColor,
+        outlineStrokeWidth = 2.dp,
         faceColor = null,
     )
     var style: SphereStyle by remember { mutableStateOf(initialStyle) }
 
     var fill by remember { mutableStateOf(false) }
-    val faceColor = PlaygroundTheme.colorScheme.primary.copy(alpha = 0.3f)
+    val faceColor = strokeColor.copy(alpha = 0.3f)
     val fillControl = Control.Toggle(
         name = "Fill",
         value = fill,
@@ -52,6 +56,20 @@ fun SphereDemo(
             style = when (val style = style) {
                 is SphereStyle.Grid -> style.copy(
                     faceColor = if (fill) faceColor else null,
+                )
+            }
+        },
+    )
+
+    var outline by remember { mutableStateOf(true) }
+    val outlineControl = Control.Toggle(
+        name = "Outline",
+        value = outline,
+        onValueChange = {
+            outline = it
+            style = when (val style = style) {
+                is SphereStyle.Grid -> style.copy(
+                    outlineStrokeColor = outlineStrokeColor.takeIf { outline },
                 )
             }
         },
@@ -82,7 +100,7 @@ fun SphereDemo(
     val numLatitudeLinesControl = Control.Slider(
         name = "Latitude lines",
         value = numLatitudeLines.toFloat(),
-        valueRange = 2f..100f,
+        valueRange = 1f..100f,
         onValueChange = {
             numLatitudeLines = it.roundToInt()
             style = when (val style = style) {
@@ -95,7 +113,7 @@ fun SphereDemo(
     val numLongitudeLinesControl = Control.Slider(
         name = "Longitude lines",
         value = numLongitudeLines.toFloat(),
-        valueRange = 2f..100f,
+        valueRange = 1f..100f,
         onValueChange = {
             numLongitudeLines = it.roundToInt()
             style = when (val style = style) {
@@ -113,6 +131,19 @@ fun SphereDemo(
             strokeWidth = it.dp
             style = when (val style = style) {
                 is SphereStyle.Grid -> style.copy(strokeWidth = strokeWidth)
+            }
+        },
+    )
+
+    var outlineStrokeWidth by remember { mutableStateOf(2.dp) }
+    val outlineStrokeWidthControl = Control.Slider(
+        name = "Outline stroke width",
+        value = outlineStrokeWidth.value,
+        valueRange = 1f..100f,
+        onValueChange = {
+            outlineStrokeWidth = it.dp
+            style = when (val style = style) {
+                is SphereStyle.Grid -> style.copy(outlineStrokeWidth = outlineStrokeWidth)
             }
         },
     )
@@ -159,6 +190,7 @@ fun SphereDemo(
         Controls(
             controls = persistentListOf(
                 fillControl,
+                outlineControl,
                 xRotationControl,
                 yRotationControl,
                 zRotationControl,
@@ -166,6 +198,7 @@ fun SphereDemo(
                 numLongitudeLinesControl,
                 precisionDegreeControl,
                 strokeWidthControl,
+                outlineStrokeWidthControl,
             ),
             modifier = Modifier
                 .fillMaxWidth()

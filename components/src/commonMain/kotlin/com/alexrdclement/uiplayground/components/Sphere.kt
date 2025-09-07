@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.components.util.Point3D
 import com.alexrdclement.uiplayground.components.util.ViewingAngle
 import com.alexrdclement.uiplayground.components.util.rotatePoint3D
+import com.alexrdclement.uiplayground.components.util.toRadians
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -27,6 +27,8 @@ sealed class SphereStyle {
         val numLongitudeLines: Int,
         val strokeColor: Color,
         val strokeWidth: Dp = Dp.Hairline,
+        val outlineStrokeColor: Color? = strokeColor,
+        val outlineStrokeWidth: Dp = strokeWidth,
         val faceColor: Color? = null,
     ) : SphereStyle()
 }
@@ -48,6 +50,8 @@ fun Sphere(
                 precisionDegree = precisionDegree,
                 strokeColor = style.strokeColor,
                 strokeWidth = style.strokeWidth,
+                outlineStrokeColor = style.outlineStrokeColor,
+                outlineStrokeWidth = style.outlineStrokeWidth,
                 faceColor = style.faceColor,
             )
         }
@@ -63,10 +67,13 @@ fun GridSphere(
     precisionDegree: Int = 1,
     strokeColor: Color = PlaygroundTheme.colorScheme.primary,
     strokeWidth: Dp = Dp.Hairline,
+    outlineStrokeColor: Color? = strokeColor,
+    outlineStrokeWidth: Dp = strokeWidth,
     faceColor: Color? = PlaygroundTheme.colorScheme.primary.copy(alpha = 0.1f),
 ) {
-    val latSteps = (360 / numLatitudeLines).coerceAtLeast(2)
-    val lonSteps = (180 / numLongitudeLines).coerceAtLeast(2)
+    val latStepOffset = 2 // Don't count the poles
+    val latStep = if (numLatitudeLines <= 1) 180f else 180f / (numLatitudeLines - 1 + latStepOffset)
+    val lonStep = 360f / numLongitudeLines
 
     val rotationCache = remember(viewingAngle) {
         mutableMapOf<Pair<Int, Int>, Point3D>()
@@ -114,14 +121,17 @@ fun GridSphere(
             )
         }
 
-        drawCircle(
-            color = strokeColor,
-            center = center,
-            radius = radius,
-            style = drawStyle,
-        )
+        outlineStrokeColor?.let {
+            drawCircle(
+                color = outlineStrokeColor,
+                center = center,
+                radius = radius,
+                style = Stroke(width = outlineStrokeWidth.toPx()),
+            )
+        }
 
-        for (lon in 0..360 step lonSteps) {
+        for (lonIndex in 0 until numLongitudeLines) {
+            val lon = (lonIndex * lonStep).toInt()
             val path = Path()
             var pathStarted = false
 
@@ -150,7 +160,8 @@ fun GridSphere(
             )
         }
 
-        for (lat in -90..90 step latSteps) {
+        for (latIndex in 0 until numLatitudeLines + latStepOffset) {
+            val lat = (-90f + latIndex * latStep).toInt()
             val path = Path()
             var pathStarted = false
 
@@ -179,14 +190,6 @@ fun GridSphere(
             )
         }
     }
-}
-
-fun Int.toRadians(): Double {
-    return this * (PI / 180.0)
-}
-
-fun Float.toRadians(): Double {
-    return this * (PI / 180.0)
 }
 
 @Preview
