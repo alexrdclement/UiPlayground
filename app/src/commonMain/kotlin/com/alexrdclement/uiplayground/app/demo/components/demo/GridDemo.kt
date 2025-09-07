@@ -445,7 +445,7 @@ fun GridDemo(
     )
 
     val rotationDegreesControl = Control.Slider(
-        name = "Rotation",
+        name = "Grid Rotation",
         value = rotationDegrees,
         onValueChange = {
             rotationDegrees = it
@@ -593,7 +593,7 @@ fun GridDemo(
     )
 
     val strokeWidthControl = Control.Slider(
-        name = "Stroke Width",
+        name = "Line Stroke Width",
         value = strokeWidthPx,
         onValueChange = {
             strokeWidthPx = it
@@ -738,25 +738,25 @@ fun GridDemo(
                 gridSpacingXControl,
                 gridScaleXBaseControl,
                 gridScaleXExponentControl,
-                offsetXControl,
                 gridScaleYControl,
                 gridSpacingYControl,
                 gridScaleYBaseControl,
                 gridScaleYExponentControl,
-                offsetYControl,
                 radiusScaleControl,
                 radiusSpacingControl,
                 radiusScaleBaseControl,
                 radiusScaleExponentControl,
                 thetaControl,
                 showLinesControl,
+                strokeWidthControl,
                 vertexControl,
                 vertexDrawStyleControl,
                 vertexSizeControl,
                 vertexWidthControl,
                 vertexHeightControl,
                 vertexRotationControl,
-                strokeWidthControl,
+                offsetXControl,
+                offsetYControl,
                 rotationDegreesControl,
                 clipControl,
             ),
