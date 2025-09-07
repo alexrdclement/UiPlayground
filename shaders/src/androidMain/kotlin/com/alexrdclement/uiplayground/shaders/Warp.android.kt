@@ -42,12 +42,12 @@ half4 main(float2 fragCoord) {
     if (dist < $UniformRadius) {
         float normalizedDist = dist / $UniformRadius;
 
-        // The farther the pixel is from the center, the stronger the effect
+        // The farther from the center, the stronger the effect
         float falloff = normalizedDist * normalizedDist;
 
         fragCoord = fragCoord - pos * $UniformAmount * falloff;
     }
-    return $UniformShaderName.eval(fragCoord);;
+    return $UniformShaderName.eval(fragCoord);
 }
 """
 

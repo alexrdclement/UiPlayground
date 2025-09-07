@@ -30,7 +30,7 @@ half4 main(float2 fragCoord) {
 
         fragCoord = fragCoord - pos * $UniformAmount * falloff;
     }
-    return $UniformShaderName.eval(fragCoord);;
+    return $UniformShaderName.eval(fragCoord);
 }
 """
 
