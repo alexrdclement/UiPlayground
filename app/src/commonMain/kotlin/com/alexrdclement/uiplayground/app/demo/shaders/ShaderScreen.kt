@@ -3,11 +3,8 @@ package com.alexrdclement.uiplayground.app.demo.shaders
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -27,20 +24,17 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
+import com.alexrdclement.uiplayground.app.demo.DemoWithControls
 import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.Controls
-import com.alexrdclement.uiplayground.app.demo.control.SubjectModifierBar
 import com.alexrdclement.uiplayground.app.demo.subject.DemoCircle
 import com.alexrdclement.uiplayground.app.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.app.demo.subject.DemoText
 import com.alexrdclement.uiplayground.app.demo.subject.DemoTextField
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.Grid
-import com.alexrdclement.uiplayground.components.CartesianGrid
 import com.alexrdclement.uiplayground.components.GridCoordinateSystem
 import com.alexrdclement.uiplayground.components.GridLineStyle
 import com.alexrdclement.uiplayground.components.GridVertex
-import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Scaffold
 import com.alexrdclement.uiplayground.shaders.ColorSplitMode
 import com.alexrdclement.uiplayground.shaders.NoiseColorMode
@@ -89,12 +83,38 @@ fun ShaderScreen(
         derivedStateOf { demoModifiers[demoModifierIndex] }
     }
 
-    val controls: ImmutableList<Control> by remember(demoModifier) {
+    val subjectModifierControl = Control.ControlRow(
+        controls = listOf(
+            Control.Dropdown(
+                name = "Subject",
+                values = DemoSubject.entries.map {
+                    Control.Dropdown.DropdownItem(name = it.name, value = it)
+                }.toPersistentList(),
+                selectedIndex = DemoSubject.entries.indexOf(demoSubject),
+                onValueChange = { demoSubject = DemoSubject.entries[it] },
+                includeLabel = false,
+            ),
+            Control.Dropdown(
+                name = "Modifier",
+                values = demoModifiers.map {
+                    Control.Dropdown.DropdownItem(name = it.name, value = it)
+                }.toPersistentList(),
+                selectedIndex = demoModifiers.indexOf(demoModifier),
+                onValueChange = { demoModifierIndex = it },
+                includeLabel = false,
+            )
+        ).toPersistentList()
+    )
+
+    val controls: ImmutableList<Control> by remember(demoModifier, subjectModifierControl) {
         derivedStateOf {
-            makeControls(
-                demoModifier = demoModifier,
-                demoModifierIndex = demoModifierIndex,
-                demoModifiers = demoModifiers,
+            persistentListOf(
+                *makeModifierControls(
+                    demoModifier = demoModifier,
+                    demoModifierIndex = demoModifierIndex,
+                    demoModifiers = demoModifiers,
+                ).toTypedArray(),
+                subjectModifierControl,
             )
         }
     }
@@ -106,14 +126,16 @@ fun ShaderScreen(
                 onConfigureClick = onConfigureClick,
             )
         }
-    ) {
-        Column(
+    ) { innerPadding ->
+        DemoWithControls(
+            controls = controls.toPersistentList(),
             modifier = Modifier
                 .fillMaxSize()
-                .safeDrawingPadding()
+                .padding(innerPadding)
         ) {
             Box(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .fillMaxSize()
             ) {
                 var pointerOffset: Offset by remember { mutableStateOf(Offset.Zero) }
                 val modifier = when (val innerModifier = demoModifier) {
@@ -206,34 +228,11 @@ fun ShaderScreen(
                     DemoSubject.TextField -> DemoTextField(modifier = modifier)
                 }
             }
-
-            HorizontalDivider(modifier = Modifier.fillMaxWidth())
-            Column {
-                if (controls.isNotEmpty()) {
-                    Controls(
-                        controls = controls,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(PlaygroundTheme.spacing.medium)
-                    )
-                }
-                SubjectModifierBar(
-                    demoSubject = demoSubject,
-                    demoModifier = demoModifier,
-                    demoModifiers = demoModifiers,
-                    onSubjectSelected = {
-                        demoSubject = it
-                    },
-                    onModifierSelected = {
-                        demoModifierIndex = it
-                    }
-                )
-            }
         }
     }
 }
 
-private fun makeControls(
+private fun makeModifierControls(
     demoModifier: DemoModifier,
     demoModifierIndex: Int,
     demoModifiers: SnapshotStateList<DemoModifier>,

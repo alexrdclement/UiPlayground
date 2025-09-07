@@ -2,12 +2,12 @@ package com.alexrdclement.uiplayground.app.demo.components.demo
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -20,14 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.demo.DemoWithControls
 import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.components.CurveStitch
-import com.alexrdclement.uiplayground.components.CurveStitchStarShape
 import com.alexrdclement.uiplayground.components.CurveStitchShape
 import com.alexrdclement.uiplayground.components.CurveStitchStar
-import com.alexrdclement.uiplayground.components.HorizontalDivider
+import com.alexrdclement.uiplayground.components.CurveStitchStarShape
 import com.alexrdclement.uiplayground.components.Surface
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
@@ -111,23 +109,37 @@ fun CurveStitchDemo(
         valueRange = 1f..100f,
     )
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxSize()
+    DemoWithControls(
+        controls = persistentListOf(
+            numLinesControl,
+            numPointsControl,
+            innerRadiusControl,
+            starShapeInsidePointsControl,
+            starShapeOutsidePointsControl,
+            rotationControl,
+            strokeWidthControl,
+        ),
+        modifier = modifier.fillMaxSize(),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
+            verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.large),
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .weight(1f)
-                .padding(PlaygroundTheme.spacing.medium)
         ) {
             val modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
+                .then(
+                    if (this@DemoWithControls.maxHeight < this@DemoWithControls.maxWidth) {
+                        val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues()
+                        val bottomPadding = navigationBarsPadding.calculateBottomPadding()
+                        Modifier
+                            .size(this@DemoWithControls.maxHeight - bottomPadding)
+                            .aspectRatio(1f)
+                    } else {
+                        Modifier.size(this@DemoWithControls.maxWidth)
+                    }
+                )
                 .graphicsLayer { this.rotationZ = rotation }
             CurveStitch(
                 start = Offset(0f, 0f),
@@ -163,24 +175,6 @@ fun CurveStitchDemo(
                 modifier = modifier,
             )
         }
-        HorizontalDivider(modifier = Modifier.fillMaxWidth())
-        Controls(
-            controls = persistentListOf(
-                numLinesControl,
-                numPointsControl,
-                innerRadiusControl,
-                starShapeInsidePointsControl,
-                starShapeOutsidePointsControl,
-                rotationControl,
-                strokeWidthControl,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .verticalScroll(rememberScrollState())
-                .padding(PlaygroundTheme.spacing.medium)
-                .navigationBarsPadding(),
-        )
     }
 }
 

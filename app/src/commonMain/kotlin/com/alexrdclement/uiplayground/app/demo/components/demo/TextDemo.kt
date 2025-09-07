@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.demo.DemoWithControls
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.components.HorizontalDivider
@@ -65,7 +66,9 @@ private enum class LineHeightMode {
 }
 
 @Composable
-fun TextDemo() {
+fun TextDemo(
+    modifier: Modifier = Modifier,
+) {
     val textFieldState = rememberTextFieldState(initialText = "Hello world")
     val text by snapshotFlow { textFieldState.text.toString() }
         .collectAsState(initial = textFieldState.text.toString())
@@ -184,64 +187,49 @@ fun TextDemo() {
         onValueChange = { overflow = Overflow.entries[it] },
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .onSizeChanged { maxWidthPx = it.width },
-        horizontalAlignment = Alignment.CenterHorizontally,
+    DemoWithControls(
+        controls = persistentListOf(
+            textFieldControl,
+            styleControl,
+            lineHeightAlignmentControl,
+            lineHeightTrimControl,
+            lineHeightModeControl,
+            widthControl,
+            autoSizeControl,
+            softWrapControl,
+            showBorderControl,
+            overflowControl,
+        ),
+        modifier = modifier.fillMaxSize()
     ) {
-        Box(
-            modifier = Modifier.weight(1f),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                text = text,
-                style = style.toCompose().copy(
-                    lineHeightStyle = lineHeightStyleDefault.copy(
-                        alignment = lineHeightAlignment.toCompose(),
-                        trim = lineHeightTrim.toCompose(),
-                        mode = lineHeightMode.toCompose(),
-                    )
-                ),
-                autoSize = if (autoSize) TextAutoSize.StepBased() else null,
-                softWrap = softWrap,
-                overflow = when (overflow) {
-                    Overflow.Clip -> TextOverflow.Clip
-                    Overflow.Ellipsis -> TextOverflow.Ellipsis
-                    Overflow.Visible -> TextOverflow.Visible
-                    Overflow.StartEllipsis -> TextOverflow.StartEllipsis
-                    Overflow.MiddleEllipsis -> TextOverflow.MiddleEllipsis
-                },
-                modifier = Modifier
-                    .width(width)
-                    .padding(vertical = PlaygroundTheme.spacing.medium)
-                    .then(
-                        if (showBorder) Modifier.border(1.dp, PlaygroundTheme.colorScheme.primary)
-                        else Modifier
-                    )
-            )
-        }
-        HorizontalDivider(modifier = Modifier.fillMaxWidth())
-        Controls(
-            controls = persistentListOf(
-                textFieldControl,
-                styleControl,
-                lineHeightAlignmentControl,
-                lineHeightTrimControl,
-                lineHeightModeControl,
-                widthControl,
-                autoSizeControl,
-                softWrapControl,
-                showBorderControl,
-                overflowControl,
+        maxWidthPx = with(LocalDensity.current) { this@DemoWithControls.maxWidth.toPx().toInt() }
+
+        Text(
+            text = text,
+            style = style.toCompose().copy(
+                lineHeightStyle = lineHeightStyleDefault.copy(
+                    alignment = lineHeightAlignment.toCompose(),
+                    trim = lineHeightTrim.toCompose(),
+                    mode = lineHeightMode.toCompose(),
+                )
             ),
+            autoSize = if (autoSize) TextAutoSize.StepBased() else null,
+            softWrap = softWrap,
+            overflow = when (overflow) {
+                Overflow.Clip -> TextOverflow.Clip
+                Overflow.Ellipsis -> TextOverflow.Ellipsis
+                Overflow.Visible -> TextOverflow.Visible
+                Overflow.StartEllipsis -> TextOverflow.StartEllipsis
+                Overflow.MiddleEllipsis -> TextOverflow.MiddleEllipsis
+            },
             modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .verticalScroll(rememberScrollState())
-                .padding(PlaygroundTheme.spacing.medium)
-                .navigationBarsPadding(),
+                .align(Alignment.Center)
+                .width(width)
+                .padding(vertical = PlaygroundTheme.spacing.medium)
+                .then(
+                    if (showBorder) Modifier.border(1.dp, PlaygroundTheme.colorScheme.primary)
+                    else Modifier
+                )
         )
     }
 }

@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.demo.DemoWithControls
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
@@ -62,19 +63,22 @@ fun FadeDemo(
         onValueChange = { showBorder = it },
     )
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
+    DemoWithControls(
+        controls = persistentListOf(
+            fadeLengthControl,
+            showBorderControl,
+        ),
+        modifier = modifier
+            .fillMaxSize(),
     ) {
         Column(
-            modifier = modifier
-                .weight(1f)
+            modifier = Modifier
                 .onSizeChanged { widthPx = it.width }
                 .bottomFade(length = fadeLength, borderColor = borderColor)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(PlaygroundSpacing.medium),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -128,17 +132,6 @@ fun FadeDemo(
                     .background(PlaygroundTheme.colorScheme.primary)
             )
         }
-        HorizontalDivider(modifier = Modifier.fillMaxWidth())
-        Controls(
-            controls = persistentListOf(
-                fadeLengthControl,
-                showBorderControl,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(PlaygroundSpacing.medium)
-        )
     }
 }
 

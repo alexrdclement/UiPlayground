@@ -17,7 +17,8 @@ sealed class Control {
         val name: String,
         val values: ImmutableList<DropdownItem<T>>,
         val selectedIndex: Int,
-        val onValueChange: (index: Int) -> Unit
+        val onValueChange: (index: Int) -> Unit,
+        val includeLabel: Boolean = true,
     ) : Control() {
         data class DropdownItem<T>(val name: String, val value: T)
     }
@@ -36,4 +37,6 @@ sealed class Control {
         val keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
         val inputTransformation: InputTransformation? = null,
     ) : Control()
+
+    data class ControlRow(val controls: ImmutableList<Control>) : Control()
 }

@@ -1,19 +1,11 @@
 package com.alexrdclement.uiplayground.app.demo.components.demo
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawStyle
@@ -21,15 +13,13 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.demo.DemoWithControls
 import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.components.Grid
 import com.alexrdclement.uiplayground.components.GridCoordinateSystem
 import com.alexrdclement.uiplayground.components.GridLineStyle
 import com.alexrdclement.uiplayground.components.GridScale
 import com.alexrdclement.uiplayground.components.GridVertex
-import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Surface
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
@@ -715,10 +705,36 @@ fun GridDemo(
         onValueChange = { clipToBounds = it },
     )
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxSize()
+    DemoWithControls(
+        controls = persistentListOf(
+            coordinateSystemControl,
+            gridScaleXControl,
+            gridSpacingXControl,
+            gridScaleXBaseControl,
+            gridScaleXExponentControl,
+            gridScaleYControl,
+            gridSpacingYControl,
+            gridScaleYBaseControl,
+            gridScaleYExponentControl,
+            radiusScaleControl,
+            radiusSpacingControl,
+            radiusScaleBaseControl,
+            radiusScaleExponentControl,
+            thetaControl,
+            showLinesControl,
+            strokeWidthControl,
+            vertexControl,
+            vertexDrawStyleControl,
+            vertexSizeControl,
+            vertexWidthControl,
+            vertexHeightControl,
+            vertexRotationControl,
+            offsetXControl,
+            offsetYControl,
+            rotationDegreesControl,
+            clipControl,
+        ),
+        modifier = modifier.fillMaxSize(),
     ) {
         Grid(
             lineStyle = lineStyle.takeIf { showLines },
@@ -727,45 +743,7 @@ fun GridDemo(
             offset = Offset(offsetXPx, offsetYPx),
             clipToBounds = clipToBounds,
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        )
-        HorizontalDivider(modifier = Modifier.fillMaxWidth())
-        Controls(
-            controls = persistentListOf(
-                coordinateSystemControl,
-                gridScaleXControl,
-                gridSpacingXControl,
-                gridScaleXBaseControl,
-                gridScaleXExponentControl,
-                gridScaleYControl,
-                gridSpacingYControl,
-                gridScaleYBaseControl,
-                gridScaleYExponentControl,
-                radiusScaleControl,
-                radiusSpacingControl,
-                radiusScaleBaseControl,
-                radiusScaleExponentControl,
-                thetaControl,
-                showLinesControl,
-                strokeWidthControl,
-                vertexControl,
-                vertexDrawStyleControl,
-                vertexSizeControl,
-                vertexWidthControl,
-                vertexHeightControl,
-                vertexRotationControl,
-                offsetXControl,
-                offsetYControl,
-                rotationDegreesControl,
-                clipControl,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .verticalScroll(rememberScrollState())
-                .padding(PlaygroundTheme.spacing.medium)
-                .navigationBarsPadding(),
+                .fillMaxSize()
         )
     }
 }

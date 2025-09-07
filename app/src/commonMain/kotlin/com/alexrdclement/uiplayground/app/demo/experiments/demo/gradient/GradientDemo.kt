@@ -31,7 +31,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.layout.onSizeChanged
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sin
 

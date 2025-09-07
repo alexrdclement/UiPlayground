@@ -1,21 +1,13 @@
 package com.alexrdclement.uiplayground.app.demo.components.demo
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.allCaps
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -24,16 +16,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.demo.DemoWithControls
 import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.app.demo.util.onlyDigits
-import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.TextField
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
@@ -73,7 +63,9 @@ private enum class InputTransformations {
 }
 
 @Composable
-fun TextFieldDemo() {
+fun TextFieldDemo(
+    modifier: Modifier = Modifier,
+) {
     val textFieldState = rememberTextFieldState(initialText = "Hello world")
     val textFieldControl = Control.TextField(
         name = "Text",
@@ -217,66 +209,52 @@ fun TextFieldDemo() {
         }
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .onSizeChanged { maxWidthPx = it.width },
-        horizontalAlignment = Alignment.CenterHorizontally,
+    DemoWithControls(
+        controls = persistentListOf(
+            textFieldControl,
+            styleControl,
+            widthControl,
+            enabledControl,
+            keyboardTypeControl,
+            keyboardCapitalizationControl,
+            autoCorrectEnabledControl,
+            showKeyboardOnFocusControl,
+            lineLimitsControl,
+            minHeightInLinesControl,
+            maxHeightInLinesControl,
+            inputTransformationControl,
+        ),
+        modifier = modifier
+            .fillMaxSize(),
     ) {
-        Box(
-            modifier = Modifier.weight(1f),
-            contentAlignment = Alignment.Center,
-        ) {
-            TextField(
-                state = textFieldState,
-                enabled = enabled,
-                lineLimits = when (lineLimits) {
-                    LineLimits.SingleLine -> TextFieldLineLimits.SingleLine
-                    LineLimits.Multiline -> TextFieldLineLimits.MultiLine(
-                        minHeightInLines = minHeightInLines,
-                        maxHeightInLines = maxHeightInLines,
-                    )
-                },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = keyboardType,
-                    autoCorrectEnabled = autoCorrectEnabled,
-                    capitalization = keyboardCapitalization,
-                    showKeyboardOnFocus = showKeyboardOnFocus,
-                ),
-                inputTransformation = when (inputTransformation) {
-                    InputTransformations.None -> null
-                    InputTransformations.AllCaps -> InputTransformation.allCaps(Locale.current)
-                    InputTransformations.OnlyDigits -> InputTransformation.onlyDigits()
-                },
-                textStyle = style.toCompose(),
-                modifier = Modifier
-                    .width(width)
-                    .padding(vertical = PlaygroundTheme.spacing.medium)
-            )
-        }
-        HorizontalDivider(modifier = Modifier.fillMaxWidth())
-        Controls(
-            controls = persistentListOf(
-                textFieldControl,
-                styleControl,
-                widthControl,
-                enabledControl,
-                keyboardTypeControl,
-                keyboardCapitalizationControl,
-                autoCorrectEnabledControl,
-                showKeyboardOnFocusControl,
-                lineLimitsControl,
-                minHeightInLinesControl,
-                maxHeightInLinesControl,
-                inputTransformationControl,
+        maxWidthPx = with(LocalDensity.current) { this@DemoWithControls.maxWidth.toPx().toInt() }
+
+        TextField(
+            state = textFieldState,
+            enabled = enabled,
+            lineLimits = when (lineLimits) {
+                LineLimits.SingleLine -> TextFieldLineLimits.SingleLine
+                LineLimits.Multiline -> TextFieldLineLimits.MultiLine(
+                    minHeightInLines = minHeightInLines,
+                    maxHeightInLines = maxHeightInLines,
+                )
+            },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = keyboardType,
+                autoCorrectEnabled = autoCorrectEnabled,
+                capitalization = keyboardCapitalization,
+                showKeyboardOnFocus = showKeyboardOnFocus,
             ),
+            inputTransformation = when (inputTransformation) {
+                InputTransformations.None -> null
+                InputTransformations.AllCaps -> InputTransformation.allCaps(Locale.current)
+                InputTransformations.OnlyDigits -> InputTransformation.onlyDigits()
+            },
+            textStyle = style.toCompose(),
             modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .verticalScroll(rememberScrollState())
-                .padding(PlaygroundTheme.spacing.medium)
-                .navigationBarsPadding(),
+                .align(Alignment.Center)
+                .width(width)
+                .padding(vertical = PlaygroundTheme.spacing.medium)
         )
     }
 }

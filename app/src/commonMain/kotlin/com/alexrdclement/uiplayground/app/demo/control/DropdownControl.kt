@@ -3,8 +3,10 @@ package com.alexrdclement.uiplayground.app.demo.control
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -14,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.Button
 import com.alexrdclement.uiplayground.components.DropdownMenu
@@ -27,7 +30,6 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun <T> DropdownControl(
     control: Control.Dropdown<T>,
     modifier: Modifier = Modifier,
-    includeTitle: Boolean = true,
 ) {
     var isMenuExpanded by remember { mutableStateOf(false) }
     val selectedValue by remember(control.values, control.selectedIndex) {
@@ -35,7 +37,7 @@ fun <T> DropdownControl(
     }
 
     Column(modifier = modifier) {
-        if (includeTitle) {
+        if (control.includeLabel) {
             Text(control.name, style = PlaygroundTheme.typography.labelLarge)
             Spacer(modifier = Modifier.height(PlaygroundTheme.spacing.small))
         }
@@ -57,7 +59,6 @@ fun <T> DropdownControl(
 fun <T> DropdownControlRow(
     control: Control.Dropdown<T>,
     modifier: Modifier = Modifier,
-    includeTitle: Boolean = true,
 ) {
     var isMenuExpanded by remember { mutableStateOf(false) }
     val selectedValue by remember(control.values, control.selectedIndex) {
@@ -65,17 +66,24 @@ fun <T> DropdownControlRow(
     }
 
     Row(
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (includeTitle) {
-            Text(control.name, style = PlaygroundTheme.typography.labelLarge)
+        if (control.includeLabel) {
+            Text(
+                text = control.name,
+                style = PlaygroundTheme.typography.labelLarge,
+                softWrap = true,
+                modifier = Modifier.weight(1f, fill = false)
+            )
             Spacer(modifier = Modifier.width(PlaygroundTheme.spacing.medium))
         }
 
         DropdownMenuControlButton(
             selectedValue = selectedValue,
             onClick = { isMenuExpanded = true },
+            modifier = Modifier.weight(1f, fill = false)
         )
 
         DropdownControlMenu(
@@ -90,9 +98,11 @@ fun <T> DropdownControlRow(
 private fun <T> DropdownMenuControlButton(
     selectedValue: Control.Dropdown.DropdownItem<T>,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Button(
         onClick = onClick,
+        modifier = modifier,
     ) {
         Text(text = selectedValue.name, style = PlaygroundTheme.typography.labelLarge)
     }

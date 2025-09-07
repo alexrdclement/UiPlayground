@@ -1,12 +1,7 @@
 package com.alexrdclement.uiplayground.app.demo.components.demo
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.runtime.Composable
@@ -20,18 +15,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.demo.DemoWithControls
 import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.components.Button
 import com.alexrdclement.uiplayground.components.ButtonStyle
-import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-fun ButtonDemo() {
+fun ButtonDemo(
+    modifier: Modifier = Modifier,
+) {
     var enabled by remember { mutableStateOf(true) }
     val enabledControl = Control.Toggle(
         name = "Enabled",
@@ -82,44 +78,33 @@ fun ButtonDemo() {
         }
     )
 
-    Column(
-        modifier = Modifier
+    DemoWithControls(
+        controls = persistentListOf(
+            enabledControl,
+            styleControl,
+            widthControl,
+            autoSizeControl,
+            softWrapControl,
+        ),
+        modifier = modifier
             .fillMaxSize()
-            .systemBarsPadding()
             .onSizeChanged { maxWidthPx = it.width },
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(
-            modifier = Modifier.weight(1f),
-            contentAlignment = Alignment.Center,
-        ) {
-            Button(
-                onClick = {},
-                style = style,
-                enabled = enabled,
-                modifier = Modifier.width(width)
-            ) {
-                Text(
-                    text = "Button",
-                    style = PlaygroundTheme.typography.labelLarge,
-                    softWrap = softWrap,
-                    autoSize = if (autoSizeText) TextAutoSize.StepBased() else null,
-                )
-            }
-        }
-        HorizontalDivider(modifier = Modifier.fillMaxWidth())
-        Controls(
-            controls = persistentListOf(
-                enabledControl,
-                styleControl,
-                widthControl,
-                autoSizeControl,
-                softWrapControl,
-            ),
+        Button(
+            onClick = {},
+            style = style,
+            enabled = enabled,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(PlaygroundTheme.spacing.medium),
-        )
+                .width(width)
+                .align(Alignment.Center)
+                .padding(PlaygroundTheme.spacing.medium)
+        ) {
+            Text(
+                text = "Button",
+                style = PlaygroundTheme.typography.labelLarge,
+                softWrap = softWrap,
+                autoSize = if (autoSizeText) TextAutoSize.StepBased() else null,
+            )
+        }
     }
 }

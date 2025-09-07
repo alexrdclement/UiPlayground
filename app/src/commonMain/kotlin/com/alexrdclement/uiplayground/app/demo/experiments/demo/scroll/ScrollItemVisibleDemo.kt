@@ -31,6 +31,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.demo.DemoWithControls
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.FadeSide
@@ -100,15 +101,18 @@ fun AnimateScrollItemVisibleDemo(
 
     var items by remember { mutableStateOf((0 until initialItemCount).toList()) }
 
-    Column(
-        modifier = Modifier
+    DemoWithControls(
+        controls = persistentListOf(
+            bottomFadeBorderControl,
+            fadeLengthControl,
+            itemVisibilityScrollThresholdControl,
+        ),
+        modifier = modifier
             .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = modifier
-                .weight(1f)
+            modifier = Modifier
                 .fillMaxWidth()
         ) {
             Column(
@@ -170,19 +174,6 @@ fun AnimateScrollItemVisibleDemo(
                 }
             }
         }
-        HorizontalDivider(modifier = Modifier.fillMaxWidth())
-        Controls(
-            controls = persistentListOf(
-                bottomFadeBorderControl,
-                fadeLengthControl,
-                itemVisibilityScrollThresholdControl,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(PlaygroundTheme.spacing.medium)
-                .navigationBarsPadding(),
-        )
     }
 }
 

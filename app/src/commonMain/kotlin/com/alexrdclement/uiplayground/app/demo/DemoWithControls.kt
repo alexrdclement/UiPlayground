@@ -1,0 +1,88 @@
+package com.alexrdclement.uiplayground.app.demo
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.app.demo.control.Controls
+import com.alexrdclement.uiplayground.components.HorizontalDivider
+import com.alexrdclement.uiplayground.components.VerticalDivider
+import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import kotlinx.collections.immutable.PersistentList
+
+@Composable
+fun DemoWithControls(
+    controls: PersistentList<Control>,
+    modifier: Modifier = Modifier,
+    content: @Composable BoxWithConstraintsScope.() -> Unit,
+) {
+    BoxWithConstraints(
+        modifier = modifier,
+    ) {
+        if (minWidth < minHeight) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                BoxWithConstraints(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    this.content()
+                }
+                if (controls.isNotEmpty()) {
+                    HorizontalDivider(modifier = Modifier.fillMaxWidth())
+                    Controls(
+                        controls = controls,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 300.dp)
+                            .verticalScroll(rememberScrollState())
+                            .padding(PlaygroundTheme.spacing.medium)
+                            .navigationBarsPadding(),
+                    )
+                }
+            }
+        } else {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(1f)
+                ) {
+                    this@BoxWithConstraints.content()
+                }
+                VerticalDivider(modifier = Modifier.fillMaxHeight())
+                Controls(
+                    controls = controls,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .widthIn(max = 300.dp)
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = PlaygroundTheme.spacing.medium)
+                        .navigationBarsPadding(),
+                )
+            }
+        }
+    }
+}

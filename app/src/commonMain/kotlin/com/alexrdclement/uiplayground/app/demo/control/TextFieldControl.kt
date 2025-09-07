@@ -27,7 +27,11 @@ fun TextFieldControl(
             ),
     ) {
         if (control.includeLabel) {
-            Text(text = control.name, style = PlaygroundTheme.typography.labelLarge)
+            Text(
+                text = control.name,
+                style = PlaygroundTheme.typography.labelLarge,
+                modifier = Modifier.weight(1f, fill = false),
+            )
             Spacer(modifier = Modifier.width(PlaygroundTheme.spacing.small))
         }
         TextField(

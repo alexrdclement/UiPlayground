@@ -1,15 +1,7 @@
 package com.alexrdclement.uiplayground.app.demo.components.demo
 
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,9 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.demo.DemoWithControls
 import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.Controls
-import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Sphere
 import com.alexrdclement.uiplayground.components.SphereStyle
 import com.alexrdclement.uiplayground.components.util.ViewingAngle
@@ -156,56 +147,38 @@ fun SphereDemo(
         onValueChange = { precisionDegree = it.roundToInt() },
     )
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxSize()
+    DemoWithControls(
+        controls = persistentListOf(
+            fillControl,
+            outlineControl,
+            xRotationControl,
+            yRotationControl,
+            zRotationControl,
+            numLatitudeLinesControl,
+            numLongitudeLinesControl,
+            precisionDegreeControl,
+            strokeWidthControl,
+            outlineStrokeWidthControl,
+        ),
+        modifier = modifier.fillMaxSize(),
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
+        Sphere(
+            style = style,
+            precisionDegree = precisionDegree,
+            viewingAngle = viewingAngle,
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .padding(horizontal = PlaygroundTheme.spacing.medium)
-        ) {
-            Sphere(
-                style = style,
-                precisionDegree = precisionDegree,
-                viewingAngle = viewingAngle,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .pointerInput(Unit) {
-                        detectDragGestures { change, dragAmount ->
-                            change.consume()
-                            val (dx, dy) = dragAmount
-                            viewingAngle = viewingAngle.copy(
-                                rotationY = (viewingAngle.rotationY + dx / 10f) % 360f,
-                                rotationX = (viewingAngle.rotationX - dy / 10f) % 360f,
-                            )
-                        }
+                .align(Alignment.Center)
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consume()
+                        val (dx, dy) = dragAmount
+                        viewingAngle = viewingAngle.copy(
+                            rotationY = (viewingAngle.rotationY + dx / 10f) % 360f,
+                            rotationX = (viewingAngle.rotationX - dy / 10f) % 360f,
+                        )
                     }
-            )
-        }
-        HorizontalDivider(modifier = Modifier.fillMaxWidth())
-        Controls(
-            controls = persistentListOf(
-                fillControl,
-                outlineControl,
-                xRotationControl,
-                yRotationControl,
-                zRotationControl,
-                numLatitudeLinesControl,
-                numLongitudeLinesControl,
-                precisionDegreeControl,
-                strokeWidthControl,
-                outlineStrokeWidthControl,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .verticalScroll(rememberScrollState())
-                .padding(PlaygroundTheme.spacing.medium)
-                .navigationBarsPadding(),
+                }
         )
     }
 }
