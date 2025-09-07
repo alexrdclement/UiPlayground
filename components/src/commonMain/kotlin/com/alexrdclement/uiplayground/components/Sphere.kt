@@ -98,8 +98,8 @@ fun GridSphere(
                 val lonRad = lon.toRadians()
 
                 val x = radius * cos(latRad) * cos(lonRad)
-                val y = radius * cos(latRad) * sin(lonRad)
-                val z = radius * sin(latRad)
+                val y = radius * sin(latRad)
+                val z = radius * cos(latRad) * sin(lonRad)
 
                 rotatePoint3D(x, y, z, cosX, sinX, cosY, sinY, cosZ, sinZ)
             }
@@ -129,9 +129,9 @@ fun GridSphere(
                 val rotatedPoint = getRotatedPoint(lat, lon)
 
                 val projectedX = center.x + rotatedPoint.x.toFloat()
-                val projectedY = center.y + rotatedPoint.z.toFloat()
+                val projectedY = center.y + rotatedPoint.y.toFloat()
 
-                if (rotatedPoint.y >= 0) {
+                if (rotatedPoint.z >= 0) {
                     if (!pathStarted) {
                         path.moveTo(projectedX, projectedY)
                         pathStarted = true
@@ -158,9 +158,9 @@ fun GridSphere(
                 val rotatedPoint = getRotatedPoint(lat, lon)
 
                 val projectedX = center.x + rotatedPoint.x.toFloat()
-                val projectedY = center.y + rotatedPoint.z.toFloat()
+                val projectedY = center.y + rotatedPoint.y.toFloat()
 
-                if (rotatedPoint.y >= 0) {
+                if (rotatedPoint.z >= 0) {
                     if (!pathStarted) {
                         path.moveTo(projectedX, projectedY)
                         pathStarted = true

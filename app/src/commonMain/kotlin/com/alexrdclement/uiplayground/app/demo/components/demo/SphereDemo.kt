@@ -62,19 +62,19 @@ fun SphereDemo(
     val xRotationControl = Control.Slider(
         name = "X axis rotation",
         value = viewingAngle.rotationX,
-        valueRange = 0f..360f,
+        valueRange = -180f..180f,
         onValueChange = { viewingAngle = viewingAngle.copy(rotationX = it) },
     )
     val yRotationControl = Control.Slider(
         name = "Y axis rotation",
         value = viewingAngle.rotationY,
-        valueRange = 0f..360f,
+        valueRange = -180f..180f,
         onValueChange = { viewingAngle = viewingAngle.copy(rotationY = it) },
     )
     val zRotationControl = Control.Slider(
         name = "Z axis rotation",
         value = viewingAngle.rotationZ,
-        valueRange = 0f..360f,
+        valueRange = -180f..180f,
         onValueChange = { viewingAngle = viewingAngle.copy(rotationZ = it) },
     )
 
@@ -148,8 +148,8 @@ fun SphereDemo(
                             change.consume()
                             val (dx, dy) = dragAmount
                             viewingAngle = viewingAngle.copy(
-                                rotationZ = (viewingAngle.rotationZ - dx / 10f) % 360f,
-                                rotationX = (viewingAngle.rotationX + dy / 10f) % 360f,
+                                rotationY = (viewingAngle.rotationY + dx / 10f) % 360f,
+                                rotationX = (viewingAngle.rotationX - dy / 10f) % 360f,
                             )
                         }
                     }
