@@ -42,6 +42,11 @@ class BaselineProfileGenerator {
 
             shadersPage.selectPixelate()
             shadersPage.adjustPixelate()
+
+            shadersPage.selectGridLineSubject()
+
+            shadersPage.selectWarp()
+            shadersPage.adjustWarp()
         }
     }
 
