@@ -147,26 +147,23 @@ fun rememberFadeDemoControl(state: FadeDemoState) = remember(state) {
 class FadeDemoControl(
     val state: FadeDemoState,
 ) {
-    val fadeLength
-        get() = Control.Slider(
-            name = "Fade length",
-            value = state.fadeLength.value,
-            onValueChange = { state.fadeLength = it.dp },
-            valueRange = 0f..500f,
-        )
+    val fadeLength = Control.Slider(
+        name = "Fade length",
+        value = { state.fadeLength.value },
+        onValueChange = { state.fadeLength = it.dp },
+        valueRange = { 0f..500f },
+    )
 
-    val showBorder
-        get() = Control.Toggle(
-            name = "Show border",
-            value = state.showBorder,
-            onValueChange = { state.showBorder = it },
-        )
+    val showBorder = Control.Toggle(
+        name = "Show border",
+        value = { state.showBorder },
+        onValueChange = { state.showBorder = it },
+    )
 
-    val controls
-        get() = persistentListOf(
-            fadeLength,
-            showBorder,
-        )
+    val controls = persistentListOf(
+        fadeLength,
+        showBorder,
+    )
 
     fun onSizeChanged(width: Dp) {
         if (width > 0.dp) {

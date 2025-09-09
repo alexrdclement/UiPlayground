@@ -6,17 +6,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.Button
 import com.alexrdclement.uiplayground.components.DropdownMenu
@@ -32,8 +31,10 @@ fun <T> DropdownControl(
     modifier: Modifier = Modifier,
 ) {
     var isMenuExpanded by remember { mutableStateOf(false) }
-    val selectedValue by remember(control.values, control.selectedIndex) {
-        derivedStateOf { control.values[control.selectedIndex] }
+    val values by rememberUpdatedState(control.values())
+    val selectedIndex by rememberUpdatedState(control.selectedIndex())
+    val selectedValue by remember(values, selectedIndex) {
+        derivedStateOf { values[selectedIndex] }
     }
 
     Column(modifier = modifier) {
@@ -61,8 +62,10 @@ fun <T> DropdownControlRow(
     modifier: Modifier = Modifier,
 ) {
     var isMenuExpanded by remember { mutableStateOf(false) }
-    val selectedValue by remember(control.values, control.selectedIndex) {
-        derivedStateOf { control.values[control.selectedIndex] }
+    val values by rememberUpdatedState(control.values())
+    val selectedIndex by rememberUpdatedState(control.selectedIndex())
+    val selectedValue by remember(values, selectedIndex) {
+        derivedStateOf { values[selectedIndex] }
     }
 
     Row(
@@ -114,11 +117,12 @@ private fun <T> DropdownControlMenu(
     isMenuExpanded: Boolean,
     onMenuDismissRequest: () -> Unit,
 ) {
+    val values by rememberUpdatedState(control.values())
     DropdownMenu(
         expanded = isMenuExpanded,
         onDismissRequest = onMenuDismissRequest,
     ) {
-        control.values.forEachIndexed { index, value ->
+        values.forEachIndexed { index, value ->
             DropdownMenuItem(
                 text = { Text(text = value.name, style = PlaygroundTheme.typography.labelLarge) },
                 onClick = {
@@ -139,16 +143,18 @@ private fun DropdownControlPreview() {
             mutableStateOf(
                 Control.Dropdown(
                     name = "Edge treatment",
-                    values = listOf(
-                        BlurredEdgeTreatment.Rectangle,
-                        BlurredEdgeTreatment.Unbounded
-                    ).map {
-                        Control.Dropdown.DropdownItem(
-                            name = it.toString(),
-                            value = it
-                        )
-                    }.toPersistentList(),
-                    selectedIndex = selectedIndex,
+                    values = {
+                        listOf(
+                            BlurredEdgeTreatment.Rectangle,
+                            BlurredEdgeTreatment.Unbounded
+                        ).map {
+                            Control.Dropdown.DropdownItem(
+                                name = it.toString(),
+                                value = it
+                            )
+                        }.toPersistentList()
+                    },
+                    selectedIndex = { selectedIndex },
                     onValueChange = { selectedIndex = it }
                 )
             )
@@ -166,16 +172,18 @@ private fun DropdownControlRowPreview() {
             mutableStateOf(
                 Control.Dropdown(
                     name = "Edge treatment",
-                    values = listOf(
-                        BlurredEdgeTreatment.Rectangle,
-                        BlurredEdgeTreatment.Unbounded
-                    ).map {
-                        Control.Dropdown.DropdownItem(
-                            name = it.toString(),
-                            value = it
-                        )
-                    }.toPersistentList(),
-                    selectedIndex = selectedIndex,
+                    values = {
+                        listOf(
+                            BlurredEdgeTreatment.Rectangle,
+                            BlurredEdgeTreatment.Unbounded
+                        ).map {
+                            Control.Dropdown.DropdownItem(
+                                name = it.toString(),
+                                value = it
+                            )
+                        }.toPersistentList()
+                    },
+                    selectedIndex = { selectedIndex },
                     onValueChange = { selectedIndex = it }
                 )
             )

@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
@@ -32,7 +34,10 @@ fun Controls(
                     is Control.Dropdown<*> -> DropdownControlRow(control = control)
                     is Control.Toggle -> ToggleControlRow(control = control)
                     is Control.TextField -> TextFieldControl(control = control)
-                    is Control.ControlRow -> ControlsRow(controls = control.controls)
+                    is Control.ControlRow -> {
+                        val controls by rememberUpdatedState(control.controls())
+                        ControlsRow(controls = controls)
+                    }
                 }
             }
         }
@@ -56,7 +61,10 @@ fun ControlsRow(
                 is Control.Dropdown<*> -> DropdownControl(control = control)
                 is Control.Toggle -> ToggleControl(control = control)
                 is Control.TextField -> TextFieldControl(control = control)
-                is Control.ControlRow -> Controls(controls = control.controls)
+                is Control.ControlRow -> {
+                    val controls by rememberUpdatedState(control.controls())
+                    Controls(controls = controls)
+                }
             }
         }
     }
@@ -70,12 +78,12 @@ private fun Preview() {
             controls = persistentListOf(
                 Control.Slider(
                     name = "Amount",
-                    value = 0.5f,
+                    value = { 0.5f },
                     onValueChange = {},
                 ),
                 Control.Slider(
                     name = "Amount 2",
-                    value = 0.5f,
+                    value = { 0.5f },
                     onValueChange = {},
                 )
             ),

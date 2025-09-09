@@ -154,128 +154,127 @@ fun rememberTextDemoControl(
 class TextDemoControl(
     private var state: TextDemoState,
 ) {
-    val textFieldControl
-        get() = Control.TextField(
-            name = "Text",
-            textFieldState = state.textFieldState,
-            includeLabel = false,
-        )
+    val textFieldControl = Control.TextField(
+        name = "Text",
+        textFieldState = state.textFieldState,
+        includeLabel = false,
+    )
 
-    val styleControl
-        get() = Control.Dropdown(
-            name = "Style",
-            values = TextStyle.entries.map {
+    val styleControl = Control.Dropdown(
+        name = "Style",
+        values = {
+            TextStyle.entries.map {
                 Control.Dropdown.DropdownItem(
                     name = it.name,
                     value = it,
                 )
-            }.toPersistentList(),
-            selectedIndex = TextStyle.entries.indexOf(state.style),
-            onValueChange = { state.style = TextStyle.entries[it] },
-        )
+            }.toPersistentList()
+        },
+        selectedIndex = { TextStyle.entries.indexOf(state.style) },
+        onValueChange = { state.style = TextStyle.entries[it] },
+    )
 
-    val lineHeightAlignmentControl
-        get() = Control.Dropdown(
-            name = "Line height alignment",
-            values = LineHeightAlignment.entries.map {
+    val lineHeightAlignmentControl = Control.Dropdown(
+        name = "Line height alignment",
+        values = {
+            LineHeightAlignment.entries.map {
                 Control.Dropdown.DropdownItem(
                     name = it.name,
                     value = it,
                 )
-            }.toPersistentList(),
-            onValueChange = { state.lineHeightAlignment = LineHeightAlignment.entries[it] },
-            selectedIndex = LineHeightAlignment.entries.indexOf(state.lineHeightAlignment),
-        )
+            }.toPersistentList()
+        },
+        onValueChange = { state.lineHeightAlignment = LineHeightAlignment.entries[it] },
+        selectedIndex = { LineHeightAlignment.entries.indexOf(state.lineHeightAlignment) },
+    )
 
-    val lineHeightTrimControl
-        get() = Control.Dropdown(
-            name = "Line height trim",
-            values = LineHeightTrim.entries.map {
+    val lineHeightTrimControl = Control.Dropdown(
+        name = "Line height trim",
+        values = {
+            LineHeightTrim.entries.map {
                 Control.Dropdown.DropdownItem(
                     name = it.name,
                     value = it,
                 )
-            }.toPersistentList(),
-            onValueChange = { state.lineHeightTrim = LineHeightTrim.entries[it] },
-            selectedIndex = LineHeightTrim.entries.indexOf(state.lineHeightTrim),
-        )
+            }.toPersistentList()
+        },
+        onValueChange = { state.lineHeightTrim = LineHeightTrim.entries[it] },
+        selectedIndex = { LineHeightTrim.entries.indexOf(state.lineHeightTrim) },
+    )
 
-    val lineHeightModeControl
-        get() = Control.Dropdown(
-            name = "Line height mode",
-            values = LineHeightMode.entries.map {
+    val lineHeightModeControl = Control.Dropdown(
+        name = "Line height mode",
+        values = {
+            LineHeightMode.entries.map {
                 Control.Dropdown.DropdownItem(
                     name = it.name,
                     value = it,
                 )
-            }.toPersistentList(),
-            onValueChange = { state.lineHeightMode = LineHeightMode.entries[it] },
-            selectedIndex = LineHeightMode.entries.indexOf(state.lineHeightMode),
-        )
+            }.toPersistentList()
+        },
+        onValueChange = { state.lineHeightMode = LineHeightMode.entries[it] },
+        selectedIndex = { LineHeightMode.entries.indexOf(state.lineHeightMode) },
+    )
 
-    val widthControl
-        get() = Control.Slider(
-            name = "Width",
-            value = state.width.value,
-            onValueChange = {
-                state.width = it.dp
-            },
-            valueRange = 0f..state.maxWidth.value,
-        )
+    val widthControl = Control.Slider(
+        name = "Width",
+        value = { state.width.value },
+        onValueChange = {
+            state.width = it.dp
+        },
+        valueRange = { 0f..state.maxWidth.value },
+    )
 
-    val autoSizeControl
-        get() = Control.Toggle(
-            name = "Auto-size text",
-            value = state.autoSize,
-            onValueChange = {
-                state.autoSize = it
-            }
-        )
+    val autoSizeControl = Control.Toggle(
+        name = "Auto-size text",
+        value = { state.autoSize },
+        onValueChange = {
+            state.autoSize = it
+        }
+    )
 
-    val softWrapControl
-        get() = Control.Toggle(
-            name = "Soft wrap",
-            value = state.softWrap,
-            onValueChange = {
-                state.softWrap = it
-            }
-        )
+    val softWrapControl = Control.Toggle(
+        name = "Soft wrap",
+        value = { state.softWrap },
+        onValueChange = {
+            state.softWrap = it
+        }
+    )
 
-    val showBorderControl
-        get() = Control.Toggle(
-            name = "Show border",
-            value = state.showBorder,
-            onValueChange = {
-                state.showBorder = it
-            }
-        )
+    val showBorderControl = Control.Toggle(
+        name = "Show border",
+        value = { state.showBorder },
+        onValueChange = {
+            state.showBorder = it
+        }
+    )
 
-    val overflowControl
-        get() = Control.Dropdown(
-            name = "Overflow",
-            values = Overflow.entries.map {
+    val overflowControl = Control.Dropdown(
+        name = "Overflow",
+        values = {
+            Overflow.entries.map {
                 Control.Dropdown.DropdownItem(
                     name = it.name,
                     value = it
                 )
-            }.toPersistentList(),
-            selectedIndex = Overflow.entries.indexOf(state.overflow),
-            onValueChange = { state.overflow = Overflow.entries[it] },
-        )
+            }.toPersistentList()
+        },
+        selectedIndex = { Overflow.entries.indexOf(state.overflow) },
+        onValueChange = { state.overflow = Overflow.entries[it] },
+    )
 
-    val controls
-        get() = persistentListOf(
-            textFieldControl,
-            styleControl,
-            lineHeightAlignmentControl,
-            lineHeightTrimControl,
-            lineHeightModeControl,
-            widthControl,
-            autoSizeControl,
-            softWrapControl,
-            showBorderControl,
-            overflowControl,
-        )
+    val controls = persistentListOf(
+        textFieldControl,
+        styleControl,
+        lineHeightAlignmentControl,
+        lineHeightTrimControl,
+        lineHeightModeControl,
+        widthControl,
+        autoSizeControl,
+        softWrapControl,
+        showBorderControl,
+        overflowControl,
+    )
 
     fun onSizeChanged(width: Dp) {
         if (state.maxWidth == 0.dp) {

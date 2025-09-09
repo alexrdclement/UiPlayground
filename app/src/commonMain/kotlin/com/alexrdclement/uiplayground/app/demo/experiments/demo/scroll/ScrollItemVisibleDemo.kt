@@ -159,35 +159,31 @@ fun rememberAnimateScrollItemVisibleDemoControl(
 class AnimateScrollItemVisibleDemoControl(
     val state: AnimateScrollItemVisibleDemoState,
 ) {
-    val fadeLengthControl
-        get() = Control.Slider(
-            name = "Fade length",
-            value = state.fadeLength.value,
-            onValueChange = { state.fadeLength = it.dp },
-            valueRange = 0f..500f,
-        )
+    val fadeLengthControl = Control.Slider(
+        name = "Fade length",
+        value = { state.fadeLength.value },
+        onValueChange = { state.fadeLength = it.dp },
+        valueRange = { 0f..500f },
+    )
 
-    val bottomFadeBorderControl
-        get() = Control.Toggle(
-            name = "Fade border",
-            value = state.showFadeBorders,
-            onValueChange = { state.showFadeBorders = it },
-        )
+    val bottomFadeBorderControl = Control.Toggle(
+        name = "Fade border",
+        value = { state.showFadeBorders },
+        onValueChange = { state.showFadeBorders = it },
+    )
 
-    val itemVisibilityScrollThresholdControl
-        get() = Control.Slider(
-            name = "Item visibility threshold",
-            value = state.itemVisibilityScrollThreshold,
-            onValueChange = { state.itemVisibilityScrollThreshold = it },
-            valueRange = 0f..1f,
-        )
+    val itemVisibilityScrollThresholdControl = Control.Slider(
+        name = "Item visibility threshold",
+        value = { state.itemVisibilityScrollThreshold },
+        onValueChange = { state.itemVisibilityScrollThreshold = it },
+        valueRange = { 0f..1f },
+    )
 
-    val controls
-        get() = persistentListOf(
-            fadeLengthControl,
-            bottomFadeBorderControl,
-            itemVisibilityScrollThresholdControl,
-        )
+    val controls = persistentListOf(
+        fadeLengthControl,
+        bottomFadeBorderControl,
+        itemVisibilityScrollThresholdControl,
+    )
 }
 
 @Preview

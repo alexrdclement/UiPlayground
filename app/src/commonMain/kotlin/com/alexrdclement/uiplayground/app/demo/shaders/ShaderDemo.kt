@@ -63,21 +63,26 @@ fun ShaderDemo(
                     radius = innerModifier.radius,
                     edgeTreatment = innerModifier.edgeTreatment,
                 )
+
                 is DemoModifier.ColorInvert -> Modifier.colorInvert(
                     amount = { innerModifier.amount },
                 )
+
                 is DemoModifier.ColorSplit -> Modifier.colorSplit(
                     xAmount = { innerModifier.xAmount },
                     yAmount = { innerModifier.yAmount },
                     colorMode = { innerModifier.colorMode },
                 )
+
                 is DemoModifier.Noise -> Modifier.noise(
                     amount = { innerModifier.amount },
                     colorMode = innerModifier.colorMode,
                 )
+
                 is DemoModifier.Pixelate -> Modifier.pixelate(
                     subdivisions = { innerModifier.subdivisions },
                 )
+
                 is DemoModifier.Warp -> Modifier.warp(
                     offset = { pointerOffset },
                     radius = { innerModifier.radius },
@@ -85,7 +90,7 @@ fun ShaderDemo(
                 )
             }.pointerInput(Unit) {
                 detectTapGestures(
-                    onPress =  { pointerOffset = it },
+                    onPress = { pointerOffset = it },
                     onTap = { pointerOffset = it },
                 )
             }.pointerInput(Unit) {
@@ -107,6 +112,7 @@ fun ShaderDemo(
                     ),
                     modifier = modifier.fillMaxSize(),
                 )
+
                 DemoSubject.GridDot -> Grid(
                     coordinateSystem = GridCoordinateSystem.Cartesian(
                         spacing = 20.dp,
@@ -119,6 +125,7 @@ fun ShaderDemo(
                     ),
                     modifier = modifier.fillMaxSize(),
                 )
+
                 DemoSubject.GridRect -> Grid(
                     coordinateSystem = GridCoordinateSystem.Cartesian(
                         spacing = 20.dp,
@@ -131,6 +138,7 @@ fun ShaderDemo(
                     ),
                     modifier = modifier.fillMaxSize(),
                 )
+
                 DemoSubject.GridPlus -> Grid(
                     coordinateSystem = GridCoordinateSystem.Cartesian(
                         spacing = 20.dp,
@@ -143,6 +151,7 @@ fun ShaderDemo(
                     ),
                     modifier = modifier.fillMaxSize(),
                 )
+
                 DemoSubject.Text -> DemoText(modifier = modifier)
                 DemoSubject.TextField -> DemoTextField(modifier = modifier)
             }
@@ -218,180 +227,186 @@ fun rememberShaderDemoControl(
 class ShaderDemoControl(
     val state: ShaderDemoState,
 ) {
-    val subjectControl
-        get() = Control.Dropdown(
-            name = "Subject",
-            values = DemoSubject.entries.map {
+    val subjectControl = Control.Dropdown(
+        name = "Subject",
+        values = {
+            DemoSubject.entries.map {
                 Control.Dropdown.DropdownItem(name = it.name, value = it)
-            }.toPersistentList(),
-            selectedIndex = DemoSubject.entries.indexOf(state.demoSubject),
-            onValueChange = { state.demoSubject = DemoSubject.entries[it] },
-            includeLabel = false,
-        )
+            }.toPersistentList()
+        },
+        selectedIndex = { DemoSubject.entries.indexOf(state.demoSubject) },
+        onValueChange = { state.demoSubject = DemoSubject.entries[it] },
+        includeLabel = false,
+    )
 
-    val modifierControl
-        get() = Control.Dropdown(
-            name = "Modifier",
-            values = state.demoModifiers.map {
+    val modifierControl = Control.Dropdown(
+        name = "Modifier",
+        values = {
+            state.demoModifiers.map {
                 Control.Dropdown.DropdownItem(name = it.name, value = it)
-            }.toPersistentList(),
-            selectedIndex = state.demoModifierIndex,
-            onValueChange = { state.demoModifierIndex = it },
-            includeLabel = false,
+            }.toPersistentList()
+        },
+        selectedIndex = { state.demoModifierIndex },
+        onValueChange = { state.demoModifierIndex = it },
+        includeLabel = false,
+    )
+
+    val blurredEdgeTreatments = listOf(
+        BlurredEdgeTreatment.Rectangle,
+        BlurredEdgeTreatment.Unbounded,
+    )
+    val blurControls: PersistentList<Control> = persistentListOf(
+        Control.Slider(
+            name = "Radius",
+            value = { state.blurModifier.radius.value },
+            onValueChange = {
+                state.blurModifier = state.blurModifier.copy(radius = it.dp)
+            },
+            valueRange = { 0f..16f },
+        ),
+        Control.Dropdown(
+            name = "Edge treatment",
+            values = {
+                blurredEdgeTreatments.map {
+                    Control.Dropdown.DropdownItem(
+                        name = it.toString(),
+                        value = it
+                    )
+                }.toPersistentList()
+            },
+            selectedIndex = { blurredEdgeTreatments.indexOf(state.blurModifier.edgeTreatment) },
+            onValueChange = {
+                state.blurModifier =
+                    state.blurModifier.copy(edgeTreatment = blurredEdgeTreatments[it])
+            }
         )
+    )
 
-    val blurControls: PersistentList<Control>
-        get() {
-            val edgeTreatments = listOf(
-                BlurredEdgeTreatment.Rectangle,
-                BlurredEdgeTreatment.Unbounded,
-            )
-            return persistentListOf(
-                Control.Slider(
-                    name = "Radius",
-                    value = state.blurModifier.radius.value,
-                    onValueChange = {
-                        state.blurModifier = state.blurModifier.copy(radius = it.dp)
-                    },
-                    valueRange = 0f..16f
-                ),
-                Control.Dropdown(
-                    name = "Edge treatment",
-                    values = edgeTreatments.map {
-                        Control.Dropdown.DropdownItem(
-                            name = it.toString(),
-                            value = it
-                        )
-                    }.toPersistentList(),
-                    selectedIndex = edgeTreatments.indexOf(state.blurModifier.edgeTreatment),
-                    onValueChange = {
-                        state.blurModifier = state.blurModifier.copy(edgeTreatment = edgeTreatments[it])
-                    }
-                )
-            )
-        }
-
-    val colorInvertControls
-        get() = persistentListOf(
-            Control.Slider(
-                name = "Amount",
-                value = state.colorInvertModifier.amount,
-                onValueChange = {
-                    state.colorInvertModifier = state.colorInvertModifier.copy(amount = it)
-                },
-                valueRange = 0f..1f,
-            )
+    val colorInvertControls = persistentListOf(
+        Control.Slider(
+            name = "Amount",
+            value = { state.colorInvertModifier.amount },
+            onValueChange = {
+                state.colorInvertModifier = state.colorInvertModifier.copy(amount = it)
+            },
+            valueRange = { 0f..1f },
         )
+    )
 
-
-    val colorSplitControls
-        get() = persistentListOf(
-            Control.Dropdown(
-                name = "Color mode",
-                values = ColorSplitMode.entries.map {
+    val colorSplitControls = persistentListOf(
+        Control.Dropdown(
+            name = "Color mode",
+            values = {
+                ColorSplitMode.entries.map {
                     Control.Dropdown.DropdownItem(
                         name = it.name,
                         value = it
                     )
-                }.toPersistentList(),
-                selectedIndex = ColorSplitMode.entries
-                    .indexOf(state.colorSplitModifier.colorMode),
-                onValueChange = {
-                    val colorMode = ColorSplitMode.entries[it]
-                    state.colorSplitModifier = state.colorSplitModifier.copy(colorMode = colorMode)
-                }
-            ),
-            Control.Slider(
-                name = "X Amount",
-                value = state.colorSplitModifier.xAmount,
-                onValueChange = {
-                    state.colorSplitModifier = state.colorSplitModifier.copy(xAmount = it)
-                },
-                valueRange = -1f..1f,
-            ),
-            Control.Slider(
-                name = "Y Amount",
-                value = state.colorSplitModifier.yAmount,
-                onValueChange = {
-                    state.colorSplitModifier = state.colorSplitModifier.copy(yAmount = it)
-                },
-                valueRange = -1f..1f,
-            ),
-            Control.Dropdown(
-                name = "Color mode",
-                values = ColorSplitMode.entries.map {
+                }.toPersistentList()
+            },
+            selectedIndex = {
+                ColorSplitMode.entries.indexOf(state.colorSplitModifier.colorMode)
+            },
+            onValueChange = {
+                val colorMode = ColorSplitMode.entries[it]
+                state.colorSplitModifier = state.colorSplitModifier.copy(colorMode = colorMode)
+            }
+        ),
+        Control.Slider(
+            name = "X Amount",
+            value = { state.colorSplitModifier.xAmount },
+            onValueChange = {
+                state.colorSplitModifier = state.colorSplitModifier.copy(xAmount = it)
+            },
+            valueRange = { -1f..1f },
+        ),
+        Control.Slider(
+            name = "Y Amount",
+            value = { state.colorSplitModifier.yAmount },
+            onValueChange = {
+                state.colorSplitModifier = state.colorSplitModifier.copy(yAmount = it)
+            },
+            valueRange = { -1f..1f },
+        ),
+        Control.Dropdown(
+            name = "Color mode",
+            values = {
+                ColorSplitMode.entries.map {
                     Control.Dropdown.DropdownItem(
                         name = it.name,
                         value = it
                     )
-                }.toPersistentList(),
-                selectedIndex = ColorSplitMode.entries
-                    .indexOf(state.colorSplitModifier.colorMode),
-                onValueChange = {
-                    val colorMode = ColorSplitMode.entries[it]
-                    state.colorSplitModifier = state.colorSplitModifier.copy(colorMode = colorMode)
-                }
-            )
+                }.toPersistentList()
+            },
+            selectedIndex = {
+                ColorSplitMode.entries.indexOf(state.colorSplitModifier.colorMode)
+            },
+            onValueChange = {
+                val colorMode = ColorSplitMode.entries[it]
+                state.colorSplitModifier = state.colorSplitModifier.copy(colorMode = colorMode)
+            }
         )
+    )
 
-    val noiseControl
-        get() = persistentListOf(
-            Control.Slider(
-                name = "Amount",
-                value = state.noiseModifier.amount,
-                onValueChange = {
-                    state.noiseModifier = state.noiseModifier.copy(amount = it)
-                },
-                valueRange = 0f..1f,
-            ),
-            Control.Dropdown(
-                name = "Color Mode",
-                values = NoiseColorMode.entries.map {
+    val noiseControl = persistentListOf(
+        Control.Slider(
+            name = "Amount",
+            value = { state.noiseModifier.amount },
+            onValueChange = {
+                state.noiseModifier = state.noiseModifier.copy(amount = it)
+            },
+            valueRange = { 0f..1f },
+        ),
+        Control.Dropdown(
+            name = "Color Mode",
+            values = {
+                NoiseColorMode.entries.map {
                     Control.Dropdown.DropdownItem(
                         name = it.name,
                         value = it
                     )
-                }.toPersistentList(),
-                selectedIndex = NoiseColorMode.entries
-                    .indexOf(state.noiseModifier.colorMode),
-                onValueChange = {
-                    val colorMode = NoiseColorMode.entries[it]
-                    state.noiseModifier = state.noiseModifier.copy(colorMode = colorMode)
-                }
-            )
+                }.toPersistentList()
+            },
+            selectedIndex = {
+                NoiseColorMode.entries
+                    .indexOf(state.noiseModifier.colorMode)
+            },
+            onValueChange = {
+                val colorMode = NoiseColorMode.entries[it]
+                state.noiseModifier = state.noiseModifier.copy(colorMode = colorMode)
+            }
         )
+    )
 
-    val pixelateControl
-        get() = persistentListOf(
-            Control.Slider(
-                name = "Subdivisions",
-                value = state.pixelateModifier.subdivisions.toFloat(),
-                onValueChange = {
-                    state.pixelateModifier = state.pixelateModifier.copy(subdivisions = it.toInt())
-                },
-                valueRange = 0f..100f,
-            )
+    val pixelateControl = persistentListOf(
+        Control.Slider(
+            name = "Subdivisions",
+            value = { state.pixelateModifier.subdivisions.toFloat() },
+            onValueChange = {
+                state.pixelateModifier = state.pixelateModifier.copy(subdivisions = it.toInt())
+            },
+            valueRange = { 0f..100f },
         )
+    )
 
-    val warpControl
-        get() = persistentListOf(
-            Control.Slider(
-                name = "Amount",
-                value = state.warpModifier.amount,
-                onValueChange = {
-                    state.warpModifier = state.warpModifier.copy(amount = it)
-                },
-                valueRange = -5f..5f,
-            ),
-            Control.Slider(
-                name = "Radius",
-                value = state.warpModifier.radius.value,
-                onValueChange = {
-                    state.warpModifier = state.warpModifier.copy(radius = it.dp)
-                },
-                valueRange = 0f..1000f
-            ),
-        )
+    val warpControl = persistentListOf(
+        Control.Slider(
+            name = "Amount",
+            value = { state.warpModifier.amount },
+            onValueChange = {
+                state.warpModifier = state.warpModifier.copy(amount = it)
+            },
+            valueRange = { -5f..5f },
+        ),
+        Control.Slider(
+            name = "Radius",
+            value = { state.warpModifier.radius.value },
+            onValueChange = {
+                state.warpModifier = state.warpModifier.copy(radius = it.dp)
+            },
+            valueRange = { 0f..1000f }
+        ),
+    )
 
     val modifierControls
         get() = when (state.demoModifier) {
@@ -404,10 +419,9 @@ class ShaderDemoControl(
             is DemoModifier.Warp -> warpControl
         }
 
-    val subjectModifierControl
-        get() = Control.ControlRow(
-            controls = persistentListOf(subjectControl, modifierControl)
-        )
+    val subjectModifierControl = Control.ControlRow(
+        controls = { persistentListOf(subjectControl, modifierControl) },
+    )
 
     val controls
         get() = persistentListOf(

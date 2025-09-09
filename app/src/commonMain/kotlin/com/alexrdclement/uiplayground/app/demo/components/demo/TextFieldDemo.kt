@@ -158,146 +158,148 @@ fun rememberTextFieldDemoControl(
 class TextFieldDemoControl(
     val state: TextFieldDemoState,
 ) {
-    val textFieldControl
-        get() = Control.TextField(
-            name = "Text",
-            textFieldState = state.textFieldState,
-            includeLabel = false,
-        )
+    val textFieldControl = Control.TextField(
+        name = "Text",
+        textFieldState = state.textFieldState,
+        includeLabel = false,
+    )
 
-    val styleControl
-        get() = Control.Dropdown(
-            name = "Style",
-            values = TextStyle.entries.map {
+    val styleControl = Control.Dropdown(
+        name = "Style",
+        values = {
+            TextStyle.entries.map {
                 Control.Dropdown.DropdownItem(
                     name = it.name,
                     value = it,
                 )
-            }.toPersistentList(),
-            selectedIndex = TextStyle.entries.indexOf(state.style),
-            onValueChange = { state.style = TextStyle.entries[it] },
-        )
+            }.toPersistentList()
+        },
+        selectedIndex = { TextStyle.entries.indexOf(state.style) },
+        onValueChange = { state.style = TextStyle.entries[it] },
+    )
 
-    val widthControl
-        get() = Control.Slider(
-            name = "Width",
-            value = state.width.value,
-            onValueChange = {
-                state.width = it.dp
-            },
-            valueRange = 0f..state.maxWidth.value,
-        )
+    val widthControl = Control.Slider(
+        name = "Width",
+        value = { state.width.value },
+        onValueChange = {
+            state.width = it.dp
+        },
+        valueRange = { 0f..state.maxWidth.value },
+    )
 
-    val enabledControl
-        get() = Control.Toggle(
-            name = "Enabled",
-            value = state.enabled,
-            onValueChange = {
-                state.enabled = it
-            }
-        )
+    val enabledControl = Control.Toggle(
+        name = "Enabled",
+        value = { state.enabled },
+        onValueChange = {
+            state.enabled = it
+        }
+    )
 
-    val keyboardTypeControl
-        get() = Control.Dropdown(
-            name = "Keyboard type",
-            values = keyboardTypes.map {
+    val keyboardTypeControl = Control.Dropdown(
+        name = "Keyboard type",
+        values = {
+            keyboardTypes.map {
                 Control.Dropdown.DropdownItem(
                     name = it.toString(),
                     value = it,
                 )
-            }.toImmutableList(),
-            selectedIndex = keyboardTypes.indexOf(state.keyboardType),
-            onValueChange = {
-                state.keyboardType = keyboardTypes[it]
-            },
-        )
+            }.toImmutableList()
+        },
+        selectedIndex = { keyboardTypes.indexOf(state.keyboardType) },
+        onValueChange = {
+            state.keyboardType = keyboardTypes[it]
+        },
+    )
 
-    val keyboardCapitalizationControl
-        get() = Control.Dropdown(
-            name = "Keyboard capitalization",
-            values = keyboardCapitalizations.map {
+    val keyboardCapitalizationControl = Control.Dropdown(
+        name = "Keyboard capitalization",
+        values = {
+            keyboardCapitalizations.map {
                 Control.Dropdown.DropdownItem(
                     name = it.toString(),
                     value = it,
                 )
-            }.toImmutableList(),
-            selectedIndex = keyboardCapitalizations.indexOf(state.keyboardCapitalization),
-            onValueChange = {
-                state.keyboardCapitalization = keyboardCapitalizations[it]
-            }
-        )
+            }.toImmutableList()
+        },
+        selectedIndex = { keyboardCapitalizations.indexOf(state.keyboardCapitalization) },
+        onValueChange = {
+            state.keyboardCapitalization = keyboardCapitalizations[it]
+        }
+    )
 
-    val autoCorrectEnabledControl
-        get() = Control.Toggle(
-            name = "Auto-correct",
-            value = state.autoCorrectEnabled,
-            onValueChange = { state.autoCorrectEnabled = it }
-        )
+    val autoCorrectEnabledControl = Control.Toggle(
+        name = "Auto-correct",
+        value = { state.autoCorrectEnabled },
+        onValueChange = { state.autoCorrectEnabled = it }
+    )
 
-    val showKeyboardOnFocusControl
-        get() = Control.Toggle(
-            name = "Show keyboard on focus",
-            value = state.showKeyboardOnFocus,
-            onValueChange = { state.showKeyboardOnFocus = it }
-        )
+    val showKeyboardOnFocusControl = Control.Toggle(
+        name = "Show keyboard on focus",
+        value = { state.showKeyboardOnFocus },
+        onValueChange = { state.showKeyboardOnFocus = it }
+    )
 
-    val lineLimitsControl
-        get() = Control.Dropdown(
-            name = "Line limits",
-            values = LineLimits.entries.map {
+    val lineLimitsControl = Control.Dropdown(
+        name = "Line limits",
+        values = {
+            LineLimits.entries.map {
                 Control.Dropdown.DropdownItem(
                     name = it.name,
                     value = it,
                 )
-            }.toImmutableList(),
-            selectedIndex = LineLimits.entries.indexOf(state.lineLimits),
-            onValueChange = {
-                state.lineLimits = LineLimits.entries[it]
-            }
-        )
-    val minHeightInLinesControl
-        get() = Control.TextField(
-            name = "Min height in lines",
-            textFieldState = state.minHeightInLinesTextFieldState,
-            enabled = state.lineLimits == LineLimits.Multiline,
-            keyboardOptions = KeyboardOptions.Default.copy(
+            }.toImmutableList()
+        },
+        selectedIndex = { LineLimits.entries.indexOf(state.lineLimits) },
+        onValueChange = {
+            state.lineLimits = LineLimits.entries[it]
+        }
+    )
+    val minHeightInLinesControl = Control.TextField(
+        name = "Min height in lines",
+        textFieldState = state.minHeightInLinesTextFieldState,
+        enabled = { state.lineLimits == LineLimits.Multiline },
+        keyboardOptions = {
+            KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number,
-            ),
-            inputTransformation = InputTransformation.onlyDigits(),
-        )
-    val maxHeightInLinesControl
-        get() = Control.TextField(
-            name = "Max height in lines",
-            textFieldState = state.maxHeightInLinesTextFieldState,
-            enabled = state.lineLimits == LineLimits.Multiline,
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-            ),
-            inputTransformation = InputTransformation.onlyDigits(),
-        )
+            )
+        },
+        inputTransformation = { InputTransformation.onlyDigits() },
+    )
 
-    val inputTransformationControl
-        get() = Control.Dropdown(
-            name = "Input Transformations",
-            values = InputTransformations.entries.map {
+    val maxHeightInLinesControl = Control.TextField(
+        name = "Max height in lines",
+        textFieldState = state.maxHeightInLinesTextFieldState,
+        enabled = { state.lineLimits == LineLimits.Multiline },
+        keyboardOptions = {
+            KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number,
+            )
+        },
+        inputTransformation = { InputTransformation.onlyDigits() },
+    )
+
+    val inputTransformationControl = Control.Dropdown(
+        name = "Input Transformations",
+        values = {
+            InputTransformations.entries.map {
                 Control.Dropdown.DropdownItem(
                     name = it.name,
                     value = it,
                 )
-            }.toImmutableList(),
-            selectedIndex = InputTransformations.entries.indexOf(state.inputTransformation),
-            onValueChange = {
-                state.inputTransformation = InputTransformations.entries[it]
-            }
-        )
+            }.toImmutableList()
+        },
+        selectedIndex = { InputTransformations.entries.indexOf(state.inputTransformation) },
+        onValueChange = {
+            state.inputTransformation = InputTransformations.entries[it]
+        }
+    )
 
-    val keyboardControls
-        get() = persistentListOf(
-            keyboardTypeControl,
-            keyboardCapitalizationControl,
-            autoCorrectEnabledControl,
-            showKeyboardOnFocusControl,
-        )
+    val keyboardControls = persistentListOf(
+        keyboardTypeControl,
+        keyboardCapitalizationControl,
+        autoCorrectEnabledControl,
+        showKeyboardOnFocusControl,
+    )
 
     val lineControls
         get() = if (state.lineLimits == LineLimits.Multiline) {

@@ -126,84 +126,76 @@ fun rememberCurveStitchDemoControl(
 class CurveStitchDemoControl(
     val state: CurveStitchDemoState,
 ) {
-    val numLines
-        get() = Control.Slider(
-            name = "Lines",
-            value = state.numLines.toFloat(),
-            onValueChange = {
-                state.numLines = it.toInt()
-            },
-            valueRange = 1f..100f,
-        )
+    val numLines = Control.Slider(
+        name = "Lines",
+        value = { state.numLines.toFloat() },
+        onValueChange = {
+            state.numLines = it.toInt()
+        },
+        valueRange = { 1f..100f },
+    )
 
-    val numPoints
-        get() = Control.Slider(
-            name = "Points",
-            value = state.numPoints.toFloat(),
-            onValueChange = {
-                state.numPoints = it.toInt()
-            },
-            valueRange = 2f..100f,
-        )
+    val numPoints = Control.Slider(
+        name = "Points",
+        value = { state.numPoints.toFloat() },
+        onValueChange = {
+            state.numPoints = it.toInt()
+        },
+        valueRange = { 2f..100f },
+    )
 
-    val innerRadius
-        get() = Control.Slider(
-            name = "Inner radius",
-            value = state.innerRadius,
-            onValueChange = {
-                state.innerRadius = it
-            },
-            valueRange = 0f..1f,
-        )
+    val innerRadius = Control.Slider(
+        name = "Inner radius",
+        value = { state.innerRadius },
+        onValueChange = {
+            state.innerRadius = it
+        },
+        valueRange = { 0f..1f },
+    )
 
-    val starShapeInsidePoints
-        get() = Control.Toggle(
-            name = "Inside points",
-            value = state.starShapeInsidePoints,
-            onValueChange = {
-                state.starShapeInsidePoints = it
-            },
-        )
+    val starShapeInsidePoints = Control.Toggle(
+        name = "Inside points",
+        value = { state.starShapeInsidePoints },
+        onValueChange = {
+            state.starShapeInsidePoints = it
+        },
+    )
 
-    val starShapeOutsidePoints
-        get() = Control.Toggle(
-            name = "Outside points",
-            value = state.starShapeOutsidePoints,
-            onValueChange = {
-                state.starShapeOutsidePoints = it
-            },
-        )
+    val starShapeOutsidePoints = Control.Toggle(
+        name = "Outside points",
+        value = { state.starShapeOutsidePoints },
+        onValueChange = {
+            state.starShapeOutsidePoints = it
+        },
+    )
 
-    val rotation
-        get() = Control.Slider(
-            name = "Rotation",
-            value = state.rotation,
-            onValueChange = {
-                state.rotation = (it / 45f).roundToInt() * 45f // snap to 45 degree increments
-            },
-            valueRange = 0f..360f,
-        )
+    val rotation = Control.Slider(
+        name = "Rotation",
+        value = { state.rotation },
+        onValueChange = {
+            state.rotation = (it / 45f).roundToInt() * 45f // snap to 45 degree increments
+        },
+        valueRange = { 0f..360f },
+    )
 
-    val strokeWidth
-        get() = Control.Slider(
-            name = "Stroke Width",
-            value = state.strokeWidth.value,
-            onValueChange = {
-                state.strokeWidth = it.dp
-            },
-            valueRange = 1f..100f,
-        )
+    val strokeWidth = Control.Slider(
+        name = "Stroke Width",
+        value = { state.strokeWidth.value },
+        onValueChange = {
+            state.strokeWidth = it.dp
+        },
+        valueRange = { 1f..100f },
+    )
 
-    val controls
-        get() = persistentListOf(
-            numLines,
-            numPoints,
-            innerRadius,
-            starShapeInsidePoints,
-            starShapeOutsidePoints,
-            rotation,
-            strokeWidth,
-        )
+    val controls = persistentListOf(
+        numLines,
+        numPoints,
+        innerRadius,
+        starShapeInsidePoints,
+        starShapeOutsidePoints,
+        rotation,
+        strokeWidth,
+    )
 }
 
 @Preview

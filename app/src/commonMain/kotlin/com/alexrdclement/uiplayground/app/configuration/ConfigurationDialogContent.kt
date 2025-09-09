@@ -33,13 +33,15 @@ fun ConfigurationDialogContent(
     }
     val colorModeControl = Control.Dropdown(
         name = "Color mode",
-        values = ColorMode.entries.map {
-            Control.Dropdown.DropdownItem(
-                name = it.name,
-                value = it,
-            )
-        }.toPersistentList(),
-        selectedIndex = ColorMode.entries.indexOf(colorMode),
+        values = {
+            ColorMode.entries.map {
+                Control.Dropdown.DropdownItem(
+                    name = it.name,
+                    value = it,
+                )
+            }.toPersistentList()
+        },
+        selectedIndex = { ColorMode.entries.indexOf(colorMode) },
         onValueChange = {
             val newValue = ColorMode.entries[it]
             if (configurationController.setColorMode(newValue)) {
@@ -55,13 +57,15 @@ fun ConfigurationDialogContent(
     }
     val fontFamilyControl = Control.Dropdown(
         name = "Font family",
-        values = FontFamily.entries.map {
-            Control.Dropdown.DropdownItem(
-                name = it.name,
-                value = it,
-            )
-        }.toPersistentList(),
-        selectedIndex = FontFamily.entries.indexOf(fontFamily),
+        values = {
+            FontFamily.entries.map {
+                Control.Dropdown.DropdownItem(
+                    name = it.name,
+                    value = it,
+                )
+            }.toPersistentList()
+        },
+        selectedIndex = { FontFamily.entries.indexOf(fontFamily) },
         onValueChange = {
             val newValue = FontFamily.entries[it]
             val typography = makePlaygroundTypography(
@@ -78,13 +82,15 @@ fun ConfigurationDialogContent(
     }
     val indicationControl = Control.Dropdown(
         name = "Indication",
-        values = PlaygroundIndicationType.entries.map {
-            Control.Dropdown.DropdownItem(
-                name = it.name,
-                value = it,
-            )
-        }.toPersistentList(),
-        selectedIndex = PlaygroundIndicationType.entries.indexOf(indicationType),
+        values = {
+            PlaygroundIndicationType.entries.map {
+                Control.Dropdown.DropdownItem(
+                    name = it.name,
+                    value = it,
+                )
+            }.toPersistentList()
+        },
+        selectedIndex = { PlaygroundIndicationType.entries.indexOf(indicationType) },
         onValueChange = {
             val newValue = PlaygroundIndicationType.entries[it]
             if (configurationController.setIndication(newValue.toIndication())) {

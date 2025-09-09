@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
@@ -21,15 +22,18 @@ fun SliderControl(
     control: Control.Slider,
     modifier: Modifier = Modifier
 ) {
+    val value by rememberUpdatedState(control.value())
+    val valueRange by rememberUpdatedState(control.valueRange())
+
     Column(
         verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
         modifier = modifier,
     ) {
         Text(text = control.name, style = PlaygroundTheme.typography.labelLarge)
         Slider(
-            value = control.value,
+            value = value,
             onValueChange = control.onValueChange,
-            valueRange = control.valueRange,
+            valueRange = valueRange,
             modifier = Modifier.semantics {
                 contentDescription = control.name
             }
@@ -45,7 +49,7 @@ private fun Preview() {
         val control = remember {
             Control.Slider(
                 name = "Amount",
-                value = value,
+                value = { value },
                 onValueChange = { value = it },
             )
         }

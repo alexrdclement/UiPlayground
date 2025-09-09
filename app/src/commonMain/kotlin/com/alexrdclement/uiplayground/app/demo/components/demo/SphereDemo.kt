@@ -96,81 +96,71 @@ fun rememberSphereDemoControl(
 class SphereDemoControl(
     private val state: SphereDemoState,
 ) {
-    val fillControl
-        get() = Control.Toggle(
-            name = "Fill",
-            value = state.fill,
-            onValueChange = { state.fill = it },
-        )
+    val fillControl = Control.Toggle(
+        name = "Fill",
+        value = { state.fill },
+        onValueChange = { state.fill = it },
+    )
 
-    val xRotationControl
-        get() = Control.Slider(
-            name = "X axis rotation",
-            value = state.viewingAngle.rotationX,
-            valueRange = -180f..180f,
-            onValueChange = { state.viewingAngle = state.viewingAngle.copy(rotationX = it) },
-        )
-    val yRotationControl
-        get() = Control.Slider(
-            name = "Y axis rotation",
-            value = state.viewingAngle.rotationY,
-            valueRange = -180f..180f,
-            onValueChange = { state.viewingAngle = state.viewingAngle.copy(rotationY = it) },
-        )
-    val zRotationControl
-        get() = Control.Slider(
-            name = "Z axis rotation",
-            value = state.viewingAngle.rotationZ,
-            valueRange = -180f..180f,
-            onValueChange = { state.viewingAngle = state.viewingAngle.copy(rotationZ = it) },
-        )
+    val xRotationControl = Control.Slider(
+        name = "X axis rotation",
+        value = { state.viewingAngle.rotationX },
+        valueRange = { -180f..180f },
+        onValueChange = { state.viewingAngle = state.viewingAngle.copy(rotationX = it) },
+    )
+    val yRotationControl = Control.Slider(
+        name = "Y axis rotation",
+        value = { state.viewingAngle.rotationY },
+        valueRange = { -180f..180f },
+        onValueChange = { state.viewingAngle = state.viewingAngle.copy(rotationY = it) },
+    )
+    val zRotationControl = Control.Slider(
+        name = "Z axis rotation",
+        value = { state.viewingAngle.rotationZ },
+        valueRange = { -180f..180f },
+        onValueChange = { state.viewingAngle = state.viewingAngle.copy(rotationZ = it) },
+    )
 
-    val numLatitudeLinesControl
-        get() = Control.Slider(
-            name = "Latitude lines",
-            value = state.numLatitudeLines.toFloat(),
-            valueRange = 1f..100f,
-            onValueChange = { state.numLatitudeLines = it.roundToInt() },
-        )
+    val numLatitudeLinesControl = Control.Slider(
+        name = "Latitude lines",
+        value = { state.numLatitudeLines.toFloat() },
+        valueRange = { 1f..100f },
+        onValueChange = { state.numLatitudeLines = it.roundToInt() },
+    )
 
-    val numLongitudeLinesControl
-        get() = Control.Slider(
-            name = "Longitude lines",
-            value = state.numLongitudeLines.toFloat(),
-            valueRange = 1f..100f,
-            onValueChange = { state.numLongitudeLines = it.roundToInt() },
-        )
+    val numLongitudeLinesControl = Control.Slider(
+        name = "Longitude lines",
+        value = { state.numLongitudeLines.toFloat() },
+        valueRange = { 1f..100f },
+        onValueChange = { state.numLongitudeLines = it.roundToInt() },
+    )
 
-    val strokeWidthControl
-        get() = Control.Slider(
-            name = "Stroke width",
-            value = state.strokeWidth.value,
-            valueRange = 1f..100f,
-            onValueChange = { state.strokeWidth = it.dp },
-        )
+    val strokeWidthControl = Control.Slider(
+        name = "Stroke width",
+        value = { state.strokeWidth.value },
+        valueRange = { 1f..100f },
+        onValueChange = { state.strokeWidth = it.dp },
+    )
 
-    val outlineControl
-        get() = Control.Toggle(
-            name = "Outline",
-            value = state.outline,
-            onValueChange = { state.outline = it },
-        )
+    val outlineControl = Control.Toggle(
+        name = "Outline",
+        value = { state.outline },
+        onValueChange = { state.outline = it },
+    )
 
-    val outlineStrokeWidthControl
-        get() = Control.Slider(
-            name = "Outline stroke width",
-            value = state.outlineStrokeWidth.value,
-            valueRange = 1f..100f,
-            onValueChange = { state.outlineStrokeWidth = it.dp },
-        )
+    val outlineStrokeWidthControl = Control.Slider(
+        name = "Outline stroke width",
+        value = { state.outlineStrokeWidth.value },
+        valueRange = { 1f..100f },
+        onValueChange = { state.outlineStrokeWidth = it.dp },
+    )
 
-    val precisionDegreeControl
-        get() = Control.Slider(
-            name = "Precision degrees",
-            value = state.precisionDegree.toFloat(),
-            valueRange = 1f..100f,
-            onValueChange = { state.precisionDegree = it.roundToInt() },
-        )
+    val precisionDegreeControl = Control.Slider(
+        name = "Precision degrees",
+        value = { state.precisionDegree.toFloat() },
+        valueRange = { 1f..100f },
+        onValueChange = { state.precisionDegree = it.roundToInt() },
+    )
 
     val outlineControls
         get() = if (state.outline) {
