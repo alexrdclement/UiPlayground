@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.layout.onSizeChanged
+import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlin.math.min
 import kotlin.math.sin
@@ -67,97 +68,102 @@ fun GradientDemo(modifier: Modifier = Modifier) {
         .padding(horizontal = PlaygroundTheme.spacing.large)
         .aspectRatio(1f)
 
-    Column(
+    Demo(
         modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .navigationBarsPadding()
-            .onSizeChanged {
-                widthPx = it.width
-            },
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.large),
+            .fillMaxSize(),
     ) {
-        Box(
-            modifier = baseModifier
-                .background(
-                    brush = Brush.sweepGradient(
-                        colors = gradientColors,
-                    ),
-                    shape = CircleShape,
-                )
-        )
-        Box(
-            modifier = baseModifier
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = gradientColors,
-                        start = Offset(offset, offset),
-                        end = Offset(offset + widthPxFloat, offset + widthPxFloat),
-                        tileMode = TileMode.Repeated,
-                    ),
-                )
-        )
-        Box(
-            modifier = baseModifier
-                .meshGradient(
-                    points = gradientColors.mapIndexed { index, color ->
-                        listOf(
-                            Offset(0.0f, index / (gradientColors.size.toFloat() - 1)) to color,
-                            Offset(
-                                offset / widthPxFloat,
-                                if (index == 0) 0.0f else min(1f, index / (gradientColors.size.toFloat() - 1) + 0.2f),
-                            ) to color,
-                            Offset(
-                                min(.999f, offset / widthPxFloat + 0.2f),
-                                if (index == 0) 0f else min(1f, index / (gradientColors.size.toFloat() - 1) + 0.2f),
-                            ) to color,
-                            Offset(1.0f, index / (gradientColors.size.toFloat() - 1)) to color,
-                        )
-                    },
-                    resolutionX = 10,
-                    resolutionY = 1,
-                    showPoints = false,
-                    indicesModifier = { it },
-                )
-        )
-        Box(
-            modifier = baseModifier
-                .meshGradient(
-                    points = gradientColors.mapIndexed { index, color ->
-                        val progress = (sin(2 * kotlin.math.PI * offset / widthPxFloat) / 8)
-                        listOf(
-                            Offset(
-                                0.0f,
-                                if (index == 0) 0f else index / (gradientColors.lastIndex.toFloat())
-                            ) to color,
-                            Offset(
-                                .33f,
-                                when (index) {
-                                    0 -> 0f
-                                    gradientColors.lastIndex -> 1f
-                                    else -> (index / (gradientColors.lastIndex.toFloat()) - progress.toFloat()).coerceIn(0f, 1f)
-                                }
-                            ) to color,
-                            Offset(
-                                .66f,
-                                when (index) {
-                                    0 -> 0f
-                                    gradientColors.lastIndex -> 1f
-                                    else -> (index / (gradientColors.lastIndex.toFloat()) + progress.toFloat()).coerceIn(0f, 1f)
-                                }
-                            ) to color,
-                            Offset(
-                                1.0f,
-                                if (index == gradientColors.lastIndex) 1f
-                                else index / (gradientColors.size.toFloat() - 1)) to color,
-                        )
-                    },
-                    resolutionX = 10,
-                    resolutionY = 1,
-                    showPoints = false,
-                    indicesModifier = { it },
-                )
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .navigationBarsPadding()
+                .onSizeChanged {
+                    widthPx = it.width
+                },
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.large),
+        ) {
+            Box(
+                modifier = baseModifier
+                    .background(
+                        brush = Brush.sweepGradient(
+                            colors = gradientColors,
+                        ),
+                        shape = CircleShape,
+                    )
+            )
+            Box(
+                modifier = baseModifier
+                    .background(
+                        brush = Brush.linearGradient(
+                            colors = gradientColors,
+                            start = Offset(offset, offset),
+                            end = Offset(offset + widthPxFloat, offset + widthPxFloat),
+                            tileMode = TileMode.Repeated,
+                        ),
+                    )
+            )
+            Box(
+                modifier = baseModifier
+                    .meshGradient(
+                        points = gradientColors.mapIndexed { index, color ->
+                            listOf(
+                                Offset(0.0f, index / (gradientColors.size.toFloat() - 1)) to color,
+                                Offset(
+                                    offset / widthPxFloat,
+                                    if (index == 0) 0.0f else min(1f, index / (gradientColors.size.toFloat() - 1) + 0.2f),
+                                ) to color,
+                                Offset(
+                                    min(.999f, offset / widthPxFloat + 0.2f),
+                                    if (index == 0) 0f else min(1f, index / (gradientColors.size.toFloat() - 1) + 0.2f),
+                                ) to color,
+                                Offset(1.0f, index / (gradientColors.size.toFloat() - 1)) to color,
+                            )
+                        },
+                        resolutionX = 10,
+                        resolutionY = 1,
+                        showPoints = false,
+                        indicesModifier = { it },
+                    )
+            )
+            Box(
+                modifier = baseModifier
+                    .meshGradient(
+                        points = gradientColors.mapIndexed { index, color ->
+                            val progress = (sin(2 * kotlin.math.PI * offset / widthPxFloat) / 8)
+                            listOf(
+                                Offset(
+                                    0.0f,
+                                    if (index == 0) 0f else index / (gradientColors.lastIndex.toFloat())
+                                ) to color,
+                                Offset(
+                                    .33f,
+                                    when (index) {
+                                        0 -> 0f
+                                        gradientColors.lastIndex -> 1f
+                                        else -> (index / (gradientColors.lastIndex.toFloat()) - progress.toFloat()).coerceIn(0f, 1f)
+                                    }
+                                ) to color,
+                                Offset(
+                                    .66f,
+                                    when (index) {
+                                        0 -> 0f
+                                        gradientColors.lastIndex -> 1f
+                                        else -> (index / (gradientColors.lastIndex.toFloat()) + progress.toFloat()).coerceIn(0f, 1f)
+                                    }
+                                ) to color,
+                                Offset(
+                                    1.0f,
+                                    if (index == gradientColors.lastIndex) 1f
+                                    else index / (gradientColors.size.toFloat() - 1)) to color,
+                            )
+                        },
+                        resolutionX = 10,
+                        resolutionY = 1,
+                        showPoints = false,
+                        indicesModifier = { it },
+                    )
+            )
+        }
     }
 }

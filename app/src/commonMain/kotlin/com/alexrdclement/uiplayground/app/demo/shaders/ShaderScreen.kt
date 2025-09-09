@@ -3,17 +3,15 @@ package com.alexrdclement.uiplayground.app.demo.shaders
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
@@ -24,7 +22,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
-import com.alexrdclement.uiplayground.app.demo.DemoWithControls
+import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.subject.DemoCircle
 import com.alexrdclement.uiplayground.app.demo.subject.DemoSubject
@@ -44,7 +42,7 @@ import com.alexrdclement.uiplayground.shaders.noise
 import com.alexrdclement.uiplayground.shaders.pixelate
 import com.alexrdclement.uiplayground.shaders.warp
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -53,71 +51,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun ShaderScreen(
     onNavigateBack: () -> Unit,
     onConfigureClick: () -> Unit,
+    state : DemoShaderState = rememberDemoShaderState(),
+    control: DemoShaderControl = rememberDemoShaderControl(state = state),
 ) {
-    var demoSubject by remember { mutableStateOf(DemoSubject.Circle) }
-    val demoModifiers = remember {
-        mutableStateListOf(
-            DemoModifier.None,
-            DemoModifier.Blur(
-                radius = 0.dp,
-                edgeTreatment = BlurredEdgeTreatment.Rectangle
-            ),
-            DemoModifier.ColorInvert(
-                amount = 0f,
-            ),
-            DemoModifier.ColorSplit(
-                xAmount = 0f,
-                yAmount = 0f,
-                colorMode = ColorSplitMode.RGB,
-            ),
-            DemoModifier.Noise(amount = 0f, colorMode = NoiseColorMode.Monochrome),
-            DemoModifier.Pixelate(subdivisions = 0),
-            DemoModifier.Warp(
-                radius = 200.dp,
-                amount = .2f,
-            ),
-        )
-    }
-    var demoModifierIndex by remember { mutableIntStateOf(0) }
-    val demoModifier by remember(demoModifiers, demoModifierIndex) {
-        derivedStateOf { demoModifiers[demoModifierIndex] }
-    }
-
-    val subjectModifierControl = Control.ControlRow(
-        controls = listOf(
-            Control.Dropdown(
-                name = "Subject",
-                values = DemoSubject.entries.map {
-                    Control.Dropdown.DropdownItem(name = it.name, value = it)
-                }.toPersistentList(),
-                selectedIndex = DemoSubject.entries.indexOf(demoSubject),
-                onValueChange = { demoSubject = DemoSubject.entries[it] },
-                includeLabel = false,
-            ),
-            Control.Dropdown(
-                name = "Modifier",
-                values = demoModifiers.map {
-                    Control.Dropdown.DropdownItem(name = it.name, value = it)
-                }.toPersistentList(),
-                selectedIndex = demoModifiers.indexOf(demoModifier),
-                onValueChange = { demoModifierIndex = it },
-                includeLabel = false,
-            )
-        ).toPersistentList()
-    )
-
-    val controls: ImmutableList<Control> by remember(demoModifier, subjectModifierControl) {
-        derivedStateOf {
-            persistentListOf(
-                *makeModifierControls(
-                    demoModifier = demoModifier,
-                    demoModifierIndex = demoModifierIndex,
-                    demoModifiers = demoModifiers,
-                ).toTypedArray(),
-                subjectModifierControl,
-            )
-        }
-    }
     Scaffold(
         topBar = {
             DemoTopBar(
@@ -125,10 +61,12 @@ fun ShaderScreen(
                 onNavigateBack = onNavigateBack,
                 onConfigureClick = onConfigureClick,
             )
-        }
+        },
+        modifier = Modifier
+            .displayCutoutPadding(),
     ) { innerPadding ->
-        DemoWithControls(
-            controls = controls.toPersistentList(),
+        Demo(
+            controls = control.controls,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
@@ -138,7 +76,7 @@ fun ShaderScreen(
                     .fillMaxSize()
             ) {
                 var pointerOffset: Offset by remember { mutableStateOf(Offset.Zero) }
-                val modifier = when (val innerModifier = demoModifier) {
+                val modifier = when (val innerModifier = state.demoModifier) {
                     DemoModifier.None -> Modifier
                     is DemoModifier.Blur -> Modifier.blur(
                         radius = innerModifier.radius,
@@ -175,7 +113,7 @@ fun ShaderScreen(
                         pointerOffset = change.position
                     }
                 }
-                when (demoSubject) {
+                when (state.demoSubject) {
                     DemoSubject.Circle -> DemoCircle(modifier = modifier)
                     DemoSubject.CircleOutline -> DemoCircle(drawStyle = Stroke(2f), modifier = modifier)
                     DemoSubject.GridLine -> Grid(
@@ -232,25 +170,107 @@ fun ShaderScreen(
     }
 }
 
-private fun makeModifierControls(
-    demoModifier: DemoModifier,
-    demoModifierIndex: Int,
-    demoModifiers: SnapshotStateList<DemoModifier>,
-): ImmutableList<Control> {
-    return when (demoModifier) {
-        DemoModifier.None -> persistentListOf()
-        is DemoModifier.Blur -> {
+@Composable
+fun rememberDemoShaderState(): DemoShaderState {
+    return remember { DemoShaderState() }
+}
+
+@Stable
+class DemoShaderState {
+    var demoSubject by mutableStateOf(DemoSubject.Circle)
+
+    var blurModifier by mutableStateOf(
+        DemoModifier.Blur(
+            radius = 0.dp,
+            edgeTreatment = BlurredEdgeTreatment.Rectangle
+        )
+    )
+    var colorInvertModifier by mutableStateOf(
+        DemoModifier.ColorInvert(
+            amount = 0f,
+        )
+    )
+    var colorSplitModifier by mutableStateOf(
+        DemoModifier.ColorSplit(
+            xAmount = 0f,
+            yAmount = 0f,
+            colorMode = ColorSplitMode.RGB,
+        )
+    )
+    var noiseModifier by mutableStateOf(
+        DemoModifier.Noise(amount = 0f, colorMode = NoiseColorMode.Monochrome)
+    )
+    var pixelateModifier by mutableStateOf(
+        DemoModifier.Pixelate(subdivisions = 0)
+    )
+    var warpModifier by mutableStateOf(
+        DemoModifier.Warp(
+            radius = 200.dp,
+            amount = .2f,
+        )
+    )
+
+    val demoModifiers
+        get() = listOf(
+            DemoModifier.None,
+            blurModifier,
+            colorInvertModifier,
+            colorSplitModifier,
+            noiseModifier,
+            pixelateModifier,
+            warpModifier,
+        )
+
+    var demoModifierIndex by mutableStateOf(0)
+        internal set
+    val demoModifier get() = demoModifiers[demoModifierIndex]
+}
+
+@Composable
+fun rememberDemoShaderControl(
+    state: DemoShaderState = rememberDemoShaderState(),
+): DemoShaderControl {
+    return remember(state) { DemoShaderControl(state) }
+}
+
+@Stable
+class DemoShaderControl(
+    val state: DemoShaderState,
+) {
+    val subjectControl
+        get() = Control.Dropdown(
+            name = "Subject",
+            values = DemoSubject.entries.map {
+                Control.Dropdown.DropdownItem(name = it.name, value = it)
+            }.toPersistentList(),
+            selectedIndex = DemoSubject.entries.indexOf(state.demoSubject),
+            onValueChange = { state.demoSubject = DemoSubject.entries[it] },
+            includeLabel = false,
+        )
+
+    val modifierControl
+        get() = Control.Dropdown(
+            name = "Modifier",
+            values = state.demoModifiers.map {
+                Control.Dropdown.DropdownItem(name = it.name, value = it)
+            }.toPersistentList(),
+            selectedIndex = state.demoModifierIndex,
+            onValueChange = { state.demoModifierIndex = it },
+            includeLabel = false,
+        )
+
+    val blurControls: PersistentList<Control>
+        get() {
             val edgeTreatments = listOf(
                 BlurredEdgeTreatment.Rectangle,
                 BlurredEdgeTreatment.Unbounded,
             )
-            persistentListOf(
+            return persistentListOf(
                 Control.Slider(
                     name = "Radius",
-                    value = demoModifier.radius.value,
+                    value = state.blurModifier.radius.value,
                     onValueChange = {
-                        demoModifiers[demoModifierIndex] =
-                            demoModifier.copy(radius = it.dp)
+                        state.blurModifier = state.blurModifier.copy(radius = it.dp)
                     },
                     valueRange = 0f..16f
                 ),
@@ -262,25 +282,29 @@ private fun makeModifierControls(
                             value = it
                         )
                     }.toPersistentList(),
-                    selectedIndex = edgeTreatments.indexOf(demoModifier.edgeTreatment),
+                    selectedIndex = edgeTreatments.indexOf(state.blurModifier.edgeTreatment),
                     onValueChange = {
-                        demoModifiers[demoModifierIndex] =
-                            demoModifier.copy(edgeTreatment = edgeTreatments[it])
+                        state.blurModifier = state.blurModifier.copy(edgeTreatment = edgeTreatments[it])
                     }
                 )
             )
         }
-        is DemoModifier.ColorInvert -> persistentListOf(
+
+    val colorInvertControls
+        get() = persistentListOf(
             Control.Slider(
                 name = "Amount",
-                value = demoModifier.amount,
+                value = state.colorInvertModifier.amount,
                 onValueChange = {
-                    demoModifiers[demoModifierIndex] = demoModifier.copy(amount = it)
+                    state.colorInvertModifier = state.colorInvertModifier.copy(amount = it)
                 },
                 valueRange = 0f..1f,
             )
         )
-        is DemoModifier.ColorSplit -> persistentListOf(
+
+
+    val colorSplitControls
+        get() = persistentListOf(
             Control.Dropdown(
                 name = "Color mode",
                 values = ColorSplitMode.entries.map {
@@ -290,35 +314,52 @@ private fun makeModifierControls(
                     )
                 }.toPersistentList(),
                 selectedIndex = ColorSplitMode.entries
-                    .indexOf(demoModifier.colorMode),
+                    .indexOf(state.colorSplitModifier.colorMode),
                 onValueChange = {
                     val colorMode = ColorSplitMode.entries[it]
-                    demoModifiers[demoModifierIndex] = demoModifier.copy(colorMode = colorMode)
+                    state.colorSplitModifier = state.colorSplitModifier.copy(colorMode = colorMode)
                 }
             ),
             Control.Slider(
                 name = "X Amount",
-                value = demoModifier.xAmount,
+                value = state.colorSplitModifier.xAmount,
                 onValueChange = {
-                    demoModifiers[demoModifierIndex] = demoModifier.copy(xAmount = it)
+                    state.colorSplitModifier = state.colorSplitModifier.copy(xAmount = it)
                 },
                 valueRange = -1f..1f,
             ),
             Control.Slider(
                 name = "Y Amount",
-                value = demoModifier.yAmount,
+                value = state.colorSplitModifier.yAmount,
                 onValueChange = {
-                    demoModifiers[demoModifierIndex] = demoModifier.copy(yAmount = it)
+                    state.colorSplitModifier = state.colorSplitModifier.copy(yAmount = it)
                 },
                 valueRange = -1f..1f,
             ),
+            Control.Dropdown(
+                name = "Color mode",
+                values = ColorSplitMode.entries.map {
+                    Control.Dropdown.DropdownItem(
+                        name = it.name,
+                        value = it
+                    )
+                }.toPersistentList(),
+                selectedIndex = ColorSplitMode.entries
+                    .indexOf(state.colorSplitModifier.colorMode),
+                onValueChange = {
+                    val colorMode = ColorSplitMode.entries[it]
+                    state.colorSplitModifier = state.colorSplitModifier.copy(colorMode = colorMode)
+                }
+            )
         )
-        is DemoModifier.Noise -> persistentListOf(
+
+    val noiseControl
+        get() = persistentListOf(
             Control.Slider(
                 name = "Amount",
-                value = demoModifier.amount,
+                value = state.noiseModifier.amount,
                 onValueChange = {
-                    demoModifiers[demoModifierIndex] = demoModifier.copy(amount = it)
+                    state.noiseModifier = state.noiseModifier.copy(amount = it)
                 },
                 valueRange = 0f..1f,
             ),
@@ -331,43 +372,67 @@ private fun makeModifierControls(
                     )
                 }.toPersistentList(),
                 selectedIndex = NoiseColorMode.entries
-                    .indexOf(demoModifier.colorMode),
+                    .indexOf(state.noiseModifier.colorMode),
                 onValueChange = {
                     val colorMode = NoiseColorMode.entries[it]
-                    demoModifiers[demoModifierIndex] = demoModifier.copy(colorMode = colorMode)
+                    state.noiseModifier = state.noiseModifier.copy(colorMode = colorMode)
                 }
             )
         )
-        is DemoModifier.Pixelate -> persistentListOf(
+
+    val pixelateControl
+        get() = persistentListOf(
             Control.Slider(
-                name = "Amount",
-                value = demoModifier.subdivisions.toFloat(),
+                name = "Subdivisions",
+                value = state.pixelateModifier.subdivisions.toFloat(),
                 onValueChange = {
-                    demoModifiers[demoModifierIndex] = demoModifier.copy(subdivisions = it.toInt())
+                    state.pixelateModifier = state.pixelateModifier.copy(subdivisions = it.toInt())
                 },
                 valueRange = 0f..100f,
             )
         )
-        is DemoModifier.Warp -> persistentListOf(
+
+    val warpControl
+        get() = persistentListOf(
             Control.Slider(
                 name = "Amount",
-                value = demoModifier.amount,
+                value = state.warpModifier.amount,
                 onValueChange = {
-                    demoModifiers[demoModifierIndex] = demoModifier.copy(amount = it)
+                    state.warpModifier = state.warpModifier.copy(amount = it)
                 },
                 valueRange = -5f..5f,
             ),
             Control.Slider(
                 name = "Radius",
-                value = demoModifier.radius.value,
+                value = state.warpModifier.radius.value,
                 onValueChange = {
-                    demoModifiers[demoModifierIndex] =
-                        demoModifier.copy(radius = it.dp)
+                    state.warpModifier = state.warpModifier.copy(radius = it.dp)
                 },
                 valueRange = 0f..1000f
             ),
         )
-    }
+
+    val modifierControls
+        get() = when (state.demoModifier) {
+            DemoModifier.None -> persistentListOf()
+            is DemoModifier.Blur -> blurControls
+            is DemoModifier.ColorInvert -> colorInvertControls
+            is DemoModifier.ColorSplit -> colorSplitControls
+            is DemoModifier.Noise -> noiseControl
+            is DemoModifier.Pixelate -> pixelateControl
+            is DemoModifier.Warp -> warpControl
+        }
+
+    val subjectModifierControl
+        get() = Control.ControlRow(
+            controls = persistentListOf(subjectControl, modifierControl)
+        )
+
+    val controls
+        get() = persistentListOf(
+            *modifierControls.toTypedArray(),
+            subjectModifierControl,
+        )
 }
 
 @Preview

@@ -5,17 +5,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.app.demo.DemoWithControls
+import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.components.Button
 import com.alexrdclement.uiplayground.components.ButtonStyle
@@ -26,85 +27,125 @@ import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ButtonDemo(
+    state: ButtonDemoState = rememberButtonDemoState(),
+    control: ButtonDemoControl = rememberButtonDemoControl(state),
     modifier: Modifier = Modifier,
 ) {
-    var enabled by remember { mutableStateOf(true) }
-    val enabledControl = Control.Toggle(
-        name = "Enabled",
-        value = enabled,
-        onValueChange = { enabled = it },
-    )
-
-    var style by remember { mutableStateOf(ButtonStyle.Outline) }
-    val styleControl = Control.Dropdown(
-        name = "Style",
-        values = ButtonStyle.entries.map {
-            Control.Dropdown.DropdownItem(
-                name = it.name,
-                value = it,
-            )
-        }.toPersistentList(),
-        onValueChange = { style = ButtonStyle.entries[it] },
-        selectedIndex = ButtonStyle.entries.indexOf(style),
-    )
-
-    var maxWidthPx by remember { mutableIntStateOf(0) }
-    val maxWidth = with(LocalDensity.current) { maxWidthPx.toDp() }
-    var width by remember(maxWidth) { mutableStateOf(maxWidth) }
-    val widthControl = Control.Slider(
-        name = "Width",
-        value = width.value,
-        onValueChange = {
-            width = it.dp
-        },
-        valueRange = 0f..maxWidth.value,
-    )
-
-    var autoSizeText by remember { mutableStateOf(true) }
-    val autoSizeControl = Control.Toggle(
-        name = "Auto-size text",
-        value = autoSizeText,
-        onValueChange = {
-            autoSizeText = it
-        }
-    )
-
-    var softWrap by remember { mutableStateOf(false) }
-    val softWrapControl = Control.Toggle(
-        name = "Soft-wrap text",
-        value = softWrap,
-        onValueChange = {
-            softWrap = it
-        }
-    )
-
-    DemoWithControls(
-        controls = persistentListOf(
-            enabledControl,
-            styleControl,
-            widthControl,
-            autoSizeControl,
-            softWrapControl,
-        ),
+    val density = LocalDensity.current
+    Demo(
+        controls = control.controls,
         modifier = modifier
             .fillMaxSize()
-            .onSizeChanged { maxWidthPx = it.width },
+
     ) {
+        LaunchedEffect(this@Demo.maxWidth, density) {
+            with(density) { control.onSizeChanged(this@Demo.maxWidth) }
+        }
         Button(
             onClick = {},
-            style = style,
-            enabled = enabled,
+            style = state.style,
+            enabled = state.enabled,
             modifier = Modifier
-                .width(width)
+                .width(state.width)
                 .align(Alignment.Center)
                 .padding(PlaygroundTheme.spacing.medium)
         ) {
             Text(
                 text = "Button",
                 style = PlaygroundTheme.typography.labelLarge,
-                softWrap = softWrap,
-                autoSize = if (autoSizeText) TextAutoSize.StepBased() else null,
+                softWrap = state.softWrap,
+                autoSize = if (state.autoSizeText) TextAutoSize.StepBased() else null,
             )
+        }
+    }
+}
+
+@Composable
+fun rememberButtonDemoState(): ButtonDemoState = remember { ButtonDemoState() }
+
+@Stable
+class ButtonDemoState {
+    internal var enabled by mutableStateOf(true)
+    internal var style by mutableStateOf(ButtonStyle.Outline)
+    internal var maxWidth by mutableStateOf(0.dp)
+    internal var width by mutableStateOf(200.dp)
+    internal var autoSizeText by mutableStateOf(true)
+    internal var softWrap by mutableStateOf(false)
+}
+
+@Composable
+fun rememberButtonDemoControl(
+    state: ButtonDemoState,
+): ButtonDemoControl = remember(state) { ButtonDemoControl(state) }
+
+@Stable
+class ButtonDemoControl(
+    val state: ButtonDemoState,
+) {
+    val styleControl
+        get() = Control.Dropdown(
+            name = "Style",
+            values = ButtonStyle.entries.map {
+                Control.Dropdown.DropdownItem(
+                    name = it.name,
+                    value = it,
+                )
+            }.toPersistentList(),
+            onValueChange = { state.style = ButtonStyle.entries[it] },
+            selectedIndex = ButtonStyle.entries.indexOf(state.style),
+        )
+
+
+    val enabledControl
+        get() = Control.Toggle(
+            name = "Enabled",
+            value = state.enabled,
+            onValueChange = { state.enabled = it },
+        )
+    val widthControl
+        get() = Control.Slider(
+            name = "Width",
+            value = state.width.value,
+            onValueChange = {
+                state.width = it.dp
+            },
+            valueRange = 0f..state.maxWidth.value,
+        )
+
+    val autoSizeControl
+        get() = Control.Toggle(
+            name = "Auto-size text",
+            value = state.autoSizeText,
+            onValueChange = {
+                state.autoSizeText = it
+            }
+        )
+
+    val softWrapControl
+        get() = Control.Toggle(
+            name = "Soft-wrap text",
+            value = state.softWrap,
+            onValueChange = {
+                state.softWrap = it
+            }
+        )
+
+    val controls
+        get() = persistentListOf(
+            enabledControl,
+            styleControl,
+            widthControl,
+            autoSizeControl,
+            softWrapControl,
+        )
+
+    fun onSizeChanged(width: Dp) {
+        if (state.maxWidth == 0.dp) {
+            state.width = width
+        }
+        state.maxWidth = width
+        if (state.width > state.maxWidth) {
+            state.width = state.maxWidth
         }
     }
 }

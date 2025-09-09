@@ -3,7 +3,6 @@ package com.alexrdclement.uiplayground.app.demo.components.demo
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
@@ -12,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.CurrencyAmountField
 import com.alexrdclement.uiplayground.components.Text
@@ -26,20 +26,24 @@ fun CurrencyAmountFieldDemo(
     val text by snapshotFlow { textFieldState.text.toString() }
         .collectAsState(initial = textFieldState.text.toString())
 
-    Column(
+    Demo(
         modifier = modifier
-            .fillMaxSize()
-            .systemBarsPadding(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .fillMaxSize(),
     ) {
-        Text(
-            text = text,
-            style = PlaygroundTheme.typography.headline,
-        )
-        CurrencyAmountField(
-            textFieldState = textFieldState,
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = text,
+                style = PlaygroundTheme.typography.headline,
+            )
+            CurrencyAmountField(
+                textFieldState = textFieldState,
+            )
+        }
     }
 }
 

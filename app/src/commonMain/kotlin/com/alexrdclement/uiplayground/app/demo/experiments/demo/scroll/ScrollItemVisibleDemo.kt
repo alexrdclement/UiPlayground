@@ -6,18 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.InputTransformation
-import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,86 +21,37 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.app.demo.DemoWithControls
+import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.FadeSide
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.fade
-import com.alexrdclement.uiplayground.app.demo.util.onlyDigits
-import com.alexrdclement.uiplayground.app.demo.util.onlyDigitsAndDecimalPoint
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.Button
-import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundSpacing
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.roundToInt
 
-private const val initialItemCount = 8
-private val itemSize = DpSize(80.dp, 80.dp)
-private val fadeLengthInitial = 40.dp
-private const val itemVisibilityScrollThresholdInitial = 0.7f
-
 @Composable
 fun AnimateScrollItemVisibleDemo(
     modifier: Modifier = Modifier,
+    state: AnimateScrollItemVisibleDemoState = rememberAnimateScrollItemVisibleDemoState(),
+    control: AnimateScrollItemVisibleDemoControl = rememberAnimateScrollItemVisibleDemoControl(state),
+    itemSize: DpSize = DpSize(80.dp, 80.dp)
 ) {
     val lazyListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
-    val fadeLengthTextFieldState = rememberTextFieldState(
-        initialText = fadeLengthInitial.value.roundToInt().toString(),
-    )
-    val fadeLengthControl = Control.TextField(
-        name = "Fade length",
-        textFieldState = fadeLengthTextFieldState,
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Number,
-        ),
-        inputTransformation = InputTransformation.onlyDigits(),
-    )
+    val bottomFadeHeightPx = with(LocalDensity.current) { state.fadeLength.toPx().roundToInt() }
 
-    val fadeLength =
-        fadeLengthTextFieldState.text.toString().toIntOrNull()?.dp ?: fadeLengthInitial
-    val bottomFadeHeightPx = with(LocalDensity.current) { fadeLength.toPx().roundToInt() }
-
-    var showFadeBorders by remember { mutableStateOf(false) }
-    val bottomFadeBorderControl = Control.Toggle(
-        name = "Fade border",
-        value = showFadeBorders,
-        onValueChange = { showFadeBorders = it },
-    )
-
-    val itemVisibilityThresholdControlTextField = rememberTextFieldState(
-        initialText = itemVisibilityScrollThresholdInitial.toString(),
-    )
-    val itemVisibilityScrollThreshold =
-        itemVisibilityThresholdControlTextField.text.toString().toFloatOrNull()
-            ?: itemVisibilityScrollThresholdInitial
-    val itemVisibilityScrollThresholdControl = Control.TextField(
-        name = "Item visibility threshold",
-        textFieldState = itemVisibilityThresholdControlTextField,
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Decimal,
-        ),
-        inputTransformation = InputTransformation.onlyDigitsAndDecimalPoint(),
-    )
-
-    var items by remember { mutableStateOf((0 until initialItemCount).toList()) }
-
-    DemoWithControls(
-        controls = persistentListOf(
-            bottomFadeBorderControl,
-            fadeLengthControl,
-            itemVisibilityScrollThresholdControl,
-        ),
+    Demo(
+        controls = control.controls,
         modifier = modifier
             .fillMaxSize(),
     ) {
@@ -122,14 +67,14 @@ fun AnimateScrollItemVisibleDemo(
             ) {
                 Button(
                     onClick = {
-                        items = items.plus(items.size).toList()
+                        state.items = state.items.plus(state.items.size).toList()
                     },
                 ) {
                     Text("Add")
                 }
                 Button(
                     onClick = {
-                        items = items.minus(items.size - 1).toList()
+                        state.items = state.items.minus(state.items.size - 1).toList()
                     },
                 ) {
                     Text("Remove")
@@ -139,15 +84,15 @@ fun AnimateScrollItemVisibleDemo(
                 state = lazyListState,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(PlaygroundSpacing.xs),
-                contentPadding = PaddingValues(vertical = fadeLength),
+                contentPadding = PaddingValues(vertical = state.fadeLength),
                 modifier = Modifier.fade(
                     sides = FadeSide.Top + FadeSide.Bottom,
-                    length = fadeLength,
-                    borderColor = Color.Red.takeIf { showFadeBorders },
+                    length = state.fadeLength,
+                    borderColor = Color.Red.takeIf { state.showFadeBorders },
                 ),
             ) {
                 items(
-                    items = items,
+                    items = state.items,
                     key = { it },
                 ) { index ->
                     Button(
@@ -156,7 +101,7 @@ fun AnimateScrollItemVisibleDemo(
                             coroutineScope.launch {
                                 lazyListState.animateScrollItemVisible(
                                     itemKey = index,
-                                    visibilityThreshold = itemVisibilityScrollThreshold,
+                                    visibilityThreshold = state.itemVisibilityScrollThreshold,
                                     visibleRect = with(lazyListState.layoutInfo.viewportSize) {
                                         IntRect(
                                             left = 0,
@@ -175,6 +120,74 @@ fun AnimateScrollItemVisibleDemo(
             }
         }
     }
+}
+
+
+@Composable
+fun rememberAnimateScrollItemVisibleDemoState(
+    initialFadeLength: Dp = 40.dp,
+) = remember(initialFadeLength) {
+    AnimateScrollItemVisibleDemoState(
+        initialFadeLength = initialFadeLength,
+    )
+}
+
+@Stable
+class AnimateScrollItemVisibleDemoState(
+    initialFadeLength: Dp = 40.dp,
+    initialItemCount: Int = 8,
+    initialItemVisibilityScrollThreshold: Float = 0.7f
+) {
+
+    var fadeLength by mutableStateOf(initialFadeLength)
+
+    var showFadeBorders by mutableStateOf(false)
+
+    var items by mutableStateOf((0 until initialItemCount).toList())
+
+    var itemVisibilityScrollThreshold by mutableStateOf(initialItemVisibilityScrollThreshold)
+}
+
+@Composable
+fun rememberAnimateScrollItemVisibleDemoControl(
+    state: AnimateScrollItemVisibleDemoState = rememberAnimateScrollItemVisibleDemoState(),
+) = remember(state) {
+    AnimateScrollItemVisibleDemoControl(state)
+}
+
+@Stable
+class AnimateScrollItemVisibleDemoControl(
+    val state: AnimateScrollItemVisibleDemoState,
+) {
+    val fadeLengthControl
+        get() = Control.Slider(
+            name = "Fade length",
+            value = state.fadeLength.value,
+            onValueChange = { state.fadeLength = it.dp },
+            valueRange = 0f..500f,
+        )
+
+    val bottomFadeBorderControl
+        get() = Control.Toggle(
+            name = "Fade border",
+            value = state.showFadeBorders,
+            onValueChange = { state.showFadeBorders = it },
+        )
+
+    val itemVisibilityScrollThresholdControl
+        get() = Control.Slider(
+            name = "Item visibility threshold",
+            value = state.itemVisibilityScrollThreshold,
+            onValueChange = { state.itemVisibilityScrollThreshold = it },
+            valueRange = 0f..1f,
+        )
+
+    val controls
+        get() = persistentListOf(
+            fadeLengthControl,
+            bottomFadeBorderControl,
+            itemVisibilityScrollThresholdControl,
+        )
 }
 
 @Preview

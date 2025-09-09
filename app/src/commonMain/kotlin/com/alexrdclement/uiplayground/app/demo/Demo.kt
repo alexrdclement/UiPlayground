@@ -8,11 +8,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -25,11 +23,12 @@ import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.VerticalDivider
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun DemoWithControls(
-    controls: PersistentList<Control>,
+fun Demo(
     modifier: Modifier = Modifier,
+    controls: PersistentList<Control> = persistentListOf(),
     content: @Composable BoxWithConstraintsScope.() -> Unit,
 ) {
     BoxWithConstraints(
@@ -72,16 +71,18 @@ fun DemoWithControls(
                 ) {
                     this@BoxWithConstraints.content()
                 }
-                VerticalDivider(modifier = Modifier.fillMaxHeight())
-                Controls(
-                    controls = controls,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .widthIn(max = 300.dp)
-                        .verticalScroll(rememberScrollState())
-                        .padding(horizontal = PlaygroundTheme.spacing.medium)
-                        .navigationBarsPadding(),
-                )
+                if (controls.isNotEmpty()) {
+                    VerticalDivider(modifier = Modifier.fillMaxHeight())
+                    Controls(
+                        controls = controls,
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .widthIn(max = 300.dp)
+                            .verticalScroll(rememberScrollState())
+                            .padding(horizontal = PlaygroundTheme.spacing.medium)
+                            .navigationBarsPadding(),
+                    )
+                }
             }
         }
     }
