@@ -254,28 +254,23 @@ class TextFieldDemoControl(
             state.lineLimits = LineLimits.entries[it]
         }
     )
-    val minHeightInLinesControl = Control.TextField(
+    val minHeightInLinesControl = Control.Slider(
         name = "Min height in lines",
-        textFieldState = state.minHeightInLinesTextFieldState,
-        enabled = { state.lineLimits == LineLimits.Multiline },
-        keyboardOptions = {
-            KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-            )
+        value = { state.minHeightInLines.toFloat() },
+        onValueChange = { state.minHeightInLines = it.toInt() },
+        valueRange = {
+            val max = if (state.maxHeightInLines == Int.MAX_VALUE) 100 else state.maxHeightInLines
+            1f..max.toFloat()
         },
-        inputTransformation = { InputTransformation.onlyDigits() },
     )
 
-    val maxHeightInLinesControl = Control.TextField(
+    val maxHeightInLinesControl = Control.Slider(
         name = "Max height in lines",
-        textFieldState = state.maxHeightInLinesTextFieldState,
-        enabled = { state.lineLimits == LineLimits.Multiline },
-        keyboardOptions = {
-            KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-            )
+        value = {
+            if (state.maxHeightInLines == Int.MAX_VALUE) 100f else state.maxHeightInLines.toFloat()
         },
-        inputTransformation = { InputTransformation.onlyDigits() },
+        onValueChange = { state.maxHeightInLines = if (it >= 100f) Int.MAX_VALUE else it.toInt() },
+        valueRange = { state.minHeightInLines.toFloat()..100f },
     )
 
     val inputTransformationControl = Control.Dropdown(
