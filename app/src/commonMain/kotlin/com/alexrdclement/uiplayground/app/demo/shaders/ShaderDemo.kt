@@ -9,6 +9,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
@@ -25,10 +26,14 @@ import com.alexrdclement.uiplayground.app.demo.subject.DemoCircle
 import com.alexrdclement.uiplayground.app.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.app.demo.subject.DemoText
 import com.alexrdclement.uiplayground.app.demo.subject.DemoTextField
+import com.alexrdclement.uiplayground.app.demo.util.OffsetSaver
 import com.alexrdclement.uiplayground.components.Grid
 import com.alexrdclement.uiplayground.components.GridCoordinateSystem
 import com.alexrdclement.uiplayground.components.GridLineStyle
 import com.alexrdclement.uiplayground.components.GridVertex
+import com.alexrdclement.uiplayground.components.util.mapSaverSafe
+import com.alexrdclement.uiplayground.components.util.restore
+import com.alexrdclement.uiplayground.components.util.save
 import com.alexrdclement.uiplayground.shaders.ColorSplitMode
 import com.alexrdclement.uiplayground.shaders.NoiseColorMode
 import com.alexrdclement.uiplayground.shaders.colorInvert
@@ -56,7 +61,6 @@ fun ShaderDemo(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            var pointerOffset: Offset by remember { mutableStateOf(Offset.Zero) }
             val modifier = when (val innerModifier = state.demoModifier) {
                 DemoModifier.None -> Modifier
                 is DemoModifier.Blur -> Modifier.blur(
@@ -84,19 +88,19 @@ fun ShaderDemo(
                 )
 
                 is DemoModifier.Warp -> Modifier.warp(
-                    offset = { pointerOffset },
+                    offset = { state.pointerOffset },
                     radius = { innerModifier.radius },
                     amount = { innerModifier.amount },
                 )
             }.pointerInput(Unit) {
                 detectTapGestures(
-                    onPress = { pointerOffset = it },
-                    onTap = { pointerOffset = it },
+                    onPress = { control.onPointerOffsetChanged(it) },
+                    onTap = { control.onPointerOffsetChanged(it) },
                 )
             }.pointerInput(Unit) {
                 detectDragGestures { change, _ ->
                     change.consume()
-                    pointerOffset = change.position
+                    control.onPointerOffsetChanged(change.position)
                 }
             }
             when (state.demoSubject) {
@@ -162,43 +166,51 @@ fun ShaderDemo(
 
 @Composable
 fun rememberDemoShaderState(): ShaderDemoState {
-    return remember { ShaderDemoState() }
+    return rememberSaveable(saver = ShaderDemoStateSaver) { ShaderDemoState() }
 }
 
 @Stable
-class ShaderDemoState {
-    var demoSubject by mutableStateOf(DemoSubject.Circle)
+class ShaderDemoState(
+    demoSubjectInitial: DemoSubject = DemoSubject.Circle,
+    blurModifierInitial: DemoModifier.Blur = DemoModifier.Blur(
+        radius = 0.dp,
+        edgeTreatment = BlurredEdgeTreatment.Rectangle
+    ),
+    colorInvertModifierInitial: DemoModifier.ColorInvert = DemoModifier.ColorInvert(
+        amount = 0f,
+    ),
+    colorSplitModifierInitial: DemoModifier.ColorSplit = DemoModifier.ColorSplit(
+        xAmount = 0f,
+        yAmount = 0f,
+        colorMode = ColorSplitMode.RGB,
+    ),
+    noiseModifierInitial: DemoModifier.Noise = DemoModifier.Noise(
+        amount = 0f,
+        colorMode = NoiseColorMode.Monochrome,
+    ),
+    pixelateModifierInitial: DemoModifier.Pixelate = DemoModifier.Pixelate(subdivisions = 0),
+    warpModifierInitial: DemoModifier.Warp = DemoModifier.Warp(
+        radius = 200.dp,
+        amount = .2f,
+    ),
+    demoModifierIndexInitial: Int = 0,
+    pointerOffsetInitial: Offset = Offset.Zero,
+) {
+    var demoSubject by mutableStateOf(demoSubjectInitial)
+        internal set
 
-    var blurModifier by mutableStateOf(
-        DemoModifier.Blur(
-            radius = 0.dp,
-            edgeTreatment = BlurredEdgeTreatment.Rectangle
-        )
-    )
-    var colorInvertModifier by mutableStateOf(
-        DemoModifier.ColorInvert(
-            amount = 0f,
-        )
-    )
-    var colorSplitModifier by mutableStateOf(
-        DemoModifier.ColorSplit(
-            xAmount = 0f,
-            yAmount = 0f,
-            colorMode = ColorSplitMode.RGB,
-        )
-    )
-    var noiseModifier by mutableStateOf(
-        DemoModifier.Noise(amount = 0f, colorMode = NoiseColorMode.Monochrome)
-    )
-    var pixelateModifier by mutableStateOf(
-        DemoModifier.Pixelate(subdivisions = 0)
-    )
-    var warpModifier by mutableStateOf(
-        DemoModifier.Warp(
-            radius = 200.dp,
-            amount = .2f,
-        )
-    )
+    var blurModifier by mutableStateOf(blurModifierInitial)
+        internal set
+    var colorInvertModifier by mutableStateOf(colorInvertModifierInitial)
+        internal set
+    var colorSplitModifier by mutableStateOf(colorSplitModifierInitial)
+        internal set
+    var noiseModifier by mutableStateOf(noiseModifierInitial)
+        internal set
+    var pixelateModifier by mutableStateOf(pixelateModifierInitial)
+        internal set
+    var warpModifier by mutableStateOf(warpModifierInitial)
+        internal set
 
     val demoModifiers
         get() = listOf(
@@ -211,10 +223,86 @@ class ShaderDemoState {
             warpModifier,
         )
 
-    var demoModifierIndex by mutableStateOf(0)
+    var demoModifierIndex by mutableStateOf(demoModifierIndexInitial)
         internal set
     val demoModifier get() = demoModifiers[demoModifierIndex]
+
+    var pointerOffset by mutableStateOf(pointerOffsetInitial)
+        internal set
 }
+
+private const val demoSubjectInitialKey = "demoSubject"
+private const val blurModifierInitialKey = "blurModifier"
+private const val colorInvertModifierInitialKey = "colorInvertModifier"
+private const val colorSplitModifierInitialKey = "colorSplitModifier"
+private const val noiseModifierInitialKey = "noiseModifier"
+private const val pixelateModifierInitialKey = "pixelateModifier"
+private const val warpModifierInitialKey = "warpModifier"
+private const val demoModifierIndexInitialKey = "demoModifierIndex"
+private const val pointerOffsetInitialKey = "pointerOffset"
+
+val ShaderDemoStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            demoSubjectInitialKey to value.demoSubject,
+            blurModifierInitialKey to save(value.blurModifier, DemoModifierSaver, this),
+            colorInvertModifierInitialKey to save(
+                value = value.colorInvertModifier,
+                saver = DemoModifierSaver,
+                scope = this,
+            ),
+            colorSplitModifierInitialKey to save(
+                value = value.colorSplitModifier,
+                saver = DemoModifierSaver,
+                scope = this,
+            ),
+            noiseModifierInitialKey to save(
+                value = value.noiseModifier,
+                saver = DemoModifierSaver,
+                scope = this,
+            ),
+            pixelateModifierInitialKey to save(
+                value = value.pixelateModifier,
+                saver = DemoModifierSaver,
+                scope = this,
+            ),
+            warpModifierInitialKey to save(value.warpModifier, DemoModifierSaver, this),
+            demoModifierIndexInitialKey to value.demoModifierIndex,
+            pointerOffsetInitialKey to save(value.pointerOffset, OffsetSaver, this),
+        )
+    },
+    restore = { map ->
+        ShaderDemoState(
+            demoSubjectInitial = map[demoSubjectInitialKey] as DemoSubject,
+            blurModifierInitial = restore(
+                value = map[blurModifierInitialKey],
+                saver = DemoModifierSaver,
+            )!!,
+            colorInvertModifierInitial = restore(
+                value = map[colorInvertModifierInitialKey],
+                saver = DemoModifierSaver,
+            )!!,
+            colorSplitModifierInitial = restore(
+                value = map[colorSplitModifierInitialKey],
+                saver = DemoModifierSaver,
+            )!!,
+            noiseModifierInitial = restore(
+                value = map[noiseModifierInitialKey],
+                saver = DemoModifierSaver,
+            )!!,
+            pixelateModifierInitial = restore(
+                value = map[pixelateModifierInitialKey],
+                saver = DemoModifierSaver,
+            )!!,
+            warpModifierInitial = restore(
+                value = map[warpModifierInitialKey],
+                saver = DemoModifierSaver,
+            )!!,
+            demoModifierIndexInitial = map[demoModifierIndexInitialKey] as Int,
+            pointerOffsetInitial = restore(map[pointerOffsetInitialKey], OffsetSaver)!!,
+        )
+    },
+)
 
 @Composable
 fun rememberShaderDemoControl(
@@ -428,4 +516,8 @@ class ShaderDemoControl(
             *modifierControls.toTypedArray(),
             subjectModifierControl,
         )
+
+    fun onPointerOffsetChanged(offset: Offset) {
+        state.pointerOffset = offset
+    }
 }

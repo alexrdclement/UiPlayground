@@ -17,6 +17,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +27,10 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
+import com.alexrdclement.uiplayground.components.util.ColorSaver
+import com.alexrdclement.uiplayground.components.util.mapSaverSafe
+import com.alexrdclement.uiplayground.components.util.restore
+import com.alexrdclement.uiplayground.components.util.save
 import com.alexrdclement.uiplayground.theme.PlaygroundSpacing
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
@@ -122,7 +127,7 @@ fun FadeDemo(
 @Composable
 fun rememberFadeDemoState(
     borderColor: Color = Color.Red,
-) = remember {
+) = rememberSaveable(saver = FadeDemoStateSaver) {
     FadeDemoState(
         borderColor = borderColor,
     )
@@ -131,12 +136,41 @@ fun rememberFadeDemoState(
 @Stable
 class FadeDemoState(
     val borderColor: Color,
+    fadeLengthInitial: Dp = 20.dp,
+    showBorderInitial: Boolean = false,
+    widthInitial: Dp = 0.dp,
 ) {
-    var fadeLength by mutableStateOf(20.dp)
-    var showBorder by mutableStateOf(false)
-
-    var width by mutableStateOf(0.dp)
+    var fadeLength by mutableStateOf(fadeLengthInitial)
+        internal set
+    var showBorder by mutableStateOf(showBorderInitial)
+        internal set
+    var width by mutableStateOf(widthInitial)
+        internal set
 }
+
+private const val fadeLengthKey = "fadeLength"
+private const val showBorderKey = "showBorder"
+private const val borderColorKey = "borderColor"
+private const val widthKey = "width"
+
+val FadeDemoStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            fadeLengthKey to value.fadeLength.value,
+            showBorderKey to value.showBorder,
+            borderColorKey to save(value.borderColor, ColorSaver, this),
+            widthKey to value.width.value,
+        )
+    },
+    restore = { map ->
+        FadeDemoState(
+            fadeLengthInitial = (map[fadeLengthKey] as? Float)?.dp ?: 20.dp,
+            showBorderInitial = map[showBorderKey] as? Boolean ?: false,
+            widthInitial = (map[widthKey] as? Float)?.dp ?: 0.dp,
+            borderColor = restore(map[borderColorKey], ColorSaver)!!,
+        )
+    }
+)
 
 @Composable
 fun rememberFadeDemoControl(state: FadeDemoState) = remember(state) {

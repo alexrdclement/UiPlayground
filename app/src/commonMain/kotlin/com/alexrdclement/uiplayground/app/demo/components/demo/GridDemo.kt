@@ -6,6 +6,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -15,16 +16,27 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.app.demo.util.DensitySaver
 import com.alexrdclement.uiplayground.components.Grid
 import com.alexrdclement.uiplayground.components.GridCoordinateSystem
+import com.alexrdclement.uiplayground.components.GridCoordinateSystemSaver
 import com.alexrdclement.uiplayground.components.GridLineStyle
+import com.alexrdclement.uiplayground.components.GridLineStyleSaver
 import com.alexrdclement.uiplayground.components.GridScale
+import com.alexrdclement.uiplayground.components.GridScaleSaver
 import com.alexrdclement.uiplayground.components.GridVertex
+import com.alexrdclement.uiplayground.components.GridVertexSaver
 import com.alexrdclement.uiplayground.components.Surface
+import com.alexrdclement.uiplayground.components.util.ColorSaver
+import com.alexrdclement.uiplayground.components.util.DrawStyleSaver
+import com.alexrdclement.uiplayground.components.util.mapSaverSafe
+import com.alexrdclement.uiplayground.components.util.restore
+import com.alexrdclement.uiplayground.components.util.save
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
@@ -61,7 +73,9 @@ fun GridDemo(
 fun rememberGridDemoState(
     color: Color = PlaygroundTheme.colorScheme.primary,
     density: Density = LocalDensity.current,
-): GridDemoState = remember {
+): GridDemoState = rememberSaveable(
+    saver = GridDemoStateSaver,
+) {
     GridDemoState(
         color = color,
         density = density,
@@ -72,63 +86,340 @@ fun rememberGridDemoState(
 class GridDemoState(
     color: Color,
     density: Density,
+    xGridScaleStateInitial: CartesianGridScaleState = CartesianGridScaleState(),
+    yGridScaleStateInitial: CartesianGridScaleState = CartesianGridScaleState(),
+    polarGridScaleStateInitial: PolarGridScaleState = PolarGridScaleState(
+        gridSpacingInitial = 50.dp,
+        thetaRadiansInitial = (PI / 3f).toFloat(),
+    ),
+    rotationDegreesInitial: Float = 0f,
+    coordinateSystemInitial: GridCoordinateSystem = GridCoordinateSystem.Cartesian(
+        scaleX = xGridScaleStateInitial.gridScale,
+        scaleY = yGridScaleStateInitial.gridScale,
+        rotationDegrees = rotationDegreesInitial,
+    ),
+    lineStyleInitial: GridLineStyle = GridLineStyle(
+        color = color,
+        stroke = Stroke(width = 1f),
+    ),
+    showLinesInitial: Boolean = true,
+    vertexStateInitial: GridVertexState = GridVertexState(
+        vertexInitial = null,
+        drawStyleInitial = Stroke(width = 1f),
+        widthInitial = 10.dp,
+        heightInitial = 10.dp,
+        rotationDegreesInitial = 0f,
+    ),
+    strokeWidthPxInitial: Float = 1f,
+    offsetXInitial: Dp = 0.dp,
+    offsetYInitial: Dp = 0.dp,
+    clipToBoundsInitial: Boolean = true,
 ) {
     val color by mutableStateOf(color)
+    val density by mutableStateOf(density)
 
-    var gridSpacingX by mutableStateOf(100.dp)
-    var gridSpacingY by mutableStateOf(100.dp)
+    var gridSpacingX by mutableStateOf(xGridScaleStateInitial.gridSpacing)
+        internal set
+    var gridScaleX: GridScale by mutableStateOf(xGridScaleStateInitial.gridScale)
+        internal set
+    var gridScaleXBase: Float by mutableStateOf(xGridScaleStateInitial.gridScaleBase)
+        internal set
+    var gridScaleXExponent: Float by mutableStateOf(xGridScaleStateInitial.gridScaleExponent)
+        internal set
 
-    var gridScaleX: GridScale by mutableStateOf(GridScale.Linear(gridSpacingX))
-    var gridScaleY: GridScale by mutableStateOf(GridScale.Linear(gridSpacingY))
-    var gridScaleXBase: Float by mutableStateOf(2f)
-    var gridScaleYBase: Float by mutableStateOf(2f)
-    var gridScaleXExponent: Float by mutableStateOf(2f)
-    var gridScaleYExponent: Float by mutableStateOf(2f)
+    var gridSpacingY by mutableStateOf(yGridScaleStateInitial.gridSpacing)
+        internal set
+    var gridScaleY: GridScale by mutableStateOf(yGridScaleStateInitial.gridScale)
+        internal set
+    var gridScaleYBase: Float by mutableStateOf(yGridScaleStateInitial.gridScaleBase)
+        internal set
+    var gridScaleYExponent: Float by mutableStateOf(yGridScaleStateInitial.gridScaleExponent)
+        internal set
 
-    var radiusSpacing by mutableStateOf(50.dp)
-    var radiusScaleBase: Float by mutableStateOf(2f)
-    var radiusScaleExponent: Float by mutableStateOf(2f)
-    var radiusScale: GridScale by mutableStateOf(GridScale.Linear(radiusSpacing))
+    var radiusSpacing by mutableStateOf(polarGridScaleStateInitial.gridSpacing)
+        internal set
+    var radiusScale: GridScale by mutableStateOf(polarGridScaleStateInitial.gridScale)
+        internal set
+    var radiusScaleBase: Float by mutableStateOf(polarGridScaleStateInitial.gridScaleBase)
+        internal set
+    var radiusScaleExponent: Float by mutableStateOf(polarGridScaleStateInitial.gridScaleExponent)
+        internal set
+    var thetaRadians by mutableStateOf(polarGridScaleStateInitial.thetaRadians)
+        internal set
 
-    var rotationDegrees by mutableStateOf(0f)
+    var rotationDegrees by mutableStateOf(rotationDegreesInitial)
+        internal set
+    var coordinateSystem: GridCoordinateSystem by mutableStateOf(coordinateSystemInitial)
+        internal set
+    var strokeWidthPx by mutableStateOf(strokeWidthPxInitial)
+        internal set
+    var lineStyle: GridLineStyle by mutableStateOf(lineStyleInitial)
+        internal set
+    var showLines by mutableStateOf(showLinesInitial)
+        internal set
 
-    var thetaRadians by mutableStateOf((PI / 3f).toFloat())
+    var vertex by mutableStateOf(vertexStateInitial.vertex)
+        internal set
+    var vertexDrawStyle by mutableStateOf(vertexStateInitial.drawStyle)
+        internal set
+    var vertexWidth by mutableStateOf(vertexStateInitial.width)
+        internal set
+    var vertexHeight by mutableStateOf(vertexStateInitial.height)
+        internal set
+    var vertexRotationDegrees by mutableStateOf(vertexStateInitial.rotationDegrees)
+        internal set
 
-    val coordinateSystems = mapOf(
-        GridCoordinateSystem.Cartesian::class to "Cartesian",
-        GridCoordinateSystem.Polar::class to "Polar",
-    )
-    val initialCoordinateSystem = GridCoordinateSystem.Cartesian(
-        scaleX = gridScaleX,
-        scaleY = gridScaleY,
-        rotationDegrees = rotationDegrees,
-    )
-    var coordinateSystem: GridCoordinateSystem by mutableStateOf(initialCoordinateSystem)
+    var offsetX by mutableStateOf(offsetXInitial)
+        internal set
+    var offsetY by mutableStateOf(offsetYInitial)
+        internal set
+    var clipToBounds by mutableStateOf(clipToBoundsInitial)
+        internal set
 
-    var strokeWidthPx by mutableStateOf(1f)
     val strokeWidth = with(density) { strokeWidthPx.toDp() }
-
-    val initialLineStyle = GridLineStyle(
-        color = color,
-        stroke = Stroke(width = strokeWidthPx),
-    )
-    var lineStyle: GridLineStyle by mutableStateOf(initialLineStyle)
-
-    var showLines by mutableStateOf(true)
-
-    var vertexDrawStyle by mutableStateOf<DrawStyle>(Stroke(width = strokeWidthPx))
-    var vertexWidth by mutableStateOf(10.dp)
-    var vertexHeight by mutableStateOf(10.dp)
     val vertexSize = DpSize(vertexWidth, vertexHeight)
-    var vertexRotationDegrees by mutableStateOf(0f)
-
-    var vertex by mutableStateOf<GridVertex?>(null)
-
-    var offsetX by mutableStateOf(0.dp)
-    var offsetY by mutableStateOf(0.dp)
-
-    var clipToBounds by mutableStateOf(true)
 }
+
+private const val colorKey = "color"
+private const val densityKey = "density"
+private const val xGridScaleStateKey = "xGridScaleState"
+private const val yGridScaleStateKey = "yGridScaleState"
+private const val radiusGridScaleStateKey = "radiusGridScaleState"
+private const val rotationDegreesKey = "rotationDegrees"
+private const val coordinateSystemKey = "coordinateSystem"
+private const val lineStyleKey = "lineStyle"
+private const val showLinesKey = "showLines"
+private const val vertexStateKey = "vertexState"
+private const val strokeWidthPxKey = "strokeWidthPx"
+private const val offsetXKey = "offsetX"
+private const val offsetYKey = "offsetY"
+private const val clipToBoundsKey = "clipToBounds"
+
+val GridDemoStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            colorKey to save(value.color, ColorSaver, this),
+            densityKey to save(value.density, DensitySaver, this),
+            xGridScaleStateKey to save(
+                value = CartesianGridScaleState(
+                    gridSpacingInitial = value.gridSpacingX,
+                    gridScaleInitial = value.gridScaleX,
+                    gridScaleBaseInitial = value.gridScaleXBase,
+                    gridScaleExponentInitial = value.gridScaleXExponent,
+                ),
+                saver = CartesianGridScaleStateSaver,
+                scope = this,
+            ),
+            yGridScaleStateKey to save(
+                value = CartesianGridScaleState(
+                    gridSpacingInitial = value.gridSpacingY,
+                    gridScaleInitial = value.gridScaleY,
+                    gridScaleBaseInitial = value.gridScaleYBase,
+                    gridScaleExponentInitial = value.gridScaleYExponent,
+                ),
+                saver = CartesianGridScaleStateSaver,
+                scope = this,
+            ),
+            radiusGridScaleStateKey to save(
+                value = PolarGridScaleState(
+                    gridSpacingInitial = value.radiusSpacing,
+                    gridScaleInitial = value.radiusScale,
+                    gridScaleBaseInitial = value.radiusScaleBase,
+                    gridScaleExponentInitial = value.radiusScaleExponent,
+                    thetaRadiansInitial = value.thetaRadians,
+                ),
+                saver = PolarGridScaleStateSaver,
+                scope = this,
+            ),
+            rotationDegreesKey to value.rotationDegrees,
+            coordinateSystemKey to save(
+                value.coordinateSystem,
+                GridCoordinateSystemSaver,
+                this
+            ),
+            lineStyleKey to save(value.lineStyle, GridLineStyleSaver, this),
+            showLinesKey to value.showLines,
+            vertexStateKey to save(
+                value = GridVertexState(
+                    vertexInitial = value.vertex,
+                    drawStyleInitial = value.vertexDrawStyle,
+                    widthInitial = value.vertexWidth,
+                    heightInitial = value.vertexHeight,
+                    rotationDegreesInitial = value.vertexRotationDegrees,
+                ),
+                saver = GridVertexStateSaver,
+                scope = this,
+            ),
+            strokeWidthPxKey to value.strokeWidthPx,
+            offsetXKey to value.offsetX.value,
+            offsetYKey to value.offsetY.value,
+            clipToBoundsKey to value.clipToBounds,
+        )
+    },
+    restore = { value ->
+        GridDemoState(
+            color = restore(value[colorKey], ColorSaver)!!,
+            density = restore(value[densityKey], DensitySaver)!!,
+            xGridScaleStateInitial = restore(
+                value = value[xGridScaleStateKey],
+                saver = CartesianGridScaleStateSaver,
+            )!!,
+            yGridScaleStateInitial = restore(
+                value = value[yGridScaleStateKey],
+                saver = CartesianGridScaleStateSaver,
+            )!!,
+            polarGridScaleStateInitial = restore(
+                value = value[radiusGridScaleStateKey],
+                saver = PolarGridScaleStateSaver,
+            )!!,
+            coordinateSystemInitial = restore(
+                value[coordinateSystemKey],
+                GridCoordinateSystemSaver
+            )!!,
+            lineStyleInitial = restore(value[lineStyleKey], GridLineStyleSaver)!!,
+            showLinesInitial = value[showLinesKey] as Boolean,
+            vertexStateInitial = restore(value[vertexStateKey], GridVertexStateSaver)!!,
+            strokeWidthPxInitial = value[strokeWidthPxKey] as Float,
+            offsetXInitial = (value[offsetXKey] as Float).dp,
+            offsetYInitial = (value[offsetYKey] as Float).dp,
+            clipToBoundsInitial = value[clipToBoundsKey] as Boolean,
+        )
+    },
+)
+
+@Stable
+class CartesianGridScaleState(
+    gridSpacingInitial: Dp = 100.dp,
+    gridScaleInitial: GridScale = GridScale.Linear(gridSpacingInitial),
+    gridScaleBaseInitial: Float = 2f,
+    gridScaleExponentInitial: Float = 2f,
+) {
+    var gridSpacing by mutableStateOf(gridSpacingInitial)
+        internal set
+    var gridScale: GridScale by mutableStateOf(gridScaleInitial)
+        internal set
+    var gridScaleBase: Float by mutableStateOf(gridScaleBaseInitial)
+        internal set
+    var gridScaleExponent: Float by mutableStateOf(gridScaleExponentInitial)
+        internal set
+}
+
+private const val cartesianGridSpacingKey = "cartesianGridSpacing"
+private const val cartesianGridScaleKey = "cartesianGridScale"
+private const val cartesianGridScaleBaseKey = "cartesianGridScaleBase"
+private const val cartesianGridScaleExponentKey = "cartesianGridScaleExponent"
+
+val CartesianGridScaleStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            cartesianGridSpacingKey to value.gridSpacing.value,
+            cartesianGridScaleKey to save(value.gridScale, GridScaleSaver, this),
+            cartesianGridScaleBaseKey to value.gridScaleBase,
+            cartesianGridScaleExponentKey to value.gridScaleExponent,
+        )
+    },
+    restore = { value ->
+        CartesianGridScaleState(
+            gridSpacingInitial = (value[cartesianGridSpacingKey] as Float).dp,
+            gridScaleInitial = restore(value[cartesianGridScaleKey], GridScaleSaver)!!,
+            gridScaleBaseInitial = value[cartesianGridScaleBaseKey] as Float,
+            gridScaleExponentInitial = value[cartesianGridScaleExponentKey] as Float,
+        )
+    },
+)
+
+@Stable
+class PolarGridScaleState(
+    gridSpacingInitial: Dp = 100.dp,
+    gridScaleInitial: GridScale = GridScale.Linear(gridSpacingInitial),
+    gridScaleBaseInitial: Float = 2f,
+    gridScaleExponentInitial: Float = 2f,
+    thetaRadiansInitial: Float,
+) {
+    var gridSpacing by mutableStateOf(gridSpacingInitial)
+        internal set
+    var gridScale: GridScale by mutableStateOf(gridScaleInitial)
+        internal set
+    var gridScaleBase: Float by mutableStateOf(gridScaleBaseInitial)
+        internal set
+    var gridScaleExponent: Float by mutableStateOf(gridScaleExponentInitial)
+        internal set
+    var thetaRadians by mutableStateOf(thetaRadiansInitial)
+        internal set
+}
+
+private const val polarGridSpacingKey = "polarGridSpacing"
+private const val polarGridScaleKey = "polarGridScale"
+private const val polarGridScaleBaseKey = "polarGridScaleBase"
+private const val polarGridScaleExponentKey = "polarGridScaleExponent"
+private const val polarGridThetaRadiansKey = "polarGridThetaRadians"
+
+val PolarGridScaleStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            polarGridSpacingKey to value.gridSpacing.value,
+            polarGridScaleKey to save(value.gridScale, GridScaleSaver, this),
+            polarGridScaleBaseKey to value.gridScaleBase,
+            polarGridScaleExponentKey to value.gridScaleExponent,
+            polarGridThetaRadiansKey to value.thetaRadians,
+        )
+    },
+    restore = { value ->
+        PolarGridScaleState(
+            gridSpacingInitial = (value[polarGridSpacingKey] as Float).dp,
+            gridScaleInitial = restore(value[polarGridScaleKey], GridScaleSaver)!!,
+            gridScaleBaseInitial = value[polarGridScaleBaseKey] as Float,
+            gridScaleExponentInitial = value[polarGridScaleExponentKey] as Float,
+            thetaRadiansInitial = value[polarGridThetaRadiansKey] as Float,
+        )
+    },
+)
+
+private const val vertexKey = "vertex"
+private const val vertexDrawStyleKey = "vertexDrawStyle"
+private const val vertexWidthKey = "vertexWidth"
+private const val vertexHeightKey = "vertexHeight"
+private const val vertexRotationDegreesKey = "vertexRotationDegrees"
+
+class GridVertexState(
+    vertexInitial: GridVertex?,
+    drawStyleInitial: DrawStyle,
+    widthInitial: Dp,
+    heightInitial: Dp,
+    rotationDegreesInitial: Float,
+) {
+    var vertex by mutableStateOf(vertexInitial)
+        internal set
+    var drawStyle by mutableStateOf(drawStyleInitial)
+        internal set
+    var width by mutableStateOf(widthInitial)
+        internal set
+    var height by mutableStateOf(heightInitial)
+        internal set
+    var rotationDegrees by mutableStateOf(rotationDegreesInitial)
+        internal set
+}
+
+val GridVertexStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            vertexKey to save(value.vertex, GridVertexSaver, this),
+            vertexDrawStyleKey to save(value.drawStyle, DrawStyleSaver, this),
+            vertexWidthKey to value.width.value,
+            vertexHeightKey to value.height.value,
+            vertexRotationDegreesKey to value.rotationDegrees,
+        )
+    },
+    restore = { value ->
+        GridVertexState(
+            vertexInitial = restore(value[vertexKey], GridVertexSaver),
+            drawStyleInitial = restore(value[vertexDrawStyleKey], DrawStyleSaver)!!,
+            widthInitial = (value[vertexWidthKey] as Float).dp,
+            heightInitial = (value[vertexHeightKey] as Float).dp,
+            rotationDegreesInitial = value[vertexRotationDegreesKey] as Float,
+        )
+    },
+)
 
 @Composable
 fun rememberGridDemoControl(
@@ -139,19 +430,23 @@ fun rememberGridDemoControl(
 class GridDemoControl(
     val state: GridDemoState,
 ) {
+    val coordinateSystems = mapOf(
+        GridCoordinateSystem.Cartesian::class to "Cartesian",
+        GridCoordinateSystem.Polar::class to "Polar",
+    )
     val coordinateSystemControl = Control.Dropdown(
         name = "Coordinate System",
         values = {
-            state.coordinateSystems.map { (kclass, name) ->
+            coordinateSystems.map { (kclass, name) ->
                 Control.Dropdown.DropdownItem(
                     name = name,
                     value = kclass,
                 )
             }.toPersistentList()
         },
-        selectedIndex = { state.coordinateSystems.keys.indexOf(state.coordinateSystem::class) },
+        selectedIndex = { coordinateSystems.keys.indexOf(state.coordinateSystem::class) },
         onValueChange = { index ->
-            state.coordinateSystem = when (state.coordinateSystems.keys.elementAt(index)) {
+            state.coordinateSystem = when (coordinateSystems.keys.elementAt(index)) {
                 GridCoordinateSystem.Cartesian::class -> GridCoordinateSystem.Cartesian(
                     scaleX = state.gridScaleX,
                     scaleY = state.gridScaleY,
@@ -164,7 +459,7 @@ class GridDemoControl(
                     rotationDegrees = state.rotationDegrees,
                 )
 
-                else -> state.initialCoordinateSystem
+                else -> state.coordinateSystem
             }
         }
     )
@@ -652,7 +947,7 @@ class GridDemoControl(
 
                 is GridVertex.Plus,
                 is GridVertex.X,
-                -> vertex
+                    -> vertex
 
                 null -> null
             }
@@ -827,18 +1122,20 @@ class GridDemoControl(
         get() = when (state.gridScaleX) {
             is GridScale.Exponential,
             is GridScale.ExponentialDecay,
-            -> persistentListOf(
+                -> persistentListOf(
                 gridScaleXControl,
                 gridSpacingXControl,
                 gridScaleXExponentControl,
             )
+
             is GridScale.Linear -> persistentListOf(
                 gridScaleXControl,
                 gridSpacingXControl,
             )
+
             is GridScale.Logarithmic,
             is GridScale.LogarithmicDecay,
-            -> persistentListOf(
+                -> persistentListOf(
                 gridScaleXControl,
                 gridSpacingXControl,
                 gridScaleXBaseControl,
@@ -849,18 +1146,20 @@ class GridDemoControl(
         get() = when (state.gridScaleY) {
             is GridScale.Exponential,
             is GridScale.ExponentialDecay,
-            -> persistentListOf(
+                -> persistentListOf(
                 gridScaleYControl,
                 gridSpacingYControl,
                 gridScaleYExponentControl,
             )
+
             is GridScale.Linear -> persistentListOf(
                 gridScaleYControl,
                 gridSpacingYControl,
             )
+
             is GridScale.Logarithmic,
             is GridScale.LogarithmicDecay,
-            -> persistentListOf(
+                -> persistentListOf(
                 gridScaleYControl,
                 gridSpacingYControl,
                 gridScaleYBaseControl,
@@ -877,7 +1176,7 @@ class GridDemoControl(
         get() = when (state.radiusScale) {
             is GridScale.Exponential,
             is GridScale.ExponentialDecay,
-            -> persistentListOf(
+                -> persistentListOf(
                 radiusScaleControl,
                 radiusSpacingControl,
                 radiusScaleExponentControl,
@@ -892,7 +1191,7 @@ class GridDemoControl(
 
             is GridScale.Logarithmic,
             is GridScale.LogarithmicDecay,
-            -> persistentListOf(
+                -> persistentListOf(
                 radiusScaleControl,
                 radiusSpacingControl,
                 radiusScaleBaseControl,

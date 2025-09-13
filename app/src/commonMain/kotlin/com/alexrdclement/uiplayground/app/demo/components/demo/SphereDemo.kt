@@ -6,17 +6,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.components.Sphere
 import com.alexrdclement.uiplayground.components.SphereStyle
+import com.alexrdclement.uiplayground.components.util.ColorSaver
 import com.alexrdclement.uiplayground.components.util.ViewingAngle
+import com.alexrdclement.uiplayground.components.util.mapSaverSafe
+import com.alexrdclement.uiplayground.components.util.restore
+import com.alexrdclement.uiplayground.components.util.save
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
 import kotlin.math.roundToInt
@@ -56,7 +62,11 @@ fun SphereDemo(
 fun rememberSphereDemoState(
     strokeColor: Color = PlaygroundTheme.colorScheme.primary,
     outlineStrokeColor: Color = strokeColor,
-) = remember(strokeColor, outlineStrokeColor) {
+) = rememberSaveable(
+    strokeColor,
+    outlineStrokeColor,
+    saver = SphereDemoStateSaver,
+) {
     SphereDemoState(
         strokeColor = strokeColor,
         outlineStrokeColor = outlineStrokeColor,
@@ -66,15 +76,31 @@ fun rememberSphereDemoState(
 class SphereDemoState(
     val strokeColor: Color,
     val outlineStrokeColor: Color,
+    fillInitial: Boolean = false,
+    outlineInitial: Boolean = true,
+    viewingAngleInitial: ViewingAngle = ViewingAngle(),
+    numLatitudeLinesInitial: Int = 12,
+    numLongitudeLinesInitial: Int = 12,
+    strokeWidthInitial: Dp = 2.dp,
+    outlineStrokeWidthInitial: Dp = 2.dp,
+    precisionDegreeInitial: Int = 1,
 ) {
-    var fill by mutableStateOf(false)
-    var outline by mutableStateOf(true)
-    var viewingAngle by mutableStateOf(ViewingAngle())
-    var numLatitudeLines by mutableStateOf(12)
-    var numLongitudeLines by mutableStateOf(12)
-    var strokeWidth by mutableStateOf(2.dp)
-    var outlineStrokeWidth by mutableStateOf(2.dp)
-    var precisionDegree by mutableStateOf(1)
+    var fill by mutableStateOf(fillInitial)
+        internal set
+    var outline by mutableStateOf(outlineInitial)
+        internal set
+    var viewingAngle by mutableStateOf(viewingAngleInitial)
+        internal set
+    var numLatitudeLines by mutableStateOf(numLatitudeLinesInitial)
+        internal set
+    var numLongitudeLines by mutableStateOf(numLongitudeLinesInitial)
+        internal set
+    var strokeWidth by mutableStateOf(strokeWidthInitial)
+        internal set
+    var outlineStrokeWidth by mutableStateOf(outlineStrokeWidthInitial)
+        internal set
+    var precisionDegree by mutableStateOf(precisionDegreeInitial)
+        internal set
 
     val style
         get() = SphereStyle.Grid(
@@ -87,6 +113,56 @@ class SphereDemoState(
             faceColor = if (fill) strokeColor.copy(alpha = 0.3f) else null,
         )
 }
+
+private const val strokeColorKey = "strokeColor"
+private const val outlineStrokeColorKey = "outlineStrokeColor"
+private const val fillKey = "fill"
+private const val outlineKey = "outline"
+private const val rotationXKey = "rotationX"
+private const val rotationYKey = "rotationY"
+private const val rotationZKey = "rotationZ"
+private const val numLatitudeLinesKey = "numLatitudeLines"
+private const val numLongitudeLinesKey = "numLongitudeLines"
+private const val strokeWidthKey = "strokeWidth"
+private const val outlineStrokeWidthKey = "outlineStrokeWidth"
+private const val precisionDegreeKey = "precisionDegree"
+
+val SphereDemoStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            strokeColorKey to save(value.strokeColor, ColorSaver, this),
+            outlineStrokeColorKey to save(value.outlineStrokeColor, ColorSaver, this),
+            fillKey to value.fill,
+            outlineKey to value.outline,
+            rotationXKey to value.viewingAngle.rotationX,
+            rotationYKey to value.viewingAngle.rotationY,
+            rotationZKey to value.viewingAngle.rotationZ,
+            numLatitudeLinesKey to value.numLatitudeLines,
+            numLongitudeLinesKey to value.numLongitudeLines,
+            strokeWidthKey to value.strokeWidth.value,
+            outlineStrokeWidthKey to value.outlineStrokeWidth.value,
+            precisionDegreeKey to value.precisionDegree,
+        )
+    },
+    restore = { map ->
+        SphereDemoState(
+            strokeColor = restore(map[strokeColorKey], ColorSaver)!!,
+            outlineStrokeColor = restore(map[outlineStrokeColorKey], ColorSaver)!!,
+            fillInitial = map[fillKey] as Boolean,
+            outlineInitial = map[outlineKey] as Boolean,
+            viewingAngleInitial = ViewingAngle(
+                rotationX = map[rotationXKey] as Float,
+                rotationY = map[rotationYKey] as Float,
+                rotationZ = map[rotationZKey] as Float,
+            ),
+            numLatitudeLinesInitial = map[numLatitudeLinesKey] as Int,
+            numLongitudeLinesInitial = map[numLongitudeLinesKey] as Int,
+            strokeWidthInitial = (map[strokeWidthKey] as Float).dp,
+            outlineStrokeWidthInitial = (map[outlineStrokeWidthKey] as Float).dp,
+            precisionDegreeInitial = map[precisionDegreeKey] as Int,
+        )
+    },
+)
 
 @Composable
 fun rememberSphereDemoControl(

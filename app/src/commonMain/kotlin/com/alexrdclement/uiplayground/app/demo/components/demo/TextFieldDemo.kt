@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -26,8 +27,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.app.demo.util.KeyboardCapitalizationSaver
+import com.alexrdclement.uiplayground.app.demo.util.KeyboardTypeSaver
 import com.alexrdclement.uiplayground.app.demo.util.onlyDigits
 import com.alexrdclement.uiplayground.components.TextField
+import com.alexrdclement.uiplayground.components.util.mapSaverSafe
+import com.alexrdclement.uiplayground.components.util.restore
+import com.alexrdclement.uiplayground.components.util.save
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -114,7 +120,7 @@ enum class InputTransformations {
 fun rememberTextFieldDemoState(
     initialText: String = "Hello world",
 ): TextFieldDemoState {
-    return remember {
+    return rememberSaveable(saver = TextFieldDemoStateSaver) {
         TextFieldDemoState(
             initialText = initialText,
         )
@@ -124,30 +130,107 @@ fun rememberTextFieldDemoState(
 @Stable
 class TextFieldDemoState(
     initialText: String,
+    styleInitial: TextStyle = TextStyle.Headline,
+    maxWidthInitial: Dp = 0.dp,
+    widthInitial: Dp = 200.dp,
+    enabledInitial: Boolean = true,
+    keyboardTypeInitial: KeyboardType = KeyboardType.Unspecified,
+    keyboardCapitalizationInitial: KeyboardCapitalization = KeyboardCapitalization.Unspecified,
+    autoCorrectEnabledInitial: Boolean = true,
+    showKeyboardOnFocusInitial: Boolean = true,
+    lineLimitsInitial: LineLimits = LineLimits.SingleLine,
+    minHeightInLinesInitial: Int = 1,
+    maxHeightInLinesInitial: Int = Int.MAX_VALUE,
+    inputTransformationInitial: InputTransformations = InputTransformations.None,
 ) {
-    val textFieldState = TextFieldState(initialText = initialText)
+    internal val textFieldState = TextFieldState(initialText = initialText)
     val text = snapshotFlow { textFieldState.text.toString() }
 
-    var style by mutableStateOf(TextStyle.Headline)
+    var style by mutableStateOf(styleInitial)
+        internal set
 
-    var maxWidth by mutableStateOf(0.dp)
-    var width by mutableStateOf(200.dp)
+    var maxWidth by mutableStateOf(maxWidthInitial)
+        internal set
+    var width by mutableStateOf(widthInitial)
+        internal set
 
-    var enabled by mutableStateOf(true)
+    var enabled by mutableStateOf(enabledInitial)
+        internal set
 
-    var keyboardType by mutableStateOf(KeyboardType.Unspecified)
-    var keyboardCapitalization by mutableStateOf(KeyboardCapitalization.Unspecified)
-    var autoCorrectEnabled by mutableStateOf(true)
-    var showKeyboardOnFocus by mutableStateOf(true)
+    var keyboardType by mutableStateOf(keyboardTypeInitial)
+        internal set
+    var keyboardCapitalization by mutableStateOf(keyboardCapitalizationInitial)
+        internal set
+    var autoCorrectEnabled by mutableStateOf(autoCorrectEnabledInitial)
+        internal set
+    var showKeyboardOnFocus by mutableStateOf(showKeyboardOnFocusInitial)
+        internal set
 
-    var lineLimits by mutableStateOf(LineLimits.SingleLine)
-    var minHeightInLines by mutableIntStateOf(1)
-    val minHeightInLinesTextFieldState = TextFieldState(initialText = minHeightInLines.toString())
-    var maxHeightInLines by mutableIntStateOf(Int.MAX_VALUE)
-    var maxHeightInLinesTextFieldState = TextFieldState(initialText = Int.MAX_VALUE.toString())
+    var lineLimits by mutableStateOf(lineLimitsInitial)
+        internal set
+    var minHeightInLines by mutableIntStateOf(minHeightInLinesInitial)
+        internal set
+    var maxHeightInLines by mutableIntStateOf(maxHeightInLinesInitial)
+        internal set
 
-    var inputTransformation by mutableStateOf(InputTransformations.None)
+    var inputTransformation by mutableStateOf(inputTransformationInitial)
+        internal set
 }
+
+private const val textKey = "text"
+private const val widthKey = "width"
+private const val maxWidthKey = "maxWidth"
+private const val enabledKey = "enabled"
+private const val styleKey = "style"
+private const val keyboardTypeKey = "keyboardType"
+private const val keyboardCapitalizationKey = "keyboardCapitalization"
+private const val autoCorrectEnabledKey = "autoCorrectEnabled"
+private const val showKeyboardOnFocusKey = "showKeyboardOnFocus"
+private const val lineLimitsKey = "lineLimits"
+private const val minHeightInLinesKey = "minHeightInLines"
+private const val maxHeightInLinesKey = "maxHeightInLines"
+private const val inputTransformationKey = "inputTransformation"
+
+val TextFieldDemoStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            textKey to value.textFieldState.text.toString(),
+            widthKey to value.width.value,
+            maxWidthKey to value.maxWidth.value,
+            enabledKey to value.enabled,
+            styleKey to value.style.name,
+            keyboardTypeKey to save(value.keyboardType, KeyboardTypeSaver, this),
+            keyboardCapitalizationKey to save(
+                value = value.keyboardCapitalization,
+                saver = KeyboardCapitalizationSaver,
+                scope = this,
+            ),
+            autoCorrectEnabledKey to value.autoCorrectEnabled,
+            showKeyboardOnFocusKey to value.showKeyboardOnFocus,
+            lineLimitsKey to value.lineLimits.name,
+            minHeightInLinesKey to value.minHeightInLines,
+            maxHeightInLinesKey to value.maxHeightInLines,
+            inputTransformationKey to value.inputTransformation.name,
+        )
+    },
+    restore = { map ->
+        TextFieldDemoState(
+            initialText = map[textKey] as String,
+            widthInitial = (map[widthKey] as Float).dp,
+            maxWidthInitial = (map[maxWidthKey] as Float).dp,
+            enabledInitial = map[enabledKey] as Boolean,
+            styleInitial = TextStyle.valueOf(map[styleKey] as String),
+            keyboardTypeInitial = restore(map[keyboardTypeKey], KeyboardTypeSaver)!!,
+            keyboardCapitalizationInitial = restore(map[keyboardCapitalizationKey], KeyboardCapitalizationSaver)!!,
+            autoCorrectEnabledInitial = map[autoCorrectEnabledKey] as Boolean,
+            showKeyboardOnFocusInitial = map[showKeyboardOnFocusKey] as Boolean,
+            lineLimitsInitial = LineLimits.valueOf(map[lineLimitsKey] as String),
+            minHeightInLinesInitial = map[minHeightInLinesKey] as Int,
+            maxHeightInLinesInitial = map[maxHeightInLinesKey] as Int,
+            inputTransformationInitial = InputTransformations.valueOf(map[inputTransformationKey] as String),
+        )
+    }
+)
 
 @Composable
 fun rememberTextFieldDemoControl(
@@ -254,6 +337,7 @@ class TextFieldDemoControl(
             state.lineLimits = LineLimits.entries[it]
         }
     )
+
     val minHeightInLinesControl = Control.Slider(
         name = "Min height in lines",
         value = { state.minHeightInLines.toFloat() },

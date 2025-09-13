@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +33,7 @@ import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.fade
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.Button
 import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.theme.PlaygroundSpacing
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
@@ -126,7 +128,10 @@ fun AnimateScrollItemVisibleDemo(
 @Composable
 fun rememberAnimateScrollItemVisibleDemoState(
     initialFadeLength: Dp = 40.dp,
-) = remember(initialFadeLength) {
+) = rememberSaveable(
+    initialFadeLength,
+    saver = AnimateScrollItemVisibleDemoStateSaver,
+) {
     AnimateScrollItemVisibleDemoState(
         initialFadeLength = initialFadeLength,
     )
@@ -136,17 +141,43 @@ fun rememberAnimateScrollItemVisibleDemoState(
 class AnimateScrollItemVisibleDemoState(
     initialFadeLength: Dp = 40.dp,
     initialItemCount: Int = 8,
-    initialItemVisibilityScrollThreshold: Float = 0.7f
+    initialItemVisibilityScrollThreshold: Float = 0.7f,
+    initialShowBorders: Boolean = false,
 ) {
-
     var fadeLength by mutableStateOf(initialFadeLength)
-
-    var showFadeBorders by mutableStateOf(false)
-
+        internal set
+    var showFadeBorders by mutableStateOf(initialShowBorders)
+        internal set
     var items by mutableStateOf((0 until initialItemCount).toList())
-
+        internal set
     var itemVisibilityScrollThreshold by mutableStateOf(initialItemVisibilityScrollThreshold)
+        internal set
 }
+
+private const val fadeLengthKey = "fadeLength"
+private const val itemCountKey = "itemCount"
+private const val itemVisibilityScrollThresholdKey = "itemVisibilityScrollThreshold"
+private const val showFadeBordersKey = "showFadeBorders"
+
+val AnimateScrollItemVisibleDemoStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            fadeLengthKey to value.fadeLength.value,
+            itemCountKey to value.items.size,
+            itemVisibilityScrollThresholdKey to value.itemVisibilityScrollThreshold,
+            showFadeBordersKey to value.showFadeBorders,
+        )
+    },
+    restore = { map ->
+        AnimateScrollItemVisibleDemoState(
+            initialFadeLength = (map[fadeLengthKey] as Float).dp,
+            initialItemCount = map[itemCountKey] as Int,
+            initialItemVisibilityScrollThreshold =
+                map[itemVisibilityScrollThresholdKey] as Float,
+            initialShowBorders = map[showFadeBordersKey] as Boolean,
+        )
+    }
+)
 
 @Composable
 fun rememberAnimateScrollItemVisibleDemoControl(

@@ -13,6 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -107,14 +109,51 @@ enum class LineHeightMode {
 @Composable
 fun rememberTextDemoState(
     initialText: String = "Hello world",
-) = remember {
+) = rememberSaveable(saver = TextDemoStateSaver) {
     TextDemoState(initialText)
 }
 
 @Stable
 class TextDemoState(
     initialText: String = "Hello world",
+    styleInitial: TextStyle = TextStyle.Headline,
+    lineHeightAlignmentInitial: LineHeightAlignment = lineHeightAlignmentDefault,
+    lineHeightTrimInitial: LineHeightTrim = lineHeightTrimDefault,
+    lineHeightModeInitial: LineHeightMode = lineHeightModeDefault,
+    maxWidthInitial: Dp = 0.dp,
+    widthInitial: Dp = maxWidthInitial,
+    autoSizeInitial: Boolean = false,
+    softWrapInitial: Boolean = false,
+    showBorderInitial: Boolean = false,
+    overflowInitial: Overflow = Overflow.Clip,
 ) {
+    internal val textFieldState = TextFieldState(initialText = initialText)
+    val text get() = snapshotFlow { textFieldState.text.toString() }
+
+    var style by mutableStateOf(styleInitial)
+        internal set
+
+    var lineHeightAlignment by mutableStateOf(lineHeightAlignmentInitial)
+        internal set
+    var lineHeightTrim by mutableStateOf(lineHeightTrimInitial)
+        internal set
+
+    var lineHeightMode by mutableStateOf(lineHeightModeInitial)
+        internal set
+
+    var maxWidth by mutableStateOf(maxWidthInitial)
+        internal set
+    var width by mutableStateOf(widthInitial)
+        internal set
+
+    var autoSize by mutableStateOf(autoSizeInitial)
+        internal set
+    var softWrap by mutableStateOf(softWrapInitial)
+        internal set
+    var showBorder by mutableStateOf(showBorderInitial)
+        internal set
+    var overflow by mutableStateOf(overflowInitial)
+        internal set
 
     companion object {
         val lineHeightStyleDefault = LineHeightStyle.Default
@@ -123,25 +162,52 @@ class TextDemoState(
         val lineHeightTrimDefault = lineHeightStyleDefault.trim.toDomain() ?: LineHeightTrim.Both
         val lineHeightModeDefault = lineHeightStyleDefault.mode.toDomain() ?: LineHeightMode.Fixed
     }
-
-    internal val textFieldState = TextFieldState(initialText = initialText)
-    internal val text get() = snapshotFlow { textFieldState.text.toString() }
-
-    internal var style by mutableStateOf(TextStyle.Headline)
-
-    internal var lineHeightAlignment by mutableStateOf(lineHeightAlignmentDefault)
-    internal var lineHeightTrim by mutableStateOf(lineHeightTrimDefault)
-
-    internal var lineHeightMode by mutableStateOf(lineHeightModeDefault)
-
-    internal var maxWidth by mutableStateOf(0.dp)
-
-    internal var width by mutableStateOf(maxWidth)
-    internal var autoSize by mutableStateOf(false)
-    internal var softWrap by mutableStateOf(false)
-    internal var showBorder by mutableStateOf(false)
-    internal var overflow by mutableStateOf(Overflow.Clip)
 }
+
+private const val styleKey = "style"
+private const val lineHeightAlignmentKey = "lineHeightAlignment"
+private const val lineHeightTrimKey = "lineHeightTrim"
+private const val lineHeightModeKey = "lineHeightMode"
+private const val maxWidthKey = "maxWidth"
+private const val widthKey = "width"
+private const val autoSizeKey = "autoSize"
+private const val softWrapKey = "softWrap"
+private const val showBorderKey = "showBorder"
+private const val overflowKey = "overflow"
+
+val TextDemoStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            styleKey to value.style.name,
+            lineHeightAlignmentKey to value.lineHeightAlignment.name,
+            lineHeightTrimKey to value.lineHeightTrim.name,
+            lineHeightModeKey to value.lineHeightMode.name,
+            maxWidthKey to value.maxWidth.value,
+            widthKey to value.width.value,
+            autoSizeKey to value.autoSize,
+            softWrapKey to value.softWrap,
+            showBorderKey to value.showBorder,
+            overflowKey to value.overflow.name,
+        )
+    },
+    restore = { map ->
+        TextDemoState(
+            styleInitial = TextStyle.valueOf(map[styleKey] as String),
+            lineHeightAlignmentInitial =
+                LineHeightAlignment.valueOf(map[lineHeightAlignmentKey] as String),
+            lineHeightTrimInitial =
+                LineHeightTrim.valueOf(map[lineHeightTrimKey] as String),
+            lineHeightModeInitial =
+                LineHeightMode.valueOf(map[lineHeightModeKey] as String),
+            maxWidthInitial = (map[maxWidthKey] as Float).dp,
+            widthInitial = (map[widthKey] as Float).dp,
+            autoSizeInitial = map[autoSizeKey] as Boolean,
+            softWrapInitial = map[softWrapKey] as Boolean,
+            showBorderInitial = map[showBorderKey] as Boolean,
+            overflowInitial = Overflow.valueOf(map[overflowKey] as String),
+        )
+    }
+)
 
 @Composable
 fun rememberTextDemoControl(

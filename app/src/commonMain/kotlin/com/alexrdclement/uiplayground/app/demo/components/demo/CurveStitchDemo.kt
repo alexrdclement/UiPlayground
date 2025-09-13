@@ -15,11 +15,13 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
@@ -28,6 +30,7 @@ import com.alexrdclement.uiplayground.components.CurveStitchShape
 import com.alexrdclement.uiplayground.components.CurveStitchStar
 import com.alexrdclement.uiplayground.components.CurveStitchStarShape
 import com.alexrdclement.uiplayground.components.Surface
+import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -101,21 +104,68 @@ fun CurveStitchDemo(
 }
 
 @Composable
-fun rememberCurveStitchDemoState(): CurveStitchDemoState = remember { CurveStitchDemoState() }
+fun rememberCurveStitchDemoState(): CurveStitchDemoState = rememberSaveable(
+    saver = CurveStitchDemoStateSaver,
+) { CurveStitchDemoState() }
 
 @Stable
-class CurveStitchDemoState {
-    var strokeWidth by mutableStateOf(1.dp)
-
-    var numLines by mutableStateOf(8)
-    var numPoints by mutableStateOf(4)
-
-    var innerRadius by mutableStateOf(0.5f)
-    var starShapeInsidePoints by mutableStateOf(true)
-    var starShapeOutsidePoints by mutableStateOf(true)
-
-    var rotation by mutableStateOf(0f)
+class CurveStitchDemoState(
+    strokeWidthInitial: Dp = 1.dp,
+    numLinesInitial: Int = 8,
+    numPointsInitial: Int = 4,
+    innerRadiusInitial: Float = 0.5f,
+    starShapeInsidePointsInitial: Boolean = true,
+    starShapeOutsidePointsInitial: Boolean = true,
+    rotationInitial: Float = 0f,
+) {
+    var strokeWidth by mutableStateOf(strokeWidthInitial)
+        internal set
+    var numLines by mutableStateOf(numLinesInitial)
+        internal set
+    var numPoints by mutableStateOf(numPointsInitial)
+        internal set
+    var innerRadius by mutableStateOf(innerRadiusInitial)
+        internal set
+    var starShapeInsidePoints by mutableStateOf(starShapeInsidePointsInitial)
+        internal set
+    var starShapeOutsidePoints by mutableStateOf(starShapeOutsidePointsInitial)
+        internal set
+    var rotation by mutableStateOf(rotationInitial)
+        internal set
 }
+
+private const val strokeWidthKey = "strokeWidth"
+private const val numLinesKey = "numLines"
+private const val numPointsKey = "numPoints"
+private const val innerRadiusKey = "innerRadius"
+private const val starShapeInsidePointsKey = "starShapeInsidePoints"
+private const val starShapeOutsidePointsKey = "starShapeOutsidePoints"
+private const val rotationKey = "rotation"
+
+val CurveStitchDemoStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            strokeWidthKey to value.strokeWidth.value,
+            numLinesKey to value.numLines,
+            numPointsKey to value.numPoints,
+            innerRadiusKey to value.innerRadius,
+            starShapeInsidePointsKey to value.starShapeInsidePoints,
+            starShapeOutsidePointsKey to value.starShapeOutsidePoints,
+            rotationKey to value.rotation,
+        )
+    },
+    restore = { map ->
+        CurveStitchDemoState(
+            strokeWidthInitial = (map[strokeWidthKey] as Float).dp,
+            numLinesInitial = map[numLinesKey] as Int,
+            numPointsInitial = map[numPointsKey] as Int,
+            innerRadiusInitial = map[innerRadiusKey] as Float,
+            starShapeInsidePointsInitial = map[starShapeInsidePointsKey] as Boolean,
+            starShapeOutsidePointsInitial = map[starShapeOutsidePointsKey] as Boolean,
+            rotationInitial = map[rotationKey] as Float,
+        )
+    },
+)
 
 @Composable
 fun rememberCurveStitchDemoControl(
