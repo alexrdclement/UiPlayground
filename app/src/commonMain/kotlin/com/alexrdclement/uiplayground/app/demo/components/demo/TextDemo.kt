@@ -1,6 +1,7 @@
 package com.alexrdclement.uiplayground.app.demo.components.demo
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -36,46 +37,58 @@ fun TextDemo(
     state: TextDemoState = rememberTextDemoState(),
     control: TextDemoControl = rememberTextDemoControl(state),
 ) {
-    val text by state.text.collectAsState(initial = state.text.toString())
-
     Demo(
         controls = control.controls,
         modifier = modifier.fillMaxSize()
     ) {
-        LaunchedEffect(this@Demo.maxWidth) {
-            control.onSizeChanged(this@Demo.maxWidth)
-        }
-        Text(
-            text = text,
-            style = state.style.toCompose().copy(
-                lineHeightStyle = TextDemoState.lineHeightStyleDefault.copy(
-                    alignment = state.lineHeightAlignment.toCompose(),
-                    trim = state.lineHeightTrim.toCompose(),
-                    mode = state.lineHeightMode.toCompose(),
-                )
-            ),
-            autoSize = if (state.autoSize) TextAutoSize.StepBased() else null,
-            softWrap = state.softWrap,
-            overflow = when (state.overflow) {
-                Overflow.Clip -> TextOverflow.Clip
-                Overflow.Ellipsis -> TextOverflow.Ellipsis
-                Overflow.Visible -> TextOverflow.Visible
-                Overflow.StartEllipsis -> TextOverflow.StartEllipsis
-                Overflow.MiddleEllipsis -> TextOverflow.MiddleEllipsis
-            },
-            modifier = Modifier
-                .align(Alignment.Center)
-                .width(state.width)
-                .padding(vertical = PlaygroundTheme.spacing.medium)
-                .then(
-                    if (state.showBorder) Modifier.border(
-                        1.dp,
-                        PlaygroundTheme.colorScheme.primary
-                    )
-                    else Modifier
-                )
+        TextDemo(
+            state = state,
+            control = control,
         )
     }
+}
+
+@Composable
+fun BoxWithConstraintsScope.TextDemo(
+    modifier: Modifier = Modifier,
+    state: TextDemoState = rememberTextDemoState(),
+    control: TextDemoControl = rememberTextDemoControl(state),
+) {
+    val text by state.text.collectAsState(initial = state.text.toString())
+
+    LaunchedEffect(this@TextDemo.maxWidth) {
+        control.onSizeChanged(this@TextDemo.maxWidth)
+    }
+    Text(
+        text = text,
+        style = state.style.toCompose().copy(
+            lineHeightStyle = TextDemoState.lineHeightStyleDefault.copy(
+                alignment = state.lineHeightAlignment.toCompose(),
+                trim = state.lineHeightTrim.toCompose(),
+                mode = state.lineHeightMode.toCompose(),
+            )
+        ),
+        autoSize = if (state.autoSize) TextAutoSize.StepBased() else null,
+        softWrap = state.softWrap,
+        overflow = when (state.overflow) {
+            Overflow.Clip -> TextOverflow.Clip
+            Overflow.Ellipsis -> TextOverflow.Ellipsis
+            Overflow.Visible -> TextOverflow.Visible
+            Overflow.StartEllipsis -> TextOverflow.StartEllipsis
+            Overflow.MiddleEllipsis -> TextOverflow.MiddleEllipsis
+        },
+        modifier = modifier
+            .align(Alignment.Center)
+            .width(state.width)
+            .padding(vertical = PlaygroundTheme.spacing.medium)
+            .then(
+                if (state.showBorder) Modifier.border(
+                    1.dp,
+                    PlaygroundTheme.colorScheme.primary
+                )
+                else Modifier
+            )
+    )
 }
 
 enum class Overflow {

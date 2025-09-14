@@ -1,9 +1,10 @@
 package com.alexrdclement.uiplayground.app.demo.components.demo
 
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
@@ -21,8 +22,9 @@ import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.components.Button
 import com.alexrdclement.uiplayground.components.ButtonStyle
-import com.alexrdclement.uiplayground.components.Text
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
+import com.alexrdclement.uiplayground.components.util.restore
+import com.alexrdclement.uiplayground.components.util.save
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -51,12 +53,15 @@ fun ButtonDemo(
                 .align(Alignment.Center)
                 .padding(PlaygroundTheme.spacing.medium)
         ) {
-            Text(
-                text = "Button",
-                style = PlaygroundTheme.typography.labelLarge,
-                softWrap = state.softWrap,
-                autoSize = if (state.autoSizeText) TextAutoSize.StepBased() else null,
-            )
+            BoxWithConstraints(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                TextDemo(
+                    state = state.textDemoState,
+                    control = control.textDemoControl,
+                )
+            }
         }
     }
 }
@@ -72,8 +77,9 @@ class ButtonDemoState(
     styleInitial: ButtonStyle = ButtonStyle.Outline,
     maxWidthInitial: Dp = 0.dp,
     widthInitial: Dp = 200.dp,
-    autoSizeTextInitial: Boolean = true,
-    softWrapInitial: Boolean = false,
+    val textDemoState: TextDemoState = TextDemoState(
+        initialText = "Button",
+    ),
 ) {
     var enabled by mutableStateOf(enabledInitial)
         internal set
@@ -83,18 +89,13 @@ class ButtonDemoState(
         internal set
     var width by mutableStateOf(widthInitial)
         internal set
-    var autoSizeText by mutableStateOf(autoSizeTextInitial)
-        internal set
-    var softWrap by mutableStateOf(softWrapInitial)
-        internal set
 }
 
 private const val enabledKey = "enabled"
 private const val styleKey = "style"
 private const val maxWidthKey = "maxWidth"
 private const val widthKey = "width"
-private const val autoSizeTextKey = "autoSizeText"
-private const val softWrapKey = "softWrap"
+private const val textDemoStateKey = "textDemoState"
 
 val ButtonDemoStateSaver = mapSaverSafe(
     save = { value ->
@@ -103,8 +104,7 @@ val ButtonDemoStateSaver = mapSaverSafe(
             styleKey to value.style.name,
             maxWidthKey to value.maxWidth.value,
             widthKey to value.width.value,
-            autoSizeTextKey to value.autoSizeText,
-            softWrapKey to value.softWrap,
+            textDemoStateKey to save(value.textDemoState, TextDemoStateSaver, this),
         )
     },
     restore = { map ->
@@ -113,8 +113,7 @@ val ButtonDemoStateSaver = mapSaverSafe(
             styleInitial = ButtonStyle.valueOf(map[styleKey] as String),
             maxWidthInitial = (map[maxWidthKey] as Float).dp,
             widthInitial = (map[widthKey] as Float).dp,
-            autoSizeTextInitial = map[autoSizeTextKey] as Boolean,
-            softWrapInitial = map[softWrapKey] as Boolean,
+            textDemoState = restore(map[textDemoStateKey], TextDemoStateSaver)!!
         )
     },
 )
@@ -151,35 +150,31 @@ class ButtonDemoControl(
     val widthControl = Control.Slider(
         name = "Width",
         value = { state.width.value },
-        onValueChange = { state.width = it.dp},
+        onValueChange = { state.width = it.dp },
         valueRange = { 0f..state.maxWidth.value },
     )
 
-    val autoSizeControl = Control.Toggle(
-        name = "Auto-size text",
-        value = { state.autoSizeText },
-        onValueChange = { state.autoSizeText = it}
-    )
-
-    val softWrapControl = Control.Toggle(
-        name = "Soft-wrap text",
-        value = { state.softWrap },
-        onValueChange = { state.softWrap = it }
+    val textDemoControl = TextDemoControl(state.textDemoState)
+    val textDemoControls = Control.ControlColumn(
+        name = "Text",
+        indent = true,
+        controls = { textDemoControl.controls },
     )
 
     val controls = persistentListOf(
         enabledControl,
         styleControl,
         widthControl,
-        autoSizeControl,
-        softWrapControl,
+        textDemoControls,
     )
 
     fun onSizeChanged(width: Dp) {
         if (state.maxWidth == 0.dp) {
             state.width = width
+            state.textDemoState.width = width
         }
         state.maxWidth = width
+        state.textDemoState.maxWidth = width
         if (state.width > state.maxWidth) {
             state.width = state.maxWidth
         }
