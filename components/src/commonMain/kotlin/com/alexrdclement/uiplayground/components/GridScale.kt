@@ -2,10 +2,16 @@ package com.alexrdclement.uiplayground.components
 
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import kotlin.math.ln
 import kotlin.math.pow
+
+enum class GridScaleType {
+    Linear,
+    Logarithmic,
+    LogarithmicDecay,
+    Exponential,
+    ExponentialDecay,
+}
 
 sealed class GridScale {
     data class Linear(
@@ -54,71 +60,3 @@ sealed class GridScale {
         }
     }
 }
-
-private enum class ScaleType {
-    Linear,
-    Logarithmic,
-    LogarithmicDecay,
-    Exponential,
-    ExponentialDecay,
-}
-
-private const val scaleTypeKey = "scaleType"
-private const val spacingKey = "spacing"
-private const val baseKey = "base"
-private const val exponentKey = "exponent"
-
-val GridScaleSaver = mapSaverSafe(
-    save = { value ->
-        when (value) {
-            is GridScale.Linear -> mapOf(
-                scaleTypeKey to ScaleType.Linear,
-                spacingKey to value.spacing.value,
-            )
-            is GridScale.Logarithmic -> mapOf(
-                scaleTypeKey to ScaleType.Logarithmic,
-                spacingKey to value.spacing.value,
-                baseKey to value.base,
-            )
-            is GridScale.LogarithmicDecay -> mapOf(
-                scaleTypeKey to ScaleType.LogarithmicDecay,
-                spacingKey to value.spacing.value,
-                baseKey to value.base,
-            )
-            is GridScale.Exponential -> mapOf(
-                scaleTypeKey to ScaleType.Exponential,
-                spacingKey to value.spacing.value,
-                exponentKey to value.exponent,
-            )
-            is GridScale.ExponentialDecay -> mapOf(
-                scaleTypeKey to ScaleType.ExponentialDecay,
-                spacingKey to value.spacing.value,
-                exponentKey to value.exponent,
-            )
-        }
-    },
-    restore = { map ->
-        when (map[scaleTypeKey]) {
-            ScaleType.Linear -> GridScale.Linear(
-                spacing = (map[spacingKey] as Float).dp,
-            )
-            ScaleType.Logarithmic -> GridScale.Logarithmic(
-                spacing = (map[spacingKey] as Float).dp,
-                base = map[baseKey] as Float,
-            )
-            ScaleType.LogarithmicDecay -> GridScale.LogarithmicDecay(
-                spacing = (map[spacingKey] as Float).dp,
-                base = map[baseKey] as Float,
-            )
-            ScaleType.Exponential -> GridScale.Exponential(
-                spacing = (map[spacingKey] as Float).dp,
-                exponent = map[exponentKey] as Float,
-            )
-            ScaleType.ExponentialDecay -> GridScale.ExponentialDecay(
-                spacing = (map[spacingKey] as Float).dp,
-                exponent = map[exponentKey] as Float,
-            )
-            else -> throw IllegalArgumentException("Unknown type: ${map[scaleTypeKey]}")
-        }
-    }
-)
