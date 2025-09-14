@@ -57,6 +57,7 @@ fun <T : CatalogItem> CatalogScreen(
             contentPadding = innerPadding,
             modifier = Modifier
                 .fillMaxSize()
+                .padding(horizontal = PlaygroundTheme.spacing.medium)
         ) {
             items(
                 items = items,
