@@ -1,43 +1,97 @@
 package com.alexrdclement.uiplayground.app.demo.components.demo
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.TextAutoSize
-import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.Controls
-import com.alexrdclement.uiplayground.components.HorizontalDivider
 import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
-private enum class Overflow {
+@Composable
+fun TextDemo(
+    modifier: Modifier = Modifier,
+    state: TextDemoState = rememberTextDemoState(),
+    control: TextDemoControl = rememberTextDemoControl(state),
+) {
+    Demo(
+        controls = control.controls,
+        modifier = modifier.fillMaxSize()
+    ) {
+        TextDemo(
+            state = state,
+            control = control,
+        )
+    }
+}
+
+@Composable
+fun BoxWithConstraintsScope.TextDemo(
+    modifier: Modifier = Modifier,
+    state: TextDemoState = rememberTextDemoState(),
+    control: TextDemoControl = rememberTextDemoControl(state),
+) {
+    val text by state.text.collectAsState(initial = state.text.toString())
+
+    LaunchedEffect(this@TextDemo.maxWidth) {
+        control.onSizeChanged(this@TextDemo.maxWidth)
+    }
+    Text(
+        text = text,
+        style = state.style.toCompose().copy(
+            lineHeightStyle = TextDemoState.lineHeightStyleDefault.copy(
+                alignment = state.lineHeightAlignment.toCompose(),
+                trim = state.lineHeightTrim.toCompose(),
+                mode = state.lineHeightMode.toCompose(),
+            )
+        ),
+        autoSize = if (state.autoSize) TextAutoSize.StepBased() else null,
+        softWrap = state.softWrap,
+        overflow = when (state.overflow) {
+            Overflow.Clip -> TextOverflow.Clip
+            Overflow.Ellipsis -> TextOverflow.Ellipsis
+            Overflow.Visible -> TextOverflow.Visible
+            Overflow.StartEllipsis -> TextOverflow.StartEllipsis
+            Overflow.MiddleEllipsis -> TextOverflow.MiddleEllipsis
+        },
+        modifier = modifier
+            .align(Alignment.Center)
+            .width(state.width)
+            .padding(vertical = PlaygroundTheme.spacing.medium)
+            .then(
+                if (state.showBorder) Modifier.border(
+                    1.dp,
+                    PlaygroundTheme.colorScheme.primary
+                )
+                else Modifier
+            )
+    )
+}
+
+enum class Overflow {
     Clip,
     Ellipsis,
     Visible,
@@ -45,204 +99,270 @@ private enum class Overflow {
     MiddleEllipsis,
 }
 
-private enum class LineHeightAlignment {
+enum class LineHeightAlignment {
     Top,
     Center,
     Proportional,
     Bottom,
 }
 
-private enum class LineHeightTrim {
+enum class LineHeightTrim {
     FirstLineTop,
     LastLineBottom,
     Both,
     None,
 }
 
-private enum class LineHeightMode {
+enum class LineHeightMode {
     Fixed,
     Minimum,
 }
 
+
 @Composable
-fun TextDemo() {
-    val textFieldState = rememberTextFieldState(initialText = "Hello world")
-    val text by snapshotFlow { textFieldState.text.toString() }
-        .collectAsState(initial = textFieldState.text.toString())
+fun rememberTextDemoState(
+    initialText: String = "Hello world",
+) = rememberSaveable(saver = TextDemoStateSaver) {
+    TextDemoState(initialText)
+}
+
+@Stable
+class TextDemoState(
+    initialText: String = "Hello world",
+    styleInitial: TextStyle = TextStyle.Headline,
+    lineHeightAlignmentInitial: LineHeightAlignment = lineHeightAlignmentDefault,
+    lineHeightTrimInitial: LineHeightTrim = lineHeightTrimDefault,
+    lineHeightModeInitial: LineHeightMode = lineHeightModeDefault,
+    maxWidthInitial: Dp = 0.dp,
+    widthInitial: Dp = maxWidthInitial,
+    autoSizeInitial: Boolean = false,
+    softWrapInitial: Boolean = false,
+    showBorderInitial: Boolean = false,
+    overflowInitial: Overflow = Overflow.Clip,
+) {
+    internal val textFieldState = TextFieldState(initialText = initialText)
+    val text get() = snapshotFlow { textFieldState.text.toString() }
+
+    var style by mutableStateOf(styleInitial)
+        internal set
+
+    var lineHeightAlignment by mutableStateOf(lineHeightAlignmentInitial)
+        internal set
+    var lineHeightTrim by mutableStateOf(lineHeightTrimInitial)
+        internal set
+
+    var lineHeightMode by mutableStateOf(lineHeightModeInitial)
+        internal set
+
+    var maxWidth by mutableStateOf(maxWidthInitial)
+        internal set
+    var width by mutableStateOf(widthInitial)
+        internal set
+
+    var autoSize by mutableStateOf(autoSizeInitial)
+        internal set
+    var softWrap by mutableStateOf(softWrapInitial)
+        internal set
+    var showBorder by mutableStateOf(showBorderInitial)
+        internal set
+    var overflow by mutableStateOf(overflowInitial)
+        internal set
+
+    companion object {
+        val lineHeightStyleDefault = LineHeightStyle.Default
+        val lineHeightAlignmentDefault =
+            lineHeightStyleDefault.alignment.toDomain() ?: LineHeightAlignment.Proportional
+        val lineHeightTrimDefault = lineHeightStyleDefault.trim.toDomain() ?: LineHeightTrim.Both
+        val lineHeightModeDefault = lineHeightStyleDefault.mode.toDomain() ?: LineHeightMode.Fixed
+    }
+}
+
+private const val styleKey = "style"
+private const val lineHeightAlignmentKey = "lineHeightAlignment"
+private const val lineHeightTrimKey = "lineHeightTrim"
+private const val lineHeightModeKey = "lineHeightMode"
+private const val maxWidthKey = "maxWidth"
+private const val widthKey = "width"
+private const val autoSizeKey = "autoSize"
+private const val softWrapKey = "softWrap"
+private const val showBorderKey = "showBorder"
+private const val overflowKey = "overflow"
+
+val TextDemoStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            styleKey to value.style.name,
+            lineHeightAlignmentKey to value.lineHeightAlignment.name,
+            lineHeightTrimKey to value.lineHeightTrim.name,
+            lineHeightModeKey to value.lineHeightMode.name,
+            maxWidthKey to value.maxWidth.value,
+            widthKey to value.width.value,
+            autoSizeKey to value.autoSize,
+            softWrapKey to value.softWrap,
+            showBorderKey to value.showBorder,
+            overflowKey to value.overflow.name,
+        )
+    },
+    restore = { map ->
+        TextDemoState(
+            styleInitial = TextStyle.valueOf(map[styleKey] as String),
+            lineHeightAlignmentInitial =
+                LineHeightAlignment.valueOf(map[lineHeightAlignmentKey] as String),
+            lineHeightTrimInitial =
+                LineHeightTrim.valueOf(map[lineHeightTrimKey] as String),
+            lineHeightModeInitial =
+                LineHeightMode.valueOf(map[lineHeightModeKey] as String),
+            maxWidthInitial = (map[maxWidthKey] as Float).dp,
+            widthInitial = (map[widthKey] as Float).dp,
+            autoSizeInitial = map[autoSizeKey] as Boolean,
+            softWrapInitial = map[softWrapKey] as Boolean,
+            showBorderInitial = map[showBorderKey] as Boolean,
+            overflowInitial = Overflow.valueOf(map[overflowKey] as String),
+        )
+    }
+)
+
+@Composable
+fun rememberTextDemoControl(
+    textDemoState: TextDemoState,
+) = remember(textDemoState) {
+    TextDemoControl(textDemoState)
+}
+
+@Stable
+class TextDemoControl(
+    private var state: TextDemoState,
+) {
     val textFieldControl = Control.TextField(
         name = "Text",
-        textFieldState = textFieldState,
+        textFieldState = state.textFieldState,
         includeLabel = false,
     )
 
-    var style by remember { mutableStateOf(TextStyle.Headline) }
     val styleControl = Control.Dropdown(
         name = "Style",
-        values = TextStyle.entries.map {
-            Control.Dropdown.DropdownItem(
-                name = it.name,
-                value = it,
-            )
-        }.toPersistentList(),
-        selectedIndex = TextStyle.entries.indexOf(style),
-        onValueChange = { style = TextStyle.entries[it] },
+        values = {
+            TextStyle.entries.map {
+                Control.Dropdown.DropdownItem(
+                    name = it.name,
+                    value = it,
+                )
+            }.toPersistentList()
+        },
+        selectedIndex = { TextStyle.entries.indexOf(state.style) },
+        onValueChange = { state.style = TextStyle.entries[it] },
     )
 
-    val lineHeightStyleDefault = LineHeightStyle.Default
-
-    val lineHeightAlignmentDefault = lineHeightStyleDefault.alignment.toDomain() ?: LineHeightAlignment.Proportional
-    var lineHeightAlignment by remember { mutableStateOf(lineHeightAlignmentDefault) }
     val lineHeightAlignmentControl = Control.Dropdown(
         name = "Line height alignment",
-        values = LineHeightAlignment.entries.map {
-            Control.Dropdown.DropdownItem(
-                name = it.name,
-                value = it,
-            )
-        }.toPersistentList(),
-        onValueChange = { lineHeightAlignment = LineHeightAlignment.entries[it] },
-        selectedIndex = LineHeightAlignment.entries.indexOf(lineHeightAlignment),
+        values = {
+            LineHeightAlignment.entries.map {
+                Control.Dropdown.DropdownItem(
+                    name = it.name,
+                    value = it,
+                )
+            }.toPersistentList()
+        },
+        onValueChange = { state.lineHeightAlignment = LineHeightAlignment.entries[it] },
+        selectedIndex = { LineHeightAlignment.entries.indexOf(state.lineHeightAlignment) },
     )
 
-    val lineHeightTrimDefault = lineHeightStyleDefault.trim.toDomain() ?: LineHeightTrim.Both
-    var lineHeightTrim by remember { mutableStateOf(lineHeightTrimDefault) }
     val lineHeightTrimControl = Control.Dropdown(
         name = "Line height trim",
-        values = LineHeightTrim.entries.map {
-            Control.Dropdown.DropdownItem(
-                name = it.name,
-                value = it,
-            )
-        }.toPersistentList(),
-        onValueChange = { lineHeightTrim = LineHeightTrim.entries[it] },
-        selectedIndex = LineHeightTrim.entries.indexOf(lineHeightTrim),
+        values = {
+            LineHeightTrim.entries.map {
+                Control.Dropdown.DropdownItem(
+                    name = it.name,
+                    value = it,
+                )
+            }.toPersistentList()
+        },
+        onValueChange = { state.lineHeightTrim = LineHeightTrim.entries[it] },
+        selectedIndex = { LineHeightTrim.entries.indexOf(state.lineHeightTrim) },
     )
 
-    val lineHeightModeDefault = lineHeightStyleDefault.mode.toDomain() ?: LineHeightMode.Fixed
-    var lineHeightMode by remember { mutableStateOf(lineHeightModeDefault) }
     val lineHeightModeControl = Control.Dropdown(
         name = "Line height mode",
-        values = LineHeightMode.entries.map {
-            Control.Dropdown.DropdownItem(
-                name = it.name,
-                value = it,
-            )
-        }.toPersistentList(),
-        onValueChange = { lineHeightMode = LineHeightMode.entries[it] },
-        selectedIndex = LineHeightMode.entries.indexOf(lineHeightMode),
+        values = {
+            LineHeightMode.entries.map {
+                Control.Dropdown.DropdownItem(
+                    name = it.name,
+                    value = it,
+                )
+            }.toPersistentList()
+        },
+        onValueChange = { state.lineHeightMode = LineHeightMode.entries[it] },
+        selectedIndex = { LineHeightMode.entries.indexOf(state.lineHeightMode) },
     )
 
-    var maxWidthPx by remember { mutableIntStateOf(0) }
-    val maxWidth = with(LocalDensity.current) { maxWidthPx.toDp() }
-    var width by remember(maxWidth) { mutableStateOf(maxWidth) }
     val widthControl = Control.Slider(
         name = "Width",
-        value = width.value,
+        value = { state.width.value },
         onValueChange = {
-            width = it.dp
+            state.width = it.dp
         },
-        valueRange = 0f..maxWidth.value,
+        valueRange = { 0f..state.maxWidth.value },
     )
 
-    var autoSize by remember { mutableStateOf(false) }
     val autoSizeControl = Control.Toggle(
         name = "Auto-size text",
-        value = autoSize,
+        value = { state.autoSize },
         onValueChange = {
-            autoSize = it
+            state.autoSize = it
         }
     )
 
-    var softWrap by remember { mutableStateOf(false) }
     val softWrapControl = Control.Toggle(
         name = "Soft wrap",
-        value = softWrap,
+        value = { state.softWrap },
         onValueChange = {
-            softWrap = it
+            state.softWrap = it
         }
     )
 
-    var showBorder by remember { mutableStateOf(false) }
     val showBorderControl = Control.Toggle(
         name = "Show border",
-        value = showBorder,
+        value = { state.showBorder },
         onValueChange = {
-            showBorder = it
+            state.showBorder = it
         }
     )
 
-    var overflow by remember { mutableStateOf(Overflow.Clip) }
     val overflowControl = Control.Dropdown(
         name = "Overflow",
-        values = Overflow.entries.map {
-            Control.Dropdown.DropdownItem(
-                name = it.name,
-                value = it
-            )
-        }.toPersistentList(),
-        selectedIndex = Overflow.entries.indexOf(overflow),
-        onValueChange = { overflow = Overflow.entries[it] },
+        values = {
+            Overflow.entries.map {
+                Control.Dropdown.DropdownItem(
+                    name = it.name,
+                    value = it
+                )
+            }.toPersistentList()
+        },
+        selectedIndex = { Overflow.entries.indexOf(state.overflow) },
+        onValueChange = { state.overflow = Overflow.entries[it] },
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .onSizeChanged { maxWidthPx = it.width },
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Box(
-            modifier = Modifier.weight(1f),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                text = text,
-                style = style.toCompose().copy(
-                    lineHeightStyle = lineHeightStyleDefault.copy(
-                        alignment = lineHeightAlignment.toCompose(),
-                        trim = lineHeightTrim.toCompose(),
-                        mode = lineHeightMode.toCompose(),
-                    )
-                ),
-                autoSize = if (autoSize) TextAutoSize.StepBased() else null,
-                softWrap = softWrap,
-                overflow = when (overflow) {
-                    Overflow.Clip -> TextOverflow.Clip
-                    Overflow.Ellipsis -> TextOverflow.Ellipsis
-                    Overflow.Visible -> TextOverflow.Visible
-                    Overflow.StartEllipsis -> TextOverflow.StartEllipsis
-                    Overflow.MiddleEllipsis -> TextOverflow.MiddleEllipsis
-                },
-                modifier = Modifier
-                    .width(width)
-                    .padding(vertical = PlaygroundTheme.spacing.medium)
-                    .then(
-                        if (showBorder) Modifier.border(1.dp, PlaygroundTheme.colorScheme.primary)
-                        else Modifier
-                    )
-            )
+    val controls = persistentListOf(
+        textFieldControl,
+        styleControl,
+        lineHeightAlignmentControl,
+        lineHeightTrimControl,
+        lineHeightModeControl,
+        widthControl,
+        autoSizeControl,
+        softWrapControl,
+        showBorderControl,
+        overflowControl,
+    )
+
+    fun onSizeChanged(width: Dp) {
+        if (state.maxWidth == 0.dp) {
+            state.width = width
         }
-        HorizontalDivider(modifier = Modifier.fillMaxWidth())
-        Controls(
-            controls = persistentListOf(
-                textFieldControl,
-                styleControl,
-                lineHeightAlignmentControl,
-                lineHeightTrimControl,
-                lineHeightModeControl,
-                widthControl,
-                autoSizeControl,
-                softWrapControl,
-                showBorderControl,
-                overflowControl,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .verticalScroll(rememberScrollState())
-                .padding(PlaygroundTheme.spacing.medium)
-                .navigationBarsPadding(),
-        )
+        state.maxWidth = width
+        if (state.width.value > state.maxWidth.value) {
+            state.width = state.maxWidth
+        }
     }
 }
 

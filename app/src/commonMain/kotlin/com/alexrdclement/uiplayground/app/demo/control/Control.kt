@@ -8,23 +8,24 @@ import kotlinx.collections.immutable.ImmutableList
 sealed class Control {
     data class Slider(
         val name: String,
-        val value: Float,
+        val value: () -> Float,
         val onValueChange: (Float) -> Unit,
-        val valueRange: ClosedFloatingPointRange<Float> = 0f..1f
+        val valueRange: () -> ClosedFloatingPointRange<Float> = { 0f..1f }
     ) : Control()
 
     data class Dropdown<T>(
         val name: String,
-        val values: ImmutableList<DropdownItem<T>>,
-        val selectedIndex: Int,
-        val onValueChange: (index: Int) -> Unit
+        val values: () -> ImmutableList<DropdownItem<T>>,
+        val selectedIndex: () -> Int,
+        val onValueChange: (index: Int) -> Unit,
+        val includeLabel: Boolean = true,
     ) : Control() {
         data class DropdownItem<T>(val name: String, val value: T)
     }
 
     data class Toggle(
         val name: String,
-        val value: Boolean,
+        val value: () -> Boolean,
         val onValueChange: (Boolean) -> Unit,
     ) : Control()
 
@@ -32,8 +33,16 @@ sealed class Control {
         val name: String,
         val textFieldState: TextFieldState,
         val includeLabel: Boolean = true,
-        val enabled: Boolean = true,
-        val keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-        val inputTransformation: InputTransformation? = null,
+        val enabled: () -> Boolean = { true },
+        val keyboardOptions: () -> KeyboardOptions = { KeyboardOptions.Default },
+        val inputTransformation: () -> InputTransformation? = { null },
+    ) : Control()
+
+    data class ControlRow(val controls: () -> ImmutableList<Control>) : Control()
+
+    data class ControlColumn(
+        val controls: () -> ImmutableList<Control>,
+        val name: String? = null,
+        val indent: Boolean = false,
     ) : Control()
 }

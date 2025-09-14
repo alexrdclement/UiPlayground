@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +26,8 @@ fun ToggleControl(
     modifier: Modifier = Modifier,
     includeTitle: Boolean = true,
 ) {
+    val checked by rememberUpdatedState(control.value())
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -34,7 +38,7 @@ fun ToggleControl(
             Spacer(modifier = Modifier.height(PlaygroundTheme.spacing.small))
         }
 
-        Checkbox(control.value, onCheckedChange = control.onValueChange)
+        Checkbox(checked, onCheckedChange = control.onValueChange)
     }
 }
 
@@ -44,6 +48,8 @@ fun ToggleControlRow(
     modifier: Modifier = Modifier,
     includeTitle: Boolean = true,
 ) {
+    val isChecked by rememberUpdatedState(control.value())
+
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.Center,
@@ -54,7 +60,7 @@ fun ToggleControlRow(
             Spacer(modifier = Modifier.height(PlaygroundTheme.spacing.small))
         }
 
-        Checkbox(control.value, onCheckedChange = control.onValueChange)
+        Checkbox(isChecked, onCheckedChange = control.onValueChange)
     }
 }
 
@@ -63,15 +69,11 @@ fun ToggleControlRow(
 private fun ToggleControlPreview() {
     UiPlaygroundPreview {
         var on by remember { mutableStateOf(false) }
-        val control by remember {
-            mutableStateOf(
-                Control.Toggle(
-                    name = "Color",
-                    value = on,
-                    onValueChange = { on = it }
-                )
-            )
-        }
+        val control = Control.Toggle(
+            name = "Color",
+            value = { on },
+            onValueChange = { on = it }
+        )
         ToggleControl(control = control)
     }
 }
@@ -81,15 +83,11 @@ private fun ToggleControlPreview() {
 private fun ToggleControlRowPreview() {
     UiPlaygroundPreview {
         var on by remember { mutableStateOf(false) }
-        val control by remember {
-            mutableStateOf(
-                Control.Toggle(
-                    name = "Color",
-                    value = on,
-                    onValueChange = { on = it }
-                )
-            )
-        }
+        val control = Control.Toggle(
+            name = "Color",
+            value = { on },
+            onValueChange = { on = it }
+        )
         ToggleControlRow(control = control)
     }
 }

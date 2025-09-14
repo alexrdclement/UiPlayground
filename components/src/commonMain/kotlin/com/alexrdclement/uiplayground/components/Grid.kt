@@ -6,144 +6,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.components.util.rotate
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.PI
 import kotlin.math.cos
-import kotlin.math.ln
-import kotlin.math.pow
 import kotlin.math.sin
-
-sealed class GridCoordinateSystem {
-    data class Cartesian(
-        val scaleX: GridScale,
-        val scaleY: GridScale,
-        val rotationDegrees: Float = 0f,
-    ) : GridCoordinateSystem() {
-        constructor(
-            spacing: Dp,
-            rotationDegrees: Float = 0f,
-        ) : this(
-            scaleX = GridScale.Linear(spacing = spacing),
-            scaleY = GridScale.Linear(spacing = spacing),
-            rotationDegrees = rotationDegrees,
-        )
-    }
-
-    data class Polar(
-        val radiusScale: GridScale,
-        val theta: Float, // angle step in radians
-        val rotationDegrees: Float = 0f,
-    ) : GridCoordinateSystem()
-}
-
-sealed class GridScale {
-    data class Linear(
-        val spacing: Dp,
-    ) : GridScale()
-
-    data class Logarithmic(
-        val spacing: Dp,
-        val base: Float = 10f,
-    ) : GridScale()
-
-    data class LogarithmicDecay(
-        val spacing: Dp,
-        val base: Float = 10f,
-    ) : GridScale()
-
-    data class ExponentialDecay(
-        val spacing: Dp,
-        val exponent: Float = 10f,
-    ) : GridScale()
-
-    data class Exponential(
-        val spacing: Dp,
-        val exponent: Float = 10f,
-    ) : GridScale()
-
-    fun scale(interval: Int, density: Density): Float = with(density) {
-        return when (this@GridScale) {
-            is Linear -> spacing.toPx()
-            is Logarithmic -> if (interval == 0) 1f else {
-                val scaling = ln(base.toDouble()).toFloat() * interval
-                spacing.toPx() * scaling
-            }
-            is LogarithmicDecay -> if (interval == 0) 1f else {
-                val scaling = 1 / (ln(base.toDouble()).toFloat() * interval)
-                (spacing.toPx() * scaling).coerceAtLeast(1f)
-            }
-            is Exponential -> if (interval == 0) spacing.toPx() else {
-                val scaling = exponent.toDouble().pow(interval.toDouble()).toFloat()
-                spacing.toPx() * scaling
-            }
-            is ExponentialDecay -> if (interval == 0) spacing.toPx() else {
-                val scaling = 1 / exponent.toDouble().pow(interval.toDouble()).toFloat()
-                (spacing.toPx() * scaling).coerceAtLeast(1f)
-            }
-        }
-    }
-}
-
-data class GridLineStyle(
-    val color: Color,
-    val stroke: Stroke,
-)
-
-sealed class GridVertex(
-    open val size: DpSize,
-    open val rotationDegrees: Float,
-) {
-    data class Oval(
-        override val size: DpSize,
-        val color: Color,
-        val drawStyle: DrawStyle,
-        override val rotationDegrees: Float = 0f,
-    ) : GridVertex(
-        size = size,
-        rotationDegrees = rotationDegrees,
-    )
-
-    data class Rect(
-        override val size: DpSize,
-        val color: Color,
-        val drawStyle: DrawStyle,
-        override val rotationDegrees: Float = 0f,
-    ) : GridVertex(
-        size = size,
-        rotationDegrees = rotationDegrees
-    )
-
-    data class Plus(
-        override val size: DpSize,
-        val color: Color,
-        val strokeWidth: Dp,
-        override val rotationDegrees: Float = 0f,
-    ) : GridVertex(
-        size = size,
-        rotationDegrees = rotationDegrees,
-    )
-
-    data class X(
-        override val size: DpSize,
-        val color: Color,
-        val strokeWidth: Dp,
-        override val rotationDegrees: Float = 0f,
-    ) : GridVertex(
-        size = size,
-        rotationDegrees,
-    )
-}
 
 @Composable
 fun Grid(
@@ -163,7 +37,7 @@ fun Grid(
     when (coordinateSystem) {
         is GridCoordinateSystem.Cartesian -> CartesianGrid(
             xSpacing = { coordinateSystem.scaleX.scale(it, this) },
-            ySpacing = {coordinateSystem.scaleY.scale(it, this) },
+            ySpacing = { coordinateSystem.scaleY.scale(it, this) },
             lineStyle = lineStyle,
             modifier = modifier,
             offset = offset,
@@ -174,7 +48,7 @@ fun Grid(
         )
         is GridCoordinateSystem.Polar -> PolarGrid(
             radiusSpacing = { coordinateSystem.radiusScale.scale(it, this) },
-            theta = { coordinateSystem.theta },
+            theta = { coordinateSystem.thetaRadians },
             lineStyle = lineStyle,
             modifier = modifier,
             offset = offset,
@@ -403,78 +277,6 @@ fun PolarGrid(
                 }
                 currentRadius += radiusSpacing(radiusInterval)
                 radiusInterval += 1
-            }
-        }
-    }
-}
-
-fun DrawScope.drawVertex(
-    vertex: GridVertex,
-    x: Float,
-    y: Float,
-    density: Density,
-) {
-    drawContext.transform.rotate(
-        degrees = vertex.rotationDegrees,
-        pivot = Offset(x, y),
-    ) {
-        when (vertex) {
-            is GridVertex.Oval -> {
-                val size = vertex.size.toSize()
-                val radiusXPx = size.width / 2f
-                val radiusYPx = size.height / 2f
-                drawOval(
-                    color = vertex.color,
-                    topLeft = Offset(x - radiusXPx, y - radiusYPx),
-                    size = size,
-                    style = vertex.drawStyle,
-                )
-            }
-
-            is GridVertex.Rect -> {
-                val size = vertex.size.toSize()
-                drawRect(
-                    color = vertex.color,
-                    topLeft = Offset(x - size.width / 2f, y - size.height / 2f),
-                    size = size,
-                    style = vertex.drawStyle,
-                )
-            }
-
-            is GridVertex.Plus -> {
-                val size = vertex.size.toSize()
-                val halfPlusWidthPx = size.width / 2f
-                val halfPlusHeightPx = size.height / 2f
-                drawLine(
-                    color = vertex.color,
-                    start = Offset(x - halfPlusWidthPx, y),
-                    end = Offset(x + halfPlusWidthPx, y),
-                    strokeWidth = with(density) { vertex.strokeWidth.toPx() },
-                )
-                drawLine(
-                    color = vertex.color,
-                    start = Offset(x, y - halfPlusHeightPx),
-                    end = Offset(x, y + halfPlusHeightPx),
-                    strokeWidth = with(density) { vertex.strokeWidth.toPx() }
-                )
-            }
-
-            is GridVertex.X -> {
-                val size = vertex.size.toSize()
-                val halfXWidthPx = size.width / 2f
-                val halfXHeightPx = size.height / 2f
-                drawLine(
-                    color = vertex.color,
-                    start = Offset(x - halfXWidthPx, y - halfXHeightPx),
-                    end = Offset(x + halfXWidthPx, y + halfXHeightPx),
-                    strokeWidth = with(density) { vertex.strokeWidth.toPx() },
-                )
-                drawLine(
-                    color = vertex.color,
-                    start = Offset(x - halfXWidthPx, y + halfXHeightPx),
-                    end = Offset(x + halfXWidthPx, y - halfXHeightPx),
-                    strokeWidth = with(density) { vertex.strokeWidth.toPx() }
-                )
             }
         }
     }

@@ -1,773 +1,861 @@
 package com.alexrdclement.uiplayground.app.demo.components.demo
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.Controls
+import com.alexrdclement.uiplayground.app.demo.util.DensitySaver
 import com.alexrdclement.uiplayground.components.Grid
 import com.alexrdclement.uiplayground.components.GridCoordinateSystem
+import com.alexrdclement.uiplayground.components.GridCoordinateSystemType
 import com.alexrdclement.uiplayground.components.GridLineStyle
+import com.alexrdclement.uiplayground.components.GridLineStyleSaver
 import com.alexrdclement.uiplayground.components.GridScale
+import com.alexrdclement.uiplayground.components.GridScaleType
 import com.alexrdclement.uiplayground.components.GridVertex
-import com.alexrdclement.uiplayground.components.HorizontalDivider
+import com.alexrdclement.uiplayground.components.GridVertexType
 import com.alexrdclement.uiplayground.components.Surface
+import com.alexrdclement.uiplayground.components.util.ColorSaver
+import com.alexrdclement.uiplayground.components.util.DrawStyleSaver
+import com.alexrdclement.uiplayground.components.util.mapSaverSafe
+import com.alexrdclement.uiplayground.components.util.restore
+import com.alexrdclement.uiplayground.components.util.save
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.PI
-import kotlin.reflect.KClass
 
 @Composable
 fun GridDemo(
     modifier: Modifier = Modifier,
+    state: GridDemoState = rememberGridDemoState(),
+    control: GridDemoControl = rememberGridDemoControl(state),
 ) {
-    val color = PlaygroundTheme.colorScheme.primary
+    Demo(
+        controls = control.controls,
+        modifier = modifier.fillMaxSize(),
+    ) {
+        Grid(
+            lineStyle = state.lineStyle.takeIf { state.showLines },
+            vertex = state.vertexState.vertex,
+            coordinateSystem = state.coordinateSystem,
+            offset = with(LocalDensity.current) {
+                Offset(state.offsetX.toPx(), state.offsetY.toPx())
+            },
+            clipToBounds = state.clipToBounds,
+            modifier = Modifier
+                .fillMaxSize()
+        )
+    }
+}
 
-    var gridSpacingXPx by remember { mutableStateOf(100f) }
-    val gridSpacingX = with(LocalDensity.current) { gridSpacingXPx.toDp() }
-    var gridSpacingYPx by remember { mutableStateOf(100f) }
-    val gridSpacingY = with(LocalDensity.current) { gridSpacingYPx.toDp() }
-
-    var gridScaleX: GridScale by remember { mutableStateOf(GridScale.Linear(gridSpacingX)) }
-    var gridScaleY: GridScale by remember { mutableStateOf(GridScale.Linear(gridSpacingY)) }
-    var gridScaleXBase: Float by remember { mutableStateOf(2f) }
-    var gridScaleYBase: Float by remember { mutableStateOf(2f) }
-    var gridScaleXExponent: Float by remember { mutableStateOf(2f) }
-    var gridScaleYExponent: Float by remember { mutableStateOf(2f) }
-
-    var radiusSpacingPx by remember { mutableStateOf(50f) }
-    val radiusSpacing = with(LocalDensity.current) { radiusSpacingPx.toDp() }
-    var radiusScaleBase: Float by remember { mutableStateOf(2f) }
-    var radiusScaleExponent: Float by remember { mutableStateOf(2f) }
-    var radiusScale: GridScale by remember { mutableStateOf(GridScale.Linear(radiusSpacing)) }
-
-    var rotationDegrees by remember { mutableStateOf(0f) }
-
-    var theta by remember { mutableStateOf((PI / 3f).toFloat()) }
-
-    val coordinateSystems = mapOf(
-        GridCoordinateSystem.Cartesian::class to "Cartesian",
-        GridCoordinateSystem.Polar::class to "Polar",
+@Composable
+fun rememberGridDemoState(
+    color: Color = PlaygroundTheme.colorScheme.primary,
+    density: Density = LocalDensity.current,
+): GridDemoState = rememberSaveable(
+    saver = GridDemoStateSaver,
+) {
+    GridDemoState(
+        color = color,
+        density = density,
     )
-    val initialCoordinateSystem = GridCoordinateSystem.Cartesian(
-        scaleX = gridScaleX,
-        scaleY = gridScaleY,
-        rotationDegrees = rotationDegrees,
-    )
-    var coordinateSystem: GridCoordinateSystem by remember { mutableStateOf(initialCoordinateSystem) }
+}
+
+@Stable
+class GridDemoState(
+    val density: Density,
+    val color: Color,
+    xGridScaleStateInitial: CartesianGridScaleState = CartesianGridScaleState(),
+    yGridScaleStateInitial: CartesianGridScaleState = CartesianGridScaleState(),
+    polarGridScaleStateInitial: PolarGridScaleState = PolarGridScaleState(),
+    coordinateSystemTypeInitial: GridCoordinateSystemType = GridCoordinateSystemType.Cartesian,
+    vertexStateInitial: GridVertexState = GridVertexState(
+        density = density,
+        colorInitial = color,
+    ),
+    showLinesInitial: Boolean = true,
+    lineStyleInitial: GridLineStyle = GridLineStyle(
+        color = color,
+        stroke = Stroke(width = 1f),
+    ),
+    strokeWidthPxInitial: Float = 1f,
+    offsetXInitial: Dp = 0.dp,
+    offsetYInitial: Dp = 0.dp,
+    rotationDegreesInitial: Float = 0f,
+    clipToBoundsInitial: Boolean = true,
+) {
+    var coordinateSystemType by mutableStateOf(coordinateSystemTypeInitial)
+        internal set
+    val coordinateSystem: GridCoordinateSystem
+        get() = when (coordinateSystemType) {
+            GridCoordinateSystemType.Cartesian -> GridCoordinateSystem.Cartesian(
+                scaleX = xGridScaleState.gridScale,
+                scaleY = yGridScaleState.gridScale,
+                rotationDegrees = rotationDegrees,
+            )
+
+            GridCoordinateSystemType.Polar -> GridCoordinateSystem.Polar(
+                radiusScale = polarGridScaleState.gridScale,
+                thetaRadians = polarGridScaleState.thetaRadians,
+                rotationDegrees = rotationDegrees,
+            )
+        }
+
+    var xGridScaleState by mutableStateOf(xGridScaleStateInitial)
+        internal set
+    var yGridScaleState by mutableStateOf(yGridScaleStateInitial)
+        internal set
+    var polarGridScaleState by mutableStateOf(polarGridScaleStateInitial)
+        internal set
+
+    var vertexState by mutableStateOf(vertexStateInitial)
+        internal set
+
+    var showLines by mutableStateOf(showLinesInitial)
+        internal set
+    var lineStyle: GridLineStyle by mutableStateOf(lineStyleInitial)
+        internal set
+    var strokeWidthPx by mutableStateOf(strokeWidthPxInitial)
+        internal set
+
+    var offsetX by mutableStateOf(offsetXInitial)
+        internal set
+    var offsetY by mutableStateOf(offsetYInitial)
+        internal set
+    var rotationDegrees by mutableStateOf(rotationDegreesInitial)
+        internal set
+    var clipToBounds by mutableStateOf(clipToBoundsInitial)
+        internal set
+}
+
+private const val colorKey = "color"
+private const val densityKey = "density"
+private const val coordinateSystemTypeKey = "coordinateSystem"
+private const val xGridScaleStateKey = "xGridScaleState"
+private const val yGridScaleStateKey = "yGridScaleState"
+private const val polarGridScaleStateKey = "radiusGridScaleState"
+private const val vertexStateKey = "vertexState"
+private const val showLinesKey = "showLines"
+private const val lineStyleKey = "lineStyle"
+private const val strokeWidthPxKey = "strokeWidthPx"
+private const val offsetXKey = "offsetX"
+private const val offsetYKey = "offsetY"
+private const val rotationDegreesKey = "rotationDegrees"
+private const val clipToBoundsKey = "clipToBounds"
+
+val GridDemoStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            colorKey to save(value.color, ColorSaver, this),
+            densityKey to save(value.density, DensitySaver, this),
+            coordinateSystemTypeKey to value.coordinateSystemType,
+            xGridScaleStateKey to save(
+                value = value.xGridScaleState,
+                saver = CartesianGridScaleStateSaver,
+                scope = this,
+            ),
+            yGridScaleStateKey to save(
+                value = value.yGridScaleState,
+                saver = CartesianGridScaleStateSaver,
+                scope = this,
+            ),
+            polarGridScaleStateKey to save(
+                value = value.polarGridScaleState,
+                saver = PolarGridScaleStateSaver,
+                scope = this,
+            ),
+            vertexStateKey to save(
+                value = value.vertexState,
+                saver = GridVertexStateSaver,
+                scope = this,
+            ),
+            showLinesKey to value.showLines,
+            lineStyleKey to save(value.lineStyle, GridLineStyleSaver, this),
+            strokeWidthPxKey to value.strokeWidthPx,
+            offsetXKey to value.offsetX.value,
+            offsetYKey to value.offsetY.value,
+            rotationDegreesKey to value.rotationDegrees,
+            clipToBoundsKey to value.clipToBounds,
+        )
+    },
+    restore = { value ->
+        GridDemoState(
+            color = restore(value[colorKey], ColorSaver)!!,
+            density = restore(value[densityKey], DensitySaver)!!,
+            coordinateSystemTypeInitial = value[coordinateSystemTypeKey] as GridCoordinateSystemType,
+            xGridScaleStateInitial = restore(
+                value = value[xGridScaleStateKey],
+                saver = CartesianGridScaleStateSaver,
+            )!!,
+            yGridScaleStateInitial = restore(
+                value = value[yGridScaleStateKey],
+                saver = CartesianGridScaleStateSaver,
+            )!!,
+            polarGridScaleStateInitial = restore(
+                value = value[polarGridScaleStateKey],
+                saver = PolarGridScaleStateSaver,
+            )!!,
+            vertexStateInitial = restore(value[vertexStateKey], GridVertexStateSaver)!!,
+            showLinesInitial = value[showLinesKey] as Boolean,
+            strokeWidthPxInitial = value[strokeWidthPxKey] as Float,
+            lineStyleInitial = restore(value[lineStyleKey], GridLineStyleSaver)!!,
+            offsetXInitial = (value[offsetXKey] as Float).dp,
+            offsetYInitial = (value[offsetYKey] as Float).dp,
+            rotationDegreesInitial = value[rotationDegreesKey] as Float,
+            clipToBoundsInitial = value[clipToBoundsKey] as Boolean,
+        )
+    },
+)
+
+@Composable
+fun rememberGridDemoControl(
+    state: GridDemoState,
+): GridDemoControl = remember(state) { GridDemoControl(state) }
+
+@Stable
+class GridDemoControl(
+    val state: GridDemoState,
+) {
+    val gridScaleXControls = CartesianGridScaleControl(
+        name = "x-axis",
+        state = state.xGridScaleState,
+        onStateChanged = { state.xGridScaleState = it },
+    ).controls
+
+    val gridScaleYControls = CartesianGridScaleControl(
+        name = "y-axis",
+        state = state.yGridScaleState,
+        onStateChanged = { state.yGridScaleState = it },
+    ).controls
+
+    val polarControls = PolarGridScaleControl(
+        state = state.polarGridScaleState,
+        onStateChanged = { state.polarGridScaleState = it },
+    ).controls
+
     val coordinateSystemControl = Control.Dropdown(
         name = "Coordinate System",
-        values = coordinateSystems.map { (kclass, name) ->
-            Control.Dropdown.DropdownItem(
-                name = name,
-                value = kclass,
-            )
-        }.toPersistentList(),
-        selectedIndex = coordinateSystems.keys.indexOf(coordinateSystem::class),
+        values = {
+            GridCoordinateSystemType.entries.map { type ->
+                Control.Dropdown.DropdownItem(
+                    name = type.name,
+                    value = type,
+                )
+            }.toPersistentList()
+        },
+        selectedIndex = { GridCoordinateSystemType.entries.indexOf(state.coordinateSystemType) },
         onValueChange = { index ->
-            coordinateSystem = when (coordinateSystems.keys.elementAt(index)) {
-                GridCoordinateSystem.Cartesian::class -> GridCoordinateSystem.Cartesian(
-                    scaleX = gridScaleX,
-                    scaleY = gridScaleY,
-                    rotationDegrees = rotationDegrees,
-                )
-                GridCoordinateSystem.Polar::class -> GridCoordinateSystem.Polar(
-                    radiusScale = radiusScale,
-                    theta = theta,
-                    rotationDegrees = rotationDegrees,
-                )
-                else -> initialCoordinateSystem
-            }
+            state.coordinateSystemType = GridCoordinateSystemType.entries.elementAt(index)
         }
     )
 
-    val gridSpacingXControl = Control.Slider(
-        name = "Spacing X",
-        value = gridSpacingXPx,
-        onValueChange = {
-            gridSpacingXPx = it
-            gridScaleX = when (val gridScaleX = gridScaleX) {
-                is GridScale.Linear -> gridScaleX.copy(gridSpacingX)
-                is GridScale.Logarithmic -> gridScaleX.copy(spacing= gridSpacingX)
-                is GridScale.LogarithmicDecay -> gridScaleX.copy(spacing= gridSpacingX)
-                is GridScale.Exponential -> gridScaleX.copy(spacing= gridSpacingX)
-                is GridScale.ExponentialDecay -> gridScaleX.copy(spacing= gridSpacingX)
-            }
-            gridScaleY = when (val gridScaleY = gridScaleY) {
-                is GridScale.Linear -> gridScaleY.copy(spacing = gridSpacingX)
-                is GridScale.Logarithmic -> gridScaleY.copy(spacing = gridSpacingX)
-                is GridScale.LogarithmicDecay -> gridScaleY.copy(spacing = gridSpacingX)
-                is GridScale.Exponential -> gridScaleY.copy(spacing = gridSpacingX)
-                is GridScale.ExponentialDecay -> gridScaleY.copy(spacing = gridSpacingX)
-            }
-            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
-                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
-                    scaleX = gridScaleX,
-                )
-                is GridCoordinateSystem.Polar -> coordinateSystem
-            }
-        },
-        valueRange = 0f..200f,
-    )
-    val gridSpacingYControl = Control.Slider(
-        name = "Spacing Y",
-        value = gridSpacingYPx,
-        onValueChange = {
-            gridSpacingYPx = it
-            gridScaleY = when (val gridScaleY = gridScaleY) {
-                is GridScale.Linear -> gridScaleY.copy(gridSpacingY)
-                is GridScale.Logarithmic -> gridScaleY.copy(spacing= gridSpacingY)
-                is GridScale.LogarithmicDecay -> gridScaleY.copy(spacing= gridSpacingY)
-                is GridScale.Exponential -> gridScaleY.copy(spacing= gridSpacingY)
-                is GridScale.ExponentialDecay -> gridScaleY.copy(spacing= gridSpacingY)
-            }
-            gridScaleY = when (val gridScaleY = gridScaleY) {
-                is GridScale.Linear -> gridScaleY.copy(spacing = gridSpacingY)
-                is GridScale.Logarithmic -> gridScaleY.copy(spacing = gridSpacingY)
-                is GridScale.LogarithmicDecay -> gridScaleY.copy(spacing = gridSpacingY)
-                is GridScale.Exponential -> gridScaleY.copy(spacing = gridSpacingY)
-                is GridScale.ExponentialDecay -> gridScaleY.copy(spacing = gridSpacingY)
-            }
-            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
-                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
-                    scaleY = gridScaleY,
-                )
-                else -> coordinateSystem
-            }
-        },
-        valueRange = 0f..200f,
+    val vertexControls = GridVertexControl(
+        state = state.vertexState,
+        onStateChanged = { vertexState -> state.vertexState = vertexState },
+    ).controls
+
+    val showLinesControl = Control.Toggle(
+        name = "Show Grid Lines",
+        value = { state.showLines },
+        onValueChange = { state.showLines = it },
     )
 
-    val gridScales = listOf(
-        GridScale.Linear::class to "Linear",
-        GridScale.Logarithmic::class to "Logarithmic",
-        GridScale.LogarithmicDecay::class to "Logarithmic Decay",
-        GridScale.Exponential::class to "Exponential",
-        GridScale.ExponentialDecay::class to "Exponential Decay",
-    )
-    val gridScaleXControl = Control.Dropdown(
-        name = "Grid Scale X",
-        values = gridScales.map { (kclass, name) ->
-            Control.Dropdown.DropdownItem(
-                name = name,
-                value = kclass,
+    val strokeWidthControl = Control.Slider(
+        name = "Line Stroke Width",
+        value = { state.strokeWidthPx },
+        onValueChange = {
+            state.strokeWidthPx = it
+            state.lineStyle = state.lineStyle.copy(
+                stroke = Stroke(width = state.strokeWidthPx),
             )
-        }.toPersistentList(),
-        selectedIndex = gridScales.indexOfFirst { it.first == gridScaleX::class },
-        onValueChange = { index ->
-            gridScaleX = when (gridScales[index].first) {
-                GridScale.Linear::class -> GridScale.Linear(
-                    spacing = gridSpacingX,
-                )
-                GridScale.Logarithmic::class -> GridScale.Logarithmic(
-                    spacing = gridSpacingX,
-                    base = gridScaleXBase,
-                )
-                GridScale.LogarithmicDecay::class -> GridScale.LogarithmicDecay(
-                    spacing = gridSpacingX,
-                    base = gridScaleXBase,
-                )
-                GridScale.Exponential::class -> GridScale.Exponential(
-                    spacing = gridSpacingX,
-                    exponent = gridScaleXExponent,
-                )
-                GridScale.ExponentialDecay::class -> GridScale.ExponentialDecay(
-                    spacing = gridSpacingX,
-                    exponent = gridScaleXExponent,
-                )
-                else -> GridScale.Linear(gridSpacingX)
-            }
-            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
-                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
-                    scaleX = gridScaleX,
-                )
-                is GridCoordinateSystem.Polar -> coordinateSystem
-            }
-        }
-    )
-    val gridScaleYControl = Control.Dropdown(
-        name = "Grid Scale Y",
-        values = gridScales.map { (kclass, name) ->
-            Control.Dropdown.DropdownItem(
-                name = name,
-                value = kclass,
-            )
-        }.toPersistentList(),
-        selectedIndex = gridScales.indexOfFirst { it.first == gridScaleY::class },
-        onValueChange = { index ->
-            gridScaleY = when (gridScales[index].first) {
-                GridScale.Linear::class -> GridScale.Linear(
-                    spacing = gridSpacingY,
-                )
-                GridScale.Logarithmic::class -> GridScale.Logarithmic(
-                    spacing = gridSpacingY,
-                    base = gridScaleYBase,
-                )
-                GridScale.LogarithmicDecay::class -> GridScale.LogarithmicDecay(
-                    spacing = gridSpacingY,
-                    base = gridScaleYBase,
-                )
-                GridScale.Exponential::class -> GridScale.Exponential(
-                    spacing = gridSpacingY,
-                    exponent = gridScaleYExponent,
-                )
-                GridScale.ExponentialDecay::class -> GridScale.ExponentialDecay(
-                    spacing = gridSpacingY,
-                    exponent = gridScaleYExponent,
-                )
-                else -> GridScale.Linear(gridSpacingY)
-            }
-            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
-                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
-                    scaleY = gridScaleY,
-                )
-                is GridCoordinateSystem.Polar -> coordinateSystem
-            }
-        }
-    )
-    val scaleBaseRange = 1f..10f
-    val gridScaleXBaseControl = Control.Slider(
-        name = "Grid Scale X Log Base",
-        value = logToLinearScale(gridScaleXBase, scaleBaseRange),
-        onValueChange = {
-            gridScaleXBase = linearToLogScale(it, scaleBaseRange)
-            gridScaleX = when (val gridScaleX = gridScaleX) {
-                is GridScale.Logarithmic -> gridScaleX.copy(base = gridScaleXBase)
-                is GridScale.LogarithmicDecay -> gridScaleX.copy(base = gridScaleXBase)
-                else -> gridScaleX
-            }
-            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
-                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
-                    scaleX = gridScaleX,
-                )
-                is GridCoordinateSystem.Polar -> coordinateSystem
-            }
         },
-        valueRange = scaleBaseRange,
-    )
-    val gridScaleYBaseControl = Control.Slider(
-        name = "Grid Scale Y Log Base",
-        value = logToLinearScale(gridScaleYBase, scaleBaseRange),
-        onValueChange = {
-            gridScaleYBase = linearToLogScale(it, scaleBaseRange)
-            gridScaleY = when (val gridScaleY = gridScaleY) {
-                is GridScale.Logarithmic -> gridScaleY.copy(base = gridScaleYBase)
-                is GridScale.LogarithmicDecay -> gridScaleY.copy(base = gridScaleYBase)
-                else -> gridScaleY
-            }
-            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
-                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
-                    scaleX = gridScaleX,
-                    scaleY = gridScaleY,
-                )
-                is GridCoordinateSystem.Polar -> coordinateSystem
-            }
-        },
-        valueRange = scaleBaseRange,
-    )
-    val radiusScaleBaseControl = Control.Slider(
-        name = "Radius Scale Log Base",
-        value = logToLinearScale(radiusScaleBase, scaleBaseRange),
-        onValueChange = {
-            radiusScaleBase = linearToLogScale(it, scaleBaseRange)
-            radiusScale = when (val radiusScale = radiusScale) {
-                is GridScale.Logarithmic -> radiusScale.copy(base = radiusScaleBase)
-                is GridScale.LogarithmicDecay -> radiusScale.copy(base = radiusScaleBase)
-                else -> radiusScale
-            }
-            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
-                is GridCoordinateSystem.Cartesian -> coordinateSystem
-                is GridCoordinateSystem.Polar -> coordinateSystem.copy(
-                    radiusScale = radiusScale,
-                )
-            }
-        },
-        valueRange = scaleBaseRange,
+        valueRange = { 1f..100f },
     )
 
-    val scaleExponentRange = 1.001f..10f
-    val gridScaleXExponentControl = Control.Slider(
-        name = "Grid Scale X Exponent",
-        value = logToLinearScale(gridScaleXExponent, scaleExponentRange),
-        onValueChange = {
-            gridScaleXExponent = linearToLogScale(it, scaleExponentRange)
-            gridScaleX = when (val gridScaleX = gridScaleX) {
-                is GridScale.Exponential -> gridScaleX.copy(exponent = gridScaleXExponent)
-                is GridScale.ExponentialDecay -> gridScaleX.copy(exponent = gridScaleXExponent)
-                else -> gridScaleX
-            }
-            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
-                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
-                    scaleX = gridScaleX,
-                )
-                is GridCoordinateSystem.Polar -> coordinateSystem
-            }
-        },
-        valueRange = scaleExponentRange,
-    )
-    val gridScaleYExponentControl = Control.Slider(
-        name = "Grid Scale Y Exponent",
-        value = logToLinearScale(gridScaleYExponent, scaleExponentRange),
-        onValueChange = {
-            gridScaleYExponent = linearToLogScale(it, scaleExponentRange)
-            gridScaleY = when (val gridScaleY = gridScaleY) {
-                is GridScale.Exponential -> gridScaleY.copy(exponent = gridScaleYExponent)
-                is GridScale.ExponentialDecay -> gridScaleY.copy(exponent = gridScaleYExponent)
-                else -> gridScaleY
-            }
-            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
-                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
-                    scaleY = gridScaleY,
-                )
-                is GridCoordinateSystem.Polar -> coordinateSystem
-            }
-        },
-        valueRange = scaleExponentRange,
-    )
-    val radiusScaleExponentControl = Control.Slider(
-        name = "Radius Scale Exponent",
-        value = logToLinearScale(radiusScaleExponent, scaleExponentRange),
-        onValueChange = {
-            radiusScaleExponent = linearToLogScale(it, scaleExponentRange)
-            radiusScale = when (val radiusScale = radiusScale) {
-                is GridScale.Exponential -> radiusScale.copy(exponent = radiusScaleExponent)
-                is GridScale.ExponentialDecay -> radiusScale.copy(exponent = radiusScaleExponent)
-                else -> radiusScale
-            }
-            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
-                is GridCoordinateSystem.Cartesian -> coordinateSystem
-                is GridCoordinateSystem.Polar -> coordinateSystem.copy(
-                    radiusScale = radiusScale,
-                )
-            }
-        },
-        valueRange = scaleExponentRange,
+    val offsetXControl = Control.Slider(
+        name = "Offset X",
+        value = { state.offsetX.value },
+        onValueChange = { state.offsetX = it.dp },
+        valueRange = { -2000f..2000f },
     )
 
-    val thetaRange = (0.01f..(PI * 2f).toFloat())
-    val thetaControl = Control.Slider(
-        name = "Theta",
-        value = logToLinearScale(theta, thetaRange),
-        onValueChange = {
-            theta = linearToLogScale(it, thetaRange)
-            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
-                is GridCoordinateSystem.Cartesian -> coordinateSystem
-                is GridCoordinateSystem.Polar -> coordinateSystem.copy(
-                    theta = theta,
-                )
-            }
-        },
-        valueRange = thetaRange,
-    )
-
-    val radiusSpacingControl = Control.Slider(
-        name = "Radius Spacing",
-        value = radiusSpacingPx,
-        onValueChange = {
-            radiusSpacingPx = it
-            radiusScale = when (val radiusScale = radiusScale) {
-                is GridScale.Linear -> radiusScale.copy(spacing= radiusSpacing)
-                is GridScale.Logarithmic -> radiusScale.copy(spacing= radiusSpacing)
-                is GridScale.LogarithmicDecay -> radiusScale.copy(spacing= radiusSpacing)
-                is GridScale.Exponential -> radiusScale.copy(spacing= radiusSpacing)
-                is GridScale.ExponentialDecay -> radiusScale.copy(spacing= radiusSpacing)
-            }
-            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
-                is GridCoordinateSystem.Cartesian -> coordinateSystem
-                is GridCoordinateSystem.Polar -> coordinateSystem.copy(
-                    radiusScale = radiusScale,
-                )
-            }
-        },
-        valueRange = 0f..200f,
-    )
-
-    val radiusScaleControl = Control.Dropdown(
-        name = "Radius Scale",
-        values = gridScales.map { (kclass, name) ->
-            Control.Dropdown.DropdownItem(
-                name = name,
-                value = kclass,
-            )
-        }.toPersistentList(),
-        selectedIndex = gridScales.indexOfFirst { it.first == radiusScale::class },
-        onValueChange = { index ->
-            radiusScale = when (gridScales[index].first) {
-                GridScale.Linear::class -> GridScale.Linear(
-                    spacing = radiusSpacing,
-                )
-                GridScale.Logarithmic::class -> GridScale.Logarithmic(
-                    spacing = radiusSpacing,
-                    base = radiusScaleBase,
-                )
-                GridScale.LogarithmicDecay::class -> GridScale.LogarithmicDecay(
-                    spacing = radiusSpacing,
-                    base = radiusScaleBase,
-                )
-                GridScale.Exponential::class -> GridScale.Exponential(
-                    spacing = radiusSpacing,
-                    exponent = radiusScaleExponent,
-                )
-                GridScale.ExponentialDecay::class -> GridScale.ExponentialDecay(
-                    spacing = radiusSpacing,
-                    exponent = radiusScaleExponent,
-                )
-                else -> GridScale.Linear(radiusSpacing)
-            }
-            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
-                is GridCoordinateSystem.Cartesian -> coordinateSystem
-                is GridCoordinateSystem.Polar -> coordinateSystem.copy(
-                    radiusScale = radiusScale,
-                )
-            }
-        }
+    val offsetYControl = Control.Slider(
+        name = "Offset Y",
+        value = { state.offsetY.value },
+        onValueChange = { state.offsetY = it.dp },
+        valueRange = { -2000f..2000f },
     )
 
     val rotationDegreesControl = Control.Slider(
-        name = "Grid Rotation",
-        value = rotationDegrees,
-        onValueChange = {
-            rotationDegrees = it
-            coordinateSystem = when (val coordinateSystem = coordinateSystem) {
-                is GridCoordinateSystem.Cartesian -> coordinateSystem.copy(
-                    rotationDegrees = rotationDegrees,
-                )
-                is GridCoordinateSystem.Polar -> coordinateSystem.copy(
-                    rotationDegrees = rotationDegrees,
-                )
+        name = "Rotation",
+        value = { state.rotationDegrees },
+        onValueChange = { state.rotationDegrees = it },
+        valueRange = { -180f..180f },
+    )
+
+    val clipControl = Control.Toggle(
+        name = "Clip to bounds",
+        value = { state.clipToBounds },
+        onValueChange = { state.clipToBounds = it },
+    )
+
+    val cartesianControls = persistentListOf(
+        *gridScaleXControls.toTypedArray(),
+        *gridScaleYControls.toTypedArray(),
+    )
+
+    val coordinateSystemControls: PersistentList<Control>
+        get() {
+            val scaleControls = when (state.coordinateSystem) {
+                is GridCoordinateSystem.Cartesian -> cartesianControls
+                is GridCoordinateSystem.Polar -> polarControls
             }
-        },
-        valueRange = 0f..360f,
-    )
-
-    var strokeWidthPx by remember { mutableStateOf(1f) }
-    val strokeWidth = with(LocalDensity.current) { strokeWidthPx.toDp() }
-
-    val initialLineStyle = GridLineStyle(
-        color = color,
-        stroke = Stroke(width = strokeWidthPx),
-    )
-    var lineStyle: GridLineStyle by remember { mutableStateOf(initialLineStyle) }
-
-    var showLines by remember { mutableStateOf(true) }
-    val showLinesControl = Control.Toggle(
-        name = "Show Lines",
-        value = showLines,
-        onValueChange = { showLines = it },
-    )
-
-    var vertexDrawStyle by remember { mutableStateOf<DrawStyle>(Stroke(width = strokeWidthPx)) }
-    var vertexWidthPx by remember { mutableStateOf(10f) }
-    val vertexWidth = with(LocalDensity.current) { vertexWidthPx.toDp() }
-    var vertexHeightPx by remember { mutableStateOf(10f) }
-    val vertexHeight = with(LocalDensity.current) { vertexHeightPx.toDp() }
-    val vertexSize = DpSize(vertexWidth, vertexHeight)
-    var vertexRotationDegrees by remember { mutableStateOf(0f) }
-
-    var vertex by remember { mutableStateOf<GridVertex?>(null) }
-    val vertexItems = mapOf(
-        null to "None",
-        GridVertex.Oval::class to "Oval",
-        GridVertex.Rect::class to "Rect",
-        GridVertex.Plus::class to "Plus",
-        GridVertex.X::class to "X",
-    )
-    val vertexControl = Control.Dropdown(
-        name = "Vertex",
-        values = vertexItems.map { (kclass, name) ->
-            Control.Dropdown.DropdownItem(
-                name = name,
-                value = kclass,
+            return persistentListOf(
+                coordinateSystemControl,
+                *scaleControls.toTypedArray()
             )
-        }.toPersistentList(),
-        selectedIndex = vertexItems.keys.indexOf<KClass<out Any>?>(vertex?.let { it::class })
-            .coerceAtLeast(0), // -1 to null
-        onValueChange = { index ->
-            vertex = when (vertexItems.keys.elementAt(index)) {
-                GridVertex.Oval::class -> GridVertex.Oval(
-                    color = color,
-                    size = vertexSize,
-                    drawStyle = vertexDrawStyle,
-                    rotationDegrees = vertexRotationDegrees,
-                )
-                GridVertex.Rect::class -> GridVertex.Rect(
-                    color = color,
-                    size = vertexSize,
-                    drawStyle = vertexDrawStyle,
-                    rotationDegrees = vertexRotationDegrees,
-                )
-                GridVertex.Plus::class -> GridVertex.Plus(
-                    color = color,
-                    size = vertexSize,
-                    strokeWidth = strokeWidth,
-                    rotationDegrees = vertexRotationDegrees,
-                )
-                GridVertex.X::class -> GridVertex.X(
-                    color = color,
-                    size = vertexSize,
-                    strokeWidth = strokeWidth,
-                    rotationDegrees = vertexRotationDegrees,
-                )
-                else -> null
-            }
         }
+
+    val lineControls
+        get() = if (state.showLines) {
+            persistentListOf(
+                showLinesControl,
+                strokeWidthControl,
+            )
+        } else {
+            persistentListOf(
+                showLinesControl,
+            )
+        }
+
+    val controls
+        get() = persistentListOf(
+            *coordinateSystemControls.toTypedArray(),
+            *vertexControls.toTypedArray(),
+            *lineControls.toTypedArray(),
+            offsetXControl,
+            offsetYControl,
+            rotationDegreesControl,
+            clipControl,
+        )
+}
+
+@Stable
+class CartesianGridScaleState(
+    gridScaleTypeInitial: GridScaleType = GridScaleType.Linear,
+    gridSpacingInitial: Dp = 100.dp,
+    gridScaleBaseInitial: Float = 2f,
+    gridScaleExponentInitial: Float = 2f,
+) : GridScaleState(
+    gridScaleTypeInitial = gridScaleTypeInitial,
+    gridSpacingInitial = gridSpacingInitial,
+    gridScaleBaseInitial = gridScaleBaseInitial,
+    gridScaleExponentInitial = gridScaleExponentInitial,
+)
+
+private const val cartesianGridSpacingKey = "cartesianGridSpacing"
+private const val cartesianGridScaleBaseKey = "cartesianGridScaleBase"
+private const val cartesianGridScaleExponentKey = "cartesianGridScaleExponent"
+
+val CartesianGridScaleStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            cartesianGridSpacingKey to value.gridSpacing.value,
+            cartesianGridScaleBaseKey to value.gridScaleBase,
+            cartesianGridScaleExponentKey to value.gridScaleExponent,
+        )
+    },
+    restore = { value ->
+        CartesianGridScaleState(
+            gridSpacingInitial = (value[cartesianGridSpacingKey] as Float).dp,
+            gridScaleBaseInitial = value[cartesianGridScaleBaseKey] as Float,
+            gridScaleExponentInitial = value[cartesianGridScaleExponentKey] as Float,
+        )
+    },
+)
+
+@Stable
+class CartesianGridScaleControl(
+    state: CartesianGridScaleState,
+    onStateChanged: ((CartesianGridScaleState) -> Unit)? = null,
+    private val name: String? = null,
+) {
+    val gridScaleControl = GridScaleControl(
+        state = state,
+        onStateChanged = { onStateChanged?.invoke(it as CartesianGridScaleState) },
+    )
+
+    val controls = persistentListOf(
+        Control.ControlColumn(
+            name = name ?: "Scale",
+            indent = true,
+            controls = {
+                persistentListOf(
+                    *gridScaleControl.controls.toTypedArray(),
+                )
+            },
+        )
+    )
+}
+
+@Stable
+class PolarGridScaleState(
+    gridScaleInitial: GridScaleType = GridScaleType.Linear,
+    gridSpacingInitial: Dp = 50.dp,
+    gridScaleBaseInitial: Float = 2f,
+    gridScaleExponentInitial: Float = 2f,
+    thetaRadiansInitial: Float = (PI / 3f).toFloat(),
+) : GridScaleState(
+    gridScaleTypeInitial = gridScaleInitial,
+    gridSpacingInitial = gridSpacingInitial,
+    gridScaleBaseInitial = gridScaleBaseInitial,
+    gridScaleExponentInitial = gridScaleExponentInitial,
+) {
+    var thetaRadians by mutableStateOf(thetaRadiansInitial)
+        internal set
+}
+
+private const val polarGridSpacingKey = "polarGridSpacing"
+private const val polarGridScaleBaseKey = "polarGridScaleBase"
+private const val polarGridScaleExponentKey = "polarGridScaleExponent"
+private const val polarGridThetaRadiansKey = "polarGridThetaRadians"
+
+val PolarGridScaleStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            polarGridSpacingKey to value.gridSpacing.value,
+            polarGridScaleBaseKey to value.gridScaleBase,
+            polarGridScaleExponentKey to value.gridScaleExponent,
+            polarGridThetaRadiansKey to value.thetaRadians,
+        )
+    },
+    restore = { value ->
+        PolarGridScaleState(
+            gridSpacingInitial = (value[polarGridSpacingKey] as Float).dp,
+            gridScaleBaseInitial = value[polarGridScaleBaseKey] as Float,
+            gridScaleExponentInitial = value[polarGridScaleExponentKey] as Float,
+            thetaRadiansInitial = value[polarGridThetaRadiansKey] as Float,
+        )
+    },
+)
+
+@Stable
+class PolarGridScaleControl(
+    val state: PolarGridScaleState,
+    val onStateChanged: ((PolarGridScaleState) -> Unit)? = null,
+) {
+    val gridScaleControl = GridScaleControl(
+        state = state,
+        onStateChanged = { onStateChanged?.invoke(it as PolarGridScaleState) },
+    )
+
+    val thetaRadiansRange = 0.01f..(PI * 2f).toFloat()
+    val thetaControl = Control.Slider(
+        name = "Theta",
+        value = { logToLinearScale(state.thetaRadians, thetaRadiansRange) },
+        onValueChange = {
+            state.thetaRadians = linearToLogScale(it, thetaRadiansRange)
+            onStateChanged?.invoke(state)
+        },
+        valueRange = { thetaRadiansRange },
+    )
+
+    val controls = persistentListOf(
+        Control.ControlColumn(
+            indent = true,
+            controls = {
+                persistentListOf(
+                    *gridScaleControl.controls.toTypedArray(),
+                    thetaControl,
+                )
+            },
+        )
+    )
+}
+
+open class GridScaleState(
+    gridScaleTypeInitial: GridScaleType,
+    gridSpacingInitial: Dp,
+    gridScaleBaseInitial: Float,
+    gridScaleExponentInitial: Float,
+) {
+    var gridScaleType: GridScaleType by mutableStateOf(gridScaleTypeInitial)
+        internal set
+    var gridSpacing by mutableStateOf(gridSpacingInitial)
+        internal set
+    var gridScaleBase: Float by mutableStateOf(gridScaleBaseInitial)
+        internal set
+    var gridScaleExponent: Float by mutableStateOf(gridScaleExponentInitial)
+        internal set
+
+    val gridScale: GridScale
+        get() = when (gridScaleType) {
+            GridScaleType.Linear -> GridScale.Linear(gridSpacing)
+            GridScaleType.Logarithmic -> GridScale.Logarithmic(
+                spacing = gridSpacing,
+                base = gridScaleBase,
+            )
+
+            GridScaleType.LogarithmicDecay -> GridScale.LogarithmicDecay(
+                spacing = gridSpacing,
+                base = gridScaleBase,
+            )
+
+            GridScaleType.Exponential -> GridScale.Exponential(
+                spacing = gridSpacing,
+                exponent = gridScaleExponent,
+            )
+
+            GridScaleType.ExponentialDecay -> GridScale.ExponentialDecay(
+                spacing = gridSpacing,
+                exponent = gridScaleExponent,
+            )
+        }
+}
+
+@Stable
+open class GridScaleControl(
+    val state: GridScaleState,
+    val onStateChanged: ((GridScaleState) -> Unit)? = null,
+) {
+    val gridScaleTypeControl = Control.Dropdown(
+        name = "Scale",
+        values = {
+            GridScaleType.entries.map { entry ->
+                Control.Dropdown.DropdownItem(
+                    name = entry.name,
+                    value = entry,
+                )
+            }.toPersistentList()
+        },
+        selectedIndex = { GridScaleType.entries.indexOf(state.gridScaleType) },
+        onValueChange = {
+            state.gridScaleType = GridScaleType.entries.elementAt(it)
+            onStateChanged?.invoke(state)
+        },
+    )
+
+    val gridSpacingControl = Control.Slider(
+        name = "Spacing",
+        value = { state.gridSpacing.value },
+        onValueChange = {
+            state.gridSpacing = it.dp
+            onStateChanged?.invoke(state)
+        },
+        valueRange = { 0f..200f },
+    )
+
+    val scaleBaseRange = 1f..10f
+    val gridScaleBaseControl = Control.Slider(
+        name = "Log Base",
+        value = { logToLinearScale(state.gridScaleBase, scaleBaseRange) },
+        onValueChange = {
+            state.gridScaleBase = linearToLogScale(it, scaleBaseRange)
+            onStateChanged?.invoke(state)
+        },
+        valueRange = { scaleBaseRange },
+    )
+
+    val scaleExponentRange = 1.001f..10f
+    val gridScaleExponentControl = Control.Slider(
+        name = "Exponent Factor",
+        value = { logToLinearScale(state.gridScaleExponent, scaleExponentRange) },
+        onValueChange = {
+            state.gridScaleExponent = linearToLogScale(it, scaleExponentRange)
+            onStateChanged?.invoke(state)
+        },
+        valueRange = { scaleExponentRange },
+    )
+
+    val controls
+        get() = when (state.gridScale) {
+            is GridScale.Linear -> persistentListOf(
+                gridScaleTypeControl,
+                gridSpacingControl,
+            )
+
+            is GridScale.Logarithmic,
+            is GridScale.LogarithmicDecay,
+                -> persistentListOf(
+                gridScaleTypeControl,
+                gridSpacingControl,
+                gridScaleBaseControl,
+            )
+
+            is GridScale.Exponential,
+            is GridScale.ExponentialDecay,
+                -> persistentListOf(
+                gridScaleTypeControl,
+                gridSpacingControl,
+                gridScaleExponentControl,
+            )
+        }
+}
+
+class GridVertexState(
+    val density: Density,
+    colorInitial: Color,
+    vertexTypeInitial: GridVertexType? = null,
+    strokeWidthInitial: Dp = Dp.Hairline,
+    drawStyleInitial: DrawStyle = Stroke(width = with(density) { strokeWidthInitial.toPx() }),
+    widthInitial: Dp = 10.dp,
+    heightInitial: Dp = 10.dp,
+    rotationDegreesInitial: Float = 0f,
+) {
+    var vertexType by mutableStateOf(vertexTypeInitial)
+        internal set
+    var color by mutableStateOf(colorInitial)
+        internal set
+    var drawStyle by mutableStateOf(drawStyleInitial)
+        internal set
+    var strokeWidth by mutableStateOf(strokeWidthInitial)
+        internal set
+    var width by mutableStateOf(widthInitial)
+        internal set
+    var height by mutableStateOf(heightInitial)
+        internal set
+    var rotationDegrees by mutableStateOf(rotationDegreesInitial)
+        internal set
+
+    val strokeWidthPx
+        get() = with(density) { strokeWidth.toPx() }
+    val size
+        get() = DpSize(width, height)
+
+    val vertex: GridVertex?
+        get() = when (vertexType) {
+            GridVertexType.Oval -> GridVertex.Oval(
+                color = color,
+                size = DpSize(width, height),
+                drawStyle = drawStyle,
+                rotationDegrees = rotationDegrees,
+            )
+
+            GridVertexType.Rect -> GridVertex.Rect(
+                color = color,
+                size = DpSize(width, height),
+                drawStyle = drawStyle,
+                rotationDegrees = rotationDegrees,
+            )
+
+            GridVertexType.Plus -> GridVertex.Plus(
+                color = color,
+                size = DpSize(width, height),
+                strokeWidth = strokeWidth,
+                rotationDegrees = rotationDegrees,
+            )
+
+            GridVertexType.X -> GridVertex.X(
+                color = color,
+                size = DpSize(width, height),
+                strokeWidth = strokeWidth,
+                rotationDegrees = rotationDegrees,
+            )
+
+            null -> null
+        }
+}
+
+private const val vertexDensityKey = "density"
+private const val vertexTypeKey = "vertexType"
+private const val vertexColorKey = "color"
+private const val vertexStrokeWidthKey = "vertexStrokeWidth"
+private const val vertexDrawStyleKey = "vertexDrawStyle"
+private const val vertexWidthKey = "vertexWidth"
+private const val vertexHeightKey = "vertexHeight"
+private const val vertexRotationDegreesKey = "vertexRotationDegrees"
+
+val GridVertexStateSaver = mapSaverSafe(
+    save = { value ->
+        mapOf(
+            vertexDensityKey to save(value.density, DensitySaver, this),
+            vertexTypeKey to value.vertexType,
+            vertexColorKey to save(value.color, ColorSaver, this),
+            vertexStrokeWidthKey to value.strokeWidth.value,
+            vertexDrawStyleKey to save(value.drawStyle, DrawStyleSaver, this),
+            vertexWidthKey to value.width.value,
+            vertexHeightKey to value.height.value,
+            vertexRotationDegreesKey to value.rotationDegrees,
+        )
+    },
+    restore = { value ->
+        GridVertexState(
+            density = restore(value[vertexDensityKey], DensitySaver)!!,
+            vertexTypeInitial = value[vertexTypeKey] as GridVertexType,
+            colorInitial = restore(value[vertexColorKey], ColorSaver)!!,
+            strokeWidthInitial = (value[vertexStrokeWidthKey] as Float).dp,
+            drawStyleInitial = restore(value[vertexDrawStyleKey], DrawStyleSaver)!!,
+            widthInitial = (value[vertexWidthKey] as Float).dp,
+            heightInitial = (value[vertexHeightKey] as Float).dp,
+            rotationDegreesInitial = value[vertexRotationDegreesKey] as Float,
+        )
+    },
+)
+
+@Stable
+class GridVertexControl(
+    val state: GridVertexState,
+    val onStateChanged: ((GridVertexState) -> Unit)? = null,
+    private val name: String? = null,
+) {
+    val typeControl = Control.Dropdown(
+        name = "Type",
+        values = {
+            val items = GridVertexType.entries.map { type ->
+                Control.Dropdown.DropdownItem<GridVertexType?>(
+                    name = type.name,
+                    value = type,
+                )
+            }
+            persistentListOf(
+                Control.Dropdown.DropdownItem(name = "None", value = null),
+                *items.toTypedArray(),
+            )
+        },
+        selectedIndex = {
+            state.vertexType?.let(GridVertexType.entries::indexOf)?.plus(1) ?: 0
+        },
+        onValueChange = {
+            state.vertexType = if (it == 0) null else GridVertexType.entries.elementAt(it - 1)
+            onStateChanged?.invoke(state)
+        }
+    )
+
+    val strokeWidthControl = Control.Slider(
+        name = "Stroke Width",
+        value = { state.strokeWidth.value },
+        onValueChange = {
+            state.strokeWidth = it.dp
+            state.drawStyle = when (state.drawStyle) {
+                is Stroke -> Stroke(width = state.strokeWidthPx)
+                is Fill -> Fill
+            }
+            onStateChanged?.invoke(state)
+        },
+        valueRange = { 1f..100f },
     )
 
     val vertexDrawStyles = mapOf(
         Stroke::class to "Stroke",
         Fill::class to "Fill",
     )
-    val vertexDrawStyleControl = Control.Dropdown(
-        name = "Vertex Draw Style",
-        values = vertexDrawStyles.map { (kclass, name) ->
-            Control.Dropdown.DropdownItem(
-                name = name,
-                value = kclass,
-            )
-        }.toPersistentList(),
-        selectedIndex = vertexDrawStyles.keys.indexOf(vertexDrawStyle::class),
+    val drawStyleControl = Control.Dropdown(
+        name = "Draw Style",
+        values = {
+            vertexDrawStyles.map { (kclass, name) ->
+                Control.Dropdown.DropdownItem(
+                    name = name,
+                    value = kclass,
+                )
+            }.toPersistentList()
+        },
+        selectedIndex = { vertexDrawStyles.keys.indexOf(state.drawStyle::class) },
         onValueChange = { index ->
-            vertexDrawStyle = when (vertexDrawStyles.keys.elementAt(index)) {
-                Stroke::class -> Stroke(width = strokeWidthPx)
+            state.drawStyle = when (vertexDrawStyles.keys.elementAt(index)) {
+                Stroke::class -> Stroke(width = state.strokeWidthPx)
                 Fill::class -> Fill
-                else -> Stroke(width = strokeWidthPx)
+                else -> Stroke(width = state.strokeWidthPx)
             }
-            vertex = when (val vertex = vertex) {
-                is GridVertex.Oval -> vertex.copy(
-                    drawStyle = vertexDrawStyle,
-                )
-                is GridVertex.Rect -> vertex.copy(
-                    drawStyle = vertexDrawStyle,
-                )
-                is GridVertex.Plus,
-                is GridVertex.X,
-                -> vertex
-                null -> null
-            }
+            onStateChanged?.invoke(state)
         }
     )
 
-    val vertexRotationControl = Control.Slider(
-        name = "Vertex Rotation",
-        value = vertexRotationDegrees,
+    val rotationDegreesControl = Control.Slider(
+        name = "Rotation",
+        value = { state.rotationDegrees },
         onValueChange = {
-            vertexRotationDegrees = it
-            vertex = when (val vertex = vertex) {
-                is GridVertex.Oval -> vertex.copy(
-                    rotationDegrees = vertexRotationDegrees,
-                )
-                is GridVertex.Rect -> vertex.copy(
-                    rotationDegrees = vertexRotationDegrees,
-                )
-                is GridVertex.Plus -> vertex.copy(
-                    rotationDegrees = vertexRotationDegrees,
-                )
-                is GridVertex.X -> vertex.copy(
-                    rotationDegrees = vertexRotationDegrees,
-                )
-                null -> null
-            }
+            state.rotationDegrees = it
+            onStateChanged?.invoke(state)
         },
-        valueRange = 0f..360f,
+        valueRange = { -180f..180f },
     )
 
-    val strokeWidthControl = Control.Slider(
-        name = "Line Stroke Width",
-        value = strokeWidthPx,
+    val sizeControl = Control.Slider(
+        name = "Size",
+        value = { (state.width.value + state.height.value) / 2f },
         onValueChange = {
-            strokeWidthPx = it
-            vertexDrawStyle = Stroke(width = strokeWidthPx)
-            lineStyle = lineStyle.copy(
-                stroke = Stroke(width = strokeWidthPx),
-            )
-            vertex = when (vertex) {
-                is GridVertex.Oval -> (vertex as GridVertex.Oval).copy(
-                    drawStyle = vertexDrawStyle,
-                )
-                is GridVertex.Rect -> (vertex as GridVertex.Rect).copy(
-                    drawStyle = vertexDrawStyle,
-                )
-                is GridVertex.Plus -> (vertex as GridVertex.Plus).copy(
-                    strokeWidth = strokeWidth,
-                )
-                is GridVertex.X -> (vertex as GridVertex.X).copy(
-                    strokeWidth = strokeWidth,
-                )
-                null -> null
-            }
+            state.width = it.dp
+            state.height = it.dp
+            onStateChanged?.invoke(state)
         },
-        valueRange = 1f..100f,
+        valueRange = { 1f..100f },
     )
 
-    val vertexSizeControl = Control.Slider(
-        name = "Vertex Size",
-        value = (vertexWidthPx + vertexHeightPx) / 2f,
+    val widthControl = Control.Slider(
+        name = "Width",
+        value = { state.width.value },
         onValueChange = {
-            vertexWidthPx = it
-            vertexHeightPx = it
-            vertex = when (val vertex = vertex) {
-                is GridVertex.Oval -> vertex.copy(
-                    size = DpSize(vertexWidth, vertexHeight),
-                )
-                is GridVertex.Rect -> vertex.copy(
-                    size = DpSize(vertexWidth, vertexHeight),
-                )
-                is GridVertex.Plus -> vertex.copy(
-                    size = DpSize(vertexWidth, vertexHeight),
-                )
-                is GridVertex.X -> vertex.copy(
-                    size = DpSize(vertexWidth, vertexHeight),
-                )
-                null -> null
-            }
+            state.width = it.dp
+            onStateChanged?.invoke(state)
         },
-        valueRange = 1f..100f,
+        valueRange = { 1f..100f },
     )
 
-    val vertexWidthControl = Control.Slider(
-        name = "Vertex Width",
-        value = vertexWidthPx,
+    val heightControl = Control.Slider(
+        name = "Height",
+        value = { state.height.value },
         onValueChange = {
-            vertexWidthPx = it
-            vertex = when (val vertex = vertex) {
-                is GridVertex.Oval -> vertex.copy(
-                    size = DpSize(vertexWidth, vertexHeight),
-                )
-                is GridVertex.Rect -> vertex.copy(
-                    size = DpSize(vertexWidth, vertexHeight),
-                )
-                is GridVertex.Plus -> vertex.copy(
-                    size = DpSize(vertexWidth, vertexHeight),
-                )
-                is GridVertex.X -> vertex.copy(
-                    size = DpSize(vertexWidth, vertexHeight),
-                )
-                null -> null
-            }
+            state.height = it.dp
+            onStateChanged?.invoke(state)
         },
-        valueRange = 1f..100f,
-    )
-    val vertexHeightControl = Control.Slider(
-        name = "Vertex Height",
-        value = vertexHeightPx,
-        onValueChange = {
-            vertexHeightPx = it
-            vertex = when (vertex) {
-                is GridVertex.Oval -> (vertex as GridVertex.Oval).copy(
-                    size = DpSize(vertexWidth, vertexHeight),
-                )
-                is GridVertex.Rect -> (vertex as GridVertex.Rect).copy(
-                    size = DpSize(vertexWidth, vertexHeight),
-                )
-                is GridVertex.Plus -> (vertex as GridVertex.Plus).copy(
-                    size = DpSize(vertexWidth, vertexHeight),
-                )
-                is GridVertex.X -> (vertex as GridVertex.X).copy(
-                    size = DpSize(vertexWidth, vertexHeight),
-                )
-                null -> null
-            }
-        },
-        valueRange = 1f..100f,
+        valueRange = { 1f..100f },
     )
 
-    var offsetXPx by remember { mutableStateOf(0f) }
-    val offsetXControl = Control.Slider(
-        name = "Offset X",
-        value = offsetXPx,
-        onValueChange = { offsetXPx = it },
-        valueRange = -2000f..2000f,
-    )
+    val drawStyleControls
+        get() = when (state.vertex) {
+            is GridVertex.Oval,
+            is GridVertex.Rect,
+            -> persistentListOf(
+                drawStyleControl,
+                if (state.drawStyle is Stroke) strokeWidthControl else null,
+            ).filterNotNull().toPersistentList()
 
-    var offsetYPx by remember { mutableStateOf(0f) }
-    val offsetYControl = Control.Slider(
-        name = "Offset Y",
-        value = offsetYPx,
-        onValueChange = { offsetYPx = it },
-        valueRange = -2000f..2000f,
-    )
+            is GridVertex.Plus,
+            is GridVertex.X,
+            null,
+            -> persistentListOf(strokeWidthControl)
+        }
 
-    var clipToBounds by remember { mutableStateOf(true) }
-    val clipControl = Control.Toggle(
-        name = "Clip to bounds",
-        value = clipToBounds,
-        onValueChange = { clipToBounds = it },
-    )
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        Grid(
-            lineStyle = lineStyle.takeIf { showLines },
-            vertex = vertex,
-            coordinateSystem = coordinateSystem,
-            offset = Offset(offsetXPx, offsetYPx),
-            clipToBounds = clipToBounds,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
+    val controls = persistentListOf(
+        Control.ControlColumn(
+            name = name ?: "Vertex",
+            indent = true,
+            controls = {
+                if (state.vertex == null) {
+                    persistentListOf(typeControl)
+                } else {
+                    persistentListOf(
+                        typeControl,
+                        *drawStyleControls.toTypedArray(),
+                        sizeControl,
+                        widthControl,
+                        heightControl,
+                        rotationDegreesControl,
+                    )
+                }
+            },
         )
-        HorizontalDivider(modifier = Modifier.fillMaxWidth())
-        Controls(
-            controls = persistentListOf(
-                coordinateSystemControl,
-                gridScaleXControl,
-                gridSpacingXControl,
-                gridScaleXBaseControl,
-                gridScaleXExponentControl,
-                gridScaleYControl,
-                gridSpacingYControl,
-                gridScaleYBaseControl,
-                gridScaleYExponentControl,
-                radiusScaleControl,
-                radiusSpacingControl,
-                radiusScaleBaseControl,
-                radiusScaleExponentControl,
-                thetaControl,
-                showLinesControl,
-                strokeWidthControl,
-                vertexControl,
-                vertexDrawStyleControl,
-                vertexSizeControl,
-                vertexWidthControl,
-                vertexHeightControl,
-                vertexRotationControl,
-                offsetXControl,
-                offsetYControl,
-                rotationDegreesControl,
-                clipControl,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .verticalScroll(rememberScrollState())
-                .padding(PlaygroundTheme.spacing.medium)
-                .navigationBarsPadding(),
-        )
-    }
+    )
 }
 
 @Preview

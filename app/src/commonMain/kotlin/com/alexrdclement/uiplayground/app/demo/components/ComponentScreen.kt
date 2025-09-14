@@ -1,5 +1,6 @@
 package com.alexrdclement.uiplayground.app.demo.components
 
+import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,10 +29,16 @@ fun ComponentScreen(
                 onConfigureClick = onConfigureClick,
             )
         },
+        modifier = Modifier
+            .displayCutoutPadding()
     ) { innerPadding ->
         when (component) {
-            Component.Button -> ButtonDemo()
-            Component.CurrencyAmountField -> CurrencyAmountFieldDemo()
+            Component.Button -> ButtonDemo(
+                modifier = Modifier.padding(innerPadding)
+            )
+            Component.CurrencyAmountField -> CurrencyAmountFieldDemo(
+                modifier = Modifier.padding(innerPadding)
+            )
             Component.CurveStitch -> CurveStitchDemo(
                 modifier = Modifier.padding(innerPadding)
             )
@@ -44,8 +51,12 @@ fun ComponentScreen(
             Component.Sphere -> SphereDemo(
                 modifier = Modifier.padding(innerPadding)
             )
-            Component.Text -> TextDemo()
-            Component.TextField -> TextFieldDemo()
+            Component.Text -> TextDemo(
+                modifier = Modifier.padding(innerPadding)
+            )
+            Component.TextField -> TextFieldDemo(
+                modifier = Modifier.padding(innerPadding)
+            )
         }
     }
 }
