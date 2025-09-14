@@ -39,4 +39,10 @@ sealed class Control {
     ) : Control()
 
     data class ControlRow(val controls: () -> ImmutableList<Control>) : Control()
+
+    data class ControlColumn(
+        val controls: () -> ImmutableList<Control>,
+        val name: String? = null,
+        val indent: Boolean = false,
+    ) : Control()
 }

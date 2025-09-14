@@ -37,7 +37,7 @@ fun Grid(
     when (coordinateSystem) {
         is GridCoordinateSystem.Cartesian -> CartesianGrid(
             xSpacing = { coordinateSystem.scaleX.scale(it, this) },
-            ySpacing = {coordinateSystem.scaleY.scale(it, this) },
+            ySpacing = { coordinateSystem.scaleY.scale(it, this) },
             lineStyle = lineStyle,
             modifier = modifier,
             offset = offset,
@@ -48,7 +48,7 @@ fun Grid(
         )
         is GridCoordinateSystem.Polar -> PolarGrid(
             radiusSpacing = { coordinateSystem.radiusScale.scale(it, this) },
-            theta = { coordinateSystem.theta },
+            theta = { coordinateSystem.thetaRadians },
             lineStyle = lineStyle,
             modifier = modifier,
             offset = offset,

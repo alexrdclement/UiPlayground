@@ -23,7 +23,7 @@ sealed class GridCoordinateSystem {
 
     data class Polar(
         val radiusScale: GridScale,
-        val theta: Float, // angle step in radians
+        val thetaRadians: Float, // angle step in radians
         val rotationDegrees: Float = 0f,
     ) : GridCoordinateSystem()
 }
@@ -38,7 +38,6 @@ private const val rotationDegreesKey = "rotationDegrees"
 private enum class CoordinateSystemType {
     Cartesian,
     Polar,
-    ;
 }
 
 val GridCoordinateSystemSaver = mapSaverSafe(
@@ -53,7 +52,7 @@ val GridCoordinateSystemSaver = mapSaverSafe(
             is GridCoordinateSystem.Polar -> mapOf(
                 coordinateSystemTypeKey to CoordinateSystemType.Polar,
                 radiusScaleKey to save(value.radiusScale, GridScaleSaver, this),
-                thetaKey to value.theta,
+                thetaKey to value.thetaRadians,
                 rotationDegreesKey to value.rotationDegrees,
             )
         }
@@ -67,7 +66,7 @@ val GridCoordinateSystemSaver = mapSaverSafe(
             )
             CoordinateSystemType.Polar -> GridCoordinateSystem.Polar(
                 radiusScale = restore(map[radiusScaleKey], GridScaleSaver)!!,
-                theta = map[thetaKey] as Float,
+                thetaRadians = map[thetaKey] as Float,
                 rotationDegrees = map[rotationDegreesKey] as Float,
             )
             else -> throw IllegalArgumentException("Unknown type: ${map[coordinateSystemTypeKey]}")
