@@ -7,14 +7,14 @@ import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.components.util.ColorSaver
-import com.alexrdclement.uiplayground.components.util.DpSizeSaver
-import com.alexrdclement.uiplayground.components.util.DrawStyleSaver
-import com.alexrdclement.uiplayground.components.util.mapSaverSafe
-import com.alexrdclement.uiplayground.components.util.restore
 import com.alexrdclement.uiplayground.components.util.rotate
-import com.alexrdclement.uiplayground.components.util.save
+
+enum class GridVertexType {
+    Oval,
+    Rect,
+    Plus,
+    X,
+}
 
 sealed class GridVertex(
     open val size: DpSize,
@@ -132,80 +132,3 @@ fun DrawScope.drawVertex(
         }
     }
 }
-
-private enum class VertexType {
-    Oval, Rect, Plus, X
-}
-
-private const val vertexTypeKey = "vertexType"
-private const val sizeKey = "size"
-private const val colorKey = "color"
-private const val drawStyleKey = "drawStyle"
-private const val strokeWidthKey = "strokeWidth"
-private const val rotationDegreesKey = "rotationDegrees"
-
-val GridVertexSaver = mapSaverSafe(
-    save = { value ->
-        when (value) {
-            is GridVertex.Oval -> mapOf(
-                vertexTypeKey to VertexType.Oval,
-                sizeKey to save(value.size, DpSizeSaver, this),
-                colorKey to save(value.color, ColorSaver, this),
-                drawStyleKey to save(value.drawStyle, DrawStyleSaver, this),
-                rotationDegreesKey to value.rotationDegrees,
-            )
-
-            is GridVertex.Rect -> mapOf(
-                vertexTypeKey to VertexType.Rect,
-                sizeKey to save(value.size, DpSizeSaver, this),
-                colorKey to save(value.color, ColorSaver, this),
-                drawStyleKey to save(value.drawStyle, DrawStyleSaver, this),
-                rotationDegreesKey to value.rotationDegrees,
-            )
-
-            is GridVertex.Plus -> mapOf(
-                vertexTypeKey to VertexType.Plus,
-                sizeKey to save(value.size, DpSizeSaver, this),
-                colorKey to save(value.color, ColorSaver, this),
-                strokeWidthKey to value.strokeWidth.value,
-                rotationDegreesKey to value.rotationDegrees,
-            )
-
-            is GridVertex.X -> mapOf(
-                vertexTypeKey to VertexType.X,
-                sizeKey to save(value.size, DpSizeSaver, this),
-                colorKey to save(value.color, ColorSaver, this),
-                strokeWidthKey to value.strokeWidth.value,
-                rotationDegreesKey to value.rotationDegrees,
-            )
-        }
-    },
-    restore = { map ->
-        when (map[vertexTypeKey] as VertexType) {
-            VertexType.Oval -> GridVertex.Oval(
-                size = restore(map[sizeKey], DpSizeSaver)!!,
-                color = restore(map[colorKey], ColorSaver)!!,
-                drawStyle = restore(map[drawStyleKey], DrawStyleSaver)!!,
-                rotationDegrees = map[rotationDegreesKey] as Float,
-            )
-            VertexType.Rect -> GridVertex.Rect(
-                size = restore(map[sizeKey], DpSizeSaver)!!,
-                color = restore(map[colorKey], ColorSaver)!!,
-                drawStyle = restore(map[drawStyleKey], DrawStyleSaver)!!,
-                rotationDegrees = map[rotationDegreesKey] as Float,
-            )
-            VertexType.Plus -> GridVertex.Plus(
-                size = restore(map[sizeKey], DpSizeSaver)!!,
-                color = restore(map[colorKey], ColorSaver)!!,
-                strokeWidth = (map[strokeWidthKey] as Float).dp,
-                rotationDegrees = map[rotationDegreesKey] as Float,
-            )
-            VertexType.X -> GridVertex.X(
-                size = restore(map[sizeKey], DpSizeSaver)!!,
-                color = restore(map[colorKey], ColorSaver)!!,
-                strokeWidth = (map[strokeWidthKey] as Float).dp,
-                rotationDegrees = map[rotationDegreesKey] as Float,
-            )
-        }
-    }
-)

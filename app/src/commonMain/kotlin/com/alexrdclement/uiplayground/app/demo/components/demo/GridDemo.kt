@@ -30,7 +30,7 @@ import com.alexrdclement.uiplayground.components.GridLineStyleSaver
 import com.alexrdclement.uiplayground.components.GridScale
 import com.alexrdclement.uiplayground.components.GridScaleType
 import com.alexrdclement.uiplayground.components.GridVertex
-import com.alexrdclement.uiplayground.components.GridVertexSaver
+import com.alexrdclement.uiplayground.components.GridVertexType
 import com.alexrdclement.uiplayground.components.Surface
 import com.alexrdclement.uiplayground.components.util.ColorSaver
 import com.alexrdclement.uiplayground.components.util.DrawStyleSaver
@@ -615,14 +615,14 @@ open class GridScaleControl(
 class GridVertexState(
     val density: Density,
     colorInitial: Color,
-    vertexInitial: GridVertex? = null,
+    vertexTypeInitial: GridVertexType? = null,
     strokeWidthInitial: Dp = Dp.Hairline,
     drawStyleInitial: DrawStyle = Stroke(width = with(density) { strokeWidthInitial.toPx() }),
     widthInitial: Dp = 10.dp,
     heightInitial: Dp = 10.dp,
     rotationDegreesInitial: Float = 0f,
 ) {
-    var vertex by mutableStateOf(vertexInitial)
+    var vertexType by mutableStateOf(vertexTypeInitial)
         internal set
     var color by mutableStateOf(colorInitial)
         internal set
@@ -641,10 +641,43 @@ class GridVertexState(
         get() = with(density) { strokeWidth.toPx() }
     val size
         get() = DpSize(width, height)
+
+    val vertex: GridVertex?
+        get() = when (vertexType) {
+            GridVertexType.Oval -> GridVertex.Oval(
+                color = color,
+                size = DpSize(width, height),
+                drawStyle = drawStyle,
+                rotationDegrees = rotationDegrees,
+            )
+
+            GridVertexType.Rect -> GridVertex.Rect(
+                color = color,
+                size = DpSize(width, height),
+                drawStyle = drawStyle,
+                rotationDegrees = rotationDegrees,
+            )
+
+            GridVertexType.Plus -> GridVertex.Plus(
+                color = color,
+                size = DpSize(width, height),
+                strokeWidth = strokeWidth,
+                rotationDegrees = rotationDegrees,
+            )
+
+            GridVertexType.X -> GridVertex.X(
+                color = color,
+                size = DpSize(width, height),
+                strokeWidth = strokeWidth,
+                rotationDegrees = rotationDegrees,
+            )
+
+            null -> null
+        }
 }
 
 private const val vertexDensityKey = "density"
-private const val vertexKey = "vertex"
+private const val vertexTypeKey = "vertexType"
 private const val vertexColorKey = "color"
 private const val vertexStrokeWidthKey = "vertexStrokeWidth"
 private const val vertexDrawStyleKey = "vertexDrawStyle"
@@ -656,7 +689,7 @@ val GridVertexStateSaver = mapSaverSafe(
     save = { value ->
         mapOf(
             vertexDensityKey to save(value.density, DensitySaver, this),
-            vertexKey to save(value.vertex, GridVertexSaver, this),
+            vertexTypeKey to value.vertexType,
             vertexColorKey to save(value.color, ColorSaver, this),
             vertexStrokeWidthKey to value.strokeWidth.value,
             vertexDrawStyleKey to save(value.drawStyle, DrawStyleSaver, this),
@@ -668,7 +701,7 @@ val GridVertexStateSaver = mapSaverSafe(
     restore = { value ->
         GridVertexState(
             density = restore(value[vertexDensityKey], DensitySaver)!!,
-            vertexInitial = restore(value[vertexKey], GridVertexSaver),
+            vertexTypeInitial = value[vertexTypeKey] as GridVertexType,
             colorInitial = restore(value[vertexColorKey], ColorSaver)!!,
             strokeWidthInitial = (value[vertexStrokeWidthKey] as Float).dp,
             drawStyleInitial = restore(value[vertexDrawStyleKey], DrawStyleSaver)!!,
@@ -685,59 +718,25 @@ class GridVertexControl(
     val onStateChanged: ((GridVertexState) -> Unit)? = null,
     private val name: String? = null,
 ) {
-    val vertexItems = mapOf(
-        null to "None",
-        GridVertex.Oval::class to "Oval",
-        GridVertex.Rect::class to "Rect",
-        GridVertex.Plus::class to "Plus",
-        GridVertex.X::class to "X",
-    )
     val typeControl = Control.Dropdown(
         name = "Type",
         values = {
-            vertexItems.map { (kclass, name) ->
-                Control.Dropdown.DropdownItem(
-                    name = name,
-                    value = kclass,
+            val items = GridVertexType.entries.map { type ->
+                Control.Dropdown.DropdownItem<GridVertexType?>(
+                    name = type.name,
+                    value = type,
                 )
-            }.toPersistentList()
+            }
+            persistentListOf(
+                Control.Dropdown.DropdownItem(name = "None", value = null),
+                *items.toTypedArray(),
+            )
         },
         selectedIndex = {
-            vertexItems.keys.indexOf<KClass<out Any>?>(state.vertex?.let { it::class })
-                .coerceAtLeast(0) // -1 to null
+            state.vertexType?.let(GridVertexType.entries::indexOf)?.plus(1) ?: 0
         },
-        onValueChange = { index ->
-            state.vertex = when (vertexItems.keys.elementAt(index)) {
-                GridVertex.Oval::class -> GridVertex.Oval(
-                    color = state.color,
-                    size = state.size,
-                    drawStyle = state.drawStyle,
-                    rotationDegrees = state.rotationDegrees,
-                )
-
-                GridVertex.Rect::class -> GridVertex.Rect(
-                    color = state.color,
-                    size = state.size,
-                    drawStyle = state.drawStyle,
-                    rotationDegrees = state.rotationDegrees,
-                )
-
-                GridVertex.Plus::class -> GridVertex.Plus(
-                    color = state.color,
-                    size = state.size,
-                    strokeWidth = state.strokeWidth,
-                    rotationDegrees = state.rotationDegrees,
-                )
-
-                GridVertex.X::class -> GridVertex.X(
-                    color = state.color,
-                    size = state.size,
-                    strokeWidth = state.strokeWidth,
-                    rotationDegrees = state.rotationDegrees,
-                )
-
-                else -> null
-            }
+        onValueChange = {
+            state.vertexType = if (it == 0) null else GridVertexType.entries.elementAt(it - 1)
             onStateChanged?.invoke(state)
         }
     )
@@ -750,25 +749,6 @@ class GridVertexControl(
             state.drawStyle = when (state.drawStyle) {
                 is Stroke -> Stroke(width = state.strokeWidthPx)
                 is Fill -> Fill
-            }
-            state.vertex = when (val vertex = state.vertex) {
-                is GridVertex.Oval -> vertex.copy(
-                    drawStyle = state.drawStyle,
-                )
-
-                is GridVertex.Rect -> vertex.copy(
-                    drawStyle = state.drawStyle,
-                )
-
-                is GridVertex.Plus -> vertex.copy(
-                    strokeWidth = state.strokeWidth,
-                )
-
-                is GridVertex.X -> vertex.copy(
-                    strokeWidth = state.strokeWidth,
-                )
-
-                null -> null
             }
             onStateChanged?.invoke(state)
         },
@@ -796,21 +776,6 @@ class GridVertexControl(
                 Fill::class -> Fill
                 else -> Stroke(width = state.strokeWidthPx)
             }
-            state.vertex = when (val vertex = state.vertex) {
-                is GridVertex.Oval -> vertex.copy(
-                    drawStyle = state.drawStyle,
-                )
-
-                is GridVertex.Rect -> vertex.copy(
-                    drawStyle = state.drawStyle,
-                )
-
-                is GridVertex.Plus,
-                is GridVertex.X,
-                    -> vertex
-
-                null -> null
-            }
             onStateChanged?.invoke(state)
         }
     )
@@ -820,25 +785,6 @@ class GridVertexControl(
         value = { state.rotationDegrees },
         onValueChange = {
             state.rotationDegrees = it
-            state.vertex = when (val vertex = state.vertex) {
-                is GridVertex.Oval -> vertex.copy(
-                    rotationDegrees = state.rotationDegrees,
-                )
-
-                is GridVertex.Rect -> vertex.copy(
-                    rotationDegrees = state.rotationDegrees,
-                )
-
-                is GridVertex.Plus -> vertex.copy(
-                    rotationDegrees = state.rotationDegrees,
-                )
-
-                is GridVertex.X -> vertex.copy(
-                    rotationDegrees = state.rotationDegrees,
-                )
-
-                null -> null
-            }
             onStateChanged?.invoke(state)
         },
         valueRange = { -180f..180f },
@@ -850,25 +796,6 @@ class GridVertexControl(
         onValueChange = {
             state.width = it.dp
             state.height = it.dp
-            state.vertex = when (val vertex = state.vertex) {
-                is GridVertex.Oval -> vertex.copy(
-                    size = DpSize(state.width, state.height),
-                )
-
-                is GridVertex.Rect -> vertex.copy(
-                    size = DpSize(state.width, state.height),
-                )
-
-                is GridVertex.Plus -> vertex.copy(
-                    size = DpSize(state.width, state.height),
-                )
-
-                is GridVertex.X -> vertex.copy(
-                    size = DpSize(state.width, state.height),
-                )
-
-                null -> null
-            }
             onStateChanged?.invoke(state)
         },
         valueRange = { 1f..100f },
@@ -879,25 +806,6 @@ class GridVertexControl(
         value = { state.width.value },
         onValueChange = {
             state.width = it.dp
-            state.vertex = when (val vertex = state.vertex) {
-                is GridVertex.Oval -> vertex.copy(
-                    size = DpSize(state.width, state.height),
-                )
-
-                is GridVertex.Rect -> vertex.copy(
-                    size = DpSize(state.width, state.height),
-                )
-
-                is GridVertex.Plus -> vertex.copy(
-                    size = DpSize(state.width, state.height),
-                )
-
-                is GridVertex.X -> vertex.copy(
-                    size = DpSize(state.width, state.height),
-                )
-
-                null -> null
-            }
             onStateChanged?.invoke(state)
         },
         valueRange = { 1f..100f },
@@ -908,25 +816,6 @@ class GridVertexControl(
         value = { state.height.value },
         onValueChange = {
             state.height = it.dp
-            state.vertex = when (val vertex = state.vertex) {
-                is GridVertex.Oval -> vertex.copy(
-                    size = DpSize(state.width, state.height),
-                )
-
-                is GridVertex.Rect -> vertex.copy(
-                    size = DpSize(state.width, state.height),
-                )
-
-                is GridVertex.Plus -> vertex.copy(
-                    size = DpSize(state.width, state.height),
-                )
-
-                is GridVertex.X -> vertex.copy(
-                    size = DpSize(state.width, state.height),
-                )
-
-                null -> null
-            }
             onStateChanged?.invoke(state)
         },
         valueRange = { 1f..100f },
