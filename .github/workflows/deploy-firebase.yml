@@ -43,6 +43,9 @@ jobs:
       - name: Create service account key file
         run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > /tmp/service_account.json
 
+      - name: Decode keystore and create file
+        run: echo "${{ secrets.ANDROID_SIGNING_KEY }}" | base64 --decode > android/app/release.jks
+
       - name: Build and Distribute Android App
         run: |
           bundle exec fastlane distribute_to_firebase \
@@ -51,6 +54,10 @@ jobs:
         working-directory: androidApp
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/service_account.json
+          KEYSTORE_FILE_PATH: "android/app/release.jks"
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
   ios_distribute:
     runs-on: macos-latest

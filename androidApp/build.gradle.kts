@@ -17,14 +17,22 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("${System.getenv("KEYSTORE_FILE_PATH")}")
+            storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("ANDROID_KEY_ALIAS")
+            keyPassword = System.getenv("ANDROID_KEY_PASSWORD")
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
         }
         release {
-            // Not planning to release the app. Doing this for simplicity.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
 
             isMinifyEnabled = true
             isShrinkResources = true
