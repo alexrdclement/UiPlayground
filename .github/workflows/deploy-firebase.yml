@@ -1,0 +1,75 @@
+name: Deploy to Firebase App Distribution
+
+on:
+  push:
+  workflow_dispatch: # Allows you to manually trigger the workflow
+
+jobs:
+  android_distribute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: 'true'
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+          working-directory: 'androidApp'
+
+      - name: Install Firebase CLI
+        run: curl -sL https://firebase.tools | bash
+
+      - name: Build and Distribute Android App
+        run: |
+          cd androidApp
+          bundle exec fastlane distribute_to_firebase \
+            firebase_app_id: ${{ secrets.FIREBASE_ANDROID_APP_ID }} \
+            release_notes: "Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }}"
+        env:
+          FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+
+  ios_distribute:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: 'true'
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+          working-directory: 'iosApp'
+
+      - name: Install Firebase CLI
+        run: curl -sL https://firebase.tools | bash
+
+      - name: Install iOS certificates and profiles
+        run: fastlane match --readonly
+
+      - name: Build and Distribute iOS App
+        run: |
+          cd iosApp
+          bundle exec fastlane distribute_to_firebase \
+            firebase_app_id: ${{ secrets.FIREBASE_IOS_APP_ID }} \
+            release_notes: "Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }}"
+        env:
+          FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
