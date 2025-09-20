@@ -1,0 +1,38 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Build and upload the app to Firebase App Distribution"
+  lane :distribute_to_firebase do |options|
+    gradle(
+      task: "assembleRelease"
+    )
+
+    firebase_app_distribution(
+      app: options[:firebase_app_id],
+      groups: "testers", # Name of your tester group in Firebase
+      release_notes: options[:release_notes],
+      firebase_cli_path: "/usr/local/bin/firebase", # Default path for Firebase CLI
+      apk_path: "app/build/outputs/apk/release/app-release.apk" # Update path as needed
+    )
+  end
+end
