@@ -17,10 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
-import com.alexrdclement.uiplayground.components.Button
-import com.alexrdclement.uiplayground.components.DropdownMenu
-import com.alexrdclement.uiplayground.components.DropdownMenuItem
-import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.components.core.Button
+import com.alexrdclement.uiplayground.components.core.Text
+import com.alexrdclement.uiplayground.components.menu.DropdownMenu
+import com.alexrdclement.uiplayground.components.menu.DropdownMenuItem
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.toPersistentList
 import org.jetbrains.compose.ui.tooling.preview.Preview

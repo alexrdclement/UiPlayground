@@ -10,8 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.alexrdclement.uiplayground.components.Text
-import com.alexrdclement.uiplayground.components.TextField
+import com.alexrdclement.uiplayground.components.core.Text
+import com.alexrdclement.uiplayground.components.core.TextField
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable

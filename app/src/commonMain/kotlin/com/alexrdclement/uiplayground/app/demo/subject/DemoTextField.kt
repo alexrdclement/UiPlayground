@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import com.alexrdclement.uiplayground.components.TextField
+import com.alexrdclement.uiplayground.components.core.TextField
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable

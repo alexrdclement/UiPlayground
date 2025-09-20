@@ -7,7 +7,7 @@ import com.alexrdclement.uiplayground.waitAndFindObject
 class ComponentsPage(
     private val device: UiDevice,
 ) {
-    fun navigateToMediaControlSheet() {
-        device.waitAndFindObject(By.text("MediaControlSheet")).click()
+    fun navigateToMediaComponents() {
+        device.waitAndFindObject(By.text("Media")).click()
     }
 }

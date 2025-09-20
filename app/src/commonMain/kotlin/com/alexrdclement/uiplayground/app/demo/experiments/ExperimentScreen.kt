@@ -8,7 +8,7 @@ import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.FadeDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.gradient.GradientDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.scroll.AnimateScrollItemVisibleDemo
-import com.alexrdclement.uiplayground.components.Scaffold
+import com.alexrdclement.uiplayground.components.layout.Scaffold
 
 @Composable
 fun ExperimentScreen(

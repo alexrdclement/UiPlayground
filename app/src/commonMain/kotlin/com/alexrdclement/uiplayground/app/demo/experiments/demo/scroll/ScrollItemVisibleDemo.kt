@@ -31,8 +31,8 @@ import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.FadeSide
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.fade
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
-import com.alexrdclement.uiplayground.components.Button
-import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.components.core.Button
+import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.theme.PlaygroundSpacing
 import kotlinx.collections.immutable.persistentListOf

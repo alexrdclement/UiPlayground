@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.FadeSide
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.fade
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
-import com.alexrdclement.uiplayground.components.Button
-import com.alexrdclement.uiplayground.components.Text
+import com.alexrdclement.uiplayground.components.core.Button
+import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundSpacing
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
