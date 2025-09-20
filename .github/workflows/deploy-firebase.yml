@@ -13,11 +13,22 @@ jobs:
         with:
           lfs: 'true'
 
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          add-job-summary-as-pr-comment: 'on-failure'
+          build-scan-publish: true
+          build-scan-terms-of-use-url: 'https://gradle.com/terms-of-service'
+          build-scan-terms-of-use-agree: 'yes'
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -29,14 +40,17 @@ jobs:
       - name: Install Firebase CLI
         run: curl -sL https://firebase.tools | bash
 
+      - name: Create service account key file
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > /tmp/service_account.json
+
       - name: Build and Distribute Android App
         run: |
-          cd androidApp
           bundle exec fastlane distribute_to_firebase \
             firebase_app_id: ${{ secrets.FIREBASE_ANDROID_APP_ID }} \
             release_notes: "Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }}"
+        working-directory: androidApp
         env:
-          FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/service_account.json
 
   ios_distribute:
     runs-on: macos-latest
@@ -46,11 +60,22 @@ jobs:
         with:
           lfs: 'true'
 
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          add-job-summary-as-pr-comment: 'on-failure'
+          build-scan-publish: true
+          build-scan-terms-of-use-url: 'https://gradle.com/terms-of-service'
+          build-scan-terms-of-use-agree: 'yes'
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -62,14 +87,19 @@ jobs:
       - name: Install Firebase CLI
         run: curl -sL https://firebase.tools | bash
 
-      - name: Install iOS certificates and profiles
-        run: fastlane match --readonly
+      - name: Create service account key file
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > /tmp/service_account.json
+
+#      - name: Install iOS certificates and profiles
+#        run: bundle exec fastlane match --readonly
+#        working-directory: iosApp
 
       - name: Build and Distribute iOS App
         run: |
-          cd iosApp
           bundle exec fastlane distribute_to_firebase \
             firebase_app_id: ${{ secrets.FIREBASE_IOS_APP_ID }} \
             release_notes: "Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }}"
+        working-directory: iosApp
         env:
-          FIREBASE_SERVICE_ACCOUNT_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/service_account.json
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}

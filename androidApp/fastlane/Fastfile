@@ -19,13 +19,15 @@ platform :android do
   desc "Build and upload the app to Firebase App Distribution"
   lane :distribute_to_firebase do |options|
     gradle(
-      task: "bundleRelease"
+      task: "bundleRelease",
+      project_dir: "../",
     )
 
     firebase_app_distribution(
       app: options[:firebase_app_id],
       groups: "testers",
       release_notes: options[:release_notes],
+      android_artifact_path: "../androidApp/build/outputs/bundle/release/androidApp-release.aab",
     )
   end
 end

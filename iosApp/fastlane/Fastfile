@@ -18,13 +18,12 @@ default_platform(:ios)
 platform :ios do
   desc "Build and upload the app to Firebase App Distribution"
   lane :distribute_to_firebase do |options|
-    sh("cd ../.. && ./gradlew :shared:iosDeployDistributionRelease")
+    setup_ci
+    match(type: "adhoc", readonly: true)
 
     build_app(
-      scheme: "iosApp",
-      clean: true,
-      archive: true,
-      export_method: "ad-hoc"
+      scheme: "UiPlayground",
+      export_method: "ad-hoc",
     )
 
     firebase_app_distribution(
