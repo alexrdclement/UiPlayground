@@ -49,7 +49,7 @@ jobs:
       - name: Build and Distribute Android App
         run: |
           bundle exec fastlane distribute_to_firebase \
-            firebase_app_id: ${{ secrets.FIREBASE_ANDROID_APP_ID }} \
+            firebase_app_id: "${{ secrets.FIREBASE_ANDROID_APP_ID }}" \
             release_notes: "Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }}"
         working-directory: androidApp
         env:
@@ -100,7 +100,7 @@ jobs:
       - name: Build and Distribute iOS App
         run: |
           bundle exec fastlane distribute_to_firebase \
-            firebase_app_id: ${{ secrets.FIREBASE_IOS_APP_ID }} \
+            firebase_app_id: "${{ secrets.FIREBASE_IOS_APP_ID }}" \
             release_notes: "Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }}"
         working-directory: iosApp
         env:
