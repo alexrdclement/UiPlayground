@@ -97,10 +97,6 @@ jobs:
       - name: Create service account key file
         run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > /tmp/service_account.json
 
-#      - name: Install iOS certificates and profiles
-#        run: bundle exec fastlane match --readonly
-#        working-directory: iosApp
-
       - name: Build and Distribute iOS App
         run: |
           bundle exec fastlane distribute_to_firebase \
@@ -110,3 +106,4 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/service_account.json
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
