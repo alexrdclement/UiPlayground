@@ -27,7 +27,7 @@ fun NavGraphBuilder.geometryComponentsGraph(
             onNavigateBack = navController::popBackStackIfResumed,
             onConfigureClick = onConfigureClick,
         )
-        componentScreen(
+        geometryComponentScreen(
             onNavigateBack = navController::popBackStackIfResumed,
             onConfigureClick = onConfigureClick,
         )

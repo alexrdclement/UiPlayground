@@ -13,7 +13,7 @@ data class ComponentRoute(
     val componentOrdinal: Int,
 )
 
-fun NavGraphBuilder.componentScreen(
+fun NavGraphBuilder.geometryComponentScreen(
     onNavigateBack: () -> Unit,
     onConfigureClick: () -> Unit,
 ) {

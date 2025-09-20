@@ -7,9 +7,13 @@ import androidx.navigation.navigation
 import com.alexrdclement.uiplayground.app.catalog.CatalogScreen
 import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
 import com.alexrdclement.uiplayground.app.demo.components.core.navigation.coreComponentsGraph
+import com.alexrdclement.uiplayground.app.demo.components.core.navigation.navigateToCoreComponents
 import com.alexrdclement.uiplayground.app.demo.components.geometry.navigation.geometryComponentsGraph
+import com.alexrdclement.uiplayground.app.demo.components.geometry.navigation.navigateToGeometryComponents
 import com.alexrdclement.uiplayground.app.demo.components.media.navigation.mediaComponentsGraph
+import com.alexrdclement.uiplayground.app.demo.components.media.navigation.navigateToMediaComponents
 import com.alexrdclement.uiplayground.app.demo.components.money.navigation.moneyComponentsGraph
+import com.alexrdclement.uiplayground.app.demo.components.money.navigation.navigateToMoneyComponents
 import com.alexrdclement.uiplayground.app.demo.popBackStackIfResumed
 import kotlinx.serialization.Serializable
 
@@ -27,7 +31,14 @@ fun NavGraphBuilder.componentsGraph(
         startDestination = ComponentCatalogRoute,
     ) {
         componentCatalogScreen(
-            onItemClick = navController::navigateToComponent,
+            onItemClick = { componentGroup ->
+                when (componentGroup) {
+                    ComponentCategory.Core -> navController.navigateToCoreComponents()
+                    ComponentCategory.Geometry -> navController.navigateToGeometryComponents()
+                    ComponentCategory.Media -> navController.navigateToMediaComponents()
+                    ComponentCategory.Money -> navController.navigateToMoneyComponents()
+                }
+            },
             onNavigateBack = navController::popBackStackIfResumed,
             onConfigureClick = onConfigureClick,
         )
@@ -57,13 +68,13 @@ fun NavController.navigateToComponents() {
 }
 
 private fun NavGraphBuilder.componentCatalogScreen(
-    onItemClick: (Component) -> Unit,
+    onItemClick: (ComponentCategory) -> Unit,
     onNavigateBack: () -> Unit,
     onConfigureClick: () -> Unit,
 ) {
     composable<ComponentCatalogRoute> {
         CatalogScreen(
-            items = Component.entries.toList(),
+            items = ComponentCategory.entries.toList(),
             onItemClick = onItemClick,
             title = "Components",
             onNavigateBack = onNavigateBack,

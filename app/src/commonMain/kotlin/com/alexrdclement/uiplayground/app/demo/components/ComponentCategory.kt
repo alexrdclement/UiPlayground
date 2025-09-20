@@ -4,7 +4,7 @@ import com.alexrdclement.uiplayground.app.catalog.CatalogItem
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class Component : CatalogItem {
+enum class ComponentCategory : CatalogItem {
     Core,
     Geometry,
     Media,
