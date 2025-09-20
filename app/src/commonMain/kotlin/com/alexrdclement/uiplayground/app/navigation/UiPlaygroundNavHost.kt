@@ -9,8 +9,8 @@ import com.alexrdclement.uiplayground.app.catalog.navigation.mainCatalogScreen
 import com.alexrdclement.uiplayground.app.configuration.ConfigurationController
 import com.alexrdclement.uiplayground.app.configuration.navigation.configurationGraph
 import com.alexrdclement.uiplayground.app.configuration.navigation.navigateToConfiguration
-import com.alexrdclement.uiplayground.app.demo.components.navigation.componentsGraph
-import com.alexrdclement.uiplayground.app.demo.components.navigation.navigateToComponents
+import com.alexrdclement.uiplayground.app.demo.components.componentsGraph
+import com.alexrdclement.uiplayground.app.demo.components.navigateToComponents
 import com.alexrdclement.uiplayground.app.demo.experiments.navigation.experimentsGraph
 import com.alexrdclement.uiplayground.app.demo.experiments.navigation.navigateToExperiments
 import com.alexrdclement.uiplayground.app.demo.shaders.navigation.navigateToShaders

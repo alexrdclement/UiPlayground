@@ -19,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
-import com.alexrdclement.uiplayground.components.HorizontalDivider
-import com.alexrdclement.uiplayground.components.VerticalDivider
+import com.alexrdclement.uiplayground.components.core.HorizontalDivider
+import com.alexrdclement.uiplayground.components.core.VerticalDivider
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf

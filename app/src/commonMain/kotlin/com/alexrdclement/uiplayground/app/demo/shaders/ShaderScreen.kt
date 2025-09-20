@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
-import com.alexrdclement.uiplayground.components.Scaffold
+import com.alexrdclement.uiplayground.components.layout.Scaffold
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable

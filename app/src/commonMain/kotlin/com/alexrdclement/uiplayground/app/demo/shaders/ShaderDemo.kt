@@ -27,10 +27,10 @@ import com.alexrdclement.uiplayground.app.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.app.demo.subject.DemoText
 import com.alexrdclement.uiplayground.app.demo.subject.DemoTextField
 import com.alexrdclement.uiplayground.app.demo.util.OffsetSaver
-import com.alexrdclement.uiplayground.components.Grid
-import com.alexrdclement.uiplayground.components.GridCoordinateSystem
-import com.alexrdclement.uiplayground.components.GridLineStyle
-import com.alexrdclement.uiplayground.components.GridVertex
+import com.alexrdclement.uiplayground.components.geometry.Grid
+import com.alexrdclement.uiplayground.components.geometry.GridCoordinateSystem
+import com.alexrdclement.uiplayground.components.geometry.GridLineStyle
+import com.alexrdclement.uiplayground.components.geometry.GridVertex
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.components.util.restore
 import com.alexrdclement.uiplayground.components.util.save

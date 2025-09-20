@@ -4,9 +4,9 @@ import androidx.compose.foundation.basicMarquee
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
-import com.alexrdclement.uiplayground.components.BackNavigationButton
-import com.alexrdclement.uiplayground.components.Text
-import com.alexrdclement.uiplayground.components.TopBar
+import com.alexrdclement.uiplayground.components.core.Text
+import com.alexrdclement.uiplayground.components.layout.TopBar
+import com.alexrdclement.uiplayground.components.navigation.BackNavigationButton
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
