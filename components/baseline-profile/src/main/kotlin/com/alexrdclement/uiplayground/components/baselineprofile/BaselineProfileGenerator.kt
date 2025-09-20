@@ -6,6 +6,10 @@ import androidx.test.filters.LargeTest
 import com.alexrdclement.uiplayground.MainCatalogPage
 import com.alexrdclement.uiplayground.appPackageName
 import com.alexrdclement.uiplayground.components.ComponentsPage
+import com.alexrdclement.uiplayground.components.core.ButtonPage
+import com.alexrdclement.uiplayground.components.core.CoreComponentsPage
+import com.alexrdclement.uiplayground.components.core.TextFieldPage
+import com.alexrdclement.uiplayground.components.core.TextPage
 import com.alexrdclement.uiplayground.components.media.MediaComponentsPage
 import com.alexrdclement.uiplayground.components.media.MediaControlSheetPage
 import com.alexrdclement.uiplayground.componentsPackageName
@@ -21,8 +25,9 @@ class BaselineProfileGenerator {
     val rule = BaselineProfileRule()
 
     // Run with `gradle components:generateBaselineProfile`
+
     @Test
-    fun generateComponentsProfile() {
+    fun generateCoreComponentsProfile() {
         rule.collect(
             packageName = appPackageName,
             filterPredicate = { packageFilterPredicate(componentsPackageName, it) },
@@ -31,9 +36,36 @@ class BaselineProfileGenerator {
             startActivityAndWait()
 
             MainCatalogPage(device).navigateToComponents()
+
+            ComponentsPage(device).navigateToCoreComponents()
+
+            CoreComponentsPage(device).navigateToButton()
+            ButtonPage(device).button.click()
+            device.pressBack()
+
+            CoreComponentsPage(device).navigateToText()
+            TextPage(device).textField.text = "Hello world edited"
+            device.pressBack()
+            
+            CoreComponentsPage(device).navigateToText()
+            TextFieldPage(device).textField.text = "Hello world edited"
+            device.pressBack()
+        }
+    }
+
+    @Test
+    fun generateMediaComponentsProfile() {
+        rule.collect(
+            packageName = appPackageName,
+            filterPredicate = { packageFilterPredicate(componentsPackageName, it) },
+        ) {
+            pressHome()
+            startActivityAndWait()
+
+            MainCatalogPage(device).navigateToComponents()
+
             ComponentsPage(device).navigateToMediaComponents()
             MediaComponentsPage(device).navigateToMediaControlSheet()
-
             MediaControlSheetPage(device).mediaControlBar.click()
         }
     }
