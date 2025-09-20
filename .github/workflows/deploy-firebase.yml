@@ -44,7 +44,7 @@ jobs:
         run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > /tmp/service_account.json
 
       - name: Decode keystore and create file
-        run: echo "${{ secrets.ANDROID_SIGNING_KEY }}" | base64 --decode > android/app/release.jks
+        run: echo "${{ secrets.ANDROID_SIGNING_KEY }}" | base64 --decode > androidApp/release.jks
 
       - name: Build and Distribute Android App
         run: |
@@ -54,7 +54,7 @@ jobs:
         working-directory: androidApp
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/service_account.json
-          KEYSTORE_FILE_PATH: "android/app/release.jks"
+          KEYSTORE_FILE_PATH: "release.jks"
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
