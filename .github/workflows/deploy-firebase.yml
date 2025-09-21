@@ -1,8 +1,15 @@
 name: Deploy to Firebase App Distribution
 
 on:
-  push:
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
   workflow_dispatch: # Allows you to manually trigger the workflow
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   android_distribute:
@@ -48,9 +55,10 @@ jobs:
 
       - name: Build and Distribute Android App
         run: |
+          COMMITS="${{ join(github.event.commits.*.message, ' | ') }}"
           bundle exec fastlane distribute_to_firebase \
             firebase_app_id:${{ secrets.FIREBASE_ANDROID_APP_ID }} \
-            release_notes:"Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }}"
+            release_notes:"Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }} | $COMMITS"
         working-directory: androidApp
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/service_account.json
@@ -99,9 +107,10 @@ jobs:
 
       - name: Build and Distribute iOS App
         run: |
+          COMMITS="${{ join(github.event.commits.*.message, ' | ') }}"
           bundle exec fastlane distribute_to_firebase \
             firebase_app_id:${{ secrets.FIREBASE_IOS_APP_ID }} \
-            release_notes:"Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }}"
+            release_notes:"Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }} | $COMMITS"
         working-directory: iosApp
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/service_account.json
