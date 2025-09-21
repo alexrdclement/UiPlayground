@@ -1,5 +1,5 @@
 [versions]
-activity-compose = "1.10.1"
+activity-compose = "1.11.0"
 android-desugar-jdk-libs = "2.1.5"
 agp = "8.13.0"
 android-tools = "31.13.0"
