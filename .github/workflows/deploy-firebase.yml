@@ -67,7 +67,8 @@ jobs:
             git fetch origin ${{ github.head_ref }}:${{ github.head_ref }}
             COMMITS=$(git log ${{ github.base_ref }}..${{ github.head_ref }} --pretty=format:"%h %s")
           else
-            COMMITS="${{ join(github.event.commits.*.message, '\n') }}"
+            # Convert literal \n to real newlines
+            COMMITS=$(echo -e "${{ join(github.event.commits.*.message, '\n') }}")
           fi
           # Add asterisks before each commit line
           COMMITS=$(echo "$COMMITS" | sed 's/^/* /')
@@ -139,7 +140,8 @@ jobs:
             git fetch origin ${{ github.head_ref }}:${{ github.head_ref }}
             COMMITS=$(git log ${{ github.base_ref }}..${{ github.head_ref }} --pretty=format:"%h %s")
           else
-            COMMITS="${{ join(github.event.commits.*.message, '\n') }}"
+            # Convert literal \n to real newlines before adding asterisks
+            COMMITS=$(echo -e "${{ join(github.event.commits.*.message, '\n') }}")
           fi
           # Add asterisks before each commit line
           COMMITS=$(echo "$COMMITS" | sed 's/^/* /')
