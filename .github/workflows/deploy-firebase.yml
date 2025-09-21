@@ -72,7 +72,9 @@ jobs:
       - name: Build and Distribute Android App
         run: |
           BRANCH_NAME="${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}"
-          RELEASE_NOTES="Branch: $BRANCH_NAME | Commit: ${{ github.sha }} | ${{ steps.get_commits.outputs.commits }}"
+          COMMIT_SHORT="${{ github.sha::8 }}"
+          COMMITS = "${{ steps.get_commits.outputs.commits }}"
+          RELEASE_NOTES="Branch: $BRANCH_NAME\nCommit: $COMMIT_SHORT\nCommits:\n$COMMITS"
           bundle exec fastlane distribute_to_firebase \
             firebase_app_id:${{ secrets.FIREBASE_ANDROID_APP_ID }} \
             release_notes:"$RELEASE_NOTES"
@@ -126,16 +128,18 @@ jobs:
         id: get_commits
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            COMMITS=$(git log --oneline origin/${{ github.base_ref }}..${{ github.head_ref }} --pretty=format:"%h %s" | head -5 | tr '\n' ' | ')
+            COMMITS=$(git log --oneline origin/${{ github.base_ref }}..${{ github.head_ref }} --pretty=format:"%h %s" | head -5 | tr '\n' '\n')
           else
-            COMMITS="${{ join(github.event.commits.*.message, ' | ') }}"
+            COMMITS="${{ join(github.event.commits.*.message, '\n') }}"
           fi
           echo "commits=$COMMITS" >> $GITHUB_OUTPUT
 
       - name: Build and Distribute iOS App
         run: |
           BRANCH_NAME="${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}"
-          RELEASE_NOTES="Branch: $BRANCH_NAME | Commit: ${{ github.sha }} | ${{ steps.get_commits.outputs.commits }}"
+          COMMIT_SHORT="${{ github.sha::8 }}"
+          COMMITS = "${{ steps.get_commits.outputs.commits }}"
+          RELEASE_NOTES="Branch: $BRANCH_NAME\nCommit: $COMMIT_SHORT\nCommits:\n$COMMITS"
           bundle exec fastlane distribute_to_firebase \
             firebase_app_id:${{ secrets.FIREBASE_IOS_APP_ID }} \
             release_notes:"$RELEASE_NOTES"
