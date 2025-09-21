@@ -79,6 +79,7 @@ jobs:
           COMMIT_SHORT=$(echo "${{ github.sha }}" | cut -c1-8)
           COMMITS="${{ steps.get_commits.outputs.commits }}"
           RELEASE_NOTES="Branch: $BRANCH_NAME\nCommit: $COMMIT_SHORT\nCommits:\n$COMMITS"
+          RELEASE_NOTES=$(echo -e "$RELEASE_NOTES")
           bundle exec fastlane distribute_to_firebase \
             firebase_app_id:${{ secrets.FIREBASE_ANDROID_APP_ID }} \
             release_notes:"$RELEASE_NOTES"
@@ -148,6 +149,7 @@ jobs:
           COMMIT_SHORT=$(echo "${{ github.sha }}" | cut -c1-8)
           COMMITS="${{ steps.get_commits.outputs.commits }}"
           RELEASE_NOTES="Branch: $BRANCH_NAME\nCommit: $COMMIT_SHORT\nCommits:\n$COMMITS"
+          RELEASE_NOTES=$(echo -e "$RELEASE_NOTES")
           bundle exec fastlane distribute_to_firebase \
             firebase_app_id:${{ secrets.FIREBASE_IOS_APP_ID }} \
             release_notes:"$RELEASE_NOTES"
