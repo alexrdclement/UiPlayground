@@ -42,10 +42,6 @@ gradlePlugin {
             id = "uiplayground.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
-        register("androidLibraryCompose") {
-            id = "uiplayground.android.library.compose"
-            implementationClass = "AndroidLibraryComposeConventionPlugin"
-        }
         register("androidLibrary") {
             id = "uiplayground.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
