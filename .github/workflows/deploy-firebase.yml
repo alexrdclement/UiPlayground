@@ -65,7 +65,7 @@ jobs:
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             git fetch origin ${{ github.base_ref }}:${{ github.base_ref }}
             git fetch origin ${{ github.head_ref }}:${{ github.head_ref }}
-            COMMITS=$(git log ${{ github.base_ref }}..${{ github.head_ref }} --pretty=format:"%h %s" | head -5)
+            COMMITS=$(git log ${{ github.base_ref }}..${{ github.head_ref }} --pretty=format:"%h %s")
           else
             COMMITS="${{ join(github.event.commits.*.message, '\n') }}"
           fi
@@ -137,7 +137,7 @@ jobs:
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             git fetch origin ${{ github.base_ref }}:${{ github.base_ref }}
             git fetch origin ${{ github.head_ref }}:${{ github.head_ref }}
-            COMMITS=$(git log ${{ github.base_ref }}..${{ github.head_ref }} --pretty=format:"%h %s" | head -5)
+            COMMITS=$(git log ${{ github.base_ref }}..${{ github.head_ref }} --pretty=format:"%h %s")
           else
             COMMITS="${{ join(github.event.commits.*.message, '\n') }}"
           fi
