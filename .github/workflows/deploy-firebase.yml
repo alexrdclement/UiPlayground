@@ -53,12 +53,22 @@ jobs:
       - name: Decode keystore and create file
         run: echo "${{ secrets.ANDROID_SIGNING_KEY }}" | base64 --decode > androidApp/release.jks
 
+      - name: Get commits
+        id: get_commits
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            COMMITS=$(git log --oneline origin/${{ github.base_ref }}..${{ github.head_ref }} --pretty=format:"%h %s" | head -5 | tr '\n' ' | ')
+          else
+            COMMITS="${{ join(github.event.commits.*.message, ' | ') }}"
+          fi
+          echo "commits=$COMMITS" >> $GITHUB_OUTPUT
+
       - name: Build and Distribute Android App
         run: |
           COMMITS="${{ join(github.event.commits.*.message, ' | ') }}"
           bundle exec fastlane distribute_to_firebase \
             firebase_app_id:${{ secrets.FIREBASE_ANDROID_APP_ID }} \
-            release_notes:"Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }} | $COMMITS"
+            release_notes:"Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }} | ${{ steps.get_commits.outputs.commits }}"
         working-directory: androidApp
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/service_account.json
@@ -105,12 +115,22 @@ jobs:
       - name: Create service account key file
         run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > /tmp/service_account.json
 
+      - name: Get commits
+        id: get_commits
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            COMMITS=$(git log --oneline origin/${{ github.base_ref }}..${{ github.head_ref }} --pretty=format:"%h %s" | head -5 | tr '\n' ' | ')
+          else
+            COMMITS="${{ join(github.event.commits.*.message, ' | ') }}"
+          fi
+          echo "commits=$COMMITS" >> $GITHUB_OUTPUT
+
       - name: Build and Distribute iOS App
         run: |
           COMMITS="${{ join(github.event.commits.*.message, ' | ') }}"
           bundle exec fastlane distribute_to_firebase \
             firebase_app_id:${{ secrets.FIREBASE_IOS_APP_ID }} \
-            release_notes:"Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }} | $COMMITS"
+            release_notes:"Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }} | ${{ steps.get_commits.outputs.commits }}"
         working-directory: iosApp
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/service_account.json
