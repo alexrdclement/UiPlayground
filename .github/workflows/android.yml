@@ -49,8 +49,8 @@ jobs:
             build-scan-terms-of-use-url: 'https://gradle.com/terms-of-service'
             build-scan-terms-of-use-agree: 'yes'
 
-      - name: Build all build type and flavor permutations
-        run: ./gradlew :androidApp:assemble
+      - name: Build debug
+        run: ./gradlew :androidApp:assembleDebug
 
       - name: Upload build outputs (APKs)
         uses: actions/upload-artifact@v4
