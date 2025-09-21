@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+
 plugins {
     alias(libs.plugins.uiplayground.android.library)
     alias(libs.plugins.uiplayground.kotlin.multiplatform)
@@ -7,6 +9,7 @@ plugins {
 
 kotlin {
     androidTarget()
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -17,7 +20,14 @@ kotlin {
             isStatic = true
         }
     }
+
     jvm()
+
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+        binaries.executable()
+    }
 
     applyDefaultHierarchyTemplate()
 
