@@ -1,8 +1,8 @@
 name: "Web"
 on:
   push:
-    branches:
-      - main
+#    branches:
+#      - main
     paths-ignore:
       - '**.md'
       - 'docs/**'
