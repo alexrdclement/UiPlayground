@@ -1,0 +1,138 @@
+name: Deploy to Firebase App Distribution
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  android_distribute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: 'true'
+
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          add-job-summary-as-pr-comment: 'on-failure'
+          build-scan-publish: true
+          build-scan-terms-of-use-url: 'https://gradle.com/terms-of-service'
+          build-scan-terms-of-use-agree: 'yes'
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+          working-directory: 'androidApp'
+
+      - name: Install Firebase CLI
+        run: curl -sL https://firebase.tools | bash
+
+      - name: Create service account key file
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > /tmp/service_account.json
+
+      - name: Decode keystore and create file
+        run: echo "${{ secrets.ANDROID_SIGNING_KEY }}" | base64 --decode > androidApp/release.jks
+
+      - name: Get commits
+        id: get_commits
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            COMMITS=$(git log --oneline origin/${{ github.base_ref }}..${{ github.head_ref }} --pretty=format:"%h %s" | head -5 | tr '\n' ' | ')
+          else
+            COMMITS="${{ join(github.event.commits.*.message, ' | ') }}"
+          fi
+          echo "commits=$COMMITS" >> $GITHUB_OUTPUT
+
+      - name: Build and Distribute Android App
+        run: |
+          COMMITS="${{ join(github.event.commits.*.message, ' | ') }}"
+          bundle exec fastlane distribute_to_firebase \
+            firebase_app_id:${{ secrets.FIREBASE_ANDROID_APP_ID }} \
+            release_notes:"Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }} | ${{ steps.get_commits.outputs.commits }}"
+        working-directory: androidApp
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/service_account.json
+          KEYSTORE_FILE_PATH: "release.jks"
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+  ios_distribute:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: 'true'
+
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          add-job-summary-as-pr-comment: 'on-failure'
+          build-scan-publish: true
+          build-scan-terms-of-use-url: 'https://gradle.com/terms-of-service'
+          build-scan-terms-of-use-agree: 'yes'
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+          working-directory: 'iosApp'
+
+      - name: Install Firebase CLI
+        run: curl -sL https://firebase.tools | bash
+
+      - name: Create service account key file
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > /tmp/service_account.json
+
+      - name: Get commits
+        id: get_commits
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            COMMITS=$(git log --oneline origin/${{ github.base_ref }}..${{ github.head_ref }} --pretty=format:"%h %s" | head -5 | tr '\n' ' | ')
+          else
+            COMMITS="${{ join(github.event.commits.*.message, ' | ') }}"
+          fi
+          echo "commits=$COMMITS" >> $GITHUB_OUTPUT
+
+      - name: Build and Distribute iOS App
+        run: |
+          COMMITS="${{ join(github.event.commits.*.message, ' | ') }}"
+          bundle exec fastlane distribute_to_firebase \
+            firebase_app_id:${{ secrets.FIREBASE_IOS_APP_ID }} \
+            release_notes:"Branch: ${{ github.ref_name }} | Commit: ${{ github.sha }} | ${{ steps.get_commits.outputs.commits }}"
+        working-directory: iosApp
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/service_account.json
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
