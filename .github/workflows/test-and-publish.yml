@@ -89,7 +89,7 @@ jobs:
   publish:
     if: github.ref == 'refs/heads/main'
 
-    runs-on: macos-13
+    runs-on: macos-14
     needs: [ build_and_test ]
     timeout-minutes: 30
 
