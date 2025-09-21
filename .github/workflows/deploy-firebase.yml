@@ -1,6 +1,12 @@
 name: Deploy to Firebase App Distribution
 
 on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
   pull_request:
     paths-ignore:
       - '**.md'
