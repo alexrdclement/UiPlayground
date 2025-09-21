@@ -26,7 +26,7 @@ profileinstaller = "1.4.1"
 test-parameter-injector = "1.18"
 tracing-perfetto = "1.0.0"
 uiautomator = "2.3.0"
-maven-publish = "0.30.0"
+maven-publish = "0.34.0"
 runtime-android = "1.9.1"
 
 [libraries]
