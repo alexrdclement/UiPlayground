@@ -30,7 +30,6 @@ platform :ios do
       app: options[:firebase_app_id],
       groups: "testers",
       release_notes: options[:release_notes],
-      debug: true,
     )
   end
 end
