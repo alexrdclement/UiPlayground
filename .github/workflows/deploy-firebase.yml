@@ -69,6 +69,8 @@ jobs:
           else
             COMMITS="${{ join(github.event.commits.*.message, '\n') }}"
           fi
+          # Add asterisks before each commit line
+          COMMITS=$(echo "$COMMITS" | sed 's/^/* /')
           echo "commits<<EOF" >> $GITHUB_OUTPUT
           echo "$COMMITS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -139,6 +141,8 @@ jobs:
           else
             COMMITS="${{ join(github.event.commits.*.message, '\n') }}"
           fi
+          # Add asterisks before each commit line
+          COMMITS=$(echo "$COMMITS" | sed 's/^/* /')
           echo "commits<<EOF" >> $GITHUB_OUTPUT
           echo "$COMMITS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
