@@ -63,11 +63,13 @@ jobs:
         id: get_commits
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            COMMITS=$(git log --oneline origin/${{ github.base_ref }}..${{ github.head_ref }} --pretty=format:"%h %s" | head -5 | tr '\n' ' | ')
+            COMMITS=$(git log --oneline origin/${{ github.base_ref }}..${{ github.head_ref }} --pretty=format:"%h %s" | head -5 | tr '\n' '\n')
           else
-            COMMITS="${{ join(github.event.commits.*.message, ' | ') }}"
+            COMMITS="${{ join(github.event.commits.*.message, '\n') }}"
           fi
-          echo "commits=$COMMITS" >> $GITHUB_OUTPUT
+          echo "commits<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMITS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Build and Distribute Android App
         run: |
@@ -132,7 +134,9 @@ jobs:
           else
             COMMITS="${{ join(github.event.commits.*.message, '\n') }}"
           fi
-          echo "commits=$COMMITS" >> $GITHUB_OUTPUT
+          echo "commits<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMITS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Build and Distribute iOS App
         run: |
