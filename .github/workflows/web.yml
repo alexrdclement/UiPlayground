@@ -52,6 +52,7 @@ jobs:
         run: ./gradlew :app:wasmJsBrowserDistribution
 
       - name: Upload build outputs
+        id: deployment
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'app/build/dist/wasmJs/productionExecutable/*'
