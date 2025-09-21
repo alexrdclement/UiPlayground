@@ -16,8 +16,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build_ios:
-    name: "Build Desktop"
+  build_mac:
+    name: "Build Mac Desktop App"
     runs-on: macos-14
     timeout-minutes: 60
 
@@ -46,4 +46,48 @@ jobs:
           build-scan-terms-of-use-agree: 'yes'
 
       - name: Build desktop app
-        run: ./gradlew desktopApp:assemble
+        run: ./gradlew desktopApp:createDistributable
+
+      - name: Upload build outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: UiPlayground.app
+          path: 'desktopApp/build/compose/binaries/main/app/*.app'
+
+  build_windows:
+    name: "Build Windows Desktop App"
+    runs-on: windows-latest
+    timeout-minutes: 60
+
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          add-job-summary-as-pr-comment: 'on-failure'
+          build-scan-publish: true
+          build-scan-terms-of-use-url: 'https://gradle.com/terms-of-service'
+          build-scan-terms-of-use-agree: 'yes'
+
+      - name: Build desktop app
+        run: ./gradlew desktopApp:createDistributable
+
+      - name: Upload build outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: UiPlayground.exe
+          path: 'desktopApp/build/compose/binaries/main/app/*'
