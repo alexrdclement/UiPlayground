@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+
 plugins {
     alias(libs.plugins.uiplayground.android.library)
     alias(libs.plugins.uiplayground.kotlin.multiplatform)
@@ -39,6 +41,12 @@ kotlin {
         }
     }
 
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+        binaries.executable()
+    }
+
     sourceSets {
         commonMain {
             dependencies {
@@ -71,6 +79,9 @@ kotlin {
             dependsOn(skikoMain)
         }
         jvmMain {
+            dependsOn(skikoMain)
+        }
+        wasmJsMain {
             dependsOn(skikoMain)
         }
     }

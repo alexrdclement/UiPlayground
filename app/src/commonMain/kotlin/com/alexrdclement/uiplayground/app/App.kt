@@ -9,7 +9,6 @@ import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 @Composable
 fun App() {
     val configurationController = rememberConfigurationController()
-
     PlaygroundTheme(
         typography = configurationController.typography,
         indication = configurationController.indication,
