@@ -53,7 +53,7 @@ jobs:
 
       - name: Upload build outputs
         id: deployment
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: 'app/build/dist/wasmJs/productionExecutable/'
 
