@@ -1,4 +1,4 @@
-name: "Web"
+name: "Build Web"
 on:
   push:
     branches:
