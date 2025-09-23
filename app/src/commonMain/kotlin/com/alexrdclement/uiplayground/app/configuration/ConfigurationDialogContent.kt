@@ -12,21 +12,14 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
 import com.alexrdclement.uiplayground.components.core.Surface
-import com.alexrdclement.uiplayground.theme.FontFamily
-import com.alexrdclement.uiplayground.theme.PlaygroundIndicationType
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import com.alexrdclement.uiplayground.theme.PlaygroundTypographyDefaults
-import com.alexrdclement.uiplayground.theme.makePlaygroundTypography
-import com.alexrdclement.uiplayground.theme.toComposeFontFamily
-import com.alexrdclement.uiplayground.theme.toFontFamily
-import com.alexrdclement.uiplayground.theme.toIndication
-import com.alexrdclement.uiplayground.theme.toPlaygroundIndicationType
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ConfigurationDialogContent(
     configurationController: ConfigurationController,
+    onConfigureThemeClick: () -> Unit,
 ) {
     var colorMode by remember(configurationController) {
         mutableStateOf(configurationController.colorMode)
@@ -50,53 +43,9 @@ fun ConfigurationDialogContent(
         }
     )
 
-    var fontFamily by remember(configurationController) {
-        val composeFontFamily = configurationController.typography.headline.fontFamily
-            ?: PlaygroundTypographyDefaults.fontFamily
-        mutableStateOf(composeFontFamily.toFontFamily())
-    }
-    val fontFamilyControl = Control.Dropdown(
-        name = "Font family",
-        values = {
-            FontFamily.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toPersistentList()
-        },
-        selectedIndex = { FontFamily.entries.indexOf(fontFamily) },
-        onValueChange = {
-            val newValue = FontFamily.entries[it]
-            val typography = makePlaygroundTypography(
-                fontFamily = newValue.toComposeFontFamily(),
-            )
-            if (configurationController.setTypography(typography)) {
-                fontFamily = newValue
-            }
-        }
-    )
-
-    var indicationType by remember(configurationController) {
-        mutableStateOf(configurationController.indication.toPlaygroundIndicationType())
-    }
-    val indicationControl = Control.Dropdown(
-        name = "Indication",
-        values = {
-            PlaygroundIndicationType.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toPersistentList()
-        },
-        selectedIndex = { PlaygroundIndicationType.entries.indexOf(indicationType) },
-        onValueChange = {
-            val newValue = PlaygroundIndicationType.entries[it]
-            if (configurationController.setIndication(newValue.toIndication())) {
-                indicationType = newValue
-            }
-        }
+    val configureThemeControl = Control.Button(
+        name = "Theme",
+        onClick = onConfigureThemeClick,
     )
 
     Surface(
@@ -105,8 +54,7 @@ fun ConfigurationDialogContent(
         Controls(
             controls = persistentListOf(
                 colorModeControl,
-                fontFamilyControl,
-                indicationControl,
+                configureThemeControl
             ),
             modifier = Modifier.padding(PlaygroundTheme.spacing.medium)
         )

@@ -38,6 +38,12 @@ sealed class Control {
         val inputTransformation: () -> InputTransformation? = { null },
     ) : Control()
 
+    data class Button(
+        val name: String,
+        val onClick: () -> Unit,
+        val enabled: () -> Boolean = { true },
+    ) : Control()
+
     data class ControlRow(val controls: () -> ImmutableList<Control>) : Control()
 
     data class ControlColumn(
