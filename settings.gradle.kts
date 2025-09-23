@@ -31,6 +31,7 @@ include(":shaders:baseline-profile")
 include(":testing")
 include(":theme")
 include(":uiautomator-fixtures")
+include(":webApp")
 
 plugins {
     // Compose Hot Reload
