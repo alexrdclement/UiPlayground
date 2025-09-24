@@ -4,6 +4,7 @@ import androidx.compose.foundation.Indication
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.alexrdclement.uiplayground.theme.PlaygroundIndication
 import com.alexrdclement.uiplayground.theme.PlaygroundTypography
@@ -24,5 +25,5 @@ internal class ThemeStateImpl(
 
 @Composable
 internal fun rememberThemeState(): ThemeStateImpl {
-    return ThemeStateImpl()
+    return remember { ThemeStateImpl() }
 }

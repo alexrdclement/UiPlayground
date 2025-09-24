@@ -56,6 +56,7 @@ fun UiPlaygroundNavHost(
             onConfigureClick = navController::navigateToConfiguration,
         )
         themeGraph(
+            navController = navController,
             themeControl = themeControl,
         )
     }
