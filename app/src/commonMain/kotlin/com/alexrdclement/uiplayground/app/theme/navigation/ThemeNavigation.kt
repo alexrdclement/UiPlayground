@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.alexrdclement.uiplayground.app.demo.popBackStackIfResumed
 import com.alexrdclement.uiplayground.app.theme.ThemeScreen
-import com.alexrdclement.uiplayground.theme.control.ThemeControl
+import com.alexrdclement.uiplayground.theme.control.ThemeController
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -17,13 +17,13 @@ object ThemeRoute
 
 fun NavGraphBuilder.themeGraph(
     navController: NavController,
-    themeControl: ThemeControl,
+    themeController: ThemeController,
 ) {
     navigation<ThemeGraphRoute>(
         startDestination = ThemeRoute,
     ) {
         themeScreen(
-            themeControl = themeControl,
+            themeController = themeController,
             onNavigateBack = navController::popBackStackIfResumed,
         )
     }
@@ -36,12 +36,12 @@ fun NavController.navigateToTheme() {
 }
 
 fun NavGraphBuilder.themeScreen(
-    themeControl: ThemeControl,
+    themeController: ThemeController,
     onNavigateBack: () -> Unit,
 ) {
     composable<ThemeRoute> {
         ThemeScreen(
-            themeControl = themeControl,
+            themeController = themeController,
             onNavigateBack = onNavigateBack,
         )
     }

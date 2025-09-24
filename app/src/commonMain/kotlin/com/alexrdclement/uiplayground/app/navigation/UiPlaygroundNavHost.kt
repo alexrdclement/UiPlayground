@@ -17,12 +17,12 @@ import com.alexrdclement.uiplayground.app.demo.shaders.navigation.navigateToShad
 import com.alexrdclement.uiplayground.app.demo.shaders.navigation.shadersScreen
 import com.alexrdclement.uiplayground.app.theme.navigation.navigateToTheme
 import com.alexrdclement.uiplayground.app.theme.navigation.themeGraph
-import com.alexrdclement.uiplayground.theme.control.ThemeControl
+import com.alexrdclement.uiplayground.theme.control.ThemeController
 
 @Composable
 fun UiPlaygroundNavHost(
     configurationController: ConfigurationController,
-    themeControl: ThemeControl,
+    themeController: ThemeController,
 ) {
     val navController = rememberNavController()
     NavHost(
@@ -57,7 +57,7 @@ fun UiPlaygroundNavHost(
         )
         themeGraph(
             navController = navController,
-            themeControl = themeControl,
+            themeController = themeController,
         )
     }
 }

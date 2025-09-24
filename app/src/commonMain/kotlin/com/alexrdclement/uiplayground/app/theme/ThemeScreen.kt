@@ -36,7 +36,7 @@ import com.alexrdclement.uiplayground.theme.FontFamily
 import com.alexrdclement.uiplayground.theme.PlaygroundIndicationType
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.theme.PlaygroundTypographyDefaults
-import com.alexrdclement.uiplayground.theme.control.ThemeControl
+import com.alexrdclement.uiplayground.theme.control.ThemeController
 import com.alexrdclement.uiplayground.theme.control.ThemeState
 import com.alexrdclement.uiplayground.theme.makePlaygroundTypography
 import com.alexrdclement.uiplayground.theme.toComposeFontFamily
@@ -49,11 +49,11 @@ import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ThemeScreen(
-    themeControl: ThemeControl,
+    themeController: ThemeController,
     onNavigateBack: () -> Unit,
 ) {
-    val state = rememberThemeScreenState(themeState = themeControl)
-    val control = rememberThemeScreenControl(state = state, themeControl = themeControl)
+    val state = rememberThemeScreenState(themeState = themeController)
+    val control = rememberThemeScreenControl(state = state, themeController = themeController)
 
     Scaffold(
         topBar = {
@@ -167,17 +167,17 @@ fun ThemeScreenStateSaver(themeState: ThemeState) = mapSaverSafe(
 @Composable
 fun rememberThemeScreenControl(
     state: ThemeScreenState,
-    themeControl: ThemeControl,
+    themeController: ThemeController,
 ): ThemeScreenControl {
-    return remember(state, themeControl) {
-        ThemeScreenControl(state = state, themeControl = themeControl)
+    return remember(state, themeController) {
+        ThemeScreenControl(state = state, themeController = themeController)
     }
 }
 
 @Stable
 class ThemeScreenControl(
     val state: ThemeScreenState,
-    val themeControl: ThemeControl,
+    val themeController: ThemeController,
 ) {
     val fontFamilyControl = Control.Dropdown(
         name = "Font family",
@@ -195,7 +195,7 @@ class ThemeScreenControl(
             val typography = makePlaygroundTypography(
                 fontFamily = newValue.toComposeFontFamily(),
             )
-            themeControl.setTypography(typography)
+            themeController.setTypography(typography)
         }
     )
 
@@ -212,7 +212,7 @@ class ThemeScreenControl(
         selectedIndex = { PlaygroundIndicationType.entries.indexOf(state.indicationType) },
         onValueChange = {
             val newValue = PlaygroundIndicationType.entries[it]
-            themeControl.setIndication(newValue.toIndication())
+            themeController.setIndication(newValue.toIndication())
         }
     )
 

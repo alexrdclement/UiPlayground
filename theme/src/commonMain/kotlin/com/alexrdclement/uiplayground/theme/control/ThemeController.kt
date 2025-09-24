@@ -4,7 +4,7 @@ import androidx.compose.foundation.Indication
 import androidx.compose.runtime.Composable
 import com.alexrdclement.uiplayground.theme.Typography
 
-class ThemeControl internal constructor(
+class ThemeController internal constructor(
     private val state: ThemeStateImpl
 ): ThemeState by state {
 
@@ -21,7 +21,7 @@ class ThemeControl internal constructor(
 }
 
 @Composable
-fun rememberThemeControl(): ThemeControl {
+fun rememberThemeController(): ThemeController {
     val state: ThemeStateImpl = rememberThemeState()
-    return ThemeControl(state)
+    return ThemeController(state)
 }
