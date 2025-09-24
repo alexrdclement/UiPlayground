@@ -1,10 +1,14 @@
 package com.alexrdclement.uiplayground.app.theme
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -14,18 +18,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.components.core.ButtonDemo
 import com.alexrdclement.uiplayground.app.demo.components.core.ButtonDemoControl
 import com.alexrdclement.uiplayground.app.demo.components.core.ButtonDemoState
 import com.alexrdclement.uiplayground.app.demo.components.core.ButtonDemoStateSaver
-import com.alexrdclement.uiplayground.app.demo.components.core.TextDemo
-import com.alexrdclement.uiplayground.app.demo.components.core.TextDemoControl
-import com.alexrdclement.uiplayground.app.demo.components.core.TextDemoState
-import com.alexrdclement.uiplayground.app.demo.components.core.TextDemoStateSaver
 import com.alexrdclement.uiplayground.app.demo.components.core.TextStyle
+import com.alexrdclement.uiplayground.app.demo.components.core.toCompose
 import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.components.util.restore
@@ -71,22 +74,40 @@ fun ThemeScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            Column(
+            LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(
-                    space = PlaygroundTheme.spacing.medium,
+                    space = PlaygroundTheme.spacing.large,
                     alignment = Alignment.CenterVertically,
                 ),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = PlaygroundTheme.spacing.medium)
             ) {
-                this@Demo.TextDemo(
-                    state = state.textDemoState,
-                    control = control.textDemoControl,
-                )
-                this@Demo.ButtonDemo(
-                    state = state.buttonDemoState,
-                    control = control.buttonDemoControl,
-                )
+                items(TextStyle.entries) { textStyle ->
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = textStyle.name,
+                            style = PlaygroundTheme.typography.labelSmall,
+                            modifier = Modifier
+                                .border(1.dp, PlaygroundTheme.colorScheme.outline)
+                                .padding(PlaygroundTheme.spacing.xs)
+                        )
+                        Text(
+                            text = "The quick brown fox jumps over the lazy dog",
+                            style = textStyle.toCompose(),
+                        )
+                    }
+                }
+                item {
+                    this@Demo.ButtonDemo(
+                        state = state.buttonDemoState,
+                        control = control.buttonDemoControl,
+                    )
+                }
             }
         }
     }
@@ -95,22 +116,15 @@ fun ThemeScreen(
 @Composable
 fun rememberThemeScreenState(
     themeState: ThemeState,
-    textDemoStateInitial: TextDemoState = TextDemoState(
-        initialText = "The quick brown fox jumps over the lazy dog",
-        styleInitial = TextStyle.BodyMedium,
-        softWrapInitial = true,
-    ),
     buttonDemoStateInitial: ButtonDemoState = ButtonDemoState(),
 ): ThemeScreenState {
     return rememberSaveable(
         themeState,
-        textDemoStateInitial,
         buttonDemoStateInitial,
         saver = ThemeScreenStateSaver(themeState),
     ) {
         ThemeScreenState(
             themeState = themeState,
-            textDemoStateInitial = textDemoStateInitial,
             buttonDemoStateInitial = buttonDemoStateInitial,
         )
     }
@@ -119,7 +133,6 @@ fun rememberThemeScreenState(
 @Stable
 class ThemeScreenState(
     val themeState: ThemeState,
-    textDemoStateInitial: TextDemoState,
     buttonDemoStateInitial: ButtonDemoState,
 ) {
     val fontFamily: FontFamily
@@ -132,27 +145,21 @@ class ThemeScreenState(
     val indicationType
         get() = themeState.indication.toPlaygroundIndicationType()
 
-    var textDemoState by mutableStateOf(textDemoStateInitial)
-        internal set
-
     var buttonDemoState by mutableStateOf(buttonDemoStateInitial)
         internal set
 }
 
-private const val textDemoStateKey = "textDemoState"
 private const val buttonDemoStateKey = "buttonDemoState"
 
 fun ThemeScreenStateSaver(themeState: ThemeState) = mapSaverSafe(
     save = { state ->
         mapOf(
-            textDemoStateKey to save(state.textDemoState, TextDemoStateSaver, this),
             buttonDemoStateKey to save(state.buttonDemoState, ButtonDemoStateSaver, this)
         )
     },
     restore = { map ->
         ThemeScreenState(
             themeState = themeState,
-            textDemoStateInitial = restore(map[textDemoStateKey], TextDemoStateSaver)!!,
             buttonDemoStateInitial = restore(map[buttonDemoStateKey], ButtonDemoStateSaver)!!,
         )
     }
@@ -210,18 +217,11 @@ class ThemeScreenControl(
         }
     )
 
-    val textDemoControl = TextDemoControl(state = state.textDemoState)
-
     val buttonDemoControl = ButtonDemoControl(state = state.buttonDemoState)
 
     val controls: PersistentList<Control> = persistentListOf(
         fontFamilyControl,
         indicationControl,
-        Control.ControlColumn(
-            name = "Demo text",
-            indent = true,
-            controls = { textDemoControl.controls },
-        ),
         Control.ControlColumn(
             name = "Demo button",
             indent = true,
