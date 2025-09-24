@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,8 +14,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.components.core.ButtonDemo
@@ -27,6 +24,7 @@ import com.alexrdclement.uiplayground.app.demo.components.core.TextDemo
 import com.alexrdclement.uiplayground.app.demo.components.core.TextDemoControl
 import com.alexrdclement.uiplayground.app.demo.components.core.TextDemoState
 import com.alexrdclement.uiplayground.app.demo.components.core.TextDemoStateSaver
+import com.alexrdclement.uiplayground.app.demo.components.core.TextStyle
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
@@ -73,10 +71,6 @@ fun ThemeScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            val density = LocalDensity.current
-            LaunchedEffect(this@Demo.maxWidth, density) {
-                with(density) { control.onSizeChanged(this@Demo.maxWidth) }
-            }
             Column(
                 verticalArrangement = Arrangement.spacedBy(
                     space = PlaygroundTheme.spacing.medium,
@@ -88,12 +82,10 @@ fun ThemeScreen(
                 this@Demo.TextDemo(
                     state = state.textDemoState,
                     control = control.textDemoControl,
-                    modifier = Modifier
                 )
                 this@Demo.ButtonDemo(
                     state = state.buttonDemoState,
                     control = control.buttonDemoControl,
-                    modifier = Modifier
                 )
             }
         }
@@ -105,6 +97,8 @@ fun rememberThemeScreenState(
     themeState: ThemeState,
     textDemoStateInitial: TextDemoState = TextDemoState(
         initialText = "The quick brown fox jumps over the lazy dog",
+        styleInitial = TextStyle.BodyMedium,
+        softWrapInitial = true,
     ),
     buttonDemoStateInitial: ButtonDemoState = ButtonDemoState(),
 ): ThemeScreenState {
@@ -234,9 +228,4 @@ class ThemeScreenControl(
             controls = { buttonDemoControl.controls },
         )
     )
-
-    fun onSizeChanged(width: Dp) {
-        textDemoControl.onSizeChanged(width)
-        buttonDemoControl.onSizeChanged(width)
-    }
 }

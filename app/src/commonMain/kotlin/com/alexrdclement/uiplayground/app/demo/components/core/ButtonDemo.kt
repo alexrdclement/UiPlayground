@@ -55,7 +55,7 @@ fun BoxWithConstraintsScope.ButtonDemo(
     control: ButtonDemoControl = rememberButtonDemoControl(state),
 ) {
     val density = LocalDensity.current
-    LaunchedEffect(this.maxWidth, density) {
+    LaunchedEffect(control, this.maxWidth, density) {
         with(density) { control.onSizeChanged(this@ButtonDemo.maxWidth) }
     }
     Button(
