@@ -79,8 +79,8 @@ fun ConfigurationDialogContent(
             )
             Controls(
                 controls = persistentListOf(
-                    colorModeControl,
-                    configureThemeControl
+                    configureThemeControl,
+                    colorModeControl
                 ),
                 verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.large),
                 modifier = Modifier.padding(PlaygroundTheme.spacing.medium)
