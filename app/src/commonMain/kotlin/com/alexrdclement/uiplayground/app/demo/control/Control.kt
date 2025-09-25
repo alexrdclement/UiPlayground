@@ -5,6 +5,8 @@ import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.ui.Modifier
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
+import kotlin.enums.EnumEntries
 
 sealed class Control {
     data class Slider(
@@ -65,4 +67,27 @@ sealed class Control {
         val name: String? = null,
         val indent: Boolean = false,
     ) : Control()
+}
+
+inline fun <T : Enum<T>> enumControl(
+    name: String,
+    crossinline values: () -> EnumEntries<T>,
+    crossinline selectedValue: () -> Enum<T>,
+    crossinline onValueChange: (T) -> Unit,
+    includeLabel: Boolean = true
+): Control.Dropdown<T> {
+    return Control.Dropdown(
+        name = name,
+        values = {
+            values().map {
+                Control.Dropdown.DropdownItem(
+                    name = it.name,
+                    value = it,
+                )
+            }.toPersistentList()
+        },
+        selectedIndex = { values().indexOf(selectedValue()) },
+        onValueChange = { index -> onValueChange(values()[index]) },
+        includeLabel = includeLabel,
+    )
 }

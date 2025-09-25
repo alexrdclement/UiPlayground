@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.app.demo.control.enumControl
 import com.alexrdclement.uiplayground.app.demo.util.OffsetSaver
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.geometry.CurveStitch
@@ -278,21 +279,12 @@ fun rememberCurveStitchDemoControl(
 class CurveStitchDemoControl(
     val state: CurveStitchDemoState,
 ) {
-    val currentDemoControl = Control.Dropdown(
+    val currentDemoControl = enumControl(
         name = "Demo",
         includeLabel = false,
-        values = {
-            CurveStitchDemo.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toPersistentList()
-        },
-        selectedIndex = { CurveStitchDemo.entries.indexOf(state.currentDemo) },
-        onValueChange = {
-            state.currentDemo = CurveStitchDemo.entries[it]
-        },
+        values = { CurveStitchDemo.entries },
+        selectedValue = { state.currentDemo },
+        onValueChange = { state.currentDemo = it },
     )
 
     val numLines = Control.Slider(

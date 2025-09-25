@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.platform.LocalDensity
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.app.demo.control.enumControl
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -44,19 +45,12 @@ fun GradientDemo(modifier: Modifier = Modifier) {
     )
 
     var currentGradient by remember { mutableStateOf(GradientDemo.RadialSweep) }
-    val currentGradientControl = Control.Dropdown(
+    val currentGradientControl = enumControl(
         name = "Demo",
         includeLabel = false,
-        values = {
-            GradientDemo.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toPersistentList()
-        },
-        selectedIndex = { GradientDemo.entries.indexOf(currentGradient) },
-        onValueChange = { currentGradient = GradientDemo.entries[it] },
+        values = { GradientDemo.entries },
+        selectedValue = { currentGradient },
+        onValueChange = { currentGradient = it },
     )
 
     var widthPx by remember { mutableStateOf(0) }

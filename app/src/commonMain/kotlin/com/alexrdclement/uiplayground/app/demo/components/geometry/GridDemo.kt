@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.app.demo.control.enumControl
 import com.alexrdclement.uiplayground.app.demo.util.DensitySaver
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.geometry.Grid
@@ -253,20 +254,11 @@ class GridDemoControl(
         onStateChanged = { state.polarGridScaleState = it },
     ).controls
 
-    val coordinateSystemControl = Control.Dropdown(
+    val coordinateSystemControl = enumControl(
         name = "Coordinate System",
-        values = {
-            GridCoordinateSystemType.entries.map { type ->
-                Control.Dropdown.DropdownItem(
-                    name = type.name,
-                    value = type,
-                )
-            }.toPersistentList()
-        },
-        selectedIndex = { GridCoordinateSystemType.entries.indexOf(state.coordinateSystemType) },
-        onValueChange = { index ->
-            state.coordinateSystemType = GridCoordinateSystemType.entries.elementAt(index)
-        }
+        values = { GridCoordinateSystemType.entries },
+        selectedValue = { state.coordinateSystemType },
+        onValueChange = { state.coordinateSystemType = it },
     )
 
     val vertexControls = GridVertexControl(
@@ -542,21 +534,11 @@ open class GridScaleControl(
     val state: GridScaleState,
     val onStateChanged: ((GridScaleState) -> Unit)? = null,
 ) {
-    val gridScaleTypeControl = Control.Dropdown(
+    val gridScaleTypeControl = enumControl(
         name = "Scale",
-        values = {
-            GridScaleType.entries.map { entry ->
-                Control.Dropdown.DropdownItem(
-                    name = entry.name,
-                    value = entry,
-                )
-            }.toPersistentList()
-        },
-        selectedIndex = { GridScaleType.entries.indexOf(state.gridScaleType) },
-        onValueChange = {
-            state.gridScaleType = GridScaleType.entries.elementAt(it)
-            onStateChanged?.invoke(state)
-        },
+        values = { GridScaleType.entries },
+        selectedValue = { state.gridScaleType },
+        onValueChange = { state.gridScaleType = it }
     )
 
     val gridSpacingControl = Control.Slider(
@@ -722,25 +704,33 @@ class GridVertexControl(
     val onStateChanged: ((GridVertexState) -> Unit)? = null,
     private val name: String? = null,
 ) {
-    val typeControl = Control.Dropdown(
+    enum class DemoVertexType {
+        None,
+        Oval,
+        Rect,
+        Plus,
+        X,
+    }
+    val typeControl = enumControl(
         name = "Type",
-        values = {
-            val items = GridVertexType.entries.map { type ->
-                Control.Dropdown.DropdownItem<GridVertexType?>(
-                    name = type.name,
-                    value = type,
-                )
+        values = { DemoVertexType.entries },
+        selectedValue = {
+            when (state.vertexType) {
+                GridVertexType.Oval -> DemoVertexType.Oval
+                GridVertexType.Rect -> DemoVertexType.Rect
+                GridVertexType.Plus -> DemoVertexType.Plus
+                GridVertexType.X -> DemoVertexType.X
+                null -> DemoVertexType.None
             }
-            persistentListOf(
-                Control.Dropdown.DropdownItem(name = "None", value = null),
-                *items.toTypedArray(),
-            )
-        },
-        selectedIndex = {
-            state.vertexType?.let(GridVertexType.entries::indexOf)?.plus(1) ?: 0
         },
         onValueChange = {
-            state.vertexType = if (it == 0) null else GridVertexType.entries.elementAt(it - 1)
+            state.vertexType = when (it) {
+                DemoVertexType.Oval -> GridVertexType.Oval
+                DemoVertexType.Rect -> GridVertexType.Rect
+                DemoVertexType.Plus -> GridVertexType.Plus
+                DemoVertexType.X -> GridVertexType.X
+                DemoVertexType.None -> null
+            }
             onStateChanged?.invoke(state)
         }
     )
@@ -759,26 +749,23 @@ class GridVertexControl(
         valueRange = { 1f..100f },
     )
 
-    val vertexDrawStyles = mapOf(
-        Stroke::class to "Stroke",
-        Fill::class to "Fill",
-    )
-    val drawStyleControl = Control.Dropdown(
+    enum class VertexDrawStyle {
+        Stroke,
+        Fill,
+    }
+    val drawStyleControl = enumControl(
         name = "Draw Style",
-        values = {
-            vertexDrawStyles.map { (kclass, name) ->
-                Control.Dropdown.DropdownItem(
-                    name = name,
-                    value = kclass,
-                )
-            }.toPersistentList()
+        values = { VertexDrawStyle.entries },
+        selectedValue = {
+            when (state.drawStyle) {
+                is Fill -> VertexDrawStyle.Fill
+                is Stroke -> VertexDrawStyle.Stroke
+            }
         },
-        selectedIndex = { vertexDrawStyles.keys.indexOf(state.drawStyle::class) },
-        onValueChange = { index ->
-            state.drawStyle = when (vertexDrawStyles.keys.elementAt(index)) {
-                Stroke::class -> Stroke(width = state.strokeWidthPx)
-                Fill::class -> Fill
-                else -> Stroke(width = state.strokeWidthPx)
+        onValueChange = {
+            state.drawStyle = when (it) {
+                VertexDrawStyle.Stroke -> Stroke(width = state.strokeWidthPx)
+                VertexDrawStyle.Fill -> Fill
             }
             onStateChanged?.invoke(state)
         }
