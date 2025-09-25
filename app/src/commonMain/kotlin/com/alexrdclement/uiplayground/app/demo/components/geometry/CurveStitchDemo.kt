@@ -1,5 +1,7 @@
 package com.alexrdclement.uiplayground.app.demo.components.geometry
 
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -17,16 +19,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.app.demo.util.OffsetSaver
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.geometry.CurveStitch
 import com.alexrdclement.uiplayground.components.geometry.CurveStitchShape
 import com.alexrdclement.uiplayground.components.geometry.CurveStitchStar
 import com.alexrdclement.uiplayground.components.geometry.CurveStitchStarShape
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
+import com.alexrdclement.uiplayground.components.util.restore
+import com.alexrdclement.uiplayground.components.util.save
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.toPersistentList
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -56,15 +63,65 @@ fun CurveStitchDemo(
             )
             .align(Alignment.Center)
             .graphicsLayer { this.rotationZ = state.rotation }
+
         when (state.currentDemo) {
             CurveStitchDemo.Angle -> CurveStitch(
-                start = Offset(0f, 0f),
-                vertex = Offset(0f, 1f),
-                end = Offset(1f, 1f),
+                start = state.angleStartOffset,
+                vertex = state.angleVertexOffset,
+                end = state.angleEndOffset,
                 numLines = state.numLines,
                 strokeWidth = state.strokeWidth,
                 color = PlaygroundTheme.colorScheme.primary,
-                modifier = modifier,
+                modifier = modifier
+                    .pointerInput(Unit) {
+                        detectTapGestures { position ->
+                            val distStart = getDistanceFromOffset(
+                                normalizedOffset = state.angleStartOffset,
+                                position = position,
+                                size = this.size,
+                            )
+                            val distVertex = getDistanceFromOffset(
+                                normalizedOffset = state.angleVertexOffset,
+                                position = position,
+                                size = this.size,
+                            )
+                            val distEnd = getDistanceFromOffset(
+                                normalizedOffset = state.angleEndOffset,
+                                position = position,
+                                size = this.size,
+                            )
+                            when (minOf(distStart, distVertex, distEnd)) {
+                                distStart -> state.angleStartOffset = normalizeOffsetPx(position, size)
+                                distVertex -> state.angleVertexOffset = normalizeOffsetPx(position, size)
+                                distEnd -> state.angleEndOffset = normalizeOffsetPx(position, size)
+                            }
+                        }
+                    }
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, _ ->
+                            val position = change.position
+                            val distStart = getDistanceFromOffset(
+                                normalizedOffset = state.angleStartOffset,
+                                position = position,
+                                size = this.size,
+                            )
+                            val distVertex = getDistanceFromOffset(
+                                normalizedOffset = state.angleVertexOffset,
+                                position = position,
+                                size = this.size,
+                            )
+                            val distEnd = getDistanceFromOffset(
+                                normalizedOffset = state.angleEndOffset,
+                                position = position,
+                                size = this.size,
+                            )
+                            when (minOf(distStart, distVertex, distEnd)) {
+                                distStart -> state.angleStartOffset = normalizeOffsetPx(position, size)
+                                distVertex -> state.angleVertexOffset = normalizeOffsetPx(position, size)
+                                distEnd -> state.angleEndOffset = normalizeOffsetPx(position, size)
+                            }
+                        }
+                    }
             )
 
             CurveStitchDemo.Star -> CurveStitchStar(
@@ -97,6 +154,26 @@ fun CurveStitchDemo(
     }
 }
 
+private fun getDistanceFromOffset(
+    normalizedOffset: Offset,
+    position: Offset,
+    size: IntSize,
+): Float {
+    val offsetPx = Offset(
+        x = normalizedOffset.x * size.width,
+        y = normalizedOffset.y * size.height,
+    )
+    return (offsetPx - position).getDistanceSquared()
+}
+
+private fun normalizeOffsetPx(
+    position: Offset,
+    size: IntSize,
+) = Offset(
+    x = (position.x / size.width).coerceIn(0f, 1f),
+    y = (position.y / size.height).coerceIn(0f, 1f),
+)
+
 enum class CurveStitchDemo {
     Angle,
     Star,
@@ -114,6 +191,9 @@ class CurveStitchDemoState(
     currentDemoInitial: CurveStitchDemo = CurveStitchDemo.Angle,
     strokeWidthInitial: Dp = 1.dp,
     numLinesInitial: Int = 8,
+    angleStartOffsetInitial: Offset = Offset(0f, 0f),
+    angleVertexOffsetInitial: Offset = Offset(0f, 1f),
+    angleEndOffsetInitial: Offset = Offset(1f, 1f),
     numPointsInitial: Int = 4,
     innerRadiusInitial: Float = 0.5f,
     starShapeInsidePointsInitial: Boolean = true,
@@ -125,6 +205,12 @@ class CurveStitchDemoState(
     var strokeWidth by mutableStateOf(strokeWidthInitial)
         internal set
     var numLines by mutableStateOf(numLinesInitial)
+        internal set
+    var angleStartOffset by mutableStateOf(angleStartOffsetInitial)
+        internal set
+    var angleVertexOffset by mutableStateOf(angleVertexOffsetInitial)
+        internal set
+    var angleEndOffset by mutableStateOf(angleEndOffsetInitial)
         internal set
     var numPoints by mutableStateOf(numPointsInitial)
         internal set
@@ -141,6 +227,9 @@ class CurveStitchDemoState(
 private const val currentDemoKey = "currentDemo"
 private const val strokeWidthKey = "strokeWidth"
 private const val numLinesKey = "numLines"
+private const val angleStartOffsetKey = "angleStartOffset"
+private const val angleVertexOffsetKey = "angleVertexOffset"
+private const val angleEndOffsetKey = "angleEndOffset"
 private const val numPointsKey = "numPoints"
 private const val innerRadiusKey = "innerRadius"
 private const val starShapeInsidePointsKey = "starShapeInsidePoints"
@@ -153,6 +242,9 @@ val CurveStitchDemoStateSaver = mapSaverSafe(
             currentDemoKey to value.currentDemo.name,
             strokeWidthKey to value.strokeWidth.value,
             numLinesKey to value.numLines,
+            angleEndOffsetKey to save(value.angleStartOffset, OffsetSaver, this),
+            angleVertexOffsetKey to save(value.angleVertexOffset, OffsetSaver, this),
+            angleStartOffsetKey to save(value.angleEndOffset, OffsetSaver, this),
             numPointsKey to value.numPoints,
             innerRadiusKey to value.innerRadius,
             starShapeInsidePointsKey to value.starShapeInsidePoints,
@@ -165,6 +257,9 @@ val CurveStitchDemoStateSaver = mapSaverSafe(
             currentDemoInitial = CurveStitchDemo.valueOf(map[currentDemoKey] as String),
             strokeWidthInitial = (map[strokeWidthKey] as Float).dp,
             numLinesInitial = map[numLinesKey] as Int,
+            angleStartOffsetInitial = restore(map[angleStartOffsetKey], OffsetSaver)!!,
+            angleVertexOffsetInitial = restore(map[angleVertexOffsetKey], OffsetSaver)!!,
+            angleEndOffsetInitial = restore(map[angleEndOffsetKey], OffsetSaver)!!,
             numPointsInitial = map[numPointsKey] as Int,
             innerRadiusInitial = map[innerRadiusKey] as Float,
             starShapeInsidePointsInitial = map[starShapeInsidePointsKey] as Boolean,
