@@ -14,6 +14,12 @@ fun DemoTopBar(
     title: String,
     onNavigateBack: () -> Unit,
     onConfigureClick: () -> Unit,
+    navButton: @Composable () -> Unit = {
+        BackNavigationButton(onNavigateBack)
+    },
+    actions: @Composable () -> Unit = {
+        ConfigureButton(onClick = onConfigureClick)
+    }
 ) {
     TopBar(
         title = {
@@ -23,7 +29,7 @@ fun DemoTopBar(
                 modifier = Modifier.basicMarquee(),
             )
         },
-        navButton = { BackNavigationButton(onNavigateBack) },
-        actions = { ConfigureButton(onClick = onConfigureClick) }
+        navButton = navButton,
+        actions = actions,
     )
 }

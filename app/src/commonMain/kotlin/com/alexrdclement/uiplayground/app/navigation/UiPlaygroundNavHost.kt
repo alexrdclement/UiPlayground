@@ -15,10 +15,14 @@ import com.alexrdclement.uiplayground.app.demo.experiments.navigation.experiment
 import com.alexrdclement.uiplayground.app.demo.experiments.navigation.navigateToExperiments
 import com.alexrdclement.uiplayground.app.demo.shaders.navigation.navigateToShaders
 import com.alexrdclement.uiplayground.app.demo.shaders.navigation.shadersScreen
+import com.alexrdclement.uiplayground.app.theme.navigation.navigateToTheme
+import com.alexrdclement.uiplayground.app.theme.navigation.themeGraph
+import com.alexrdclement.uiplayground.theme.control.ThemeController
 
 @Composable
 fun UiPlaygroundNavHost(
     configurationController: ConfigurationController,
+    themeController: ThemeController,
 ) {
     val navController = rememberNavController()
     NavHost(
@@ -37,6 +41,7 @@ fun UiPlaygroundNavHost(
         )
         configurationGraph(
             configurationController = configurationController,
+            onConfigureThemeClick = navController::navigateToTheme,
         )
         componentsGraph(
             navController = navController,
@@ -49,6 +54,10 @@ fun UiPlaygroundNavHost(
         shadersScreen(
             navController = navController,
             onConfigureClick = navController::navigateToConfiguration,
+        )
+        themeGraph(
+            navController = navController,
+            themeController = themeController,
         )
     }
 }

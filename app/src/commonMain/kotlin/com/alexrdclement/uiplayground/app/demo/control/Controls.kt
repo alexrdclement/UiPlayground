@@ -55,6 +55,7 @@ fun Controls(
                     )
             ) {
                 when (control) {
+                    is Control.Button -> ButtonControl(control = control)
                     is Control.Slider -> SliderControl(control = control)
                     is Control.Dropdown<*> -> DropdownControlRow(control = control)
                     is Control.Toggle -> ToggleControlRow(control = control)
@@ -91,6 +92,7 @@ fun ControlsRow(
     ) {
         for (control in controls) {
             when (control) {
+                is Control.Button -> ButtonControl(control = control)
                 is Control.Slider -> SliderControl(control = control)
                 is Control.Dropdown<*> -> DropdownControl(control = control)
                 is Control.Toggle -> ToggleControl(control = control)

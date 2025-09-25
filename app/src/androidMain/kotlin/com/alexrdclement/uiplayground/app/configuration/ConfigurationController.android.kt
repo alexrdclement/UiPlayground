@@ -4,15 +4,8 @@ import android.content.pm.ActivityInfo
 import android.os.Build
 import android.view.Window
 import androidx.activity.compose.LocalActivity
-import androidx.compose.foundation.Indication
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import com.alexrdclement.uiplayground.theme.PlaygroundIndication
-import com.alexrdclement.uiplayground.theme.PlaygroundTypography
-import com.alexrdclement.uiplayground.theme.Typography
 
 @Composable
 actual fun rememberConfigurationController(): ConfigurationController {
@@ -52,24 +45,6 @@ private class ConfigurationControllerImpl(
             ColorMode.WIDE_COLOR_GAMUT -> ActivityInfo.COLOR_MODE_WIDE_COLOR_GAMUT
             ColorMode.HDR -> ActivityInfo.COLOR_MODE_HDR
         }
-        return true
-    }
-
-    private var _typography by mutableStateOf(PlaygroundTypography)
-    override val typography: Typography
-        get() = _typography
-
-    override fun setTypography(typography: Typography): Boolean {
-        _typography = typography
-        return true
-    }
-
-    private var _indication by mutableStateOf(PlaygroundIndication)
-    override val indication: Indication
-        get() = _indication
-
-    override fun setIndication(indication: Indication): Boolean {
-        _indication = indication
         return true
     }
 }

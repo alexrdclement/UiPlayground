@@ -56,7 +56,7 @@ fun BoxWithConstraintsScope.TextDemo(
 ) {
     val text by state.text.collectAsState(initial = state.text.toString())
 
-    LaunchedEffect(this@TextDemo.maxWidth) {
+    LaunchedEffect(control, this@TextDemo.maxWidth) {
         control.onSizeChanged(this@TextDemo.maxWidth)
     }
     Text(
@@ -360,7 +360,7 @@ class TextDemoControl(
             state.width = width
         }
         state.maxWidth = width
-        if (state.width.value > state.maxWidth.value) {
+        if (state.width > state.maxWidth) {
             state.width = state.maxWidth
         }
     }

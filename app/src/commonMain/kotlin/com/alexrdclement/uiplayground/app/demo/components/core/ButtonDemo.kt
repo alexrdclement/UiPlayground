@@ -1,6 +1,7 @@
 package com.alexrdclement.uiplayground.app.demo.components.core
 
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -35,33 +36,45 @@ fun ButtonDemo(
     control: ButtonDemoControl = rememberButtonDemoControl(state),
     modifier: Modifier = Modifier,
 ) {
-    val density = LocalDensity.current
     Demo(
         controls = control.controls,
         modifier = modifier
             .fillMaxSize()
     ) {
-        LaunchedEffect(this@Demo.maxWidth, density) {
-            with(density) { control.onSizeChanged(this@Demo.maxWidth) }
-        }
-        Button(
-            onClick = {},
-            style = state.style,
-            enabled = state.enabled,
-            modifier = Modifier
-                .width(state.width)
-                .align(Alignment.Center)
-                .padding(PlaygroundTheme.spacing.medium)
+        ButtonDemo(
+            state = state,
+            control = control,
+        )
+    }
+}
+
+@Composable
+fun BoxWithConstraintsScope.ButtonDemo(
+    modifier: Modifier = Modifier,
+    state: ButtonDemoState = rememberButtonDemoState(),
+    control: ButtonDemoControl = rememberButtonDemoControl(state),
+) {
+    val density = LocalDensity.current
+    LaunchedEffect(control, this.maxWidth, density) {
+        with(density) { control.onSizeChanged(this@ButtonDemo.maxWidth) }
+    }
+    Button(
+        onClick = {},
+        style = state.style,
+        enabled = state.enabled,
+        modifier = modifier
+            .width(state.width)
+            .align(Alignment.Center)
+            .padding(PlaygroundTheme.spacing.medium)
+    ) {
+        BoxWithConstraints(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            BoxWithConstraints(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                TextDemo(
-                    state = state.textDemoState,
-                    control = control.textDemoControl,
-                )
-            }
+            TextDemo(
+                state = state.textDemoState,
+                control = control.textDemoControl,
+            )
         }
     }
 }
