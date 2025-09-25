@@ -471,7 +471,7 @@ class PolarGridScaleControl(
 
     val thetaRadiansRange = 0.01f..(PI * 2f).toFloat()
     val thetaControl = Control.Slider(
-        name = "Theta",
+        name = "Angle",
         value = { logToLinearScale(state.thetaRadians, thetaRadiansRange) },
         onValueChange = {
             state.thetaRadians = linearToLogScale(it, thetaRadiansRange)
@@ -485,8 +485,12 @@ class PolarGridScaleControl(
             indent = true,
             controls = {
                 persistentListOf(
-                    *gridScaleControl.controls.toTypedArray(),
-                    thetaControl,
+                    Control.ControlColumn(
+                        name = "Radius",
+                        indent = true,
+                        controls = { gridScaleControl.controls },
+                    ),
+                    thetaControl
                 )
             },
         )
@@ -556,7 +560,7 @@ open class GridScaleControl(
     )
 
     val gridSpacingControl = Control.Slider(
-        name = "Spacing",
+        name = { if (state.gridScale is GridScale.Linear) "Spacing" else "Initial spacing" },
         value = { state.gridSpacing.value },
         onValueChange = {
             state.gridSpacing = it.dp

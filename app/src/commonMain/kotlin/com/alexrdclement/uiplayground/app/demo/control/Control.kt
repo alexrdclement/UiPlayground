@@ -8,11 +8,23 @@ import kotlinx.collections.immutable.ImmutableList
 
 sealed class Control {
     data class Slider(
-        val name: String,
+        val name: () -> String,
         val value: () -> Float,
         val onValueChange: (Float) -> Unit,
         val valueRange: () -> ClosedFloatingPointRange<Float> = { 0f..1f }
-    ) : Control()
+    ) : Control() {
+        constructor(
+            name: String,
+            value: () -> Float,
+            onValueChange: (Float) -> Unit,
+            valueRange: () -> ClosedFloatingPointRange<Float> = { 0f..1f }
+        ) : this(
+            name = { name },
+            value = value,
+            onValueChange = onValueChange,
+            valueRange = valueRange,
+        )
+    }
 
     data class Dropdown<T>(
         val name: String,

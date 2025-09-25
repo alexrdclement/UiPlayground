@@ -22,6 +22,7 @@ fun SliderControl(
     control: Control.Slider,
     modifier: Modifier = Modifier
 ) {
+    val name by rememberUpdatedState(control.name())
     val value by rememberUpdatedState(control.value())
     val valueRange by rememberUpdatedState(control.valueRange())
 
@@ -29,13 +30,13 @@ fun SliderControl(
         verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
         modifier = modifier,
     ) {
-        Text(text = control.name, style = PlaygroundTheme.typography.labelLarge)
+        Text(text = name, style = PlaygroundTheme.typography.labelLarge)
         Slider(
             value = value,
             onValueChange = control.onValueChange,
             valueRange = valueRange,
             modifier = Modifier.semantics {
-                contentDescription = control.name
+                contentDescription = name
             }
         )
     }
