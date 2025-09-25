@@ -92,6 +92,7 @@ class ButtonDemoState(
     widthInitial: Dp = 200.dp,
     val textDemoState: TextDemoState = TextDemoState(
         initialText = "Button",
+        textAlignInitial = TextAlign.Center,
     ),
 ) {
     var enabled by mutableStateOf(enabledInitial)
