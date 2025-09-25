@@ -15,9 +15,10 @@ fun ButtonControl(
 ) {
     val enabled by rememberUpdatedState(control.enabled())
     Button(
-        modifier = modifier,
         onClick = control.onClick,
         enabled = enabled,
+        modifier = modifier
+            .then(control.modifier)
     ) {
         Text(control.name, style = PlaygroundTheme.typography.labelLarge)
     }

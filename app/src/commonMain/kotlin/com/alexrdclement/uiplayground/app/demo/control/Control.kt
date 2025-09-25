@@ -3,6 +3,7 @@ package com.alexrdclement.uiplayground.app.demo.control
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.ui.Modifier
 import kotlinx.collections.immutable.ImmutableList
 
 sealed class Control {
@@ -42,6 +43,7 @@ sealed class Control {
         val name: String,
         val onClick: () -> Unit,
         val enabled: () -> Boolean = { true },
+        val modifier: Modifier = Modifier,
     ) : Control()
 
     data class ControlRow(val controls: () -> ImmutableList<Control>) : Control()
