@@ -1,15 +1,11 @@
 package com.alexrdclement.uiplayground.app.demo.components.geometry
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -32,7 +28,7 @@ import com.alexrdclement.uiplayground.components.geometry.CurveStitchStar
 import com.alexrdclement.uiplayground.components.geometry.CurveStitchStarShape
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.roundToInt
 
@@ -46,27 +42,22 @@ fun CurveStitchDemo(
         controls = control.controls,
         modifier = modifier.fillMaxSize(),
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.large),
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
-            val modifier = Modifier
-                .then(
-                    if (this@Demo.maxHeight < this@Demo.maxWidth) {
-                        val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues()
-                        val bottomPadding = navigationBarsPadding.calculateBottomPadding()
-                        Modifier
-                            .size(this@Demo.maxHeight - bottomPadding)
-                            .aspectRatio(1f)
-                    } else {
-                        Modifier.size(this@Demo.maxWidth)
-                    }
-                )
-                .graphicsLayer { this.rotationZ = state.rotation }
-            CurveStitch(
+        val modifier = Modifier
+            .then(
+                if (this@Demo.maxHeight < this@Demo.maxWidth) {
+                    val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues()
+                    val bottomPadding = navigationBarsPadding.calculateBottomPadding()
+                    Modifier
+                        .size(this@Demo.maxHeight - bottomPadding)
+                        .aspectRatio(1f)
+                } else {
+                    Modifier.size(this@Demo.maxWidth)
+                }
+            )
+            .align(Alignment.Center)
+            .graphicsLayer { this.rotationZ = state.rotation }
+        when (state.currentDemo) {
+            CurveStitchDemo.Angle -> CurveStitch(
                 start = Offset(0f, 0f),
                 vertex = Offset(0f, 1f),
                 end = Offset(1f, 1f),
@@ -75,21 +66,24 @@ fun CurveStitchDemo(
                 color = PlaygroundTheme.colorScheme.primary,
                 modifier = modifier,
             )
-            CurveStitchStar(
+
+            CurveStitchDemo.Star -> CurveStitchStar(
                 numLines = state.numLines,
                 numPoints = state.numPoints,
                 strokeWidth = state.strokeWidth,
                 color = PlaygroundTheme.colorScheme.primary,
                 modifier = modifier,
             )
-            CurveStitchShape(
+
+            CurveStitchDemo.Shape -> CurveStitchShape(
                 numLines = state.numLines,
                 numPoints = state.numPoints,
                 strokeWidth = state.strokeWidth,
                 color = PlaygroundTheme.colorScheme.primary,
                 modifier = modifier,
             )
-            CurveStitchStarShape(
+
+            CurveStitchDemo.StarShape -> CurveStitchStarShape(
                 drawInsidePoints = state.starShapeInsidePoints,
                 drawOutsidePoints = state.starShapeOutsidePoints,
                 numLines = state.numLines,
@@ -103,6 +97,13 @@ fun CurveStitchDemo(
     }
 }
 
+enum class CurveStitchDemo {
+    Angle,
+    Star,
+    Shape,
+    StarShape,
+}
+
 @Composable
 fun rememberCurveStitchDemoState(): CurveStitchDemoState = rememberSaveable(
     saver = CurveStitchDemoStateSaver,
@@ -110,6 +111,7 @@ fun rememberCurveStitchDemoState(): CurveStitchDemoState = rememberSaveable(
 
 @Stable
 class CurveStitchDemoState(
+    currentDemoInitial: CurveStitchDemo = CurveStitchDemo.Angle,
     strokeWidthInitial: Dp = 1.dp,
     numLinesInitial: Int = 8,
     numPointsInitial: Int = 4,
@@ -118,6 +120,8 @@ class CurveStitchDemoState(
     starShapeOutsidePointsInitial: Boolean = true,
     rotationInitial: Float = 0f,
 ) {
+    var currentDemo by mutableStateOf(currentDemoInitial)
+        internal set
     var strokeWidth by mutableStateOf(strokeWidthInitial)
         internal set
     var numLines by mutableStateOf(numLinesInitial)
@@ -134,6 +138,7 @@ class CurveStitchDemoState(
         internal set
 }
 
+private const val currentDemoKey = "currentDemo"
 private const val strokeWidthKey = "strokeWidth"
 private const val numLinesKey = "numLines"
 private const val numPointsKey = "numPoints"
@@ -145,6 +150,7 @@ private const val rotationKey = "rotation"
 val CurveStitchDemoStateSaver = mapSaverSafe(
     save = { value ->
         mapOf(
+            currentDemoKey to value.currentDemo.name,
             strokeWidthKey to value.strokeWidth.value,
             numLinesKey to value.numLines,
             numPointsKey to value.numPoints,
@@ -156,6 +162,7 @@ val CurveStitchDemoStateSaver = mapSaverSafe(
     },
     restore = { map ->
         CurveStitchDemoState(
+            currentDemoInitial = CurveStitchDemo.valueOf(map[currentDemoKey] as String),
             strokeWidthInitial = (map[strokeWidthKey] as Float).dp,
             numLinesInitial = map[numLinesKey] as Int,
             numPointsInitial = map[numPointsKey] as Int,
@@ -176,6 +183,23 @@ fun rememberCurveStitchDemoControl(
 class CurveStitchDemoControl(
     val state: CurveStitchDemoState,
 ) {
+    val currentDemoControl = Control.Dropdown(
+        name = "Demo",
+        includeLabel = false,
+        values = {
+            CurveStitchDemo.entries.map {
+                Control.Dropdown.DropdownItem(
+                    name = it.name,
+                    value = it,
+                )
+            }.toPersistentList()
+        },
+        selectedIndex = { CurveStitchDemo.entries.indexOf(state.currentDemo) },
+        onValueChange = {
+            state.currentDemo = CurveStitchDemo.entries[it]
+        },
+    )
+
     val numLines = Control.Slider(
         name = "Lines",
         value = { state.numLines.toFloat() },
@@ -237,15 +261,31 @@ class CurveStitchDemoControl(
         valueRange = { 1f..100f },
     )
 
-    val controls = persistentListOf(
-        numLines,
-        numPoints,
-        innerRadius,
-        starShapeInsidePoints,
-        starShapeOutsidePoints,
-        rotation,
-        strokeWidth,
-    )
+    val controls
+        get() = buildList {
+            add(currentDemoControl)
+            add(numLines)
+
+            val controls = when (state.currentDemo) {
+                CurveStitchDemo.Angle -> emptyList()
+                CurveStitchDemo.Star -> listOf(
+                    numPoints,
+                )
+                CurveStitchDemo.Shape -> listOf(
+                    numPoints,
+                )
+                CurveStitchDemo.StarShape -> listOf(
+                    numPoints,
+                    innerRadius,
+                    starShapeInsidePoints,
+                    starShapeOutsidePoints,
+                )
+            }
+            addAll(controls)
+
+            add(rotation)
+            add(strokeWidth)
+        }.toPersistentList()
 }
 
 @Preview
