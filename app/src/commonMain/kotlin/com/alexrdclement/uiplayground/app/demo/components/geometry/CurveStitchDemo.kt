@@ -31,7 +31,6 @@ import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.geometry.CurveStitch
 import com.alexrdclement.uiplayground.components.geometry.CurveStitchShape
 import com.alexrdclement.uiplayground.components.geometry.CurveStitchStar
-import com.alexrdclement.uiplayground.components.geometry.CurveStitchStarShape
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.components.util.restore
 import com.alexrdclement.uiplayground.components.util.save
@@ -130,23 +129,15 @@ fun CurveStitchDemo(
                 numPoints = state.numPoints,
                 strokeWidth = state.strokeWidth,
                 color = PlaygroundTheme.colorScheme.primary,
+                innerRadius = state.innerRadius,
+                drawInsidePoints = state.starInsidePoints,
+                drawOutsidePoints = state.starOutsidePoints,
                 modifier = modifier,
             )
 
             CurveStitchDemo.Shape -> CurveStitchShape(
                 numLines = state.numLines,
                 numPoints = state.numPoints,
-                strokeWidth = state.strokeWidth,
-                color = PlaygroundTheme.colorScheme.primary,
-                modifier = modifier,
-            )
-
-            CurveStitchDemo.StarShape -> CurveStitchStarShape(
-                drawInsidePoints = state.starShapeInsidePoints,
-                drawOutsidePoints = state.starShapeOutsidePoints,
-                numLines = state.numLines,
-                numPoints = state.numPoints,
-                innerRadius = state.innerRadius,
                 strokeWidth = state.strokeWidth,
                 color = PlaygroundTheme.colorScheme.primary,
                 modifier = modifier,
@@ -179,7 +170,6 @@ enum class CurveStitchDemo {
     Angle,
     Star,
     Shape,
-    StarShape,
 }
 
 @Composable
@@ -196,9 +186,9 @@ class CurveStitchDemoState(
     angleVertexOffsetInitial: Offset = Offset(0f, 1f),
     angleEndOffsetInitial: Offset = Offset(1f, 1f),
     numPointsInitial: Int = 4,
-    innerRadiusInitial: Float = 0.5f,
-    starShapeInsidePointsInitial: Boolean = true,
-    starShapeOutsidePointsInitial: Boolean = true,
+    innerRadiusInitial: Float = 0f,
+    starInsidePointsInitial: Boolean = true,
+    starOutsidePointsInitial: Boolean = true,
     rotationInitial: Float = 0f,
 ) {
     var currentDemo by mutableStateOf(currentDemoInitial)
@@ -217,9 +207,9 @@ class CurveStitchDemoState(
         internal set
     var innerRadius by mutableStateOf(innerRadiusInitial)
         internal set
-    var starShapeInsidePoints by mutableStateOf(starShapeInsidePointsInitial)
+    var starInsidePoints by mutableStateOf(starInsidePointsInitial)
         internal set
-    var starShapeOutsidePoints by mutableStateOf(starShapeOutsidePointsInitial)
+    var starOutsidePoints by mutableStateOf(starOutsidePointsInitial)
         internal set
     var rotation by mutableStateOf(rotationInitial)
         internal set
@@ -233,8 +223,8 @@ private const val angleVertexOffsetKey = "angleVertexOffset"
 private const val angleEndOffsetKey = "angleEndOffset"
 private const val numPointsKey = "numPoints"
 private const val innerRadiusKey = "innerRadius"
-private const val starShapeInsidePointsKey = "starShapeInsidePoints"
-private const val starShapeOutsidePointsKey = "starShapeOutsidePoints"
+private const val starInsidePointsKey = "starInsidePoints"
+private const val starOutsidePointsKey = "starOutsidePoints"
 private const val rotationKey = "rotation"
 
 val CurveStitchDemoStateSaver = mapSaverSafe(
@@ -248,8 +238,8 @@ val CurveStitchDemoStateSaver = mapSaverSafe(
             angleStartOffsetKey to save(value.angleEndOffset, OffsetSaver, this),
             numPointsKey to value.numPoints,
             innerRadiusKey to value.innerRadius,
-            starShapeInsidePointsKey to value.starShapeInsidePoints,
-            starShapeOutsidePointsKey to value.starShapeOutsidePoints,
+            starInsidePointsKey to value.starInsidePoints,
+            starOutsidePointsKey to value.starOutsidePoints,
             rotationKey to value.rotation,
         )
     },
@@ -263,8 +253,8 @@ val CurveStitchDemoStateSaver = mapSaverSafe(
             angleEndOffsetInitial = restore(map[angleEndOffsetKey], OffsetSaver)!!,
             numPointsInitial = map[numPointsKey] as Int,
             innerRadiusInitial = map[innerRadiusKey] as Float,
-            starShapeInsidePointsInitial = map[starShapeInsidePointsKey] as Boolean,
-            starShapeOutsidePointsInitial = map[starShapeOutsidePointsKey] as Boolean,
+            starInsidePointsInitial = map[starInsidePointsKey] as Boolean,
+            starOutsidePointsInitial = map[starOutsidePointsKey] as Boolean,
             rotationInitial = map[rotationKey] as Float,
         )
     },
@@ -302,7 +292,7 @@ class CurveStitchDemoControl(
         onValueChange = {
             state.numPoints = it.toInt()
         },
-        valueRange = { 2f..100f },
+        valueRange = { 3f..50f },
     )
 
     val innerRadius = Control.Slider(
@@ -314,19 +304,19 @@ class CurveStitchDemoControl(
         valueRange = { 0f..1f },
     )
 
-    val starShapeInsidePoints = Control.Toggle(
+    val starInsidePoints = Control.Toggle(
         name = "Inside points",
-        value = { state.starShapeInsidePoints },
+        value = { state.starInsidePoints },
         onValueChange = {
-            state.starShapeInsidePoints = it
+            state.starInsidePoints = it
         },
     )
 
-    val starShapeOutsidePoints = Control.Toggle(
+    val starOutsidePoints = Control.Toggle(
         name = "Outside points",
-        value = { state.starShapeOutsidePoints },
+        value = { state.starOutsidePoints },
         onValueChange = {
-            state.starShapeOutsidePoints = it
+            state.starOutsidePoints = it
         },
     )
 
@@ -357,15 +347,12 @@ class CurveStitchDemoControl(
                 CurveStitchDemo.Angle -> emptyList()
                 CurveStitchDemo.Star -> listOf(
                     numPoints,
+                    innerRadius,
+                    starInsidePoints,
+                    starOutsidePoints,
                 )
                 CurveStitchDemo.Shape -> listOf(
                     numPoints,
-                )
-                CurveStitchDemo.StarShape -> listOf(
-                    numPoints,
-                    innerRadius,
-                    starShapeInsidePoints,
-                    starShapeOutsidePoints,
                 )
             }
             addAll(controls)
