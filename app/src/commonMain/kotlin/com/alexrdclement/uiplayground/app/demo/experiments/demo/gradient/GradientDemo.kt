@@ -10,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -25,11 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.platform.LocalDensity
 import com.alexrdclement.uiplayground.app.demo.Demo
-import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.enumControl
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 import kotlin.math.sin
 
 @Composable
@@ -69,25 +66,24 @@ fun GradientDemo(modifier: Modifier = Modifier) {
         ),
     )
 
-    val baseModifier = Modifier
-        .fillMaxSize()
-        .padding(horizontal = PlaygroundTheme.spacing.large)
-        .aspectRatio(1f)
-
     Demo(
         controls = persistentListOf(
             currentGradientControl,
         ),
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxSize()
     ) {
         val density = LocalDensity.current
         LaunchedEffect(this@Demo.maxWidth) {
             widthPx = with(density) { this@Demo.maxWidth.toPx().toInt() }
         }
+
+        val baseModifier = Modifier
+            .align(Alignment.Center)
         when (currentGradient) {
             GradientDemo.RadialSweep -> Box(
                 modifier = baseModifier
+                    .aspectRatio(1f)
                     .background(
                         brush = Brush.sweepGradient(
                             colors = gradientColors,
@@ -95,8 +91,9 @@ fun GradientDemo(modifier: Modifier = Modifier) {
                         shape = CircleShape,
                     )
             )
-            GradientDemo.Linear ->  Box(
+            GradientDemo.Linear -> Box(
                 modifier = baseModifier
+                    .fillMaxSize()
                     .background(
                         brush = Brush.linearGradient(
                             colors = gradientColors,
@@ -111,6 +108,7 @@ fun GradientDemo(modifier: Modifier = Modifier) {
                 offset = offset,
                 widthPxFloat = widthPxFloat,
                 modifier = baseModifier
+                    .fillMaxSize()
             )
         }
     }
