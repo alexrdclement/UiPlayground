@@ -18,7 +18,7 @@ concurrency:
 jobs:
   build_mac:
     name: "Build Mac Desktop App"
-    runs-on: macos-14
+    runs-on: macos-15
     timeout-minutes: 60
 
     permissions:
