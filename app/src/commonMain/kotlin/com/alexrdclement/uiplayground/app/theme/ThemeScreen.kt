@@ -205,9 +205,10 @@ class ThemeScreenControl(
         fontFamilyControl,
         indicationControl,
         Control.ControlColumn(
-            name = "Demo button",
+            name = "Demo button controls",
             indent = true,
             controls = { buttonDemoControl.controls },
+            expandedInitial = false,
         )
     )
 }

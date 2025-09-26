@@ -66,6 +66,7 @@ sealed class Control {
         val controls: () -> ImmutableList<Control>,
         val name: String? = null,
         val indent: Boolean = false,
+        val expandedInitial: Boolean = false,
     ) : Control()
 }
 
