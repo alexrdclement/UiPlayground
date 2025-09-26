@@ -53,24 +53,6 @@ class CurveStitchTest(
     }
 
     @Test
-    fun curveStitchStarInsideOnly() {
-        paparazzi.snapshot {
-            PlaygroundTheme {
-                Surface {
-                    CurveStitchStar(
-                        numLines = numLines,
-                        numPoints = numPoints,
-                        strokeWidth = Dp.Hairline,
-                        color = PlaygroundTheme.colorScheme.primary,
-                        drawOutsidePoints = false,
-                        modifier = Modifier.size(200.dp),
-                    )
-                }
-            }
-        }
-    }
-
-    @Test
     fun curveStitchStar() {
         paparazzi.snapshot {
             PlaygroundTheme {
@@ -80,8 +62,28 @@ class CurveStitchTest(
                         numPoints = numPoints,
                         strokeWidth = Dp.Hairline,
                         color = PlaygroundTheme.colorScheme.primary,
+                        innerRadius = 0.5f,
                         drawInsidePoints = true,
                         drawOutsidePoints = true,
+                        modifier = Modifier.size(200.dp),
+                    )
+                }
+            }
+        }
+    }
+
+    @Test
+    fun curveStitchStarInsideOnly() {
+        paparazzi.snapshot {
+            PlaygroundTheme {
+                Surface {
+                    CurveStitchStar(
+                        numLines = numLines,
+                        numPoints = numPoints,
+                        strokeWidth = Dp.Hairline,
+                        color = PlaygroundTheme.colorScheme.primary,
+                        innerRadius = 0.5f,
+                        drawOutsidePoints = false,
                         modifier = Modifier.size(200.dp),
                     )
                 }
@@ -99,6 +101,7 @@ class CurveStitchTest(
                         numPoints = numPoints,
                         strokeWidth = Dp.Hairline,
                         color = PlaygroundTheme.colorScheme.primary,
+                        innerRadius = 0.5f,
                         drawInsidePoints = true,
                         modifier = Modifier.size(200.dp),
                     )
