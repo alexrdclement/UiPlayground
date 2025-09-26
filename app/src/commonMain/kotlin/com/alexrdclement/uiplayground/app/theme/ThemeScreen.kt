@@ -28,6 +28,7 @@ import com.alexrdclement.uiplayground.app.demo.components.core.ButtonDemoStateSa
 import com.alexrdclement.uiplayground.app.demo.components.core.TextStyle
 import com.alexrdclement.uiplayground.app.demo.components.core.toCompose
 import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.app.demo.control.enumControl
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
@@ -46,7 +47,6 @@ import com.alexrdclement.uiplayground.theme.toIndication
 import com.alexrdclement.uiplayground.theme.toPlaygroundIndicationType
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ThemeScreen(
@@ -180,41 +180,23 @@ class ThemeScreenControl(
     val state: ThemeScreenState,
     val themeController: ThemeController,
 ) {
-    val fontFamilyControl = Control.Dropdown(
+    val fontFamilyControl = enumControl(
         name = "Font family",
-        values = {
-            FontFamily.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toPersistentList()
-        },
-        selectedIndex = { FontFamily.entries.indexOf(state.fontFamily) },
+        values = { FontFamily.entries },
+        selectedValue = { state.fontFamily },
         onValueChange = {
-            val newValue = FontFamily.entries[it]
             val typography = makePlaygroundTypography(
-                fontFamily = newValue.toComposeFontFamily(),
+                fontFamily = it.toComposeFontFamily(),
             )
             themeController.setTypography(typography)
         }
     )
 
-    val indicationControl = Control.Dropdown(
+    val indicationControl = enumControl(
         name = "Indication",
-        values = {
-            PlaygroundIndicationType.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toPersistentList()
-        },
-        selectedIndex = { PlaygroundIndicationType.entries.indexOf(state.indicationType) },
-        onValueChange = {
-            val newValue = PlaygroundIndicationType.entries[it]
-            themeController.setIndication(newValue.toIndication())
-        }
+        values = { PlaygroundIndicationType.entries },
+        selectedValue = { state.indicationType },
+        onValueChange = { themeController.setIndication(it.toIndication()) },
     )
 
     val buttonDemoControl = ButtonDemoControl(state = state.buttonDemoState)
@@ -223,9 +205,10 @@ class ThemeScreenControl(
         fontFamilyControl,
         indicationControl,
         Control.ControlColumn(
-            name = "Demo button",
+            name = "Demo button controls",
             indent = true,
             controls = { buttonDemoControl.controls },
+            expandedInitial = false,
         )
     )
 }

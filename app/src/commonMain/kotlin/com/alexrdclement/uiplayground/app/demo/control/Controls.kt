@@ -1,20 +1,29 @@
 package com.alexrdclement.uiplayground.app.demo.control
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
+import com.alexrdclement.uiplayground.components.core.ChevronDirection
+import com.alexrdclement.uiplayground.components.core.ChevronIcon
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.ImmutableList
@@ -27,6 +36,7 @@ fun Controls(
     modifier: Modifier = Modifier,
     name: String? = null,
     indent: Boolean = false,
+    expandedInitial: Boolean = true,
     contentPadding: PaddingValues = PaddingValues(vertical = PlaygroundTheme.spacing.small),
     verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(PlaygroundTheme.spacing.medium)
 ) {
@@ -35,15 +45,35 @@ fun Controls(
         modifier = modifier
             .padding(contentPadding)
     ) {
+        var expanded by remember { mutableStateOf(expandedInitial) }
         name?.let {
-            Text(
-                text = name,
-                style = PlaygroundTheme.typography.labelSmall,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
                 modifier = Modifier
-                    .border(1.dp, PlaygroundTheme.colorScheme.outline)
-                    .padding(PlaygroundTheme.spacing.xs)
-            )
+                    .height(IntrinsicSize.Min)
+                    .clickable {
+                        expanded = !expanded
+                    }
+            ) {
+                Text(
+                    text = name,
+                    style = PlaygroundTheme.typography.labelSmall,
+                    modifier = Modifier
+                        .border(1.dp, PlaygroundTheme.colorScheme.outline)
+                        .padding(PlaygroundTheme.spacing.xs)
+                )
+                ChevronIcon(
+                    direction = if (expanded) ChevronDirection.Up else ChevronDirection.Down,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .padding(6.dp)
+                )
+            }
         }
+
+        if (!expanded) return@Column
+
         for (control in controls) {
             Box(
                 modifier = Modifier
@@ -66,6 +96,7 @@ fun Controls(
                             controls = controls,
                             name = control.name,
                             indent = control.indent,
+                            expandedInitial = control.expandedInitial,
                             contentPadding = PaddingValues(vertical = PlaygroundTheme.spacing.small),
                         )
                     }
@@ -103,6 +134,7 @@ fun ControlsRow(
                         controls = controls,
                         name = control.name,
                         indent = control.indent,
+                        expandedInitial = control.expandedInitial,
                         contentPadding = PaddingValues(horizontal = PlaygroundTheme.spacing.small),
                     )
                 }
@@ -119,6 +151,7 @@ fun ControlsRow(
 @Composable
 private fun Preview() {
     UiPlaygroundPreview {
+        var expanded by remember { mutableStateOf(true) }
         Controls(
             controls = persistentListOf(
                 Control.Slider(
@@ -132,6 +165,7 @@ private fun Preview() {
                     onValueChange = {},
                 )
             ),
+            expandedInitial = expanded,
             name = "Sliders",
         )
     }

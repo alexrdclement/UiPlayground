@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.app.demo.control.enumControl
 import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.core.ButtonStyle
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
@@ -92,6 +93,7 @@ class ButtonDemoState(
     widthInitial: Dp = 200.dp,
     val textDemoState: TextDemoState = TextDemoState(
         initialText = "Button",
+        textAlignInitial = TextAlign.Center,
     ),
 ) {
     var enabled by mutableStateOf(enabledInitial)
@@ -140,18 +142,11 @@ fun rememberButtonDemoControl(
 class ButtonDemoControl(
     val state: ButtonDemoState,
 ) {
-    val styleControl = Control.Dropdown(
+    val styleControl = enumControl(
         name = "Style",
-        values = {
-            ButtonStyle.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toPersistentList()
-        },
-        onValueChange = { state.style = ButtonStyle.entries[it] },
-        selectedIndex = { ButtonStyle.entries.indexOf(state.style) },
+        values = { ButtonStyle.entries },
+        selectedValue = { state.style },
+        onValueChange = { state.style = it },
     )
 
     val enabledControl = Control.Toggle(

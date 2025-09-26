@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.app.demo.control.enumControl
 import com.alexrdclement.uiplayground.app.demo.util.KeyboardCapitalizationSaver
 import com.alexrdclement.uiplayground.app.demo.util.KeyboardTypeSaver
 import com.alexrdclement.uiplayground.app.demo.util.onlyDigits
@@ -247,18 +248,11 @@ class TextFieldDemoControl(
         includeLabel = false,
     )
 
-    val styleControl = Control.Dropdown(
+    val styleControl = enumControl(
         name = "Style",
-        values = {
-            TextStyle.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toPersistentList()
-        },
-        selectedIndex = { TextStyle.entries.indexOf(state.style) },
-        onValueChange = { state.style = TextStyle.entries[it] },
+        values = { TextStyle.entries },
+        selectedValue = { state.style },
+        onValueChange = { state.style = it },
     )
 
     val widthControl = Control.Slider(
@@ -322,20 +316,11 @@ class TextFieldDemoControl(
         onValueChange = { state.showKeyboardOnFocus = it }
     )
 
-    val lineLimitsControl = Control.Dropdown(
+    val lineLimitsControl = enumControl(
         name = "Line limits",
-        values = {
-            LineLimits.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toImmutableList()
-        },
-        selectedIndex = { LineLimits.entries.indexOf(state.lineLimits) },
-        onValueChange = {
-            state.lineLimits = LineLimits.entries[it]
-        }
+        values = { LineLimits.entries },
+        selectedValue = { state.lineLimits },
+        onValueChange = { state.lineLimits = it },
     )
 
     val minHeightInLinesControl = Control.Slider(
@@ -357,20 +342,11 @@ class TextFieldDemoControl(
         valueRange = { state.minHeightInLines.toFloat()..100f },
     )
 
-    val inputTransformationControl = Control.Dropdown(
+    val inputTransformationControl = enumControl(
         name = "Input Transformations",
-        values = {
-            InputTransformations.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toImmutableList()
-        },
-        selectedIndex = { InputTransformations.entries.indexOf(state.inputTransformation) },
-        onValueChange = {
-            state.inputTransformation = InputTransformations.entries[it]
-        }
+        values = { InputTransformations.entries },
+        selectedValue = { state.inputTransformation },
+        onValueChange = { state.inputTransformation = it },
     )
 
     val keyboardControls = persistentListOf(

@@ -25,11 +25,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.app.demo.control.enumControl
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun TextDemo(
@@ -62,6 +62,7 @@ fun BoxWithConstraintsScope.TextDemo(
     Text(
         text = text,
         style = state.style.toCompose().copy(
+            textAlign = state.textAlign.toCompose(),
             lineHeightStyle = TextDemoState.lineHeightStyleDefault.copy(
                 alignment = state.lineHeightAlignment.toCompose(),
                 trim = state.lineHeightTrim.toCompose(),
@@ -89,6 +90,13 @@ fun BoxWithConstraintsScope.TextDemo(
                 else Modifier
             )
     )
+}
+
+enum class TextAlign {
+    Start,
+    Center,
+    End,
+    Justify,
 }
 
 enum class Overflow {
@@ -130,6 +138,7 @@ fun rememberTextDemoState(
 class TextDemoState(
     initialText: String = "Hello world",
     styleInitial: TextStyle = TextStyle.Headline,
+    textAlignInitial: TextAlign = TextAlign.Start,
     lineHeightAlignmentInitial: LineHeightAlignment = lineHeightAlignmentDefault,
     lineHeightTrimInitial: LineHeightTrim = lineHeightTrimDefault,
     lineHeightModeInitial: LineHeightMode = lineHeightModeDefault,
@@ -144,6 +153,9 @@ class TextDemoState(
     val text get() = snapshotFlow { textFieldState.text.toString() }
 
     var style by mutableStateOf(styleInitial)
+        internal set
+
+    var textAlign by mutableStateOf(textAlignInitial)
         internal set
 
     var lineHeightAlignment by mutableStateOf(lineHeightAlignmentInitial)
@@ -178,6 +190,7 @@ class TextDemoState(
 }
 
 private const val styleKey = "style"
+private const val textAlignKey = "textAlign"
 private const val lineHeightAlignmentKey = "lineHeightAlignment"
 private const val lineHeightTrimKey = "lineHeightTrim"
 private const val lineHeightModeKey = "lineHeightMode"
@@ -192,6 +205,7 @@ val TextDemoStateSaver = mapSaverSafe(
     save = { value ->
         mapOf(
             styleKey to value.style.name,
+            textAlignKey to value.textAlign.name,
             lineHeightAlignmentKey to value.lineHeightAlignment.name,
             lineHeightTrimKey to value.lineHeightTrim.name,
             lineHeightModeKey to value.lineHeightMode.name,
@@ -206,6 +220,7 @@ val TextDemoStateSaver = mapSaverSafe(
     restore = { map ->
         TextDemoState(
             styleInitial = TextStyle.valueOf(map[styleKey] as String),
+            textAlignInitial = TextAlign.valueOf(map[textAlignKey] as String),
             lineHeightAlignmentInitial =
                 LineHeightAlignment.valueOf(map[lineHeightAlignmentKey] as String),
             lineHeightTrimInitial =
@@ -239,60 +254,39 @@ class TextDemoControl(
         includeLabel = false,
     )
 
-    val styleControl = Control.Dropdown(
+    val styleControl = enumControl(
         name = "Style",
-        values = {
-            TextStyle.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toPersistentList()
-        },
-        selectedIndex = { TextStyle.entries.indexOf(state.style) },
-        onValueChange = { state.style = TextStyle.entries[it] },
+        values = { TextStyle.entries },
+        selectedValue = { state.style },
+        onValueChange = { state.style = it },
     )
 
-    val lineHeightAlignmentControl = Control.Dropdown(
+    val textAlignControl = enumControl(
+        name = "Alignment",
+        values = { TextAlign.entries },
+        selectedValue = { state.textAlign },
+        onValueChange = { state.textAlign = it },
+    )
+
+    val lineHeightAlignmentControl = enumControl(
         name = "Line height alignment",
-        values = {
-            LineHeightAlignment.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toPersistentList()
-        },
-        onValueChange = { state.lineHeightAlignment = LineHeightAlignment.entries[it] },
-        selectedIndex = { LineHeightAlignment.entries.indexOf(state.lineHeightAlignment) },
+        values = { LineHeightAlignment.entries },
+        selectedValue = { state.lineHeightAlignment },
+        onValueChange = { state.lineHeightAlignment = it },
     )
 
-    val lineHeightTrimControl = Control.Dropdown(
+    val lineHeightTrimControl = enumControl(
         name = "Line height trim",
-        values = {
-            LineHeightTrim.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toPersistentList()
-        },
-        onValueChange = { state.lineHeightTrim = LineHeightTrim.entries[it] },
-        selectedIndex = { LineHeightTrim.entries.indexOf(state.lineHeightTrim) },
+        values = { LineHeightTrim.entries },
+        selectedValue = { state.lineHeightTrim },
+        onValueChange = { state.lineHeightTrim = it },
     )
 
-    val lineHeightModeControl = Control.Dropdown(
+    val lineHeightModeControl = enumControl(
         name = "Line height mode",
-        values = {
-            LineHeightMode.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toPersistentList()
-        },
-        onValueChange = { state.lineHeightMode = LineHeightMode.entries[it] },
-        selectedIndex = { LineHeightMode.entries.indexOf(state.lineHeightMode) },
+        values = { LineHeightMode.entries },
+        selectedValue = { state.lineHeightMode },
+        onValueChange = { state.lineHeightMode = it },
     )
 
     val widthControl = Control.Slider(
@@ -328,23 +322,17 @@ class TextDemoControl(
         }
     )
 
-    val overflowControl = Control.Dropdown(
+    val overflowControl = enumControl(
         name = "Overflow",
-        values = {
-            Overflow.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it
-                )
-            }.toPersistentList()
-        },
-        selectedIndex = { Overflow.entries.indexOf(state.overflow) },
-        onValueChange = { state.overflow = Overflow.entries[it] },
+        values = { Overflow.entries },
+        selectedValue = { state.overflow },
+        onValueChange = { state.overflow = it },
     )
 
     val controls = persistentListOf(
         textFieldControl,
         styleControl,
+        textAlignControl,
         lineHeightAlignmentControl,
         lineHeightTrimControl,
         lineHeightModeControl,
@@ -364,6 +352,13 @@ class TextDemoControl(
             state.width = state.maxWidth
         }
     }
+}
+
+private fun TextAlign.toCompose() = when (this) {
+    TextAlign.Start -> androidx.compose.ui.text.style.TextAlign.Start
+    TextAlign.Center -> androidx.compose.ui.text.style.TextAlign.Center
+    TextAlign.End -> androidx.compose.ui.text.style.TextAlign.End
+    TextAlign.Justify -> androidx.compose.ui.text.style.TextAlign.Justify
 }
 
 private fun LineHeightAlignment.toCompose() = when (this) {

@@ -18,11 +18,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.Controls
+import com.alexrdclement.uiplayground.app.demo.control.enumControl
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -33,23 +33,15 @@ fun ConfigurationDialogContent(
     var colorMode by remember(configurationController) {
         mutableStateOf(configurationController.colorMode)
     }
-    val colorModeControl = Control.Dropdown(
+    val colorModeControl = enumControl(
         name = "Color mode",
-        values = {
-            ColorMode.entries.map {
-                Control.Dropdown.DropdownItem(
-                    name = it.name,
-                    value = it,
-                )
-            }.toPersistentList()
-        },
-        selectedIndex = { ColorMode.entries.indexOf(colorMode) },
+        values = { ColorMode.entries },
+        selectedValue = { colorMode },
         onValueChange = {
-            val newValue = ColorMode.entries[it]
-            if (configurationController.setColorMode(newValue)) {
-                colorMode = newValue
+            if (configurationController.setColorMode(it)) {
+                colorMode = it
             }
-        }
+        },
     )
 
     val configureThemeControl = Control.Button(

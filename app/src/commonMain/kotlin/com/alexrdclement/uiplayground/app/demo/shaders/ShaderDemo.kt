@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.app.demo.control.enumControl
 import com.alexrdclement.uiplayground.app.demo.subject.DemoCircle
 import com.alexrdclement.uiplayground.app.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.app.demo.subject.DemoText
@@ -315,15 +316,11 @@ fun rememberShaderDemoControl(
 class ShaderDemoControl(
     val state: ShaderDemoState,
 ) {
-    val subjectControl = Control.Dropdown(
+    val subjectControl = enumControl(
         name = "Subject",
-        values = {
-            DemoSubject.entries.map {
-                Control.Dropdown.DropdownItem(name = it.name, value = it)
-            }.toPersistentList()
-        },
-        selectedIndex = { DemoSubject.entries.indexOf(state.demoSubject) },
-        onValueChange = { state.demoSubject = DemoSubject.entries[it] },
+        values = { DemoSubject.entries },
+        selectedValue = { state.demoSubject },
+        onValueChange = { state.demoSubject = it },
         includeLabel = false,
     )
 
@@ -382,23 +379,13 @@ class ShaderDemoControl(
     )
 
     val colorSplitControls = persistentListOf(
-        Control.Dropdown(
+        enumControl(
             name = "Color mode",
-            values = {
-                ColorSplitMode.entries.map {
-                    Control.Dropdown.DropdownItem(
-                        name = it.name,
-                        value = it
-                    )
-                }.toPersistentList()
-            },
-            selectedIndex = {
-                ColorSplitMode.entries.indexOf(state.colorSplitModifier.colorMode)
-            },
-            onValueChange = {
-                val colorMode = ColorSplitMode.entries[it]
+            values = { ColorSplitMode.entries },
+            selectedValue = { state.colorSplitModifier.colorMode },
+            onValueChange = { colorMode ->
                 state.colorSplitModifier = state.colorSplitModifier.copy(colorMode = colorMode)
-            }
+            },
         ),
         Control.Slider(
             name = "X Amount",
@@ -416,24 +403,6 @@ class ShaderDemoControl(
             },
             valueRange = { -1f..1f },
         ),
-        Control.Dropdown(
-            name = "Color mode",
-            values = {
-                ColorSplitMode.entries.map {
-                    Control.Dropdown.DropdownItem(
-                        name = it.name,
-                        value = it
-                    )
-                }.toPersistentList()
-            },
-            selectedIndex = {
-                ColorSplitMode.entries.indexOf(state.colorSplitModifier.colorMode)
-            },
-            onValueChange = {
-                val colorMode = ColorSplitMode.entries[it]
-                state.colorSplitModifier = state.colorSplitModifier.copy(colorMode = colorMode)
-            }
-        )
     )
 
     val noiseControl = persistentListOf(
@@ -445,25 +414,14 @@ class ShaderDemoControl(
             },
             valueRange = { 0f..1f },
         ),
-        Control.Dropdown(
+        enumControl(
             name = "Color Mode",
-            values = {
-                NoiseColorMode.entries.map {
-                    Control.Dropdown.DropdownItem(
-                        name = it.name,
-                        value = it
-                    )
-                }.toPersistentList()
-            },
-            selectedIndex = {
-                NoiseColorMode.entries
-                    .indexOf(state.noiseModifier.colorMode)
-            },
-            onValueChange = {
-                val colorMode = NoiseColorMode.entries[it]
+            values = { NoiseColorMode.entries },
+            selectedValue = { state.noiseModifier.colorMode },
+            onValueChange = { colorMode ->
                 state.noiseModifier = state.noiseModifier.copy(colorMode = colorMode)
-            }
-        )
+            },
+        ),
     )
 
     val pixelateControl = persistentListOf(

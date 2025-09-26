@@ -53,6 +53,24 @@ class CurveStitchTest(
     }
 
     @Test
+    fun curveStitchStarInsideOnly() {
+        paparazzi.snapshot {
+            PlaygroundTheme {
+                Surface {
+                    CurveStitchStar(
+                        numLines = numLines,
+                        numPoints = numPoints,
+                        strokeWidth = Dp.Hairline,
+                        color = PlaygroundTheme.colorScheme.primary,
+                        drawOutsidePoints = false,
+                        modifier = Modifier.size(200.dp),
+                    )
+                }
+            }
+        }
+    }
+
+    @Test
     fun curveStitchStar() {
         paparazzi.snapshot {
             PlaygroundTheme {
@@ -62,6 +80,44 @@ class CurveStitchTest(
                         numPoints = numPoints,
                         strokeWidth = Dp.Hairline,
                         color = PlaygroundTheme.colorScheme.primary,
+                        drawInsidePoints = true,
+                        drawOutsidePoints = true,
+                        modifier = Modifier.size(200.dp),
+                    )
+                }
+            }
+        }
+    }
+
+    @Test
+    fun curveStitchStarOutsideOnly() {
+        paparazzi.snapshot {
+            PlaygroundTheme {
+                Surface {
+                    CurveStitchStar(
+                        numLines = numLines,
+                        numPoints = numPoints,
+                        strokeWidth = Dp.Hairline,
+                        color = PlaygroundTheme.colorScheme.primary,
+                        drawInsidePoints = true,
+                        modifier = Modifier.size(200.dp),
+                    )
+                }
+            }
+        }
+    }
+
+    @Test
+    fun curveStitchStarInnerRadius0() {
+        paparazzi.snapshot {
+            PlaygroundTheme {
+                Surface {
+                    CurveStitchStar(
+                        numLines = numLines,
+                        numPoints = numPoints,
+                        strokeWidth = Dp.Hairline,
+                        color = PlaygroundTheme.colorScheme.primary,
+                        innerRadius = 0f,
                         modifier = Modifier.size(200.dp),
                     )
                 }
@@ -79,61 +135,6 @@ class CurveStitchTest(
                         numPoints = numPoints,
                         strokeWidth = Dp.Hairline,
                         color = PlaygroundTheme.colorScheme.primary,
-                        modifier = Modifier.size(200.dp),
-                    )
-                }
-            }
-        }
-    }
-
-    @Test
-    fun curveStitchStarShapeInsideOnly() {
-        paparazzi.snapshot {
-            PlaygroundTheme {
-                Surface {
-                    CurveStitchStarShape(
-                        numLines = numLines,
-                        numPoints = numPoints,
-                        strokeWidth = Dp.Hairline,
-                        color = PlaygroundTheme.colorScheme.primary,
-                        drawOutsidePoints = false,
-                        modifier = Modifier.size(200.dp),
-                    )
-                }
-            }
-        }
-    }
-
-    @Test
-    fun curveStitchStarShapeOutsideOnly() {
-        paparazzi.snapshot {
-            PlaygroundTheme {
-                Surface {
-                    CurveStitchStarShape(
-                        numLines = numLines,
-                        numPoints = numPoints,
-                        strokeWidth = Dp.Hairline,
-                        color = PlaygroundTheme.colorScheme.primary,
-                        drawInsidePoints = true,
-                        modifier = Modifier.size(200.dp),
-                    )
-                }
-            }
-        }
-    }
-
-    @Test
-    fun curveStitchStarShape() {
-        paparazzi.snapshot {
-            PlaygroundTheme {
-                Surface {
-                    CurveStitchStarShape(
-                        numLines = numLines,
-                        numPoints = numPoints,
-                        strokeWidth = Dp.Hairline,
-                        color = PlaygroundTheme.colorScheme.primary,
-                        drawInsidePoints = true,
-                        drawOutsidePoints = true,
                         modifier = Modifier.size(200.dp),
                     )
                 }
