@@ -89,7 +89,7 @@ class GridDemoState(
     xGridScaleStateInitial: CartesianGridScaleState = CartesianGridScaleState(),
     yGridScaleStateInitial: CartesianGridScaleState = CartesianGridScaleState(),
     polarGridScaleStateInitial: PolarGridScaleState = PolarGridScaleState(),
-    coordinateSystemTypeInitial: GridCoordinateSystemType = GridCoordinateSystemType.Polar,
+    coordinateSystemTypeInitial: GridCoordinateSystemType = GridCoordinateSystemType.Cartesian,
     vertexStateInitial: GridVertexState = GridVertexState(
         density = density,
         colorInitial = color,
