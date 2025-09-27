@@ -89,7 +89,7 @@ class GridDemoState(
     xGridScaleStateInitial: CartesianGridScaleState = CartesianGridScaleState(),
     yGridScaleStateInitial: CartesianGridScaleState = CartesianGridScaleState(),
     polarGridScaleStateInitial: PolarGridScaleState = PolarGridScaleState(),
-    coordinateSystemTypeInitial: GridCoordinateSystemType = GridCoordinateSystemType.Cartesian,
+    coordinateSystemTypeInitial: GridCoordinateSystemType = GridCoordinateSystemType.Polar,
     vertexStateInitial: GridVertexState = GridVertexState(
         density = density,
         colorInitial = color,
@@ -474,18 +474,11 @@ class PolarGridScaleControl(
 
     val controls = persistentListOf(
         Control.ControlColumn(
+            name = "Radius",
             indent = true,
-            controls = {
-                persistentListOf(
-                    Control.ControlColumn(
-                        name = "Radius",
-                        indent = true,
-                        controls = { gridScaleControl.controls },
-                    ),
-                    thetaControl
-                )
-            },
-        )
+            controls = { gridScaleControl.controls },
+        ),
+        thetaControl,
     )
 }
 

@@ -72,7 +72,7 @@ fun Controls(
             }
         }
 
-        if (!expanded) return@Column
+        if (!expanded && name != null) return@Column
 
         for (control in controls) {
             Box(
