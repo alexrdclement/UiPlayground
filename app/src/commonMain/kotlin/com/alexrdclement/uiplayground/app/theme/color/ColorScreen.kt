@@ -2,7 +2,6 @@ package com.alexrdclement.uiplayground.app.theme.color
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -15,8 +14,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,12 +27,16 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
+import com.alexrdclement.uiplayground.theme.ColorToken
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.theme.control.ThemeController
 import com.alexrdclement.uiplayground.theme.control.ThemeState
+import com.alexrdclement.uiplayground.theme.toColor
+import com.alexrdclement.uiplayground.theme.copy
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -41,6 +47,8 @@ fun ColorScreen(
 ) {
     val state = rememberColorScreenState(themeState = themeController)
     val control = rememberColorScreenControl(state = state, themeController = themeController)
+
+    var selectedColorToken by remember { mutableStateOf<ColorToken?>(null) }
 
     Scaffold(
         topBar = {
@@ -67,44 +75,28 @@ fun ColorScreen(
                     .fillMaxHeight()
                     .padding(PlaygroundTheme.spacing.medium)
             ) {
-                ColorDisplay(
-                    label = "Primary",
-                    color = PlaygroundTheme.colorScheme.primary,
-                )
-                ColorDisplay(
-                    label = "On Primary",
-                    color = PlaygroundTheme.colorScheme.onPrimary,
-                )
-                ColorDisplay(
-                    label = "Secondary",
-                    color = PlaygroundTheme.colorScheme.secondary,
-                )
-                ColorDisplay(
-                    label = "On Secondary",
-                    color = PlaygroundTheme.colorScheme.onSecondary,
-                )
-                ColorDisplay(
-                    label = "Background",
-                    color = PlaygroundTheme.colorScheme.background,
-                )
-                ColorDisplay(
-                    label = "On Background",
-                    color = PlaygroundTheme.colorScheme.onBackground,
-                )
-                ColorDisplay(
-                    label = "Surface",
-                    color = PlaygroundTheme.colorScheme.surface,
-                )
-                ColorDisplay(
-                    label = "On Surface",
-                    color = PlaygroundTheme.colorScheme.onSurface,
-                )
-                ColorDisplay(
-                    label = "Outline",
-                    color = PlaygroundTheme.colorScheme.outline,
-                )
+                for (colorToken in ColorToken.entries) {
+                    ColorDisplay(
+                        label = colorToken.name,
+                        color = colorToken.toColor(),
+                        onColorClick = { selectedColorToken = colorToken },
+                    )
+                }
             }
         }
+    }
+
+    selectedColorToken?.let { colorToken ->
+        ColorPickerDialog(
+            colorToken = colorToken,
+            onColorSelected = {
+                control.onColorSelected(color = it, colorToken = colorToken)
+                selectedColorToken = null
+            },
+            onDismissRequest = {
+                selectedColorToken = null
+            }
+        )
     }
 }
 
@@ -112,6 +104,7 @@ fun ColorScreen(
 private fun ColorDisplay(
     label: String,
     color: Color,
+    onColorClick: (Color) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -127,11 +120,12 @@ private fun ColorDisplay(
                 .weight(1f)
                 .padding(end = PlaygroundTheme.spacing.medium)
         )
-        Box(
+        Button(
+            onClick = { onColorClick(color) },
             modifier = Modifier
                 .size(40.dp)
                 .background(color = color, shape = RectangleShape)
-        )
+        ) {}
     }
 }
 
@@ -194,4 +188,16 @@ class ColorScreenControl(
     val controls: PersistentList<Control> = persistentListOf(
         isDarkModeControl,
     )
+
+    fun onColorSelected(color: Color, colorToken: ColorToken) {
+        val colorScheme = themeController.colorScheme.copy(
+            token = colorToken,
+            color = color,
+        )
+        if (themeController.isDarkMode) {
+            themeController.setDarkColorScheme(colorScheme = colorScheme)
+        } else {
+            themeController.setLightColorScheme(colorScheme = colorScheme)
+        }
+    }
 }
