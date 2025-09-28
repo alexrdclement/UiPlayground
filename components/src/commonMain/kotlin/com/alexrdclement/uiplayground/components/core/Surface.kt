@@ -108,7 +108,7 @@ private fun Modifier.surface(
 private fun Preview(
     @PreviewParameter(BoolPreviewParameterProvider::class) isDarkTheme: Boolean,
 ) {
-    PlaygroundTheme(darkTheme = isDarkTheme) {
+    PlaygroundTheme(isDarkMode = isDarkTheme) {
         Surface {
             Text("Hello world")
         }
@@ -121,7 +121,7 @@ private fun PreviewClickable(
     @PreviewParameter(BoolPreviewParameterProvider::class) isDarkTheme: Boolean,
     @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
 ) {
-    PlaygroundTheme(darkTheme = isDarkTheme) {
+    PlaygroundTheme(isDarkMode = isDarkTheme) {
         Surface(
             onClick = {},
             enabled = enabled,

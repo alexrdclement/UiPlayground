@@ -23,6 +23,9 @@ fun App(
     }
 
     PlaygroundTheme(
+        lightColorScheme = themeController.lightColorScheme,
+        darkColorScheme = themeController.darkColorScheme,
+        isDarkMode = themeController.isDarkMode,
         typography = themeController.typography,
         indication = themeController.indication,
     ) {

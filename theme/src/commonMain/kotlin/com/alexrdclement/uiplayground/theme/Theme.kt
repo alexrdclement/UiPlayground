@@ -54,21 +54,20 @@ val LocalPlaygroundIndication = staticCompositionLocalOf<Indication> {
 
 @Composable
 fun PlaygroundTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    isDarkMode: Boolean = isSystemInDarkTheme(),
+    lightColorScheme: ColorScheme = PlaygroundLightColorScheme,
+    darkColorScheme: ColorScheme = PlaygroundDarkColorScheme,
     typography: Typography = PlaygroundTypography,
     indication: Indication = PlaygroundIndication,
+    spacing: Spacing = PlaygroundSpacing,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        darkTheme -> PlaygroundDarkColorScheme
-        else -> PlaygroundLightColorScheme
-    }
-
+    val colorScheme = if (isDarkMode) darkColorScheme else lightColorScheme
     CompositionLocalProvider(
         LocalPlaygroundColorScheme provides colorScheme,
-        LocalPlaygroundTypography provides typography,
-        LocalPlaygroundSpacing provides PlaygroundSpacing,
         LocalPlaygroundIndication provides indication,
+        LocalPlaygroundSpacing provides spacing,
+        LocalPlaygroundTypography provides typography,
         content = content,
     )
 
