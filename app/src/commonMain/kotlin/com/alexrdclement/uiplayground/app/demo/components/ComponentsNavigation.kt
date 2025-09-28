@@ -15,12 +15,14 @@ import com.alexrdclement.uiplayground.app.demo.components.media.navigation.navig
 import com.alexrdclement.uiplayground.app.demo.components.money.navigation.moneyComponentsGraph
 import com.alexrdclement.uiplayground.app.demo.components.money.navigation.navigateToMoneyComponents
 import com.alexrdclement.uiplayground.app.demo.popBackStackIfResumed
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 object ComponentsGraphRoute
 
 @Serializable
+@SerialName("components")
 object ComponentCatalogRoute
 
 fun NavGraphBuilder.componentsGraph(
