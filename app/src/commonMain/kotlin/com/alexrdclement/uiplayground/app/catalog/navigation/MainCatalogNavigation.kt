@@ -5,9 +5,11 @@ import androidx.navigation.compose.composable
 import com.alexrdclement.uiplayground.app.catalog.CatalogScreen
 import com.alexrdclement.uiplayground.app.catalog.MainCatalogItem
 import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@SerialName("catalog")
 object CatalogRoute
 
 fun NavGraphBuilder.mainCatalogScreen(

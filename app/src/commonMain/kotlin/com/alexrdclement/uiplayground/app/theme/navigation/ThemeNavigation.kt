@@ -7,12 +7,14 @@ import androidx.navigation.compose.navigation
 import com.alexrdclement.uiplayground.app.demo.popBackStackIfResumed
 import com.alexrdclement.uiplayground.app.theme.ThemeScreen
 import com.alexrdclement.uiplayground.theme.control.ThemeController
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 object ThemeGraphRoute
 
 @Serializable
+@SerialName("theme")
 object ThemeRoute
 
 fun NavGraphBuilder.themeGraph(

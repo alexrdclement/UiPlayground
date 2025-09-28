@@ -8,12 +8,14 @@ import com.alexrdclement.uiplayground.app.catalog.CatalogScreen
 import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
 import com.alexrdclement.uiplayground.app.demo.experiments.Experiment
 import com.alexrdclement.uiplayground.app.demo.popBackStackIfResumed
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 object ExperimentsGraphRoute
 
 @Serializable
+@SerialName("experiments")
 object ExperimentCatalogRoute
 
 fun NavGraphBuilder.experimentsGraph(

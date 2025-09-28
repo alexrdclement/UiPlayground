@@ -7,12 +7,15 @@ import androidx.navigation.navigation
 import com.alexrdclement.uiplayground.app.catalog.CatalogScreen
 import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
 import com.alexrdclement.uiplayground.app.demo.popBackStackIfResumed
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@SerialName("money")
 object MoneyComponentsGraphRoute
 
 @Serializable
+@SerialName("catalog")
 object MoneyComponentCatalogRoute
 
 fun NavGraphBuilder.moneyComponentsGraph(

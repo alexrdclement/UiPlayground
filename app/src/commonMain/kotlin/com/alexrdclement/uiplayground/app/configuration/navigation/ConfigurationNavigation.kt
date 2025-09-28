@@ -6,12 +6,14 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import com.alexrdclement.uiplayground.app.configuration.ConfigurationController
 import com.alexrdclement.uiplayground.app.configuration.ConfigurationDialogContent
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 object ConfigurationGraphRoute
 
 @Serializable
+@SerialName("configuration")
 object ConfigurationRoute
 
 fun NavGraphBuilder.configurationGraph(

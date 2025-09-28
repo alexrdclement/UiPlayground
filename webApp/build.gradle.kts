@@ -19,6 +19,7 @@ kotlin {
             dependencies {
                 implementation(project(":app"))
                 implementation(compose.ui)
+                implementation(libs.navigation.compose)
             }
         }
     }
