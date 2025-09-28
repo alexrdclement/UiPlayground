@@ -6,7 +6,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.alexrdclement.uiplayground.app.catalog.CatalogScreen
 import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
-import com.alexrdclement.uiplayground.app.demo.components.core.navigation.coreComponentsGraph
+import com.alexrdclement.uiplayground.app.demo.components.color.navigation.colorComponentsGraph
+import com.alexrdclement.uiplayground.app.demo.components.color.navigation.navigateToColorComponents
 import com.alexrdclement.uiplayground.app.demo.components.core.navigation.navigateToCoreComponents
 import com.alexrdclement.uiplayground.app.demo.components.geometry.navigation.geometryComponentsGraph
 import com.alexrdclement.uiplayground.app.demo.components.geometry.navigation.navigateToGeometryComponents
@@ -35,6 +36,7 @@ fun NavGraphBuilder.componentsGraph(
         componentCatalogScreen(
             onItemClick = { componentGroup ->
                 when (componentGroup) {
+                    ComponentCategory.Color -> navController.navigateToColorComponents()
                     ComponentCategory.Core -> navController.navigateToCoreComponents()
                     ComponentCategory.Geometry -> navController.navigateToGeometryComponents()
                     ComponentCategory.Media -> navController.navigateToMediaComponents()
@@ -44,7 +46,11 @@ fun NavGraphBuilder.componentsGraph(
             onNavigateBack = navController::popBackStackIfResumed,
             onConfigureClick = onConfigureClick,
         )
-        coreComponentsGraph(
+        colorComponentsGraph(
+            navController = navController,
+            onConfigureClick = onConfigureClick,
+        )
+        colorComponentsGraph(
             navController = navController,
             onConfigureClick = onConfigureClick,
         )

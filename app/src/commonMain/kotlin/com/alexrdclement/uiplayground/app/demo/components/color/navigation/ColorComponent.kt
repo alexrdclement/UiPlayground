@@ -1,15 +1,11 @@
-package com.alexrdclement.uiplayground.app.demo.components
+package com.alexrdclement.uiplayground.app.demo.components.color.navigation
 
 import com.alexrdclement.uiplayground.app.catalog.CatalogItem
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class ComponentCategory : CatalogItem {
-    Color,
-    Core,
-    Geometry,
-    Media,
-    Money,
+enum class ColorComponent : CatalogItem {
+    ColorPicker,
     ;
 
     override val title = this.name
