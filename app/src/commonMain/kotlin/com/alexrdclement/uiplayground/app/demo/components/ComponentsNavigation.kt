@@ -8,6 +8,7 @@ import com.alexrdclement.uiplayground.app.catalog.CatalogScreen
 import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
 import com.alexrdclement.uiplayground.app.demo.components.color.navigation.colorComponentsGraph
 import com.alexrdclement.uiplayground.app.demo.components.color.navigation.navigateToColorComponents
+import com.alexrdclement.uiplayground.app.demo.components.core.navigation.coreComponentsGraph
 import com.alexrdclement.uiplayground.app.demo.components.core.navigation.navigateToCoreComponents
 import com.alexrdclement.uiplayground.app.demo.components.geometry.navigation.geometryComponentsGraph
 import com.alexrdclement.uiplayground.app.demo.components.geometry.navigation.navigateToGeometryComponents
@@ -50,7 +51,7 @@ fun NavGraphBuilder.componentsGraph(
             navController = navController,
             onConfigureClick = onConfigureClick,
         )
-        colorComponentsGraph(
+        coreComponentsGraph(
             navController = navController,
             onConfigureClick = onConfigureClick,
         )
