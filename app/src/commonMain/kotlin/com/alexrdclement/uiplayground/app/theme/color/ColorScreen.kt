@@ -2,16 +2,13 @@ package com.alexrdclement.uiplayground.app.theme.color
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.displayCutoutPadding
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -35,8 +32,8 @@ import com.alexrdclement.uiplayground.theme.ColorToken
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.theme.control.ThemeController
 import com.alexrdclement.uiplayground.theme.control.ThemeState
-import com.alexrdclement.uiplayground.theme.toColor
 import com.alexrdclement.uiplayground.theme.copy
+import com.alexrdclement.uiplayground.theme.toColor
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -68,14 +65,17 @@ fun ColorScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            Column(
+            LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
+                horizontalAlignment = Alignment.Start,
                 modifier = Modifier
-                    .width(IntrinsicSize.Max)
-                    .fillMaxHeight()
+                    .align(Alignment.Center)
                     .padding(PlaygroundTheme.spacing.medium)
             ) {
-                for (colorToken in ColorToken.entries) {
+                items(
+                    items = ColorToken.entries,
+                    key = { it.name },
+                ) { colorToken ->
                     ColorDisplay(
                         label = colorToken.name,
                         color = colorToken.toColor(),
@@ -108,24 +108,22 @@ private fun ColorDisplay(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .fillMaxWidth()
     ) {
-        Text(
-            text = label,
-            style = PlaygroundTheme.typography.labelMedium,
-            modifier = Modifier
-                .weight(1f)
-                .padding(end = PlaygroundTheme.spacing.medium)
-        )
         Button(
             onClick = { onColorClick(color) },
             modifier = Modifier
                 .size(40.dp)
                 .background(color = color, shape = RectangleShape)
         ) {}
+        Text(
+            text = label,
+            style = PlaygroundTheme.typography.labelMedium,
+            modifier = Modifier
+                .padding(end = PlaygroundTheme.spacing.medium)
+        )
     }
 }
 
