@@ -30,6 +30,8 @@ import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.theme.ColorToken
+import com.alexrdclement.uiplayground.theme.PlaygroundDarkColorScheme
+import com.alexrdclement.uiplayground.theme.PlaygroundLightColorScheme
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.theme.control.ThemeController
 import com.alexrdclement.uiplayground.theme.control.ThemeState
@@ -184,8 +186,20 @@ class ColorScreenControl(
         }
     )
 
+    val resetButton = Control.Button(
+        name = "Reset",
+        onClick = {
+            if (themeController.isDarkMode) {
+                themeController.setDarkColorScheme(PlaygroundDarkColorScheme)
+            } else {
+                themeController.setLightColorScheme(PlaygroundLightColorScheme)
+            }
+        }
+    )
+
     val controls: PersistentList<Control> = persistentListOf(
         isDarkModeControl,
+        resetButton,
     )
 
     fun onColorSelected(color: Color, colorToken: ColorToken) {
