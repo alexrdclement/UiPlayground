@@ -66,6 +66,7 @@ fun ColorPickerDialogContent(
             color = color,
             onColorChange = { color = it },
             modifier = Modifier
+                .weight(1f, fill = false)
                 .padding(PlaygroundTheme.spacing.large)
         )
         Row(

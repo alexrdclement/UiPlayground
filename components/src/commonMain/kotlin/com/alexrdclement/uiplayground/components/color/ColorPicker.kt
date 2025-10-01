@@ -24,7 +24,6 @@ fun ColorPicker(
     onColorChange: (Color) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
     Column(
         verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -32,7 +31,7 @@ fun ColorPicker(
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
+                .weight(1f, fill = false)
                 .aspectRatio(1f)
                 .semantics {
                     contentDescription = "Selected color"

@@ -1,6 +1,5 @@
 package com.alexrdclement.uiplayground.app.demo.components.color
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
