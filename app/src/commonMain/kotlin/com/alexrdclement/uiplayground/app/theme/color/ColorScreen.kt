@@ -2,6 +2,7 @@ package com.alexrdclement.uiplayground.app.theme.color
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
@@ -68,9 +69,9 @@ fun ColorScreen(
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
                 horizontalAlignment = Alignment.Start,
+                contentPadding = PaddingValues(PlaygroundTheme.spacing.medium),
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .padding(PlaygroundTheme.spacing.medium)
             ) {
                 items(
                     items = ColorToken.entries,
