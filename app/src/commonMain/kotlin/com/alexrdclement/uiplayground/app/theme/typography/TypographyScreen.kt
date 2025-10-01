@@ -3,6 +3,7 @@ package com.alexrdclement.uiplayground.app.theme.typography
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -68,9 +69,9 @@ fun TypographyScreen(
                     alignment = Alignment.CenterVertically,
                 ),
                 horizontalAlignment = Alignment.CenterHorizontally,
+                contentPadding = PaddingValues(PlaygroundTheme.spacing.medium),
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = PlaygroundTheme.spacing.medium)
             ) {
                 items(TextStyle.entries) { textStyle ->
                     Column(
