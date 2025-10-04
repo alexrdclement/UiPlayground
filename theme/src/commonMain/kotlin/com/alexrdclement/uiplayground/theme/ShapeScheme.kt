@@ -1,5 +1,7 @@
 package com.alexrdclement.uiplayground.theme
 
+import androidx.compose.ui.unit.dp
+
 data class ShapeScheme(
     val primary: Shape,
     val secondary: Shape,
@@ -7,8 +9,10 @@ data class ShapeScheme(
 )
 
 val PlaygroundShapeScheme = ShapeScheme(
-    primary = Shape.Rectangle,
-    secondary = Shape.Rectangle,
+    primary = Shape.Rectangle(
+        cornerRadius = 64.dp,
+    ),
+    secondary = Shape.Rectangle(),
     tertiary = Shape.Circle,
 )
 

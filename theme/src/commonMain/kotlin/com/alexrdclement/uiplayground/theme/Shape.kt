@@ -1,8 +1,10 @@
 package com.alexrdclement.uiplayground.theme
 
 import androidx.compose.foundation.shape.GenericShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.theme.util.toRadians
 import kotlin.math.cos
 import kotlin.math.sin
@@ -18,29 +20,32 @@ enum class ShapeType {
 sealed class Shape(
     val type: ShapeType,
 ) {
-    object Rectangle : Shape(type = ShapeType.Rectangle)
+    data class Rectangle(
+        override val cornerRadius: Dp = 0.dp,
+    ) : Shape(type = ShapeType.Rectangle)
+
     object Circle : Shape(type = ShapeType.Circle)
     object Triangle : Shape(type = ShapeType.Triangle)
     object Diamond : Shape(type = ShapeType.Diamond)
+
+    open val cornerRadius
+        get() = if (this is Rectangle) this.cornerRadius else 0.dp
 }
 
-fun ShapeType.toShape(shapeScheme: ShapeScheme): Shape {
+fun ShapeType.toShape(
+    cornerRadius: Dp = 0.dp,
+): Shape {
     return when (this) {
-        ShapeType.Rectangle -> Shape.Rectangle
+        ShapeType.Rectangle -> Shape.Rectangle(cornerRadius = cornerRadius)
         ShapeType.Circle -> Shape.Circle
         ShapeType.Triangle -> Shape.Triangle
         ShapeType.Diamond -> Shape.Diamond
     }
 }
 
-@Composable
-fun ShapeType.toShape(): Shape {
-    return toShape(PlaygroundTheme.shapeScheme)
-}
-
 fun Shape.toComposeShape(): androidx.compose.ui.graphics.Shape {
     return when (this) {
-        Shape.Rectangle -> RectangleShape
+        is Shape.Rectangle -> RoundedCornerShape(size = cornerRadius)
         Shape.Circle -> CircleShape
         Shape.Triangle -> TriangleShape
         Shape.Diamond -> DiamondShape

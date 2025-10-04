@@ -42,9 +42,9 @@ val LocalPlaygroundTypography = staticCompositionLocalOf {
 
 val LocalPlaygroundShapes = staticCompositionLocalOf {
     ShapeScheme(
-        primary = Shape.Rectangle,
-        secondary = Shape.Rectangle,
-        tertiary = Shape.Rectangle,
+        primary = Shape.Rectangle(),
+        secondary = Shape.Rectangle(),
+        tertiary = Shape.Rectangle(),
     )
 }
 

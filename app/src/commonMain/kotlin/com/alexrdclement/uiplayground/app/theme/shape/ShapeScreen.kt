@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.control.Control
@@ -104,6 +105,10 @@ class ShapeScreenState(
 ) {
     val shapeScheme: ShapeScheme
         get() = themeState.shapeScheme
+
+    val cornerRadiusByShapeToken = ShapeToken.entries.associateWith { token ->
+        token.toShape(shapeScheme).cornerRadius
+    }
 }
 
 fun ShapeScreenStateSaver(themeState: ThemeState) = mapSaverSafe(
@@ -158,18 +163,41 @@ private fun makeControlForToken(
         onValueChange = { shapeType ->
             val shapeScheme = state.shapeScheme.copy(
                 token = token,
-                shape = shapeType.toShape(state.shapeScheme)
+                shape = shapeType.toShape(
+                    cornerRadius = state.cornerRadiusByShapeToken[token]!!
+                )
             )
             themeController.setShapeScheme(shapeScheme)
         }
     )
 
+    val cornerRadiusControl = Control.Slider(
+        name = "Corner radius",
+        value = { state.cornerRadiusByShapeToken[token]!!.value },
+        onValueChange = { radius ->
+            val shapeScheme = state.shapeScheme.copy(
+                token = token,
+                shape = ShapeType.Rectangle.toShape(
+                    cornerRadius = radius.dp,
+                )
+            )
+            themeController.setShapeScheme(shapeScheme)
+        },
+        valueRange = { 0f..64f },
+    )
+
     return Control.ControlColumn(
         name = token.name,
         controls = {
-            persistentListOf(
-                shapeControl,
-            )
+            when (shapeType) {
+                ShapeType.Rectangle -> persistentListOf(
+                    shapeControl,
+                    cornerRadiusControl,
+                )
+                else -> persistentListOf(
+                    shapeControl,
+                )
+            }
         }
     )
 }
