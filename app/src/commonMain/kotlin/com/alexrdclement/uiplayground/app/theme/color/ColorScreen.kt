@@ -19,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
@@ -33,10 +34,12 @@ import com.alexrdclement.uiplayground.theme.ColorToken
 import com.alexrdclement.uiplayground.theme.PlaygroundDarkColorScheme
 import com.alexrdclement.uiplayground.theme.PlaygroundLightColorScheme
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.ShapeToken
 import com.alexrdclement.uiplayground.theme.control.ThemeController
 import com.alexrdclement.uiplayground.theme.control.ThemeState
 import com.alexrdclement.uiplayground.theme.copy
 import com.alexrdclement.uiplayground.theme.toColor
+import com.alexrdclement.uiplayground.theme.toComposeShape
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -116,9 +119,11 @@ private fun ColorDisplay(
         modifier = modifier
     ) {
         Button(
+            shape = ShapeToken.Primary,
             onClick = { onColorClick(color) },
             modifier = Modifier
                 .size(40.dp)
+                .clip(PlaygroundTheme.shapeScheme.primary.toComposeShape())
                 .background(color = color, shape = RectangleShape)
         ) {}
         Text(
