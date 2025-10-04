@@ -26,6 +26,7 @@ import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.theme.FontFamily
+import com.alexrdclement.uiplayground.theme.FontWeight
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.theme.PlaygroundTypographyDefaults
 import com.alexrdclement.uiplayground.theme.TypographyToken
@@ -33,7 +34,9 @@ import com.alexrdclement.uiplayground.theme.control.ThemeController
 import com.alexrdclement.uiplayground.theme.control.ThemeState
 import com.alexrdclement.uiplayground.theme.copy
 import com.alexrdclement.uiplayground.theme.toComposeFontFamily
+import com.alexrdclement.uiplayground.theme.toComposeFontWeight
 import com.alexrdclement.uiplayground.theme.toFontFamily
+import com.alexrdclement.uiplayground.theme.toFontWeight
 import com.alexrdclement.uiplayground.theme.toTextStyle
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
@@ -197,11 +200,27 @@ private fun makeControlForToken(
             themeController.setTypography(typography)
         }
     )
+
+    val fontWeightControl = enumControl(
+        name = "Font weight",
+        values = { FontWeight.entries },
+        selectedValue = { textStyle.fontWeight?.toFontWeight() ?: FontWeight.Normal },
+        onValueChange = {
+            val typography = state.typography.copy(
+                token = token,
+                textStyle = textStyle.copy(
+                    fontWeight = it.toComposeFontWeight(),
+                )
+            )
+            themeController.setTypography(typography)
+        }
+    )
     return Control.ControlColumn(
         name = token.name,
         controls = {
             persistentListOf(
                 fontFamilyControl,
+                fontWeightControl,
             )
         }
     )
