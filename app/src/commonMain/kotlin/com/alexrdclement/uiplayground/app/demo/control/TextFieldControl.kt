@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.core.TextField
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun TextFieldControl(
@@ -46,6 +48,21 @@ fun TextFieldControl(
             enabled = enabled,
             inputTransformation = inputTransformation,
             keyboardOptions = keyboardOptions,
+        )
+    }
+}
+
+@Preview
+@Composable
+fun TextFieldControlPreview() {
+    val textFieldState = rememberTextFieldState(initialText = "Text Field")
+    PlaygroundTheme {
+        TextFieldControl(
+            control = Control.TextField(
+                name = "Label",
+                textFieldState = textFieldState,
+                includeLabel = true,
+            ),
         )
     }
 }

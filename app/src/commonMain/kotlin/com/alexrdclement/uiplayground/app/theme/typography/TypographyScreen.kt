@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
@@ -86,7 +87,7 @@ fun TypographyScreen(
                                 .padding(PlaygroundTheme.spacing.xs)
                         )
                         Text(
-                            text = "The quick brown fox jumps over the lazy dog",
+                            text = state.text,
                             style = textStyle.toCompose(),
                         )
                     }
@@ -113,7 +114,14 @@ fun rememberTypographyScreenState(
 @Stable
 class TypographyScreenState(
     val themeState: ThemeState,
+    val initialText: String = "The quick brown fox jumps over the lazy dog",
 ) {
+    val textFieldState = TextFieldState(
+        initialText = initialText,
+    )
+    val text: String
+        get() = textFieldState.text.toString()
+
     val fontFamily: FontFamily
         get() {
             val composeFontFamily = themeState.typography.headline.fontFamily
@@ -148,6 +156,12 @@ class TypographyScreenControl(
     val state: TypographyScreenState,
     val themeController: ThemeController,
 ) {
+    val textFieldControl = Control.TextField(
+        name = "Sample text",
+        includeLabel = false,
+        textFieldState = state.textFieldState,
+    )
+
     val fontFamilyControl = enumControl(
         name = "Font family",
         values = { FontFamily.entries },
@@ -161,6 +175,7 @@ class TypographyScreenControl(
     )
 
     val controls: PersistentList<Control> = persistentListOf(
+        textFieldControl,
         fontFamilyControl,
     )
 }
