@@ -63,7 +63,7 @@ fun BoxWithConstraintsScope.TextDemo(
     }
     Text(
         text = text,
-        style = state.style.toTextStyle().copy(
+        style = state.style.toTextStyle().merge(
             textAlign = state.textAlign.toCompose(),
             lineHeightStyle = TextDemoState.lineHeightStyleDefault.copy(
                 alignment = state.lineHeightAlignment.toCompose(),

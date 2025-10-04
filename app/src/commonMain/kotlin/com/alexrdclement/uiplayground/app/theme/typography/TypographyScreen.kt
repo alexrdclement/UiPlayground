@@ -11,12 +11,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
@@ -25,7 +28,10 @@ import com.alexrdclement.uiplayground.app.demo.control.enumControl
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
+import com.alexrdclement.uiplayground.components.util.restore
+import com.alexrdclement.uiplayground.components.util.save
 import com.alexrdclement.uiplayground.theme.FontFamily
+import com.alexrdclement.uiplayground.theme.FontStyle
 import com.alexrdclement.uiplayground.theme.FontWeight
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.theme.PlaygroundTypographyDefaults
@@ -34,8 +40,10 @@ import com.alexrdclement.uiplayground.theme.control.ThemeController
 import com.alexrdclement.uiplayground.theme.control.ThemeState
 import com.alexrdclement.uiplayground.theme.copy
 import com.alexrdclement.uiplayground.theme.toComposeFontFamily
+import com.alexrdclement.uiplayground.theme.toComposeFontStyle
 import com.alexrdclement.uiplayground.theme.toComposeFontWeight
 import com.alexrdclement.uiplayground.theme.toFontFamily
+import com.alexrdclement.uiplayground.theme.toFontStyle
 import com.alexrdclement.uiplayground.theme.toFontWeight
 import com.alexrdclement.uiplayground.theme.toTextStyle
 import kotlinx.collections.immutable.PersistentList
@@ -103,13 +111,16 @@ fun TypographyScreen(
 @Composable
 fun rememberTypographyScreenState(
     themeState: ThemeState,
+    initialText: String = "The quick brown fox jumps over the lazy dog",
 ): TypographyScreenState {
+    val textFieldState = rememberTextFieldState(initialText = initialText)
     return rememberSaveable(
         themeState,
         saver = TypographyScreenStateSaver(themeState),
     ) {
         TypographyScreenState(
             themeState = themeState,
+            textFieldState = textFieldState,
         )
     }
 }
@@ -117,32 +128,27 @@ fun rememberTypographyScreenState(
 @Stable
 class TypographyScreenState(
     val themeState: ThemeState,
-    val initialText: String = "The quick brown fox jumps over the lazy dog",
+    val textFieldState: TextFieldState,
 ) {
     val typography
         get() = themeState.typography
 
-    val textFieldState = TextFieldState(
-        initialText = initialText,
-    )
     val text: String
         get() = textFieldState.text.toString()
-
-    val fontFamily: FontFamily
-        get() {
-            val composeFontFamily = themeState.typography.headline.fontFamily
-                ?: PlaygroundTypographyDefaults.fontFamily
-            return composeFontFamily.toFontFamily()
-        }
 }
+
+private val textFieldKey = "textField"
 
 fun TypographyScreenStateSaver(themeState: ThemeState) = mapSaverSafe(
     save = { state ->
-        mapOf()
+        mapOf(
+            textFieldKey to save(state.textFieldState, TextFieldState.Saver, this),
+        )
     },
     restore = { map ->
         TypographyScreenState(
             themeState = themeState,
+            textFieldState = restore(map[textFieldKey], TextFieldState.Saver)!!,
         )
     }
 )
@@ -201,6 +207,21 @@ private fun makeControlForToken(
         }
     )
 
+    val fontSizeControl = Control.Slider(
+        name = "Font size",
+        value = { textStyle.fontSize.value },
+        onValueChange = { newSize: Float ->
+            val typography = state.typography.copy(
+                token = token,
+                textStyle = textStyle.copy(
+                    fontSize = TextUnit(newSize, TextUnitType.Sp)
+                )
+            )
+            themeController.setTypography(typography)
+        },
+        valueRange = { 8f..200f },
+    )
+
     val fontWeightControl = enumControl(
         name = "Font weight",
         values = { FontWeight.entries },
@@ -215,12 +236,62 @@ private fun makeControlForToken(
             themeController.setTypography(typography)
         }
     )
+
+    val fontStyleControl = enumControl(
+        name = "Font style",
+        values = { FontStyle.entries },
+        selectedValue = { textStyle.fontStyle?.toFontStyle() ?: FontStyle.Normal },
+        onValueChange = {
+            val typography = state.typography.copy(
+                token = token,
+                textStyle = textStyle.copy(
+                    fontStyle = it.toComposeFontStyle(),
+                )
+            )
+            themeController.setTypography(typography)
+        },
+    )
+
+    val lineHeightControl = Control.Slider(
+        name = "Line height",
+        value = { textStyle.lineHeight.value },
+        onValueChange = { newSize: Float ->
+            val typography = state.typography.copy(
+                token = token,
+                textStyle = textStyle.copy(
+                    lineHeight = TextUnit(newSize, TextUnitType.Sp)
+                )
+            )
+            themeController.setTypography(typography)
+        },
+        valueRange = { 8f..200f },
+    )
+
+    val letterSpacingControl = Control.Slider(
+        name = "Letter spacing",
+        value = { textStyle.letterSpacing.value },
+        onValueChange = { newSize: Float ->
+            val typography = state.typography.copy(
+                token = token,
+                textStyle = textStyle.copy(
+                    letterSpacing = TextUnit(newSize, TextUnitType.Sp)
+                )
+            )
+            themeController.setTypography(typography)
+        },
+        valueRange = { -10f..10f },
+    )
+
     return Control.ControlColumn(
         name = token.name,
         controls = {
             persistentListOf(
                 fontFamilyControl,
                 fontWeightControl,
+                fontStyleControl,
+                fontSizeControl,
+                lineHeightControl,
+                letterSpacingControl,
             )
         }
     )
