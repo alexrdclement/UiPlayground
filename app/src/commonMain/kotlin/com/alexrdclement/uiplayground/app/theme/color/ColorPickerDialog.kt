@@ -38,7 +38,8 @@ fun ColorPickerDialog(
                 colorToken = colorToken,
                 onColorSelected = onColorSelected,
                 onDismissRequest = onDismissRequest,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(PlaygroundTheme.spacing.medium)
             )
         }
     }

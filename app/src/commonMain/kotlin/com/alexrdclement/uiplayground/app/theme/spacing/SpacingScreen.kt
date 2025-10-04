@@ -95,7 +95,6 @@ fun SpacingDemo(
         Text(
             text = spacing.name,
             style = PlaygroundTheme.typography.headline,
-            modifier = Modifier
         )
     }
 }
