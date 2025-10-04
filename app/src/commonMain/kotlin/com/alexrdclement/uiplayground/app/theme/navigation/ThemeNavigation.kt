@@ -9,8 +9,9 @@ import com.alexrdclement.uiplayground.app.demo.popBackStackIfResumed
 import com.alexrdclement.uiplayground.app.theme.ThemeItem
 import com.alexrdclement.uiplayground.app.theme.color.navigation.colorScreen
 import com.alexrdclement.uiplayground.app.theme.color.navigation.navigateToColor
-import com.alexrdclement.uiplayground.app.theme.indication.navigation.indicationScreen
-import com.alexrdclement.uiplayground.app.theme.indication.navigation.navigateToIndication
+import com.alexrdclement.uiplayground.app.theme.interaction.navigation.indicationScreen
+import com.alexrdclement.uiplayground.app.theme.interaction.navigation.interactionGraph
+import com.alexrdclement.uiplayground.app.theme.interaction.navigation.navigateToInteraction
 import com.alexrdclement.uiplayground.app.theme.shape.navigation.navigateToShape
 import com.alexrdclement.uiplayground.app.theme.shape.navigation.shapeScreen
 import com.alexrdclement.uiplayground.app.theme.typography.navigation.navigateToTypography
@@ -37,7 +38,7 @@ fun NavGraphBuilder.themeGraph(
             onItemClick = {
                 when (it) {
                     ThemeItem.Color -> navController.navigateToColor()
-                    ThemeItem.Indication -> navController.navigateToIndication()
+                    ThemeItem.Interaction -> navController.navigateToInteraction()
                     ThemeItem.Shape -> navController.navigateToShape()
                     ThemeItem.Typography -> navController.navigateToTypography()
                 }
@@ -56,7 +57,8 @@ fun NavGraphBuilder.themeGraph(
             themeController = themeController,
             onNavigateBack = navController::popBackStackIfResumed,
         )
-        indicationScreen(
+        interactionGraph(
+            navController = navController,
             themeController = themeController,
             onNavigateBack = navController::popBackStackIfResumed,
         )

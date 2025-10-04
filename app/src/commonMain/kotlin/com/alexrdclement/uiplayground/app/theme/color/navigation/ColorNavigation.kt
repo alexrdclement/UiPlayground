@@ -4,7 +4,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.alexrdclement.uiplayground.app.theme.color.ColorScreen
-import com.alexrdclement.uiplayground.app.theme.indication.IndicationScreen
 import com.alexrdclement.uiplayground.theme.control.ThemeController
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

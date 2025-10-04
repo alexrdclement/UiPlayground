@@ -4,7 +4,7 @@ import com.alexrdclement.uiplayground.app.catalog.CatalogItem
 
 enum class ThemeItem : CatalogItem {
     Color,
-    Indication,
+    Interaction,
     Shape,
     Typography,
     ;

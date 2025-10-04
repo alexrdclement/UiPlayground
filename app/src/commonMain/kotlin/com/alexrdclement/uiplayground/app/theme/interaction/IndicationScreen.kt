@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.app.theme.indication
+package com.alexrdclement.uiplayground.app.theme.interaction
 
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
