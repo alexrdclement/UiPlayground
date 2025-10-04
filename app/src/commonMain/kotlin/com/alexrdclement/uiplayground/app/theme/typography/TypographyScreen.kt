@@ -20,8 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
-import com.alexrdclement.uiplayground.app.demo.components.core.TextStyle
-import com.alexrdclement.uiplayground.app.demo.components.core.toCompose
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.enumControl
 import com.alexrdclement.uiplayground.components.core.Text
@@ -30,11 +28,13 @@ import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.theme.FontFamily
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.theme.PlaygroundTypographyDefaults
+import com.alexrdclement.uiplayground.theme.TypographyToken
 import com.alexrdclement.uiplayground.theme.control.ThemeController
 import com.alexrdclement.uiplayground.theme.control.ThemeState
-import com.alexrdclement.uiplayground.theme.makePlaygroundTypography
+import com.alexrdclement.uiplayground.theme.copy
 import com.alexrdclement.uiplayground.theme.toComposeFontFamily
 import com.alexrdclement.uiplayground.theme.toFontFamily
+import com.alexrdclement.uiplayground.theme.toTextStyle
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -74,7 +74,7 @@ fun TypographyScreen(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                items(TextStyle.entries) { textStyle ->
+                items(TypographyToken.entries) { textStyle ->
                     Column(
                         verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
                         modifier = Modifier.fillMaxWidth()
@@ -88,7 +88,7 @@ fun TypographyScreen(
                         )
                         Text(
                             text = state.text,
-                            style = textStyle.toCompose(),
+                            style = textStyle.toTextStyle(),
                         )
                     }
                 }
@@ -116,6 +116,9 @@ class TypographyScreenState(
     val themeState: ThemeState,
     val initialText: String = "The quick brown fox jumps over the lazy dog",
 ) {
+    val typography
+        get() = themeState.typography
+
     val textFieldState = TextFieldState(
         initialText = initialText,
     )
@@ -162,20 +165,44 @@ class TypographyScreenControl(
         textFieldState = state.textFieldState,
     )
 
+    val tokenControls = TypographyToken.entries.map {
+        makeControlForToken(it, state, themeController)
+    }
+
+    val controls: PersistentList<Control> = persistentListOf(
+        textFieldControl,
+        *tokenControls.toTypedArray(),
+    )
+}
+
+private fun makeControlForToken(
+    token: TypographyToken,
+    state: TypographyScreenState,
+    themeController: ThemeController,
+): Control {
+    val textStyle = token.toTextStyle(state.typography)
+
+    val composeFontFamily = textStyle.fontFamily ?: PlaygroundTypographyDefaults.fontFamily
     val fontFamilyControl = enumControl(
         name = "Font family",
         values = { FontFamily.entries },
-        selectedValue = { state.fontFamily },
+        selectedValue = { composeFontFamily.toFontFamily() },
         onValueChange = {
-            val typography = makePlaygroundTypography(
-                fontFamily = it.toComposeFontFamily(),
+            val typography = state.typography.copy(
+                token = token,
+                textStyle = textStyle.copy(
+                    fontFamily = it.toComposeFontFamily(),
+                )
             )
             themeController.setTypography(typography)
         }
     )
-
-    val controls: PersistentList<Control> = persistentListOf(
-        textFieldControl,
-        fontFamilyControl,
+    return Control.ControlColumn(
+        name = token.name,
+        controls = {
+            persistentListOf(
+                fontFamilyControl,
+            )
+        }
     )
 }

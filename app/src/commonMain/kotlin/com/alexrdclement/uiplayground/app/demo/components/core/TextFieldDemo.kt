@@ -36,6 +36,8 @@ import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.components.util.restore
 import com.alexrdclement.uiplayground.components.util.save
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.TypographyToken
+import com.alexrdclement.uiplayground.theme.toTextStyle
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -76,7 +78,7 @@ fun TextFieldDemo(
                 InputTransformations.AllCaps -> InputTransformation.allCaps(Locale.current)
                 InputTransformations.OnlyDigits -> InputTransformation.onlyDigits()
             },
-            textStyle = state.style.toCompose(),
+            textStyle = state.style.toTextStyle(),
             modifier = Modifier
                 .align(Alignment.Center)
                 .width(state.width)
@@ -131,7 +133,7 @@ fun rememberTextFieldDemoState(
 @Stable
 class TextFieldDemoState(
     initialText: String,
-    styleInitial: TextStyle = TextStyle.Headline,
+    styleInitial: TypographyToken = TypographyToken.Headline,
     maxWidthInitial: Dp = 0.dp,
     widthInitial: Dp = 200.dp,
     enabledInitial: Boolean = true,
@@ -220,7 +222,7 @@ val TextFieldDemoStateSaver = mapSaverSafe(
             widthInitial = (map[widthKey] as Float).dp,
             maxWidthInitial = (map[maxWidthKey] as Float).dp,
             enabledInitial = map[enabledKey] as Boolean,
-            styleInitial = TextStyle.valueOf(map[styleKey] as String),
+            styleInitial = TypographyToken.valueOf(map[styleKey] as String),
             keyboardTypeInitial = restore(map[keyboardTypeKey], KeyboardTypeSaver)!!,
             keyboardCapitalizationInitial = restore(map[keyboardCapitalizationKey], KeyboardCapitalizationSaver)!!,
             autoCorrectEnabledInitial = map[autoCorrectEnabledKey] as Boolean,
@@ -250,7 +252,7 @@ class TextFieldDemoControl(
 
     val styleControl = enumControl(
         name = "Style",
-        values = { TextStyle.entries },
+        values = { TypographyToken.entries },
         selectedValue = { state.style },
         onValueChange = { state.style = it },
     )
