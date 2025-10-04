@@ -3,8 +3,6 @@ package com.alexrdclement.uiplayground.app.theme.color
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,9 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.alexrdclement.uiplayground.components.color.ColorPicker
-import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.core.Surface
-import com.alexrdclement.uiplayground.components.core.Text
+import com.alexrdclement.uiplayground.components.layout.ConfirmCancelButtonRow
 import com.alexrdclement.uiplayground.theme.ColorToken
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.theme.toColor
@@ -61,40 +58,23 @@ fun ColorPickerDialogContent(
         verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
+            .padding(PlaygroundTheme.spacing.large)
     ) {
         ColorPicker(
             color = color,
             onColorChange = { color = it },
             modifier = Modifier
                 .weight(1f, fill = false)
-                .padding(PlaygroundTheme.spacing.large)
         )
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
+        ConfirmCancelButtonRow(
+            onConfirm = {
+                onColorSelected(color)
+                onDismissRequest()
+            },
+            onDismiss = onDismissRequest,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = PlaygroundTheme.spacing.large,
-                    end = PlaygroundTheme.spacing.large,
-                    bottom = PlaygroundTheme.spacing.large,
-                )
-        ) {
-            Button(
-                onClick = onDismissRequest,
-            ) {
-                Text("Cancel")
-            }
-            Button(
-                onClick = {
-                    onColorSelected(color)
-                    onDismissRequest()
-                },
-                modifier = Modifier
-                    .padding(start = PlaygroundTheme.spacing.medium)
-            ) {
-                Text("OK")
-            }
-        }
+                .padding(top = PlaygroundTheme.spacing.large)
+        )
     }
 }
 
