@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PlayArrow
@@ -15,8 +14,10 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.components.PlayPauseButtonContentDescriptionPaused
 import com.alexrdclement.uiplayground.components.PlayPauseButtonContentDescriptionPlaying
 import com.alexrdclement.uiplayground.components.core.Button
+import com.alexrdclement.uiplayground.components.core.ButtonStyle
 import com.alexrdclement.uiplayground.components.preview.BoolPreviewParameterProvider
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.ShapeToken
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
@@ -29,7 +30,8 @@ fun PlayPauseButton(
 ) {
     Button(
         onClick = onClick,
-        shape = CircleShape,
+        style = ButtonStyle.Fill,
+        shape = ShapeToken.Tertiary,
         enabled = isEnabled,
         contentPadding = PaddingValues(vertical = 2.dp, horizontal = 2.dp),
         modifier = modifier

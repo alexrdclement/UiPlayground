@@ -27,6 +27,7 @@ fun App(
         darkColorScheme = themeController.darkColorScheme,
         isDarkMode = themeController.isDarkMode,
         typography = themeController.typography,
+        shapeScheme = themeController.shapeScheme,
         indication = themeController.indication,
     ) {
         Surface {

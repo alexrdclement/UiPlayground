@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 
@@ -39,6 +40,14 @@ val LocalPlaygroundTypography = staticCompositionLocalOf {
     )
 }
 
+val LocalPlaygroundShapes = staticCompositionLocalOf {
+    ShapeScheme(
+        primary = Shape.Rectangle,
+        secondary = Shape.Rectangle,
+        tertiary = Shape.Rectangle,
+    )
+}
+
 val LocalPlaygroundSpacing = staticCompositionLocalOf {
     Spacing(
         xs = Dp.Unspecified,
@@ -58,6 +67,7 @@ fun PlaygroundTheme(
     lightColorScheme: ColorScheme = PlaygroundLightColorScheme,
     darkColorScheme: ColorScheme = PlaygroundDarkColorScheme,
     typography: Typography = PlaygroundTypography,
+    shapeScheme: ShapeScheme = PlaygroundShapeScheme,
     indication: Indication = PlaygroundIndication,
     spacing: Spacing = PlaygroundSpacing,
     content: @Composable () -> Unit
@@ -65,12 +75,12 @@ fun PlaygroundTheme(
     val colorScheme = if (isDarkMode) darkColorScheme else lightColorScheme
     CompositionLocalProvider(
         LocalPlaygroundColorScheme provides colorScheme,
+        LocalPlaygroundTypography provides typography,
+        LocalPlaygroundShapes provides shapeScheme,
         LocalPlaygroundIndication provides indication,
         LocalPlaygroundSpacing provides spacing,
-        LocalPlaygroundTypography provides typography,
         content = content,
     )
-
 }
 
 object PlaygroundTheme {
@@ -81,6 +91,10 @@ object PlaygroundTheme {
     val typography: Typography
         @Composable
         get() = LocalPlaygroundTypography.current
+
+    val shapeScheme: ShapeScheme
+        @Composable
+        get() = LocalPlaygroundShapes.current
 
     val spacing: Spacing
         @Composable
