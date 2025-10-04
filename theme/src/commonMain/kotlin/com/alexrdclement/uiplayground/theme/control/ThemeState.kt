@@ -12,8 +12,10 @@ import com.alexrdclement.uiplayground.theme.PlaygroundDarkColorScheme
 import com.alexrdclement.uiplayground.theme.PlaygroundIndication
 import com.alexrdclement.uiplayground.theme.PlaygroundLightColorScheme
 import com.alexrdclement.uiplayground.theme.PlaygroundShapeScheme
+import com.alexrdclement.uiplayground.theme.PlaygroundSpacing
 import com.alexrdclement.uiplayground.theme.PlaygroundTypography
 import com.alexrdclement.uiplayground.theme.ShapeScheme
+import com.alexrdclement.uiplayground.theme.Spacing
 import com.alexrdclement.uiplayground.theme.Typography
 
 interface ThemeState {
@@ -23,6 +25,7 @@ interface ThemeState {
     val darkColorScheme: ColorScheme
     val isDarkMode: Boolean
     val shapeScheme: ShapeScheme
+    val spacing: Spacing
 
     val colorScheme: ColorScheme
         get() = if (isDarkMode) darkColorScheme else lightColorScheme
@@ -35,6 +38,7 @@ internal class ThemeStateImpl(
     typographyInitial: Typography = PlaygroundTypography,
     shapeSchemeInitial: ShapeScheme = PlaygroundShapeScheme,
     indicationInitial: Indication = PlaygroundIndication,
+    spacingInitial: Spacing = PlaygroundSpacing,
 ) : ThemeState {
     override var typography by mutableStateOf(typographyInitial)
     override var shapeScheme by mutableStateOf(shapeSchemeInitial)
@@ -42,6 +46,7 @@ internal class ThemeStateImpl(
     override var lightColorScheme by mutableStateOf(lightColorSchemeInitial)
     override var darkColorScheme by mutableStateOf(darkColorSchemeInitial)
     override var isDarkMode by mutableStateOf(isDarkModeInitial)
+    override var spacing by mutableStateOf(spacingInitial)
 }
 
 @Composable

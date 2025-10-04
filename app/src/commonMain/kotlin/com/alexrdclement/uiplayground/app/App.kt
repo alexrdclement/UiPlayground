@@ -29,6 +29,7 @@ fun App(
         typography = themeController.typography,
         shapeScheme = themeController.shapeScheme,
         indication = themeController.indication,
+        spacing = themeController.spacing,
     ) {
         Surface {
             UiPlaygroundNavHost(

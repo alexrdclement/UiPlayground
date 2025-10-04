@@ -14,6 +14,8 @@ import com.alexrdclement.uiplayground.app.theme.interaction.navigation.interacti
 import com.alexrdclement.uiplayground.app.theme.interaction.navigation.navigateToInteraction
 import com.alexrdclement.uiplayground.app.theme.shape.navigation.navigateToShape
 import com.alexrdclement.uiplayground.app.theme.shape.navigation.shapeScreen
+import com.alexrdclement.uiplayground.app.theme.spacing.navigation.navigateToSpacing
+import com.alexrdclement.uiplayground.app.theme.spacing.navigation.spacingScreen
 import com.alexrdclement.uiplayground.app.theme.typography.navigation.navigateToTypography
 import com.alexrdclement.uiplayground.app.theme.typography.navigation.typographyScreen
 import com.alexrdclement.uiplayground.theme.control.ThemeController
@@ -40,6 +42,7 @@ fun NavGraphBuilder.themeGraph(
                     ThemeItem.Color -> navController.navigateToColor()
                     ThemeItem.Interaction -> navController.navigateToInteraction()
                     ThemeItem.Shape -> navController.navigateToShape()
+                    ThemeItem.Spacing -> navController.navigateToSpacing()
                     ThemeItem.Typography -> navController.navigateToTypography()
                 }
             },
@@ -54,6 +57,10 @@ fun NavGraphBuilder.themeGraph(
             onNavigateBack = navController::popBackStackIfResumed,
         )
         shapeScreen(
+            themeController = themeController,
+            onNavigateBack = navController::popBackStackIfResumed,
+        )
+        spacingScreen(
             themeController = themeController,
             onNavigateBack = navController::popBackStackIfResumed,
         )

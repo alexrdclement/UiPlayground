@@ -4,6 +4,7 @@ import androidx.compose.foundation.Indication
 import androidx.compose.runtime.Composable
 import com.alexrdclement.uiplayground.theme.ColorScheme
 import com.alexrdclement.uiplayground.theme.ShapeScheme
+import com.alexrdclement.uiplayground.theme.Spacing
 import com.alexrdclement.uiplayground.theme.Typography
 
 class ThemeController internal constructor(
@@ -37,6 +38,11 @@ class ThemeController internal constructor(
 
     fun setShapeScheme(shapeScheme: ShapeScheme): Boolean {
         state.shapeScheme = shapeScheme
+        return true
+    }
+
+    fun setSpacing(spacing: Spacing): Boolean {
+        state.spacing = spacing
         return true
     }
 }

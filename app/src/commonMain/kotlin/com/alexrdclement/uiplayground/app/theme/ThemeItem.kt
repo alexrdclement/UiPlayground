@@ -6,6 +6,7 @@ enum class ThemeItem : CatalogItem {
     Color,
     Interaction,
     Shape,
+    Spacing,
     Typography,
     ;
 
