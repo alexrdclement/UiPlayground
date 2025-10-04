@@ -2,6 +2,7 @@ package com.alexrdclement.uiplayground.app
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.alexrdclement.uiplayground.app.configuration.rememberConfigurationController
@@ -31,7 +32,9 @@ fun App(
         indication = themeController.indication,
         spacing = themeController.spacing,
     ) {
-        Surface {
+        Surface(
+            shape = RectangleShape,
+        ) {
             UiPlaygroundNavHost(
                 navController = navController,
                 configurationController = configurationController,

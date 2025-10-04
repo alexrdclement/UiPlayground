@@ -24,13 +24,14 @@ import com.alexrdclement.uiplayground.components.contentColorFor
 import com.alexrdclement.uiplayground.components.preview.BoolPreviewParameterProvider
 import com.alexrdclement.uiplayground.theme.LocalPlaygroundIndication
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.toComposeShape
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
 @Composable
 fun Surface(
     modifier: Modifier = Modifier,
-    shape: Shape = RectangleShape,
+    shape: Shape = PlaygroundTheme.shapeScheme.surface.toComposeShape(),
     color: Color = PlaygroundTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(color),
     border: BorderStroke? = null,
@@ -62,7 +63,7 @@ fun Surface(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = RectangleShape,
+    shape: Shape = PlaygroundTheme.shapeScheme.surface.toComposeShape(),
     color: Color = PlaygroundTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(color),
     border: BorderStroke? = null,

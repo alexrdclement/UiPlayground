@@ -123,8 +123,10 @@ private fun ColorDisplay(
             onClick = { onColorClick(color) },
             modifier = Modifier
                 .size(40.dp)
-                .clip(PlaygroundTheme.shapeScheme.primary.toComposeShape())
-                .background(color = color, shape = RectangleShape)
+                .background(
+                    color = color,
+                    shape = PlaygroundTheme.shapeScheme.primary.toComposeShape(),
+                )
         ) {}
         Text(
             text = label,

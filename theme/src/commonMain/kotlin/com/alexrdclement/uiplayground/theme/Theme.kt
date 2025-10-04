@@ -45,6 +45,7 @@ val LocalPlaygroundShapes = staticCompositionLocalOf {
         primary = Shape.Rectangle(),
         secondary = Shape.Rectangle(),
         tertiary = Shape.Rectangle(),
+        surface = Shape.Rectangle(),
     )
 }
 

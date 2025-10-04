@@ -7,6 +7,7 @@ enum class ShapeToken {
     Primary,
     Secondary,
     Tertiary,
+    Surface,
 }
 
 fun ShapeToken.toShape(shapeScheme: ShapeScheme): Shape {
@@ -14,6 +15,7 @@ fun ShapeToken.toShape(shapeScheme: ShapeScheme): Shape {
         ShapeToken.Primary -> shapeScheme.primary
         ShapeToken.Secondary -> shapeScheme.secondary
         ShapeToken.Tertiary -> shapeScheme.tertiary
+        ShapeToken.Surface -> shapeScheme.surface
     }
 }
 
