@@ -18,8 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
@@ -27,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.components.LocalContentColor
 import com.alexrdclement.uiplayground.components.preview.BoolPreviewParameterProvider
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.ShapeToken
+import com.alexrdclement.uiplayground.theme.toComposeShape
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
@@ -35,6 +35,7 @@ fun Button(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     style: ButtonStyle = ButtonStyle.Outline,
+    shape: ShapeToken = ShapeToken.Primary,
     enabled: Boolean = true,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -44,7 +45,7 @@ fun Button(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        shape = RectangleShape,
+        shape = shape,
         colors = when (style) {
             ButtonStyle.Fill -> ButtonDefaults.defaultButtonColors()
             ButtonStyle.Outline -> OutlineButtonDefaults.defaultButtonColors()
@@ -66,7 +67,7 @@ internal fun Button(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = RectangleShape,
+    shape: ShapeToken = ShapeToken.Primary,
     colors: ButtonColors = ButtonDefaults.defaultButtonColors(),
     border: BorderStroke? = null,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
@@ -79,7 +80,7 @@ internal fun Button(
         onClick = onClick,
         modifier = modifier.semantics { role = Role.Button },
         enabled = enabled,
-        shape = shape,
+        shape = shape.toComposeShape(),
         color = containerColor,
         contentColor = contentColor,
         border = border,
@@ -216,7 +217,7 @@ private fun PreviewFillStyle(
     @PreviewParameter(BoolPreviewParameterProvider::class) isDarkMode: Boolean,
     @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
 ) {
-    PlaygroundTheme(darkTheme = isDarkMode) {
+    PlaygroundTheme(isDarkMode = isDarkMode) {
         Button(
             style = ButtonStyle.Fill,
             enabled = enabled,
@@ -233,7 +234,7 @@ private fun PreviewOutlineStyle(
     @PreviewParameter(BoolPreviewParameterProvider::class) isDarkMode: Boolean,
     @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
 ) {
-    PlaygroundTheme(darkTheme = isDarkMode) {
+    PlaygroundTheme(isDarkMode = isDarkMode) {
         Button(
             style = ButtonStyle.Outline,
             enabled = enabled,
@@ -250,7 +251,7 @@ private fun PreviewBorderlessStyle(
     @PreviewParameter(BoolPreviewParameterProvider::class) isDarkMode: Boolean,
     @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
 ) {
-    PlaygroundTheme(darkTheme = isDarkMode) {
+    PlaygroundTheme(isDarkMode = isDarkMode) {
         Surface {
             Button(
                 style = ButtonStyle.Borderless,
@@ -272,7 +273,7 @@ private fun ButtonPreview() {
         this.tryEmit(PressInteraction.Press(Offset.Zero))
     }
 
-    PlaygroundTheme(darkTheme = isDarkMode) {
+    PlaygroundTheme(isDarkMode = isDarkMode) {
         Surface {
             Button(
                 style = ButtonStyle.Outline,

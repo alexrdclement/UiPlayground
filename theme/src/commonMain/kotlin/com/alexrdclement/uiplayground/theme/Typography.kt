@@ -31,17 +31,17 @@ fun makePlaygroundTypography(
     fontFamily: FontFamily = FontFamily.Monospace,
 ): Typography {
     return Typography(
-        headline = TextStyle(
-            fontFamily = fontFamily,
-            fontSize = 32.sp,
-            lineHeight = 40.sp,
-            letterSpacing = 0.sp
-        ),
         display = TextStyle(
             fontFamily = fontFamily,
             fontSize = 57.sp,
             lineHeight = 64.sp,
             letterSpacing = (-0.2).sp
+        ),
+        headline = TextStyle(
+            fontFamily = fontFamily,
+            fontSize = 32.sp,
+            lineHeight = 40.sp,
+            letterSpacing = 0.sp
         ),
         titleLarge = TextStyle(
             fontFamily = fontFamily,
@@ -104,3 +104,20 @@ fun makePlaygroundTypography(
         ),
     )
 }
+
+fun Typography.copy(
+    token: TypographyToken,
+    textStyle: TextStyle,
+) = this.copy(
+    display = if (token == TypographyToken.Display) textStyle else this.display,
+    headline = if (token == TypographyToken.Headline) textStyle else this.headline,
+    titleLarge = if (token == TypographyToken.TitleLarge) textStyle else this.titleLarge,
+    titleMedium = if (token == TypographyToken.TitleMedium) textStyle else this.titleMedium,
+    titleSmall = if (token == TypographyToken.TitleSmall) textStyle else this.titleSmall,
+    bodyLarge = if (token == TypographyToken.BodyLarge) textStyle else this.bodyLarge,
+    bodyMedium = if (token == TypographyToken.BodyMedium) textStyle else this.bodyMedium,
+    bodySmall = if (token == TypographyToken.BodySmall) textStyle else this.bodySmall,
+    labelLarge = if (token == TypographyToken.LabelLarge) textStyle else this.labelLarge,
+    labelMedium = if (token == TypographyToken.LabelMedium) textStyle else this.labelMedium,
+    labelSmall = if (token == TypographyToken.LabelSmall) textStyle else this.labelSmall,
+)

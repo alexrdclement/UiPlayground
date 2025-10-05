@@ -14,7 +14,7 @@ data class ColorScheme(
     val outline: Color,
 )
 
-internal val PlaygroundDarkColorScheme = ColorScheme(
+val PlaygroundDarkColorScheme = ColorScheme(
     primary = Color.White,
     onPrimary = Color.Black,
     secondary = Color.White,
@@ -26,7 +26,7 @@ internal val PlaygroundDarkColorScheme = ColorScheme(
     outline = Color.White.copy(alpha = 0.5f),
 )
 
-internal val PlaygroundLightColorScheme = ColorScheme(
+val PlaygroundLightColorScheme = ColorScheme(
     primary = Color.Black,
     onPrimary = Color.White,
     secondary = Color.Black,
@@ -36,4 +36,19 @@ internal val PlaygroundLightColorScheme = ColorScheme(
     surface = Color.White,
     onSurface = Color.Black,
     outline = Color.Black.copy(alpha = 0.5f),
+)
+
+fun ColorScheme.copy(
+    token: ColorToken,
+    color: Color,
+) = this.copy(
+    primary = if (token == ColorToken.Primary) color else this.primary,
+    onPrimary = if (token == ColorToken.OnPrimary) color else this.onPrimary,
+    secondary = if (token == ColorToken.Secondary) color else this.secondary,
+    onSecondary = if (token == ColorToken.OnSecondary) color else this.onSecondary,
+    background = if (token == ColorToken.Background) color else this.background,
+    onBackground = if (token == ColorToken.OnBackground) color else this.onBackground,
+    surface = if (token == ColorToken.Surface) color else this.surface,
+    onSurface = if (token == ColorToken.OnSurface) color else this.onSurface,
+    outline = if (token == ColorToken.Outline) color else this.outline,
 )

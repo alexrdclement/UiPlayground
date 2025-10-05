@@ -29,6 +29,8 @@ import com.alexrdclement.uiplayground.app.demo.control.enumControl
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.TypographyToken
+import com.alexrdclement.uiplayground.theme.toTextStyle
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -61,7 +63,7 @@ fun BoxWithConstraintsScope.TextDemo(
     }
     Text(
         text = text,
-        style = state.style.toCompose().copy(
+        style = state.style.toTextStyle().merge(
             textAlign = state.textAlign.toCompose(),
             lineHeightStyle = TextDemoState.lineHeightStyleDefault.copy(
                 alignment = state.lineHeightAlignment.toCompose(),
@@ -137,7 +139,7 @@ fun rememberTextDemoState(
 @Stable
 class TextDemoState(
     initialText: String = "Hello world",
-    styleInitial: TextStyle = TextStyle.Headline,
+    styleInitial: TypographyToken = TypographyToken.Headline,
     textAlignInitial: TextAlign = TextAlign.Start,
     lineHeightAlignmentInitial: LineHeightAlignment = lineHeightAlignmentDefault,
     lineHeightTrimInitial: LineHeightTrim = lineHeightTrimDefault,
@@ -219,7 +221,7 @@ val TextDemoStateSaver = mapSaverSafe(
     },
     restore = { map ->
         TextDemoState(
-            styleInitial = TextStyle.valueOf(map[styleKey] as String),
+            styleInitial = TypographyToken.valueOf(map[styleKey] as String),
             textAlignInitial = TextAlign.valueOf(map[textAlignKey] as String),
             lineHeightAlignmentInitial =
                 LineHeightAlignment.valueOf(map[lineHeightAlignmentKey] as String),
@@ -256,7 +258,7 @@ class TextDemoControl(
 
     val styleControl = enumControl(
         name = "Style",
-        values = { TextStyle.entries },
+        values = { TypographyToken.entries },
         selectedValue = { state.style },
         onValueChange = { state.style = it },
     )

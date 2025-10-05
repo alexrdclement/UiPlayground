@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 
@@ -39,6 +40,15 @@ val LocalPlaygroundTypography = staticCompositionLocalOf {
     )
 }
 
+val LocalPlaygroundShapes = staticCompositionLocalOf {
+    ShapeScheme(
+        primary = Shape.Rectangle(),
+        secondary = Shape.Rectangle(),
+        tertiary = Shape.Rectangle(),
+        surface = Shape.Rectangle(),
+    )
+}
+
 val LocalPlaygroundSpacing = staticCompositionLocalOf {
     Spacing(
         xs = Dp.Unspecified,
@@ -54,24 +64,24 @@ val LocalPlaygroundIndication = staticCompositionLocalOf<Indication> {
 
 @Composable
 fun PlaygroundTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    isDarkMode: Boolean = isSystemInDarkTheme(),
+    lightColorScheme: ColorScheme = PlaygroundLightColorScheme,
+    darkColorScheme: ColorScheme = PlaygroundDarkColorScheme,
     typography: Typography = PlaygroundTypography,
+    shapeScheme: ShapeScheme = PlaygroundShapeScheme,
     indication: Indication = PlaygroundIndication,
+    spacing: Spacing = PlaygroundSpacing,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        darkTheme -> PlaygroundDarkColorScheme
-        else -> PlaygroundLightColorScheme
-    }
-
+    val colorScheme = if (isDarkMode) darkColorScheme else lightColorScheme
     CompositionLocalProvider(
         LocalPlaygroundColorScheme provides colorScheme,
         LocalPlaygroundTypography provides typography,
-        LocalPlaygroundSpacing provides PlaygroundSpacing,
+        LocalPlaygroundShapes provides shapeScheme,
         LocalPlaygroundIndication provides indication,
+        LocalPlaygroundSpacing provides spacing,
         content = content,
     )
-
 }
 
 object PlaygroundTheme {
@@ -82,6 +92,10 @@ object PlaygroundTheme {
     val typography: Typography
         @Composable
         get() = LocalPlaygroundTypography.current
+
+    val shapeScheme: ShapeScheme
+        @Composable
+        get() = LocalPlaygroundShapes.current
 
     val spacing: Spacing
         @Composable

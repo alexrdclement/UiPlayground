@@ -28,8 +28,8 @@ import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.components.util.restore
 import com.alexrdclement.uiplayground.components.util.save
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.ShapeToken
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ButtonDemo(
@@ -62,6 +62,7 @@ fun BoxWithConstraintsScope.ButtonDemo(
     Button(
         onClick = {},
         style = state.style,
+        shape = state.shapeToken,
         enabled = state.enabled,
         modifier = modifier
             .width(state.width)
@@ -87,6 +88,7 @@ fun rememberButtonDemoState(): ButtonDemoState = rememberSaveable(
 
 @Stable
 class ButtonDemoState(
+    shapeInitial: ShapeToken = ShapeToken.Primary,
     enabledInitial: Boolean = true,
     styleInitial: ButtonStyle = ButtonStyle.Outline,
     maxWidthInitial: Dp = 0.dp,
@@ -96,6 +98,8 @@ class ButtonDemoState(
         textAlignInitial = TextAlign.Center,
     ),
 ) {
+    var shapeToken by mutableStateOf(shapeInitial)
+        internal set
     var enabled by mutableStateOf(enabledInitial)
         internal set
     var style by mutableStateOf(styleInitial)
@@ -142,6 +146,13 @@ fun rememberButtonDemoControl(
 class ButtonDemoControl(
     val state: ButtonDemoState,
 ) {
+    val shapeControl = enumControl(
+        name = "Shape",
+        values = { ShapeToken.entries },
+        selectedValue = { state.shapeToken },
+        onValueChange = { state.shapeToken = it },
+    )
+
     val styleControl = enumControl(
         name = "Style",
         values = { ButtonStyle.entries },
@@ -170,6 +181,7 @@ class ButtonDemoControl(
     )
 
     val controls = persistentListOf(
+        shapeControl,
         enabledControl,
         styleControl,
         widthControl,

@@ -5,6 +5,7 @@ import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.rememberTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -33,7 +34,6 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.takeOrElse
@@ -55,6 +55,9 @@ import com.alexrdclement.uiplayground.components.menu.MenuDefaults.OutTransition
 import com.alexrdclement.uiplayground.theme.ColorScheme
 import com.alexrdclement.uiplayground.theme.LocalPlaygroundIndication
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.ShapeToken
+import com.alexrdclement.uiplayground.theme.toComposeShape
+import com.alexrdclement.uiplayground.theme.toShape
 import kotlin.math.max
 import kotlin.math.min
 
@@ -149,16 +152,13 @@ internal fun DropdownMenuContent(
     }
 
     Surface(
+        border = BorderStroke(MenuBorderWidth, PlaygroundTheme.colorScheme.outline),
         modifier = Modifier.graphicsLayer {
             scaleX = scale
             scaleY = scale
             this.alpha = alpha
             transformOrigin = transformOriginState.value
-        }.border(
-            width = MenuBorderWidth,
-            color = PlaygroundTheme.colorScheme.outline,
-        ),
-        shape = MenuDefaults.ContainerShape,
+        }
     ) {
         Column(
             modifier = modifier
@@ -317,5 +317,5 @@ object MenuDefaults {
     )
     val DropdownMenuItemDefaultMinHeight = 48.dp
 
-    val ContainerShape = RectangleShape
+    val ContainerShape = ShapeToken.Primary
 }

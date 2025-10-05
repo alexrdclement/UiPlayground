@@ -3,6 +3,7 @@ package com.alexrdclement.uiplayground.components.layout
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastMap
@@ -14,7 +15,10 @@ fun Scaffold(
     modifier: Modifier = Modifier,
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    Surface(modifier = modifier) {
+    Surface(
+        shape = RectangleShape,
+        modifier = modifier
+    ) {
         // Layout top bar on top of content to center content whether or not top bar exists.
         // Pass constraints to content with top bar height removed to allow to respect or ignore.
         SubcomposeLayout { constraints ->
