@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.trace
+import com.alexrdclement.uiplayground.components.MediaControlBarStateDescriptionExpanded
+import com.alexrdclement.uiplayground.components.MediaControlBarStateDescriptionPartiallyExpanded
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.media.model.Artist
@@ -93,9 +95,8 @@ fun MediaControlSheet(
                     onClick = onControlBarClick,
                     progress = { state.partialToFullProgress },
                     stateDescription = when (state.currentValue) {
-                        MediaControlSheetAnchor.PartiallyExpanded ->
-                            _root_ide_package_.com.alexrdclement.uiplayground.components.MediaControlBarStateDescriptionPartiallyExpanded
-                        MediaControlSheetAnchor.Expanded -> _root_ide_package_.com.alexrdclement.uiplayground.components.MediaControlBarStateDescriptionExpanded
+                        MediaControlSheetAnchor.PartiallyExpanded -> MediaControlBarStateDescriptionPartiallyExpanded
+                        MediaControlSheetAnchor.Expanded -> MediaControlBarStateDescriptionExpanded
                     }
                 )
 
