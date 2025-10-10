@@ -12,6 +12,8 @@ data class ColorScheme(
     val surface: Color,
     val onSurface: Color,
     val outline: Color,
+    val disabledContainerAlpha: Float = 0.12f,
+    val disabledContentAlpha: Float = 0.35f,
 )
 
 val PlaygroundDarkColorScheme = ColorScheme(

@@ -168,8 +168,8 @@ object ButtonDefaults {
             ButtonColors(
                 containerColor = primary,
                 contentColor = onPrimary,
-                disabledContainerColor = primary.copy(alpha = 0.12f),
-                disabledContentColor = onPrimary.copy(alpha = 0.38f)
+                disabledContainerColor = primary.copy(alpha = disabledContainerAlpha),
+                disabledContentColor = onPrimary.copy(alpha = disabledContentAlpha)
             )
         }
     }
