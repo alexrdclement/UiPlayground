@@ -27,7 +27,7 @@ test-parameter-injector = "1.19"
 tracing-perfetto = "1.0.0"
 uiautomator = "2.3.0"
 maven-publish = "0.34.0"
-runtime-android = "1.9.2"
+runtime-android = "1.9.3"
 
 [libraries]
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
