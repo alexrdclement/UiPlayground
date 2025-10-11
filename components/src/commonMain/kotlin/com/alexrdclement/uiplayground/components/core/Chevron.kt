@@ -11,7 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Shape
+import com.alexrdclement.uiplayground.theme.ColorToken
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.ShapeToken
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 enum class ChevronDirection {
@@ -30,7 +32,8 @@ fun ChevronButton(
 ) {
     Button(
         onClick = onClick,
-        style = ButtonStyle.Borderless,
+        contentColor = ColorToken.Primary,
+        containerColor = ColorToken.Surface,
         contentPadding = contentPadding,
         modifier = modifier
     ) {

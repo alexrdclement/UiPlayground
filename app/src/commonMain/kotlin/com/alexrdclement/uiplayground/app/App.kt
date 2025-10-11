@@ -31,6 +31,7 @@ fun App(
         shapeScheme = themeController.shapeScheme,
         indication = themeController.indication,
         spacing = themeController.spacing,
+        styles = themeController.styles,
     ) {
         Surface(
             shape = RectangleShape,
