@@ -2,12 +2,16 @@ package com.alexrdclement.uiplayground.app.theme.color
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -37,11 +41,14 @@ import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.theme.ShapeToken
 import com.alexrdclement.uiplayground.theme.control.ThemeController
 import com.alexrdclement.uiplayground.theme.control.ThemeState
+import com.alexrdclement.uiplayground.theme.control.rememberThemeController
 import com.alexrdclement.uiplayground.theme.copy
+import com.alexrdclement.uiplayground.theme.styles.ButtonStyleToken
 import com.alexrdclement.uiplayground.theme.toColor
 import com.alexrdclement.uiplayground.theme.toComposeShape
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ColorScreen(
@@ -119,15 +126,18 @@ private fun ColorDisplay(
         modifier = modifier
     ) {
         Button(
-            shape = ShapeToken.Primary,
             onClick = { onColorClick(color) },
+            contentPadding = PaddingValues(0.dp),
             modifier = Modifier
-                .size(40.dp)
-                .background(
-                    color = color,
-                    shape = PlaygroundTheme.shapeScheme.primary.toComposeShape(),
-                )
-        ) {}
+                .height(IntrinsicSize.Min)
+                .width(IntrinsicSize.Min)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color)
+            )
+        }
         Text(
             text = label,
             style = PlaygroundTheme.typography.labelMedium,
@@ -219,5 +229,16 @@ class ColorScreenControl(
         } else {
             themeController.setLightColorScheme(colorScheme = colorScheme)
         }
+    }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    PlaygroundTheme {
+        ColorScreen(
+            themeController = rememberThemeController(),
+            onNavigateBack = {},
+        )
     }
 }

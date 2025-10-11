@@ -12,8 +12,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.components.core.Button
-import com.alexrdclement.uiplayground.components.core.ButtonStyle
 import com.alexrdclement.uiplayground.components.core.Surface
+import com.alexrdclement.uiplayground.theme.ColorToken
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -24,7 +24,9 @@ fun BackNavigationButton(
 ) {
     Button(
         onClick = onClick,
-        style = ButtonStyle.Borderless,
+        contentColor = ColorToken.Primary,
+        containerColor = ColorToken.Surface,
+        borderStroke = null,
         contentPadding = PaddingValues(PlaygroundTheme.spacing.medium),
         modifier = modifier.size(48.dp),
     ) {

@@ -7,6 +7,7 @@ enum class ThemeItem : CatalogItem {
     Interaction,
     Shape,
     Spacing,
+    Styles,
     Typography,
     ;
 

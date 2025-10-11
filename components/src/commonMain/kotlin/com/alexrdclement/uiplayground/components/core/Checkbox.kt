@@ -11,6 +11,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import com.alexrdclement.uiplayground.components.preview.BoolPreviewParameterProvider
+import com.alexrdclement.uiplayground.theme.ColorToken
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
@@ -24,7 +25,8 @@ fun Checkbox(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     Button(
-        style = ButtonStyle.Borderless,
+        contentColor = ColorToken.Primary,
+        containerColor = ColorToken.Surface,
         onClick = { onCheckedChange(!isChecked) },
         modifier = modifier.semantics(mergeDescendants = true) {
             role = Role.Checkbox

@@ -6,9 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
+import com.alexrdclement.uiplayground.theme.styles.ButtonStyle
+import com.alexrdclement.uiplayground.theme.styles.ButtonStyleScheme
+import com.alexrdclement.uiplayground.theme.styles.ButtonStyleToken
 
 val LocalPlaygroundColorScheme = staticCompositionLocalOf {
     ColorScheme(
@@ -21,6 +23,8 @@ val LocalPlaygroundColorScheme = staticCompositionLocalOf {
         surface = Color.Unspecified,
         onSurface = Color.Unspecified,
         outline = Color.Unspecified,
+        disabledContainerAlpha = 1f,
+        disabledContentAlpha = 1f,
     )
 }
 
@@ -62,6 +66,23 @@ val LocalPlaygroundIndication = staticCompositionLocalOf<Indication> {
     NoOpIndication
 }
 
+val LocalPlaygroundStyles = staticCompositionLocalOf {
+    val defaultButtonStyle = ButtonStyle(
+        token = ButtonStyleToken.Primary,
+        shape = ShapeToken.Primary,
+        containerColor = ColorToken.Surface,
+        contentColor = ColorToken.Primary,
+        border = null,
+    )
+    Styles(
+        buttonStyles = ButtonStyleScheme(
+            primary = defaultButtonStyle,
+            secondary = defaultButtonStyle,
+            tertiary = defaultButtonStyle,
+        ),
+    )
+}
+
 @Composable
 fun PlaygroundTheme(
     isDarkMode: Boolean = isSystemInDarkTheme(),
@@ -71,6 +92,7 @@ fun PlaygroundTheme(
     shapeScheme: ShapeScheme = PlaygroundShapeScheme,
     indication: Indication = PlaygroundIndication,
     spacing: Spacing = PlaygroundSpacing,
+    styles: Styles = PlaygroundStyles,
     content: @Composable () -> Unit
 ) {
     val colorScheme = if (isDarkMode) darkColorScheme else lightColorScheme
@@ -80,6 +102,7 @@ fun PlaygroundTheme(
         LocalPlaygroundShapes provides shapeScheme,
         LocalPlaygroundIndication provides indication,
         LocalPlaygroundSpacing provides spacing,
+        LocalPlaygroundStyles provides styles,
         content = content,
     )
 }
@@ -100,4 +123,12 @@ object PlaygroundTheme {
     val spacing: Spacing
         @Composable
         get() = LocalPlaygroundSpacing.current
+
+    val indication: Indication
+        @Composable
+        get() = LocalPlaygroundIndication.current
+
+    val styles: Styles
+        @Composable
+        get() = LocalPlaygroundStyles.current
 }

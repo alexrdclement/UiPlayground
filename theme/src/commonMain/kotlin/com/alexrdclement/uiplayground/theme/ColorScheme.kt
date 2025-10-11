@@ -12,6 +12,8 @@ data class ColorScheme(
     val surface: Color,
     val onSurface: Color,
     val outline: Color,
+    val disabledContainerAlpha: Float,
+    val disabledContentAlpha: Float,
 )
 
 val PlaygroundDarkColorScheme = ColorScheme(
@@ -24,6 +26,8 @@ val PlaygroundDarkColorScheme = ColorScheme(
     surface = Color.Black,
     onSurface = Color.White,
     outline = Color.White.copy(alpha = 0.5f),
+    disabledContentAlpha = 0.12f,
+    disabledContainerAlpha = 0.38f,
 )
 
 val PlaygroundLightColorScheme = ColorScheme(
@@ -36,6 +40,8 @@ val PlaygroundLightColorScheme = ColorScheme(
     surface = Color.White,
     onSurface = Color.Black,
     outline = Color.Black.copy(alpha = 0.5f),
+    disabledContentAlpha = 0.12f,
+    disabledContainerAlpha = 0.38f,
 )
 
 fun ColorScheme.copy(

@@ -82,7 +82,7 @@ fun Surface(
                 )
                 .clickable(
                     interactionSource = interactionSource,
-                    indication = LocalPlaygroundIndication.current,
+                    indication = PlaygroundTheme.indication,
                     enabled = enabled,
                     onClick = onClick
                 ),

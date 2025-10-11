@@ -11,21 +11,23 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.components.LocalContentColor
 import com.alexrdclement.uiplayground.components.preview.BoolPreviewParameterProvider
+import com.alexrdclement.uiplayground.theme.ColorToken
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.theme.ShapeToken
+import com.alexrdclement.uiplayground.theme.styles.ButtonStyleToken
+import com.alexrdclement.uiplayground.theme.styles.stroke
+import com.alexrdclement.uiplayground.theme.styles.toStyle
+import com.alexrdclement.uiplayground.theme.toColor
 import com.alexrdclement.uiplayground.theme.toComposeShape
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
@@ -34,29 +36,22 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 fun Button(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    style: ButtonStyle = ButtonStyle.Outline,
-    shape: ShapeToken = ShapeToken.Primary,
+    style: ButtonStyleToken = ButtonStyleToken.Primary,
     enabled: Boolean = true,
-    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPaddingDefault,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable RowScope.() -> Unit
 ) {
+    val style = style.toStyle()
     Button(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        shape = shape,
-        colors = when (style) {
-            ButtonStyle.Fill -> ButtonDefaults.defaultButtonColors()
-            ButtonStyle.Outline -> OutlineButtonDefaults.defaultButtonColors()
-            ButtonStyle.Borderless -> BorderlessButtonDefaults.defaultButtonColors()
-        },
-        border = when (style) {
-            ButtonStyle.Fill -> null
-            ButtonStyle.Outline -> OutlineButtonDefaults.BorderStroke
-            ButtonStyle.Borderless -> null
-        },
+        contentColor = style.contentColor,
         contentPadding = contentPadding,
+        containerColor = style.containerColor,
+        shape = style.shape,
+        borderStroke = style.border?.stroke,
         interactionSource = interactionSource,
         content = content,
     )
@@ -67,15 +62,20 @@ internal fun Button(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    contentColor: ColorToken = ColorToken.Primary,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPaddingDefault,
+    containerColor: ColorToken = ColorToken.Surface,
     shape: ShapeToken = ShapeToken.Primary,
-    colors: ButtonColors = ButtonDefaults.defaultButtonColors(),
-    border: BorderStroke? = null,
-    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    borderStroke: BorderStroke? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable RowScope.() -> Unit
 ) {
-    val containerColor = colors.containerColor(enabled)
-    val contentColor = colors.contentColor(enabled)
+    val containerColor = containerColor.toColor().copy(
+        alpha = if (enabled) 1f else PlaygroundTheme.colorScheme.disabledContainerAlpha,
+    )
+    val contentColor = contentColor.toColor().copy(
+        alpha = if (enabled) 1f else PlaygroundTheme.colorScheme.disabledContentAlpha,
+    )
     Surface(
         onClick = onClick,
         modifier = modifier.semantics { role = Role.Button },
@@ -83,7 +83,7 @@ internal fun Button(
         shape = shape.toComposeShape(),
         color = containerColor,
         contentColor = contentColor,
-        border = border,
+        border = borderStroke,
         interactionSource = interactionSource
     ) {
         val mergedTextStyle = LocalTextStyle.current.merge(PlaygroundTheme.typography.labelLarge)
@@ -106,120 +106,34 @@ internal fun Button(
     }
 }
 
-enum class ButtonStyle {
-    Fill,
-    Outline,
-    Borderless,
-}
-
-object OutlineButtonDefaults {
-    val BorderStroke: BorderStroke
-        @Composable
-        get() = BorderStroke(
-            width = 1.dp,
-            color = PlaygroundTheme.colorScheme.outline
-        )
-
-    @Composable
-    fun defaultButtonColors() = with(PlaygroundTheme.colorScheme) {
-        remember(this) {
-            ButtonColors(
-                containerColor = Color.Transparent,
-                contentColor = primary,
-                disabledContainerColor = Color.Transparent,
-                disabledContentColor = onSurface.copy(alpha = 0.38f)
-            )
-        }
-    }
-}
-
-object BorderlessButtonDefaults {
-    @Composable
-    fun defaultButtonColors() = with(PlaygroundTheme.colorScheme) {
-        remember(this) {
-            ButtonColors(
-                containerColor = Color.Transparent,
-                contentColor = primary,
-                disabledContainerColor = Color.Transparent,
-                disabledContentColor = onSurface.copy(alpha = 0.38f)
-            )
-        }
-    }
-}
-
 object ButtonDefaults {
-
     val MinWidth = 58.dp
     val MinHeight = 40.dp
 
-    private val ButtonHorizontalPadding = 24.dp
-    private val ButtonVerticalPadding = 8.dp
+    val ContentPaddingDefault: PaddingValues
+        @Composable
+        get() = PaddingValues(
+            horizontal = PlaygroundTheme.spacing.large,
+            vertical = PlaygroundTheme.spacing.small
+        )
 
-    val ContentPadding = PaddingValues(
-        start = ButtonHorizontalPadding,
-        top = ButtonVerticalPadding,
-        end = ButtonHorizontalPadding,
-        bottom = ButtonVerticalPadding
-    )
-
-    @Composable
-    fun defaultButtonColors() = with(PlaygroundTheme.colorScheme) {
-        remember(this) {
-            ButtonColors(
-                containerColor = primary,
-                contentColor = onPrimary,
-                disabledContainerColor = primary.copy(alpha = 0.12f),
-                disabledContentColor = onPrimary.copy(alpha = 0.38f)
-            )
-        }
-    }
-}
-
-@Immutable
-class ButtonColors(
-    val containerColor: Color,
-    val contentColor: Color,
-    val disabledContainerColor: Color,
-    val disabledContentColor: Color,
-) {
-    @Stable
-    internal fun containerColor(enabled: Boolean): Color =
-        if (enabled) containerColor else disabledContainerColor
-
-    @Stable
-    internal fun contentColor(enabled: Boolean): Color =
-        if (enabled) contentColor else disabledContentColor
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || other !is ButtonColors) return false
-
-        if (containerColor != other.containerColor) return false
-        if (contentColor != other.contentColor) return false
-        if (disabledContainerColor != other.disabledContainerColor) return false
-        if (disabledContentColor != other.disabledContentColor) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = containerColor.hashCode()
-        result = 31 * result + contentColor.hashCode()
-        result = 31 * result + disabledContainerColor.hashCode()
-        result = 31 * result + disabledContentColor.hashCode()
-        return result
-    }
+    val ContentPaddingCompact: PaddingValues
+        @Composable
+        get() = PaddingValues(
+            horizontal = PlaygroundTheme.spacing.medium,
+            vertical = 0.dp
+        )
 }
 
 @Preview
 @Composable
-private fun PreviewFillStyle(
+private fun PreviewPrimaryStyle(
     @PreviewParameter(BoolPreviewParameterProvider::class) isDarkMode: Boolean,
     @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
 ) {
     PlaygroundTheme(isDarkMode = isDarkMode) {
         Button(
-            style = ButtonStyle.Fill,
+            style = ButtonStyleToken.Primary,
             enabled = enabled,
             onClick = {},
         ) {
@@ -230,13 +144,13 @@ private fun PreviewFillStyle(
 
 @Preview
 @Composable
-private fun PreviewOutlineStyle(
+private fun PreviewSecondaryStyle(
     @PreviewParameter(BoolPreviewParameterProvider::class) isDarkMode: Boolean,
     @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
 ) {
     PlaygroundTheme(isDarkMode = isDarkMode) {
         Button(
-            style = ButtonStyle.Outline,
+            style = ButtonStyleToken.Secondary,
             enabled = enabled,
             onClick = {},
         ) {
@@ -247,14 +161,14 @@ private fun PreviewOutlineStyle(
 
 @Preview
 @Composable
-private fun PreviewBorderlessStyle(
+private fun PreviewTertiaryStyle(
     @PreviewParameter(BoolPreviewParameterProvider::class) isDarkMode: Boolean,
     @PreviewParameter(BoolPreviewParameterProvider::class) enabled: Boolean,
 ) {
     PlaygroundTheme(isDarkMode = isDarkMode) {
         Surface {
             Button(
-                style = ButtonStyle.Borderless,
+                style = ButtonStyleToken.Tertiary,
                 enabled = enabled,
                 onClick = {},
             ) {
@@ -276,7 +190,6 @@ private fun ButtonPreview() {
     PlaygroundTheme(isDarkMode = isDarkMode) {
         Surface {
             Button(
-                style = ButtonStyle.Outline,
                 enabled = enabled,
                 interactionSource = interactionSource,
                 onClick = {},

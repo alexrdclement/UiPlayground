@@ -23,12 +23,11 @@ import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.enumControl
 import com.alexrdclement.uiplayground.components.core.Button
-import com.alexrdclement.uiplayground.components.core.ButtonStyle
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.components.util.restore
 import com.alexrdclement.uiplayground.components.util.save
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import com.alexrdclement.uiplayground.theme.ShapeToken
+import com.alexrdclement.uiplayground.theme.styles.ButtonStyleToken
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -62,7 +61,6 @@ fun BoxWithConstraintsScope.ButtonDemo(
     Button(
         onClick = {},
         style = state.style,
-        shape = state.shapeToken,
         enabled = state.enabled,
         modifier = modifier
             .width(state.width)
@@ -88,9 +86,8 @@ fun rememberButtonDemoState(): ButtonDemoState = rememberSaveable(
 
 @Stable
 class ButtonDemoState(
-    shapeInitial: ShapeToken = ShapeToken.Primary,
+    styleInitial: ButtonStyleToken = ButtonStyleToken.Primary,
     enabledInitial: Boolean = true,
-    styleInitial: ButtonStyle = ButtonStyle.Outline,
     maxWidthInitial: Dp = 0.dp,
     widthInitial: Dp = 200.dp,
     val textDemoState: TextDemoState = TextDemoState(
@@ -98,8 +95,6 @@ class ButtonDemoState(
         textAlignInitial = TextAlign.Center,
     ),
 ) {
-    var shapeToken by mutableStateOf(shapeInitial)
-        internal set
     var enabled by mutableStateOf(enabledInitial)
         internal set
     var style by mutableStateOf(styleInitial)
@@ -120,7 +115,7 @@ val ButtonDemoStateSaver = mapSaverSafe(
     save = { value ->
         mapOf(
             enabledKey to value.enabled,
-            styleKey to value.style.name,
+            styleKey to value.style,
             maxWidthKey to value.maxWidth.value,
             widthKey to value.width.value,
             textDemoStateKey to save(value.textDemoState, TextDemoStateSaver, this),
@@ -129,7 +124,7 @@ val ButtonDemoStateSaver = mapSaverSafe(
     restore = { map ->
         ButtonDemoState(
             enabledInitial = map[enabledKey] as Boolean,
-            styleInitial = ButtonStyle.valueOf(map[styleKey] as String),
+            styleInitial = map[styleKey] as ButtonStyleToken,
             maxWidthInitial = (map[maxWidthKey] as Float).dp,
             widthInitial = (map[widthKey] as Float).dp,
             textDemoState = restore(map[textDemoStateKey], TextDemoStateSaver)!!
@@ -146,16 +141,9 @@ fun rememberButtonDemoControl(
 class ButtonDemoControl(
     val state: ButtonDemoState,
 ) {
-    val shapeControl = enumControl(
-        name = "Shape",
-        values = { ShapeToken.entries },
-        selectedValue = { state.shapeToken },
-        onValueChange = { state.shapeToken = it },
-    )
-
     val styleControl = enumControl(
         name = "Style",
-        values = { ButtonStyle.entries },
+        values = { ButtonStyleToken.entries },
         selectedValue = { state.style },
         onValueChange = { state.style = it },
     )
@@ -181,7 +169,6 @@ class ButtonDemoControl(
     )
 
     val controls = persistentListOf(
-        shapeControl,
         enabledControl,
         styleControl,
         widthControl,
