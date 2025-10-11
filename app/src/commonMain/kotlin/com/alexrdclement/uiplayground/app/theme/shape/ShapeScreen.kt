@@ -1,6 +1,8 @@
 package com.alexrdclement.uiplayground.app.theme.shape
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +20,6 @@ import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.control.enumControl
-import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
@@ -28,10 +29,13 @@ import com.alexrdclement.uiplayground.theme.ShapeToken
 import com.alexrdclement.uiplayground.theme.ShapeType
 import com.alexrdclement.uiplayground.theme.control.ThemeController
 import com.alexrdclement.uiplayground.theme.control.ThemeState
+import com.alexrdclement.uiplayground.theme.control.rememberThemeController
 import com.alexrdclement.uiplayground.theme.copy
+import com.alexrdclement.uiplayground.theme.toComposeShape
 import com.alexrdclement.uiplayground.theme.toShape
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ShapeScreen(
@@ -70,9 +74,13 @@ fun ShapeScreen(
                     .fillMaxSize()
             ) {
                 items(ShapeToken.entries) { shape ->
-                    Button(
-                        shape = shape,
-                        onClick = {},
+                    Box(
+                        modifier = Modifier
+                            .border(
+                                width = 1.dp,
+                                color = PlaygroundTheme.colorScheme.outline,
+                                shape = shape.toComposeShape(),
+                            )
                     ) {
                         Text(
                             text = shape.name,
@@ -200,4 +208,16 @@ private fun makeControlForToken(
             }
         }
     )
+}
+
+
+@Preview
+@Composable
+private fun Preview() {
+    PlaygroundTheme {
+        ShapeScreen(
+            themeController = rememberThemeController(),
+            onNavigateBack = {},
+        )
+    }
 }

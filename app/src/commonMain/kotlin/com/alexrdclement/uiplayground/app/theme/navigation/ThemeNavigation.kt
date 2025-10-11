@@ -9,13 +9,14 @@ import com.alexrdclement.uiplayground.app.demo.popBackStackIfResumed
 import com.alexrdclement.uiplayground.app.theme.ThemeItem
 import com.alexrdclement.uiplayground.app.theme.color.navigation.colorScreen
 import com.alexrdclement.uiplayground.app.theme.color.navigation.navigateToColor
-import com.alexrdclement.uiplayground.app.theme.interaction.navigation.indicationScreen
 import com.alexrdclement.uiplayground.app.theme.interaction.navigation.interactionGraph
 import com.alexrdclement.uiplayground.app.theme.interaction.navigation.navigateToInteraction
 import com.alexrdclement.uiplayground.app.theme.shape.navigation.navigateToShape
 import com.alexrdclement.uiplayground.app.theme.shape.navigation.shapeScreen
 import com.alexrdclement.uiplayground.app.theme.spacing.navigation.navigateToSpacing
 import com.alexrdclement.uiplayground.app.theme.spacing.navigation.spacingScreen
+import com.alexrdclement.uiplayground.app.theme.styles.navigation.navigateToStyles
+import com.alexrdclement.uiplayground.app.theme.styles.navigation.stylesGraph
 import com.alexrdclement.uiplayground.app.theme.typography.navigation.navigateToTypography
 import com.alexrdclement.uiplayground.app.theme.typography.navigation.typographyScreen
 import com.alexrdclement.uiplayground.theme.control.ThemeController
@@ -43,6 +44,7 @@ fun NavGraphBuilder.themeGraph(
                     ThemeItem.Interaction -> navController.navigateToInteraction()
                     ThemeItem.Shape -> navController.navigateToShape()
                     ThemeItem.Spacing -> navController.navigateToSpacing()
+                    ThemeItem.Styles -> navController.navigateToStyles()
                     ThemeItem.Typography -> navController.navigateToTypography()
                 }
             },
@@ -61,6 +63,11 @@ fun NavGraphBuilder.themeGraph(
             onNavigateBack = navController::popBackStackIfResumed,
         )
         spacingScreen(
+            themeController = themeController,
+            onNavigateBack = navController::popBackStackIfResumed,
+        )
+        stylesGraph(
+            navController = navController,
             themeController = themeController,
             onNavigateBack = navController::popBackStackIfResumed,
         )
