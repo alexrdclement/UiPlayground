@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
 package com.alexrdclement.uiplayground.components.media
 
 import androidx.compose.animation.core.AnimationSpec
@@ -30,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.trace
@@ -55,7 +54,8 @@ fun MediaControlSheet(
     onControlBarClick: () -> Unit,
     modifier: Modifier = Modifier,
     state: MediaControlSheetState = rememberMediaControlSheetState(),
-    minHeight: Dp = 64.dp,
+    minContentSize: DpSize = DpSize(64.dp, 64.dp),
+    maxContentSize: DpSize = DpSize(Dp.Infinity, 600.dp),
     content: @Composable () -> Unit = {},
 ) {
     trace(TraceName) {
@@ -63,13 +63,12 @@ fun MediaControlSheet(
             modifier = modifier
         ) {
             val minHeightPx = with(LocalDensity.current) {
-                minHeight.toPx()
+                minContentSize.height.toPx()
             }
             val expandedHeightPx = constraints.maxHeight
 
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .offset {
                         IntOffset(
                             0,
@@ -92,10 +91,14 @@ fun MediaControlSheet(
                     onPlayPauseClick = onPlayPauseClick,
                     onClick = onControlBarClick,
                     progress = { state.partialToFullProgress },
+                    minContentSize = minContentSize,
+                    maxContentSize = maxContentSize,
                     stateDescription = when (state.currentValue) {
                         MediaControlSheetAnchor.PartiallyExpanded -> MediaControlBarStateDescriptionPartiallyExpanded
                         MediaControlSheetAnchor.Expanded -> MediaControlBarStateDescriptionExpanded
-                    }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
                 )
 
                 content()

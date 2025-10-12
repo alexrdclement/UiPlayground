@@ -19,10 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.trace
 import com.alexrdclement.uiplayground.components.MediaControlBarContentDescription
@@ -45,14 +47,29 @@ fun MediaControlBar(
     isPlaying: Boolean,
     onPlayPauseClick: () -> Unit,
     modifier: Modifier = Modifier,
-    minHeight: Dp = 64.dp,
+    minContentSize: DpSize = DpSize(width = 64.dp, height = 64.dp),
+    maxContentSize: DpSize = DpSize(width = Dp.Infinity, height = Dp.Infinity),
     progress: () -> Float = { 0f },
     onClick: () -> Unit = {},
     stateDescription: String? = null,
 ) {
     trace(TraceName) {
         BoxWithConstraints {
-            val maxWidthPx = this.constraints.maxWidth
+            val density = LocalDensity.current
+            val (minContentWidth, minContentHeight) = with(density) {
+                maxOf(minContentSize.width.toPx(), constraints.minWidth.toFloat()) to
+                    maxOf(minContentSize.height.toPx(), constraints.minHeight.toFloat())
+            }
+            val (maxContentWidth, maxContentHeight) = with(density) {
+                minOf(maxContentSize.width.toPx(), constraints.maxWidth.toFloat()) to
+                    minOf(maxContentSize.height.toPx(), constraints.maxHeight.toFloat())
+            }
+            val contentStartX = 0f
+            val contentEndX = with(density) {
+                (constraints.maxWidth - maxContentWidth) / 2f
+            }
+            val contentStartY = 0f
+            val contentEndY = 0f
 
             Surface {
                 Row(
@@ -76,20 +93,25 @@ fun MediaControlBar(
                             .layout { measurable, constraints ->
                                 trace("$ArtworkTraceName:measure") {
                                     val computedProgress = progress()
-                                    val minHeightPx = minHeight.toPx()
-                                    val height =
-                                        minHeightPx + ((maxWidthPx - minHeightPx) * computedProgress)
+
+                                    val width = minContentWidth +
+                                        ((maxContentWidth - minContentWidth) * computedProgress)
+                                    val height = minContentHeight +
+                                        ((maxContentHeight - minContentHeight) * computedProgress)
+
+                                    val x = contentStartX + ((contentEndX - contentStartX) * computedProgress)
+                                    val y = contentStartY + ((contentEndY - contentStartY) * computedProgress)
 
                                     val placeable = measurable.measure(
                                         constraints.copy(
-                                            minHeight = minHeightPx.roundToInt(),
-                                            minWidth = minHeightPx.roundToInt(),
+                                            minWidth = width.roundToInt(),
+                                            minHeight = height.roundToInt(),
+                                            maxWidth = width.roundToInt(),
                                             maxHeight = height.roundToInt(),
-                                            maxWidth = height.roundToInt(),
                                         )
                                     )
-                                    layout(height.roundToInt(), height.roundToInt()) {
-                                        placeable.place(0, 0)
+                                    layout(width.roundToInt(), height.roundToInt()) {
+                                        placeable.place(x.roundToInt(), y.roundToInt())
                                     }
                                 }
                             }
@@ -157,6 +179,7 @@ private fun Preview(
             isPlaying = isPlaying,
             onPlayPauseClick = { isPlaying = !isPlaying },
             progress = { progress },
+            minContentSize = DpSize(64.dp, 64.dp),
         )
     }
 }
