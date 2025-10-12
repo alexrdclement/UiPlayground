@@ -1,5 +1,6 @@
 package com.alexrdclement.uiplayground.app.demo.components.media
 
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -11,6 +12,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.media.MediaControlSheet
 import com.alexrdclement.uiplayground.components.media.MediaControlSheetAnchor
@@ -43,31 +47,37 @@ fun MediaControlSheetDemo(
         Text(text = "Target value ${state.targetValue}", style = PlaygroundTheme.typography.labelLarge)
     }
 
-    MediaControlSheet(
-        mediaItem = mediaItem,
-        isPlaying = isPlaying,
-        onPlayPauseClick = { isPlaying = !isPlaying },
-        onControlBarClick = {
-            coroutineScope.launch {
-                if (state.isExpanded) {
-                    state.partialExpand()
-                } else {
-                    state.expand()
+    BoxWithConstraints {
+        MediaControlSheet(
+            mediaItem = mediaItem,
+            isPlaying = isPlaying,
+            onPlayPauseClick = { isPlaying = !isPlaying },
+            onControlBarClick = {
+                coroutineScope.launch {
+                    if (state.isExpanded) {
+                        state.partialExpand()
+                    } else {
+                        state.expand()
+                    }
                 }
-            }
-        },
-        state = state,
-        modifier = modifier.navigationBarsPadding(),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .graphicsLayer {
-                    alpha = state.partialToFullProgress
-                }
+            },
+            state = state,
+            maxContentSize = DpSize(
+                width = Dp.Infinity,
+                height = with(LocalDensity.current) { constraints.maxHeight.toDp() / 2f },
+            ),
+            modifier = modifier.navigationBarsPadding(),
         ) {
-            Text(text = "Current value ${state.currentValue}", style = PlaygroundTheme.typography.labelLarge)
-            Text(text = "Target value ${state.targetValue}", style = PlaygroundTheme.typography.labelLarge)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer {
+                        alpha = state.partialToFullProgress
+                    }
+            ) {
+                Text(text = "Current value ${state.currentValue}", style = PlaygroundTheme.typography.labelLarge)
+                Text(text = "Target value ${state.targetValue}", style = PlaygroundTheme.typography.labelLarge)
+            }
         }
     }
 }
