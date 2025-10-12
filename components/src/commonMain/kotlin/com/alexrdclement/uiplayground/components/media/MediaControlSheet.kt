@@ -56,7 +56,8 @@ fun MediaControlSheet(
     state: MediaControlSheetState = rememberMediaControlSheetState(),
     minContentSize: DpSize = DpSize(64.dp, 64.dp),
     maxContentSize: DpSize = DpSize(Dp.Infinity, 600.dp),
-    content: @Composable () -> Unit = {},
+    aboveControlBar: @Composable () -> Unit = {},
+    belowControlBar: @Composable () -> Unit = {},
 ) {
     trace(TraceName) {
         BoxWithConstraints(
@@ -85,6 +86,8 @@ fun MediaControlSheet(
                         fullHeight = expandedHeightPx.toFloat(),
                     )
             ) {
+                aboveControlBar()
+
                 MediaControlBar(
                     mediaItem = mediaItem,
                     isPlaying = isPlaying,
@@ -101,7 +104,7 @@ fun MediaControlSheet(
                         .fillMaxWidth()
                 )
 
-                content()
+                belowControlBar()
             }
         }
     }
