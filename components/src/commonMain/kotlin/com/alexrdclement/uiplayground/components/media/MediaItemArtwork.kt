@@ -2,7 +2,6 @@ package com.alexrdclement.uiplayground.components.media
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +25,6 @@ fun MediaItemArtwork(
             model = imageUrl,
             contentDescription = null,
             modifier = modifier
-                .aspectRatio(1f)
                 .alpha(if (isEnabled) 1f else DisabledAlpha)
         )
     } else {
@@ -34,7 +32,6 @@ fun MediaItemArtwork(
         Box(
             contentAlignment = Alignment.Center,
             modifier = modifier
-                .aspectRatio(1f, matchHeightConstraintsFirst = true)
                 .background(Color.Red)
                 .clearAndSetSemantics {}
         ) {
