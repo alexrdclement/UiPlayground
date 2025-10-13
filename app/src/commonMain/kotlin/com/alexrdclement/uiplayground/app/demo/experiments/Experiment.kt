@@ -8,6 +8,7 @@ enum class Experiment : CatalogItem {
     AnimateScrollItemVisible,
     Fade,
     Gradients,
+    UiEvent,
     ;
 
     override val title = this.name
