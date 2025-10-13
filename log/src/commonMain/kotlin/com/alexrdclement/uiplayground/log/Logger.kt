@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlin.jvm.JvmName
 
 interface Logger {
-    suspend fun log(
+    fun log(
         level: LogLevel,
         tag: String? = null,
         loggable: () -> Loggable,
@@ -12,10 +12,10 @@ interface Logger {
     fun getLogFlow(
         level: LogLevel,
         exclusive: Boolean = false,
-    ): Flow<Loggable>
+    ): Flow<Log>
 }
 
-suspend fun Logger.debug(
+fun Logger.debug(
     tag: String? = null,
     loggable: () -> Loggable,
 ) = log(
@@ -24,7 +24,7 @@ suspend fun Logger.debug(
     loggable = loggable,
 )
 
-suspend fun Logger.info(
+fun Logger.info(
     tag: String? = null,
     loggable: () -> Loggable,
 ) = log(
@@ -33,7 +33,7 @@ suspend fun Logger.info(
     loggable = loggable
 )
 
-suspend fun Logger.warn(
+fun Logger.warn(
     tag: String? = null,
     loggable: () -> Loggable,
 ) = log(
@@ -42,7 +42,7 @@ suspend fun Logger.warn(
     loggable = loggable
 )
 
-suspend fun Logger.error(
+fun Logger.error(
     tag: String? = null,
     loggable: () -> Loggable,
 ) = log(
@@ -52,7 +52,7 @@ suspend fun Logger.error(
 )
 
 @JvmName("debugString")
-suspend fun Logger.debug(
+fun Logger.debug(
     tag: String? = null,
     loggable: () -> String,
 ) = log(
@@ -62,7 +62,7 @@ suspend fun Logger.debug(
 )
 
 @JvmName("infoString")
-suspend fun Logger.info(
+fun Logger.info(
     tag: String? = null,
     loggable: () -> String,
 ) = log(
@@ -72,7 +72,7 @@ suspend fun Logger.info(
 )
 
 @JvmName("warnString")
-suspend fun Logger.warn(
+fun Logger.warn(
     tag: String? = null,
     loggable: () -> String,
 ) = log(
@@ -82,7 +82,7 @@ suspend fun Logger.warn(
 )
 
 @JvmName("errorString")
-suspend fun Logger.error(
+fun Logger.error(
     tag: String? = null,
     loggable: () -> String,
 ) = log(
@@ -91,7 +91,7 @@ suspend fun Logger.error(
     loggable = loggable
 )
 
-suspend fun Logger.log(
+fun Logger.log(
     level: LogLevel,
     tag: String? = null,
     loggable: () -> String,
@@ -103,16 +103,16 @@ suspend fun Logger.log(
 
 fun Logger.getDebugFlow(
     exclusive: Boolean = false,
-): Flow<Loggable> = getLogFlow(level = LogLevel.Debug, exclusive = exclusive)
+): Flow<Log> = getLogFlow(level = LogLevel.Debug, exclusive = exclusive)
 
 fun Logger.getInfoFlow(
     exclusive: Boolean = false,
-): Flow<Loggable> = getLogFlow(level = LogLevel.Info, exclusive = exclusive)
+): Flow<Log> = getLogFlow(level = LogLevel.Info, exclusive = exclusive)
 
 fun Logger.getWarnFlow(
     exclusive: Boolean = false,
-): Flow<Loggable> = getLogFlow(level = LogLevel.Warn, exclusive = exclusive)
+): Flow<Log> = getLogFlow(level = LogLevel.Warn, exclusive = exclusive)
 
 fun Logger.getErrorFlow(
     exclusive: Boolean = false,
-): Flow<Loggable> = getLogFlow(level = LogLevel.Error, exclusive = exclusive)
+): Flow<Log> = getLogFlow(level = LogLevel.Error, exclusive = exclusive)

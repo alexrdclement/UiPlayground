@@ -7,21 +7,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
+import com.alexrdclement.uiplayground.log.Log
 import com.alexrdclement.uiplayground.log.LogLevel
 import com.alexrdclement.uiplayground.log.Logger
 import com.alexrdclement.uiplayground.log.LoggerImpl
@@ -34,7 +32,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -63,7 +60,7 @@ fun UiEventDemo(
                 val count by countFlow.collectAsState(0)
                 LogLevelDisplay(
                     level = level,
-                    logState = eventState,
+                    logs = eventState,
                     logCount = count,
                 )
             }
@@ -86,7 +83,7 @@ fun UiEventDemo(
 @Composable
 fun LogLevelDisplay(
     level: LogLevel,
-    logState: UiEventState<String>,
+    logs: UiEventState<Log>,
     logCount: Int,
     modifier: Modifier = Modifier,
 ) {
@@ -101,7 +98,7 @@ fun LogLevelDisplay(
             modifier = Modifier
                 .padding(horizontal = PlaygroundTheme.spacing.medium)
         ) {
-            val eventState by logState.collectAsState()
+            val eventState by logs.collectAsState()
             Text("Event state: $eventState")
             Text("Event fired $logCount times")
         }
@@ -132,10 +129,10 @@ fun rememberUiEventDemoState(
 @Stable
 class UiEventDemoState(
     val coroutineScope: CoroutineScope,
-    val logger: Logger = LoggerImpl(),
+    val logger: Logger = LoggerImpl(coroutineScope),
 ) {
     val eventsByLogLevel = LogLevel.entries.associateWith {
-        UiEventState<String>()
+        UiEventState<Log>()
     }
 
     private val mutableEventCountByLogLevel = LogLevel.entries.associateWith {
@@ -148,13 +145,13 @@ class UiEventDemoState(
 
     init {
         eventsByLogLevel.entries.forEach { (level, state) ->
-            val messages = logger.getLogFlow(level).map { it.message }
+            val logs = logger.getLogFlow(level)
             coroutineScope.launch {
-                state.emitAll(messages)
+                state.emitAll(logs)
             }
             coroutineScope.launch {
-                messages.collect { rawMessage ->
-                    val message = "[${level.name}] $rawMessage"
+                logs.collect { log ->
+                    val message = "[${level}] ${log.message}"
                     mutableLogs.update { it.add(0, message) }
                 }
             }
