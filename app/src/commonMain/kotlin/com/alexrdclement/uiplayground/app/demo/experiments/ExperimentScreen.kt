@@ -8,6 +8,7 @@ import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.FadeDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.gradient.GradientDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.scroll.AnimateScrollItemVisibleDemo
+import com.alexrdclement.uiplayground.app.demo.experiments.demo.uievent.UiEventDemo
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 
 @Composable
@@ -35,6 +36,9 @@ fun ExperimentScreen(
                 modifier = Modifier.padding(innerPadding),
             )
             Experiment.Gradients -> GradientDemo(
+                modifier = Modifier.padding(innerPadding),
+            )
+            Experiment.UiEvent -> UiEventDemo(
                 modifier = Modifier.padding(innerPadding),
             )
         }

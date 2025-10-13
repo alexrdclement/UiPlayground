@@ -42,9 +42,11 @@ kotlin {
             implementation(libs.navigation.compose)
 
             implementation(projects.components)
-            implementation(projects.trace)
+            implementation(projects.log)
             implementation(projects.shaders)
             implementation(projects.theme)
+            implementation(projects.trace)
+            implementation(projects.uievent)
         }
         jvmMain {
             dependencies {
