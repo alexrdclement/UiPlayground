@@ -52,46 +52,45 @@ fun Logger.error(
 )
 
 @JvmName("debugString")
-fun Logger.debug(
+fun Logger.debugString(
     tag: String? = null,
     loggable: () -> String,
-) = log(
+) = logString(
     level = LogLevel.Debug,
     tag = tag,
     loggable = loggable,
 )
 
 @JvmName("infoString")
-fun Logger.info(
+fun Logger.infoString(
     tag: String? = null,
     loggable: () -> String,
-) = log(
+) = logString(
     level = LogLevel.Info,
     tag = tag,
     loggable = loggable
 )
 
 @JvmName("warnString")
-fun Logger.warn(
+fun Logger.warnString(
     tag: String? = null,
     loggable: () -> String,
-) = log(
+) = logString(
     level = LogLevel.Warn,
     tag = tag,
     loggable = loggable,
 )
 
-@JvmName("errorString")
-fun Logger.error(
+fun Logger.errorString(
     tag: String? = null,
     loggable: () -> String,
-) = log(
+) = logString(
     level = LogLevel.Error,
     tag = tag,
     loggable = loggable
 )
 
-fun Logger.log(
+fun Logger.logString(
     level: LogLevel,
     tag: String? = null,
     loggable: () -> String,

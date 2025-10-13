@@ -23,7 +23,7 @@ import com.alexrdclement.uiplayground.log.Log
 import com.alexrdclement.uiplayground.log.LogLevel
 import com.alexrdclement.uiplayground.log.Logger
 import com.alexrdclement.uiplayground.log.LoggerImpl
-import com.alexrdclement.uiplayground.log.log
+import com.alexrdclement.uiplayground.log.logString
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.uievent.UiEventState
 import com.alexrdclement.uiplayground.uievent.collectAsState
@@ -219,7 +219,7 @@ class UiEventDemoControl(
 
     fun log(level: LogLevel, loggable: () -> String) {
         coroutineScope.launch {
-            state.logger.log(level = level, tag = "UiEventDemo", loggable)
+            state.logger.logString(level = level, tag = "UiEventDemo", loggable)
         }
     }
 
