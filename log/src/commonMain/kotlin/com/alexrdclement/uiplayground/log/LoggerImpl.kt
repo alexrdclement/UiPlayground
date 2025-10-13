@@ -48,16 +48,16 @@ class LoggerImpl(
     private suspend fun logSuspend(level: LogLevel, tag: String?, loggable: () -> Loggable) {
         when (level) {
             LogLevel.Debug -> if (debugFlow.subscriptionCount.value > 0) {
-                debugFlow.emit(Log(tag, loggable()))
+                debugFlow.emit(Log(level, tag, loggable()))
             }
             LogLevel.Info -> if (infoFlow.subscriptionCount.value > 0) {
-                infoFlow.emit(Log(tag, loggable()))
+                infoFlow.emit(Log(level, tag, loggable()))
             }
             LogLevel.Warn -> if (warnFlow.subscriptionCount.value > 0) {
-                warnFlow.emit(Log(tag, loggable()))
+                warnFlow.emit(Log(level, tag, loggable()))
             }
             LogLevel.Error -> if (errorFlow.subscriptionCount.value > 0) {
-                errorFlow.emit(Log(tag, loggable()))
+                errorFlow.emit(Log(level, tag, loggable()))
             }
         }
     }
