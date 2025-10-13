@@ -61,7 +61,7 @@ kotlin {
                 api(libs.coil.compose)
                 api(libs.coil.network.ktor3)
 
-                api(projects.core)
+                api(projects.trace)
                 api(projects.theme)
             }
         }

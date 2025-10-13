@@ -55,7 +55,7 @@ kotlin {
                 implementation(compose.ui)
                 implementation(compose.components.uiToolingPreview)
 
-                api(projects.core)
+                api(projects.trace)
             }
         }
         androidMain {

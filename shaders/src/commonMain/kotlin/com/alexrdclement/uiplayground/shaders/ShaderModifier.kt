@@ -13,7 +13,7 @@ import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.compose.ui.unit.IntSize
-import com.alexrdclement.uiplayground.core.trace.trace
+import com.alexrdclement.uiplayground.trace.trace
 import com.alexrdclement.uiplayground.shaders.util.useGraphicsLayer
 
 data class ShaderElement<T: Shader>(

@@ -19,7 +19,7 @@ import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.layout.TopBar
 import com.alexrdclement.uiplayground.components.navigation.BackNavigationButton
-import com.alexrdclement.uiplayground.core.trace.ReportDrawn
+import com.alexrdclement.uiplayground.trace.ReportDrawn
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 

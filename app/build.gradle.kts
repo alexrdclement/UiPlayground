@@ -42,7 +42,7 @@ kotlin {
             implementation(libs.navigation.compose)
 
             implementation(projects.components)
-            implementation(projects.core)
+            implementation(projects.trace)
             implementation(projects.shaders)
             implementation(projects.theme)
         }
