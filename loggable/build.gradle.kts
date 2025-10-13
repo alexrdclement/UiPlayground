@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.alexrdclement.uiplayground.log"
+    namespace = "com.alexrdclement.uiplayground.loggable"
 }
 
 kotlin {
-    val xcfName = "log"
+    val xcfName = "loggable"
 
     iosX64 {
         binaries.framework {
@@ -32,14 +32,5 @@ kotlin {
     wasmJs {
         browser()
         binaries.executable()
-    }
-
-    sourceSets {
-        commonMain {
-            dependencies {
-                api(projects.loggable)
-                api(libs.kotlinx.coroutines.core)
-            }
-        }
     }
 }

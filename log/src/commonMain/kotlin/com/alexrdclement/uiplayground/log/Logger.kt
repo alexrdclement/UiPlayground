@@ -1,5 +1,6 @@
 package com.alexrdclement.uiplayground.log
 
+import com.alexrdclement.uiplayground.loggable.Loggable
 import kotlinx.coroutines.flow.Flow
 import kotlin.jvm.JvmName
 

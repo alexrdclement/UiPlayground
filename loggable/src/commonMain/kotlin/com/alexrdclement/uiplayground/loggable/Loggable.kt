@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.log
+package com.alexrdclement.uiplayground.loggable
 
 interface Loggable {
     val message: String
