@@ -2,11 +2,13 @@ package com.alexrdclement.uiplayground.uievent
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -38,6 +40,16 @@ class UiEventState<T>(
 suspend fun UiEventState<Unit?>.fire() = emit(Unit)
 
 fun UiEventState<Unit?>.tryFire() = tryEmit(Unit)
+
+fun <T> Flow<T>.toUiEvent(
+    coroutineState: CoroutineScope,
+    initialValue: T? = null,
+) = UiEventState(initialValue).also { uiEventState ->
+    initialValue?.let { uiEventState.tryEmit(it) }
+    coroutineState.launch {
+        uiEventState.emitAll(this@toUiEvent)
+    }
+}
 
 @Composable
 fun <T> UiEventState<T>.collectAsState(

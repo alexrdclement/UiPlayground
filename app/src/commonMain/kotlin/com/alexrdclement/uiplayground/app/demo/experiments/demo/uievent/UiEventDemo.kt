@@ -7,17 +7,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.Dialog
 import com.alexrdclement.uiplayground.app.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.control.Control
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.core.Text
+import com.alexrdclement.uiplayground.components.layout.ErrorDialogContent
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.log.Log
 import com.alexrdclement.uiplayground.log.LogLevel
@@ -27,11 +32,13 @@ import com.alexrdclement.uiplayground.log.logString
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uiplayground.uievent.UiEventState
 import com.alexrdclement.uiplayground.uievent.collectAsState
+import com.alexrdclement.uiplayground.uievent.toUiEvent
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -42,6 +49,14 @@ fun UiEventDemo(
     control: UiEventDemoControl = rememberUiEventDemoControl(state),
     modifier: Modifier = Modifier,
 ) {
+    var error by rememberSaveable { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(state.error) {
+        state.error.collect { message ->
+            error = message
+        }
+    }
+
     Demo(
         controls = control.controls,
         modifier = modifier
@@ -76,6 +91,17 @@ fun UiEventDemo(
                         .padding(horizontal = PlaygroundTheme.spacing.medium)
                 )
             }
+        }
+    }
+
+    error?.let {
+        Dialog(
+            onDismissRequest = { error = null },
+        ) {
+            ErrorDialogContent(
+                message = it,
+                onDismissRequest = { error = null },
+            )
         }
     }
 }
@@ -142,6 +168,10 @@ class UiEventDemoState(
 
     private val mutableLogs = MutableStateFlow(persistentListOf<String>())
     val logs = mutableLogs.asStateFlow()
+
+    val error = logger.getLogFlow(level = LogLevel.Error)
+        .map { it.message }
+        .toUiEvent(coroutineScope)
 
     init {
         eventsByLogLevel.entries.forEach { (level, state) ->

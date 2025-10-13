@@ -7,39 +7,34 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.alexrdclement.uiplayground.components.core.Button
+import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ConfirmCancelButtonRow(
+fun ConfirmButtonRow(
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
     ) {
-        CancelButton(
-            onDismiss = onDismiss,
-        )
         ConfirmButton(
             onConfirm = onConfirm,
-            modifier = Modifier
-                .padding(start = PlaygroundTheme.spacing.medium)
         )
     }
 }
 
 @Preview
 @Composable
-fun ConfirmCancelButtonRowPreview() {
+private fun ConfirmButtonRow() {
     PlaygroundTheme {
-        ConfirmCancelButtonRow(
+        ConfirmButtonRow(
             onConfirm = {},
-            onDismiss = {},
         )
     }
 }
