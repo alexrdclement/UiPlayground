@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.compose.multiplatform) apply false
     alias(libs.plugins.baselineprofile) apply false
     alias(libs.plugins.maven.publish) apply false
+    alias(libs.plugins.shipkit.autoversion)
 }
 
 subprojects {

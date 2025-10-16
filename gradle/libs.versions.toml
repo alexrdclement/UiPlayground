@@ -29,6 +29,7 @@ tracing-perfetto = "1.0.0"
 uiautomator = "2.3.0"
 maven-publish = "0.34.0"
 runtime-android = "1.9.3"
+shipkit-autoversion = "2.1.2"
 
 [libraries]
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
@@ -82,6 +83,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
+shipkit-autoversion = { id = "org.shipkit.shipkit-auto-version", version.ref = "shipkit-autoversion" }
 
 uiplayground-android-application = { id = "uiplayground.android.application", version = "unspecified" }
 uiplayground-android-application-compose = { id = "uiplayground.android.application.compose", version = "unspecified" }
