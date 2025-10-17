@@ -1,5 +1,7 @@
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.shipkit.changelog.GenerateChangelogTask
+import org.shipkit.github.release.GithubReleaseTask
 
 class ReleaseGithubConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -12,19 +14,21 @@ class ReleaseGithubConventionPlugin : Plugin<Project> {
 
             afterEvaluate {
                 tasks.named("generateChangelog") {
-                    val task = this as org.shipkit.changelog.GenerateChangelogTask
-                    task.previousRevision = target.extensions.extraProperties["shipkit-auto-version.previous-tag"] as String?
-                    task.githubToken = System.getenv("GITHUB_TOKEN")
-                    task.repository = "alexrdclement/UiPlayground"
+                    with(this as GenerateChangelogTask) {
+                        previousRevision = target.extensions.extraProperties["shipkit-auto-version.previous-tag"] as String?
+                        githubToken = System.getenv("GITHUB_TOKEN")
+                        repository = "alexrdclement/UiPlayground"
+                    }
                 }
 
                 tasks.named("githubRelease") {
-                    val task = this as org.shipkit.github.release.GithubReleaseTask
-                    dependsOn(tasks.named("generateChangelog"))
-                    task.repository = "alexrdclement/UiPlayground"
-                    task.changelog = tasks.named("generateChangelog").get().outputs.files.singleFile
-                    task.githubToken = System.getenv("GITHUB_TOKEN")
-                    task.newTagRevision = System.getenv("GITHUB_SHA")
+                    with(this as GithubReleaseTask) {
+                        dependsOn(tasks.named("generateChangelog"))
+                        repository = "alexrdclement/UiPlayground"
+                        changelog = tasks.named("generateChangelog").get().outputs.files.singleFile
+                        githubToken = System.getenv("GITHUB_TOKEN")
+                        newTagRevision = System.getenv("GITHUB_SHA")
+                    }
                 }
             }
         }
