@@ -90,8 +90,6 @@ jobs:
   publish:
 #    if: github.ref == 'refs/heads/main'
 
-    permissions:
-      contents: read
     runs-on: macos-15
     needs: [ build_and_test ]
     timeout-minutes: 30
