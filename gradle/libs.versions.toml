@@ -30,6 +30,7 @@ uiautomator = "2.3.0"
 maven-publish = "0.34.0"
 runtime-android = "1.9.3"
 shipkit-autoversion = "2.1.2"
+shipkit-changelog = "2.0.1"
 
 [libraries]
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
@@ -70,6 +71,8 @@ compose-compiler-gradle-plugin = { group = "org.jetbrains.kotlin", name = "compo
 compose-gradle-plugin = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "compose-multiplatform" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtime-android" }
+shipkit-autoversion-plugin = { group = "org.shipkit", name = "shipkit-auto-version", version.ref = "shipkit-autoversion" }
+shipkit-changelog-plugin = { group = "org.shipkit", name = "shipkit-changelog", version.ref = "shipkit-changelog" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -83,7 +86,6 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
-shipkit-autoversion = { id = "org.shipkit.shipkit-auto-version", version.ref = "shipkit-autoversion" }
 
 uiplayground-android-application = { id = "uiplayground.android.application", version = "unspecified" }
 uiplayground-android-application-compose = { id = "uiplayground.android.application.compose", version = "unspecified" }
@@ -93,5 +95,6 @@ uiplayground-android-test = { id = "uiplayground.android.test", version = "unspe
 uiplayground-compose-multiplatform = { id = "uiplayground.compose.multiplatform", version = "unspecified" }
 uiplayground-kotlin-android = { id = "uiplayground.kotlin.android", version = "unspecified" }
 uiplayground-kotlin-multiplatform = { id = "uiplayground.kotlin.multiplatform", version = "unspecified" }
+uiplayground-release-github = { id = "uiplayground.release.github", version = "unspecified" }
 
 [bundles]

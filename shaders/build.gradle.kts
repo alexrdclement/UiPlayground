@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.paparazzi)
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.maven.publish)
+    alias(libs.plugins.uiplayground.release.github)
 }
 
 android {
