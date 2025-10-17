@@ -90,6 +90,8 @@ jobs:
   publish:
 #    if: github.ref == 'refs/heads/main'
 
+    permissions:
+      contents: read
     runs-on: macos-15
     needs: [ build_and_test ]
     timeout-minutes: 30
@@ -110,6 +112,7 @@ jobs:
       - name: Publish to Sonatype
         run: ./gradlew githubRelease publishAndReleaseToMavenCentral --no-configuration-cache
         env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
