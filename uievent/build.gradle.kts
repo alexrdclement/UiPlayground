@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.uiplayground.android.library)
     alias(libs.plugins.uiplayground.kotlin.multiplatform)
     alias(libs.plugins.uiplayground.compose.multiplatform)
+    alias(libs.plugins.maven.publish)
+    alias(libs.plugins.uiplayground.release.github)
 }
 
 android {

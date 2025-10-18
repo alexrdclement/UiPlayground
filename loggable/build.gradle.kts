@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 plugins {
     alias(libs.plugins.uiplayground.android.library)
     alias(libs.plugins.uiplayground.kotlin.multiplatform)
+    alias(libs.plugins.maven.publish)
+    alias(libs.plugins.uiplayground.release.github)
 }
 
 android {
