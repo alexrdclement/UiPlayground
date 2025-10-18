@@ -88,6 +88,8 @@ jobs:
           path: '**/build/test-results/test*UnitTest/**.xml'
 
   publish:
+    name: "Publish"
+
     if: github.ref == 'refs/heads/main'
 
     runs-on: macos-15
