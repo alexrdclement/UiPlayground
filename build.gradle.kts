@@ -36,21 +36,17 @@ subprojects {
 }
 
 tasks.named("generateChangelog") {
-    configure {
-        setProperty("previousRevision", project.extra["shipkit-auto-version.previous-tag"])
-        setProperty("githubToken", System.getenv("GITHUB_TOKEN"))
-        setProperty("repository", "alexrdclement/UiPlayground")
-    }
+    setProperty("previousRevision", project.extra["shipkit-auto-version.previous-tag"])
+    setProperty("githubToken", System.getenv("GITHUB_TOKEN"))
+    setProperty("repository", "alexrdclement/UiPlayground")
 }
 
 tasks.named("githubRelease") {
-    configure {
-        dependsOn(tasks.named("generateChangelog"))
-        val isSnapshot = version.toString().endsWith("SNAPSHOT")
-        setProperty("enabled", !isSnapshot)
-        setProperty("repository", "alexrdclement/UiPlayground")
-        setProperty("changelog", tasks.named("generateChangelog").get().outputs.files.singleFile)
-        setProperty("githubToken", System.getenv("GITHUB_TOKEN"))
-        setProperty("newTagRevision", System.getenv("GITHUB_SHA"))
-    }
+    dependsOn(tasks.named("generateChangelog"))
+    val isSnapshot = version.toString().endsWith("SNAPSHOT")
+    setProperty("enabled", !isSnapshot)
+    setProperty("repository", "alexrdclement/UiPlayground")
+    setProperty("changelog", tasks.named("generateChangelog").get().outputs.files.singleFile)
+    setProperty("githubToken", System.getenv("GITHUB_TOKEN"))
+    setProperty("newTagRevision", System.getenv("GITHUB_SHA"))
 }
