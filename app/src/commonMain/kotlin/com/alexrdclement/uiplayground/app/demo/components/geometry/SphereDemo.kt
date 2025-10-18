@@ -14,8 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.app.demo.Demo
-import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.components.demo.Demo
+import com.alexrdclement.uiplayground.components.demo.control.Control
 import com.alexrdclement.uiplayground.components.geometry.Sphere
 import com.alexrdclement.uiplayground.components.geometry.SphereStyle
 import com.alexrdclement.uiplayground.components.util.ColorSaver

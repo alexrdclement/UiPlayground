@@ -11,7 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.alexrdclement.uiplayground.app.demo.Demo
+import com.alexrdclement.uiplayground.components.demo.Demo
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.money.CurrencyAmountField

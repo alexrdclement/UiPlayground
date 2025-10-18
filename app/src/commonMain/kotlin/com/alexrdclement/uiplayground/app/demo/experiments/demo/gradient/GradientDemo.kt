@@ -24,8 +24,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.platform.LocalDensity
-import com.alexrdclement.uiplayground.app.demo.Demo
-import com.alexrdclement.uiplayground.app.demo.control.enumControl
+import com.alexrdclement.uiplayground.components.demo.Demo
+import com.alexrdclement.uiplayground.components.demo.control.enumControl
 import kotlinx.collections.immutable.persistentListOf
 import kotlin.math.sin
 

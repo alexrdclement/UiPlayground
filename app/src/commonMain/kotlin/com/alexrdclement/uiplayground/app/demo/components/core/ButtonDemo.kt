@@ -19,9 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.app.demo.Demo
-import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.enumControl
+import com.alexrdclement.uiplayground.components.demo.Demo
+import com.alexrdclement.uiplayground.components.demo.control.Control
+import com.alexrdclement.uiplayground.components.demo.control.enumControl
 import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.components.util.restore

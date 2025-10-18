@@ -24,8 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.app.demo.Demo
-import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.components.demo.Demo
+import com.alexrdclement.uiplayground.components.demo.control.Control
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.util.ColorSaver
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe

@@ -11,14 +11,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.alexrdclement.uiplayground.app.demo.Demo
+import com.alexrdclement.uiplayground.components.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.components.core.ButtonDemo
 import com.alexrdclement.uiplayground.app.demo.components.core.ButtonDemoControl
 import com.alexrdclement.uiplayground.app.demo.components.core.ButtonDemoState
 import com.alexrdclement.uiplayground.app.demo.components.core.ButtonDemoStateSaver
-import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.enumControl
+import com.alexrdclement.uiplayground.components.demo.control.Control
+import com.alexrdclement.uiplayground.components.demo.control.enumControl
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.components.util.restore

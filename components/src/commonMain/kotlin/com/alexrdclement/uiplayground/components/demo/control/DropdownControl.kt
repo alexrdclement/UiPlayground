@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.app.demo.control
+package com.alexrdclement.uiplayground.components.demo.control
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +16,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
-import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.menu.DropdownMenu
@@ -137,7 +136,7 @@ private fun <T> DropdownControlMenu(
 @Preview
 @Composable
 private fun DropdownControlPreview() {
-    UiPlaygroundPreview {
+    PlaygroundTheme {
         var selectedIndex by remember { mutableStateOf(0) }
         val control by remember {
             mutableStateOf(
@@ -166,7 +165,7 @@ private fun DropdownControlPreview() {
 @Preview
 @Composable
 private fun DropdownControlRowPreview() {
-    UiPlaygroundPreview {
+    PlaygroundTheme {
         var selectedIndex by remember { mutableStateOf(0) }
         val control by remember {
             mutableStateOf(

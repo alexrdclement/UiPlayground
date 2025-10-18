@@ -20,9 +20,9 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.app.demo.Demo
-import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.enumControl
+import com.alexrdclement.uiplayground.components.demo.Demo
+import com.alexrdclement.uiplayground.components.demo.control.Control
+import com.alexrdclement.uiplayground.components.demo.control.enumControl
 import com.alexrdclement.uiplayground.app.demo.subject.DemoCircle
 import com.alexrdclement.uiplayground.app.demo.subject.DemoSubject
 import com.alexrdclement.uiplayground.app.demo.subject.DemoText

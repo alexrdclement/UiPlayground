@@ -61,6 +61,8 @@ kotlin {
                 api(libs.coil.compose)
                 api(libs.coil.network.ktor3)
 
+                api(libs.kotlinx.collections.immutable)
+
                 api(projects.trace)
                 api(projects.theme)
             }

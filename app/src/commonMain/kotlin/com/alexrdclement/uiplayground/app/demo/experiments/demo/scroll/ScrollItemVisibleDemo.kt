@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.app.demo.Demo
-import com.alexrdclement.uiplayground.app.demo.control.Control
+import com.alexrdclement.uiplayground.components.demo.Demo
+import com.alexrdclement.uiplayground.components.demo.control.Control
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.FadeSide
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.fade
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
