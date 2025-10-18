@@ -25,9 +25,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.app.demo.Demo
-import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.enumControl
+import com.alexrdclement.uiplayground.components.demo.Demo
+import com.alexrdclement.uiplayground.components.demo.control.Control
+import com.alexrdclement.uiplayground.components.demo.control.enumControl
 import com.alexrdclement.uiplayground.app.demo.util.KeyboardCapitalizationSaver
 import com.alexrdclement.uiplayground.app.demo.util.KeyboardTypeSaver
 import com.alexrdclement.uiplayground.app.demo.util.onlyDigits
@@ -40,7 +40,6 @@ import com.alexrdclement.uiplayground.theme.TypographyToken
 import com.alexrdclement.uiplayground.theme.toTextStyle
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun TextFieldDemo(

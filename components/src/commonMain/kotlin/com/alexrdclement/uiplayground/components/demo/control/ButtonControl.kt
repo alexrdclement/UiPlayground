@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.app.demo.control
+package com.alexrdclement.uiplayground.components.demo.control
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.app.demo.control
+package com.alexrdclement.uiplayground.components.demo.control
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.core.Slider
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
@@ -45,7 +44,7 @@ fun SliderControl(
 @Preview
 @Composable
 private fun Preview() {
-    UiPlaygroundPreview {
+    PlaygroundTheme {
         var value by remember { mutableStateOf(0.5f) }
         val control = remember {
             Control.Slider(

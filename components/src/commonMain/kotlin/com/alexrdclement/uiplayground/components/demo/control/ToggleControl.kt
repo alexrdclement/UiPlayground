@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.app.demo.control
+package com.alexrdclement.uiplayground.components.demo.control
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +13,6 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.core.Checkbox
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
@@ -66,7 +65,7 @@ fun ToggleControlRow(
 @Preview
 @Composable
 private fun ToggleControlPreview() {
-    UiPlaygroundPreview {
+    PlaygroundTheme {
         var on by remember { mutableStateOf(false) }
         val control = Control.Toggle(
             name = "Color",
@@ -80,7 +79,7 @@ private fun ToggleControlPreview() {
 @Preview
 @Composable
 private fun ToggleControlRowPreview() {
-    UiPlaygroundPreview {
+    PlaygroundTheme {
         var on by remember { mutableStateOf(false) }
         val control = Control.Toggle(
             name = "Color",

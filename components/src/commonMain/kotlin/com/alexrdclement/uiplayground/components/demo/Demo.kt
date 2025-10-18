@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.app.demo
+package com.alexrdclement.uiplayground.components.demo
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -17,8 +17,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.app.demo.control.Control
-import com.alexrdclement.uiplayground.app.demo.control.Controls
+import com.alexrdclement.uiplayground.components.demo.control.Control
+import com.alexrdclement.uiplayground.components.demo.control.Controls
 import com.alexrdclement.uiplayground.components.core.HorizontalDivider
 import com.alexrdclement.uiplayground.components.core.VerticalDivider
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme

@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.app.demo.control
+package com.alexrdclement.uiplayground.components.demo.control
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -21,7 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.core.ChevronDirection
 import com.alexrdclement.uiplayground.components.core.ChevronIcon
 import com.alexrdclement.uiplayground.components.core.Text
@@ -150,7 +149,7 @@ fun ControlsRow(
 @Preview
 @Composable
 private fun Preview() {
-    UiPlaygroundPreview {
+    PlaygroundTheme {
         var expanded by remember { mutableStateOf(true) }
         Controls(
             controls = persistentListOf(
