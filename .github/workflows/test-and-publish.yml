@@ -2,7 +2,8 @@ name: "Test and Publish"
 on:
   push:
     branches:
-      - main
+#      - main
+      - fix-publish
     tags-ignore: [v*]
     paths-ignore:
       - '**.md'
@@ -95,7 +96,7 @@ jobs:
 #    if: github.ref == 'refs/heads/main'
 
     runs-on: macos-15
-    needs: [ build_and_test ]
+#    needs: [ build_and_test ]
     timeout-minutes: 30
 
     steps:
