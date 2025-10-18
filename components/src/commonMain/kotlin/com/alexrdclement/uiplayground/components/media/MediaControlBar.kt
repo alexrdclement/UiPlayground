@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +38,7 @@ import com.alexrdclement.uiplayground.components.util.calculateEndPadding
 import com.alexrdclement.uiplayground.components.util.calculateHorizontalPadding
 import com.alexrdclement.uiplayground.components.util.calculateStartPadding
 import com.alexrdclement.uiplayground.components.util.calculateVerticalPadding
+import com.alexrdclement.uiplayground.components.util.toIntSize
 import com.alexrdclement.uiplayground.components.util.toPx
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -46,6 +48,17 @@ import kotlin.math.roundToInt
 
 private const val TraceName = "MediaControlBar"
 private const val ArtworkTraceName = "$TraceName:MediaItemArtwork"
+
+private data class CachedSizes(
+    val minContentWidth: Float,
+    val minContentHeight: Float,
+    val contentWidthPaddedDelta: Float,
+    val contentHeightPaddedDelta: Float,
+    val contentStartX: Float,
+    val contentStartY: Float,
+    val xDelta: Float,
+    val yDelta: Float,
+)
 
 @Composable
 fun MediaControlBar(
@@ -61,32 +74,60 @@ fun MediaControlBar(
     stateDescription: String? = null,
 ) {
     trace(TraceName) {
+        val paddingWidthPx = contentPadding.calculateHorizontalPadding().toPx()
+        val paddingHeightPx = contentPadding.calculateVerticalPadding().toPx()
+        val minContentSizePx = minContentSize.toIntSize()
+        val maxContentSizePx = maxContentSize.toIntSize()
+
         BoxWithConstraints {
-            val paddingWidthPx = contentPadding.calculateHorizontalPadding().toPx()
-            val paddingHeightPx = contentPadding.calculateVerticalPadding().toPx()
-            val minContentWidth =
-                maxOf(minContentSize.width.toPx(), constraints.minWidth.toFloat())
-            val minContentHeight =
-                maxOf(minContentSize.height.toPx(), constraints.minHeight.toFloat())
-            val minContentWidthPadded = minContentWidth + paddingWidthPx
-            val minContentHeightPadded = minContentHeight + paddingHeightPx
-            val maxContentWidth =
-                minOf(maxContentSize.width.toPx(), constraints.maxWidth.toFloat(),)
-            val maxContentHeight =
-                 minOf(maxContentSize.height.toPx(), constraints.maxHeight.toFloat())
-            val maxContentWidthPadded = maxContentWidth - paddingWidthPx
-            val maxContentHeightPadded = maxContentHeight - paddingHeightPx
+            val maxWidthPx = constraints.maxWidth
+            val minContentWidth by derivedStateOf {
+                maxOf(minContentSizePx.width, constraints.minWidth)
+            }
+            val minContentHeight by derivedStateOf {
+                maxOf(minContentSizePx.height, constraints.minHeight)
+            }
+            val maxContentWidth by derivedStateOf {
+                minOf(maxContentSizePx.width, constraints.maxWidth)
+            }
+            val maxContentHeight by derivedStateOf {
+                minOf(maxContentSizePx.height, constraints.maxHeight)
+            }
 
-            val contentWidthPaddedDelta = maxContentWidthPadded - minContentWidthPadded
-            val contentHeightPaddedDelta = maxContentHeightPadded - minContentHeightPadded
+            val cachedSizes = remember(
+                maxWidthPx,
+                minContentWidth,
+                minContentHeight,
+                maxContentWidth,
+                maxContentHeight,
+            ) {
+                val minContentWidthPadded = minContentWidth + paddingWidthPx
+                val minContentHeightPadded = minContentHeight + paddingHeightPx
+                val maxContentWidthPadded = maxContentWidth - paddingWidthPx
+                val maxContentHeightPadded = maxContentHeight - paddingHeightPx
 
-            val contentStartX = 0f
-            val contentEndX = ((constraints.maxWidth - maxContentWidthPadded) / 2f)
-            val xDelta = contentEndX - contentStartX
+                val contentWidthPaddedDelta = maxContentWidthPadded - minContentWidthPadded
+                val contentHeightPaddedDelta = maxContentHeightPadded - minContentHeightPadded
 
-            val contentStartY = 0f
-            val contentEndY = contentStartY
-            val yDelta = contentEndY - contentStartY
+                val contentStartX = 0f
+                val contentEndX = ((maxWidthPx - maxContentWidthPadded) / 2f)
+                val xDelta = contentEndX - contentStartX
+
+                val contentStartY = 0f
+                val contentEndY = contentStartY
+                val yDelta = contentEndY - contentStartY
+
+                CachedSizes(
+                    minContentWidth = minContentWidth.toFloat(),
+                    minContentHeight = minContentHeight.toFloat(),
+                    contentWidthPaddedDelta = contentWidthPaddedDelta,
+                    contentHeightPaddedDelta = contentHeightPaddedDelta,
+                    contentStartX = contentStartX,
+                    contentStartY = contentStartY,
+                    xDelta = xDelta,
+                    yDelta = yDelta,
+                )
+            }
 
             Surface {
                 Row(
@@ -114,14 +155,14 @@ fun MediaControlBar(
                                 trace("$ArtworkTraceName:measure") {
                                     val computedProgress = progress()
 
-                                    val widthDelta = contentWidthPaddedDelta * computedProgress
-                                    val width = minContentWidth + widthDelta
+                                    val widthDelta = cachedSizes.contentWidthPaddedDelta * computedProgress
+                                    val width = cachedSizes.minContentWidth + widthDelta
 
-                                    val heightDelta = contentHeightPaddedDelta * computedProgress
-                                    val height = minContentHeight + heightDelta
+                                    val heightDelta = cachedSizes.contentHeightPaddedDelta * computedProgress
+                                    val height = cachedSizes.minContentHeight + heightDelta
 
-                                    val x = contentStartX + (xDelta * computedProgress)
-                                    val y = contentStartY + (yDelta * computedProgress)
+                                    val x = cachedSizes.contentStartX + (cachedSizes.xDelta * computedProgress)
+                                    val y = cachedSizes.contentStartY + (cachedSizes.yDelta * computedProgress)
 
                                     val placeable = measurable.measure(
                                         constraints.copy(
