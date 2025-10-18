@@ -11,6 +11,7 @@ import androidx.compose.foundation.gestures.snapTo
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -38,6 +39,8 @@ import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.media.model.Artist
 import com.alexrdclement.uiplayground.components.media.model.MediaItem
+import com.alexrdclement.uiplayground.components.util.Spacer
+import com.alexrdclement.uiplayground.components.util.calculateHorizontalPaddingValues
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -54,6 +57,7 @@ fun MediaControlSheet(
     onControlBarClick: () -> Unit,
     modifier: Modifier = Modifier,
     state: MediaControlSheetState = rememberMediaControlSheetState(),
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     minContentSize: DpSize = DpSize(64.dp, 64.dp),
     maxContentSize: DpSize = DpSize(Dp.Infinity, 600.dp),
     aboveControlBar: @Composable () -> Unit = {},
@@ -86,6 +90,8 @@ fun MediaControlSheet(
                         fullHeight = expandedHeightPx.toFloat(),
                     )
             ) {
+                Spacer(height = contentPadding.calculateTopPadding())
+
                 aboveControlBar()
 
                 MediaControlBar(
@@ -94,6 +100,7 @@ fun MediaControlSheet(
                     onPlayPauseClick = onPlayPauseClick,
                     onClick = onControlBarClick,
                     progress = { state.partialToFullProgress },
+                    contentPadding = contentPadding.calculateHorizontalPaddingValues(),
                     minContentSize = minContentSize,
                     maxContentSize = maxContentSize,
                     stateDescription = when (state.currentValue) {
@@ -105,6 +112,8 @@ fun MediaControlSheet(
                 )
 
                 belowControlBar()
+
+                Spacer(height = contentPadding.calculateBottomPadding())
             }
         }
     }

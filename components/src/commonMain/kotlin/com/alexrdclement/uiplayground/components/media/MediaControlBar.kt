@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -19,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
@@ -32,6 +32,12 @@ import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.media.model.Artist
 import com.alexrdclement.uiplayground.components.media.model.MediaItem
+import com.alexrdclement.uiplayground.components.util.Spacer
+import com.alexrdclement.uiplayground.components.util.calculateEndPadding
+import com.alexrdclement.uiplayground.components.util.calculateHorizontalPadding
+import com.alexrdclement.uiplayground.components.util.calculateStartPadding
+import com.alexrdclement.uiplayground.components.util.calculateVerticalPadding
+import com.alexrdclement.uiplayground.components.util.toPx
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
@@ -47,6 +53,7 @@ fun MediaControlBar(
     isPlaying: Boolean,
     onPlayPauseClick: () -> Unit,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     minContentSize: DpSize = DpSize(width = 64.dp, height = 64.dp),
     maxContentSize: DpSize = DpSize(width = Dp.Infinity, height = Dp.Infinity),
     progress: () -> Float = { 0f },
@@ -55,21 +62,31 @@ fun MediaControlBar(
 ) {
     trace(TraceName) {
         BoxWithConstraints {
-            val density = LocalDensity.current
-            val (minContentWidth, minContentHeight) = with(density) {
-                maxOf(minContentSize.width.toPx(), constraints.minWidth.toFloat()) to
-                    maxOf(minContentSize.height.toPx(), constraints.minHeight.toFloat())
-            }
-            val (maxContentWidth, maxContentHeight) = with(density) {
-                minOf(maxContentSize.width.toPx(), constraints.maxWidth.toFloat()) to
-                    minOf(maxContentSize.height.toPx(), constraints.maxHeight.toFloat())
-            }
+            val paddingWidthPx = contentPadding.calculateHorizontalPadding().toPx()
+            val paddingHeightPx = contentPadding.calculateVerticalPadding().toPx()
+            val minContentWidth =
+                maxOf(minContentSize.width.toPx(), constraints.minWidth.toFloat())
+            val minContentHeight =
+                maxOf(minContentSize.height.toPx(), constraints.minHeight.toFloat())
+            val minContentWidthPadded = minContentWidth + paddingWidthPx
+            val minContentHeightPadded = minContentHeight + paddingHeightPx
+            val maxContentWidth =
+                minOf(maxContentSize.width.toPx(), constraints.maxWidth.toFloat(),)
+            val maxContentHeight =
+                 minOf(maxContentSize.height.toPx(), constraints.maxHeight.toFloat())
+            val maxContentWidthPadded = maxContentWidth - paddingWidthPx
+            val maxContentHeightPadded = maxContentHeight - paddingHeightPx
+
+            val contentWidthPaddedDelta = maxContentWidthPadded - minContentWidthPadded
+            val contentHeightPaddedDelta = maxContentHeightPadded - minContentHeightPadded
+
             val contentStartX = 0f
-            val contentEndX = with(density) {
-                (constraints.maxWidth - maxContentWidth) / 2f
-            }
+            val contentEndX = ((constraints.maxWidth - maxContentWidthPadded) / 2f)
+            val xDelta = contentEndX - contentStartX
+
             val contentStartY = 0f
-            val contentEndY = 0f
+            val contentEndY = contentStartY
+            val yDelta = contentEndY - contentStartY
 
             Surface {
                 Row(
@@ -78,6 +95,7 @@ fun MediaControlBar(
                     modifier = modifier
                         .heightIn(minHeight)
                         .fillMaxWidth()
+                        .padding(vertical = contentPadding.calculateVerticalPadding())
                         .clickable { onClick() }
                         .semantics {
                             contentDescription =
@@ -87,6 +105,8 @@ fun MediaControlBar(
                             }
                         }
                 ) {
+                    Spacer(width = contentPadding.calculateStartPadding())
+
                     MediaItemArtwork(
                         imageUrl = mediaItem.artworkLargeUrl,
                         modifier = Modifier
@@ -94,13 +114,14 @@ fun MediaControlBar(
                                 trace("$ArtworkTraceName:measure") {
                                     val computedProgress = progress()
 
-                                    val width = minContentWidth +
-                                        ((maxContentWidth - minContentWidth) * computedProgress)
-                                    val height = minContentHeight +
-                                        ((maxContentHeight - minContentHeight) * computedProgress)
+                                    val widthDelta = contentWidthPaddedDelta * computedProgress
+                                    val width = minContentWidth + widthDelta
 
-                                    val x = contentStartX + ((contentEndX - contentStartX) * computedProgress)
-                                    val y = contentStartY + ((contentEndY - contentStartY) * computedProgress)
+                                    val heightDelta = contentHeightPaddedDelta * computedProgress
+                                    val height = minContentHeight + heightDelta
+
+                                    val x = contentStartX + (xDelta * computedProgress)
+                                    val y = contentStartY + (yDelta * computedProgress)
 
                                     val placeable = measurable.measure(
                                         constraints.copy(
@@ -152,6 +173,8 @@ fun MediaControlBar(
                                 alpha = 1f - progress()
                             }
                     )
+
+                    Spacer(width = contentPadding.calculateEndPadding())
                 }
             }
         }
