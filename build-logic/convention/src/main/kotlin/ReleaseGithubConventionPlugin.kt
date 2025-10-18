@@ -22,8 +22,11 @@ class ReleaseGithubConventionPlugin : Plugin<Project> {
                 }
 
                 tasks.named("githubRelease") {
+                    val isSnapshot = version.toString().endsWith("SNAPSHOT")
                     with(this as GithubReleaseTask) {
                         dependsOn(tasks.named("generateChangelog"))
+                        enabled = !isSnapshot
+                        releaseName = "UiPlayground $version"
                         repository = "alexrdclement/UiPlayground"
                         changelog = tasks.named("generateChangelog").get().outputs.files.singleFile
                         githubToken = System.getenv("GITHUB_TOKEN")
