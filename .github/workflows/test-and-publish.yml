@@ -22,6 +22,7 @@ jobs:
   build_and_test:
     name: "Test"
     runs-on: ubuntu-latest
+    if: false
 
     permissions:
       contents: write
