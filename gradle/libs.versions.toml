@@ -71,8 +71,6 @@ compose-compiler-gradle-plugin = { group = "org.jetbrains.kotlin", name = "compo
 compose-gradle-plugin = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "compose-multiplatform" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtime-android" }
-shipkit-autoversion-plugin = { group = "org.shipkit", name = "shipkit-auto-version", version.ref = "shipkit-autoversion" }
-shipkit-changelog-plugin = { group = "org.shipkit", name = "shipkit-changelog", version.ref = "shipkit-changelog" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -86,6 +84,9 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
+shipkit-autoversion = { id = "org.shipkit.shipkit-auto-version", version.ref = "shipkit-autoversion" }
+shipkit-changelog = { id = "org.shipkit.shipkit-changelog", version.ref = "shipkit-changelog" }
+shipkit-githubrelease = { id = "org.shipkit.shipkit-github-release", version.ref = "shipkit-changelog" }
 
 uiplayground-android-application = { id = "uiplayground.android.application", version = "unspecified" }
 uiplayground-android-application-compose = { id = "uiplayground.android.application.compose", version = "unspecified" }

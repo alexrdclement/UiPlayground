@@ -23,8 +23,6 @@ dependencies {
     compileOnly(libs.compose.compiler.gradle.plugin)
     compileOnly(libs.compose.gradle.plugin)
     compileOnly(libs.kotlin.gradle.plugin)
-    implementation(libs.shipkit.autoversion.plugin)
-    implementation(libs.shipkit.changelog.plugin)
 }
 
 tasks {
@@ -63,10 +61,6 @@ gradlePlugin {
         register("kotlinMultiplatform") {
             id = "uiplayground.kotlin.multiplatform"
             implementationClass = "KotlinMultiplatformConventionPlugin"
-        }
-        register("releaseGithub") {
-            id = "uiplayground.release.github"
-            implementationClass = "ReleaseGithubConventionPlugin"
         }
     }
 }
