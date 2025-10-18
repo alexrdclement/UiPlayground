@@ -1,8 +1,8 @@
 package com.alexrdclement.uiplayground.app.catalog
 
-import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.components.core.Text
@@ -38,7 +38,7 @@ fun <T : CatalogItem> CatalogScreen(
             )
         },
         modifier = Modifier
-            .displayCutoutPadding()
+            .safeDrawingPadding()
     ) { innerPadding ->
         Catalog(
             items = items,
