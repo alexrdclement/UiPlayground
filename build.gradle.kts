@@ -1,3 +1,6 @@
+import org.shipkit.changelog.GenerateChangelogTask
+import org.shipkit.github.release.GithubReleaseTask
+
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
@@ -35,18 +38,18 @@ subprojects {
     }
 }
 
-tasks.named("generateChangelog") {
-    setProperty("previousRevision", project.extra["shipkit-auto-version.previous-tag"])
-    setProperty("githubToken", System.getenv("GITHUB_TOKEN"))
-    setProperty("repository", "alexrdclement/UiPlayground")
+tasks.named<GenerateChangelogTask>("generateChangelog") {
+    previousRevision = project.extra["shipkit-auto-version.previous-tag"] as String
+    githubToken = System.getenv("GITHUB_TOKEN")
+    repository = "alexrdclement/UiPlayground"
 }
 
-tasks.named("githubRelease") {
+tasks.named<GithubReleaseTask>("githubRelease") {
     dependsOn(tasks.named("generateChangelog"))
     val isSnapshot = version.toString().endsWith("SNAPSHOT")
-    setProperty("enabled", !isSnapshot)
-    setProperty("repository", "alexrdclement/UiPlayground")
-    setProperty("changelog", tasks.named("generateChangelog").get().outputs.files.singleFile)
-    setProperty("githubToken", System.getenv("GITHUB_TOKEN"))
-    setProperty("newTagRevision", System.getenv("GITHUB_SHA"))
+    enabled = !isSnapshot
+    repository = "alexrdclement/UiPlayground"
+    changelog = tasks.named("generateChangelog").get().outputs.files.singleFile
+    githubToken = System.getenv("GITHUB_TOKEN")
+    newTagRevision = System.getenv("GITHUB_SHA")
 }
