@@ -2,9 +2,11 @@ package com.alexrdclement.uiplayground.components.layout
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
@@ -15,6 +17,7 @@ import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.core.Surface
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.navigation.BackNavigationButton
+import com.alexrdclement.uiplayground.components.util.copy
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -28,7 +31,10 @@ fun TopBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .safeDrawingPadding()
+            .padding(
+                WindowInsets.safeDrawing.asPaddingValues()
+                    .copy(bottom = 0.dp)
+            )
             .padding(vertical = PlaygroundTheme.spacing.small)
             .wrapContentHeight(),
         verticalAlignment = Alignment.CenterVertically
