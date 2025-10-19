@@ -25,8 +25,6 @@ include(":benchmark")
 include(":components")
 include(":components:baseline-profile")
 include(":desktopApp")
-include(":log")
-include(":loggable")
 include(":shaders")
 include(":shaders:baseline-profile")
 include(":testing")
@@ -39,4 +37,13 @@ include(":webApp")
 plugins {
     // Compose Hot Reload
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
+
+if (file("../log").exists()) {
+    includeBuild("../log") {
+        dependencySubstitution {
+            substitute(module("com.alexrdclement.log:log-core")).using(project(":log-core"))
+            substitute(module("com.alexrdclement.log:loggable")).using(project(":loggable"))
+        }
+    }
 }

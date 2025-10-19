@@ -40,9 +40,9 @@ kotlin {
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.navigation.compose)
+            implementation(libs.log.core)
 
             implementation(projects.components)
-            implementation(projects.log)
             implementation(projects.shaders)
             implementation(projects.theme)
             implementation(projects.trace)

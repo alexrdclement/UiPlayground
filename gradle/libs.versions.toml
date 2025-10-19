@@ -31,6 +31,7 @@ maven-publish = "0.34.0"
 runtime-android = "1.9.3"
 shipkit-autoversion = "2.1.2"
 shipkit-changelog = "2.0.1"
+log = "0.0.1"
 
 [libraries]
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
@@ -63,6 +64,8 @@ lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtim
 navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 paparazzi = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "paparazzi" }
 test-parameter-injector = { group = "com.google.testparameterinjector", name = "test-parameter-injector", version.ref = "test-parameter-injector" }
+log-core = { group = "com.alexrdclement.log", name = "log-core", version.ref = "log" }
+loggable = { group = "com.alexrdclement.log", name = "loggable", version.ref = "log" }
 
 # Dependencies of the included build-logic
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
