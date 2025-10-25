@@ -1,5 +1,7 @@
 pluginManagement {
-    includeBuild("build-logic")
+    if (file("../gradle-plugins").exists()) {
+        includeBuild("../gradle-plugins")
+    }
     repositories {
         google()
         mavenCentral()
@@ -11,6 +13,13 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+    }
+    versionCatalogs {
+        if (file("../gradle-plugins").exists()) {
+            create("alexrdclementPluginLibs") {
+                from(files("../gradle-plugins/gradle/libs.versions.toml"))
+            }
+        }
     }
 }
 
@@ -39,12 +48,18 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
-if (file("../logging").exists()) {
+val localPropsFile = rootDir.resolve("local.properties").takeIf { it.exists() }
+val localProps = java.util.Properties().apply {
+    localPropsFile?.inputStream()?.use { load(it) }
+}
+
+val includeLogging = localProps.getProperty("includeLogging")?.toBoolean() ?: false
+if (includeLogging && file("../logging").exists()) {
     includeBuild("../logging") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.log:logger-apl")).using(project(":logger-api"))
-            substitute(module("com.alexrdclement.log:logger-impl")).using(project(":logger-impl"))
-            substitute(module("com.alexrdclement.log:loggable")).using(project(":loggable"))
+            substitute(module("com.alexrdclement.logging:logger-apl")).using(project(":logger-api"))
+            substitute(module("com.alexrdclement.logging:logger-impl")).using(project(":logger-impl"))
+            substitute(module("com.alexrdclement.logging:loggable")).using(project(":loggable"))
         }
     }
 }

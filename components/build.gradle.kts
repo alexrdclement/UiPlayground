@@ -1,53 +1,19 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-
 plugins {
-    alias(libs.plugins.uiplayground.android.library)
-    alias(libs.plugins.uiplayground.kotlin.multiplatform)
-    alias(libs.plugins.uiplayground.compose.multiplatform)
-    alias(libs.plugins.paparazzi)
-    alias(libs.plugins.baselineprofile)
-    alias(libs.plugins.maven.publish)
-}
+    id(libs.plugins.alexrdclement.kotlin.multiplatform.library.get().pluginId)
+    id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
+//    id(libs.plugins.alexrdclement.android.baselineprofile.consumer.get().pluginId)
+    id(libs.plugins.alexrdclement.maven.publish.get().pluginId)
 
-android {
-    namespace = "com.alexrdclement.uiplayground.components"
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
-    }
-}
-
-baselineProfile {
-    filter {
-        include("com.alexrdclement.uiplayground.components.**")
-    }
-}
-
-dependencies {
-    baselineProfile(projects.components.baselineProfile)
+    // TODO
+//    alias(libs.plugins.paparazzi)
+    alias(libs.plugins.baselineprofile) apply true
 }
 
 kotlin {
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "components"
-            isStatic = true
-        }
-    }
-
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
-        binaries.executable()
-    }
-
-    applyDefaultHierarchyTemplate()
+    libraryTargets(
+        androidNamespace = "com.alexrdclement.uiplayground.components",
+        iosFrameworkBaseName = "Components",
+    )
 
     sourceSets {
         commonMain {
@@ -71,7 +37,11 @@ kotlin {
             dependencies {
                 api(libs.ktor.client.android)
                 api(libs.ktor.client.okhttp)
+                implementation(compose.preview)
                 implementation(libs.compose.ui.test.manifest)
+                implementation(libs.androidx.emoji2)
+                implementation(libs.androidx.activity.compose)
+                implementation(compose.uiTooling)
             }
         }
         androidUnitTest {
@@ -100,6 +70,12 @@ kotlin {
     }
 }
 
-dependencies {
-    debugImplementation(compose.uiTooling)
-}
+//dependencies {
+//    baselineProfile(projects.components.baselineProfile)
+//}
+//
+//baselineProfile {
+//    filter {
+//        include("com.alexrdclement.uiplayground.components.**")
+//    }
+//}

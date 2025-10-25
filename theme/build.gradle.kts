@@ -1,45 +1,21 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-
 plugins {
-    alias(libs.plugins.uiplayground.android.library)
-    alias(libs.plugins.uiplayground.kotlin.multiplatform)
-    alias(libs.plugins.uiplayground.compose.multiplatform)
-    alias(libs.plugins.maven.publish)
-}
-
-android {
-    namespace = "com.alexrdclement.uiplayground.theme"
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
-    }
+    id(libs.plugins.alexrdclement.kotlin.multiplatform.library.get().pluginId)
+    id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
+    id(libs.plugins.alexrdclement.maven.publish.get().pluginId)
 }
 
 kotlin {
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "theme"
-            isStatic = true
-        }
-    }
-
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
-        binaries.executable()
-    }
+    libraryTargets(
+        androidNamespace = "com.alexrdclement.uiplayground.theme",
+        iosFrameworkBaseName = "Theme",
+    )
 
     sourceSets {
         commonMain {
             dependencies {
-                implementation(compose.foundation)
-                implementation(compose.ui)
+                api(compose.foundation)
+                api(compose.ui)
+
                 implementation(compose.components.uiToolingPreview)
 
                 implementation(projects.shaders)

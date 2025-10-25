@@ -1,50 +1,25 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-
 plugins {
-    alias(libs.plugins.uiplayground.android.library)
-    alias(libs.plugins.uiplayground.kotlin.multiplatform)
-    alias(libs.plugins.uiplayground.compose.multiplatform)
-    alias(libs.plugins.maven.publish)
-}
-
-android {
-    namespace = "com.alexrdclement.uiplayground.trace"
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
-    }
+    id(libs.plugins.alexrdclement.kotlin.multiplatform.library.get().pluginId)
+    id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
+    id(libs.plugins.alexrdclement.maven.publish.get().pluginId)
 }
 
 kotlin {
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "trace"
-            isStatic = true
-        }
-    }
-
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
-        binaries.executable()
-    }
+    libraryTargets(
+        androidNamespace = "com.alexrdclement.uiplayground.trace",
+        iosFrameworkBaseName = "Trace",
+    )
 
     sourceSets {
         commonMain {
             dependencies {
-                implementation(compose.runtime)
+                implementation(compose.ui)
             }
         }
         androidMain {
             dependencies {
-                implementation(libs.activity.compose)
-                implementation(libs.androidx.tracing)
+                api(libs.androidx.tracing)
+                implementation(libs.androidx.activity.compose)
             }
         }
     }

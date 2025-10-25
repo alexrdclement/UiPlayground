@@ -18,11 +18,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
-import com.alexrdclement.log.Log
-import com.alexrdclement.log.LogLevel
-import com.alexrdclement.log.Logger
-import com.alexrdclement.log.LoggerImpl
-import com.alexrdclement.log.logString
+import com.alexrdclement.logging.Log
+import com.alexrdclement.logging.LogLevel
+import com.alexrdclement.logging.Logger
+import com.alexrdclement.logging.LoggerImpl
+import com.alexrdclement.logging.logString
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.demo.Demo

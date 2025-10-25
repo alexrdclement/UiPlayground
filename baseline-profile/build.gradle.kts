@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.uiplayground.android.test)
+    id(libs.plugins.alexrdclement.android.test.get().pluginId)
     alias(libs.plugins.baselineprofile)
 }
 

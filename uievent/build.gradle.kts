@@ -1,40 +1,14 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-
 plugins {
-    alias(libs.plugins.uiplayground.android.library)
-    alias(libs.plugins.uiplayground.kotlin.multiplatform)
-    alias(libs.plugins.uiplayground.compose.multiplatform)
-    alias(libs.plugins.maven.publish)
-}
-
-android {
-    namespace = "com.alexrdclement.uiplayground.uievent"
+    id(libs.plugins.alexrdclement.kotlin.multiplatform.library.get().pluginId)
+    id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
+    id(libs.plugins.alexrdclement.maven.publish.get().pluginId)
 }
 
 kotlin {
-    val xcfName = "uievent"
-
-    iosX64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-    iosArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
-        binaries.executable()
-    }
+    libraryTargets(
+        androidNamespace = "com.alexrdclement.uiplayground.uievent",
+        iosFrameworkBaseName = "UIEvent",
+    )
 
     sourceSets {
         commonMain {
@@ -44,7 +18,7 @@ kotlin {
         }
         androidMain {
             dependencies {
-                implementation(libs.activity.compose)
+                implementation(libs.androidx.activity.compose)
                 implementation(libs.androidx.tracing)
             }
         }

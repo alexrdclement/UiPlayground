@@ -1,6 +1,5 @@
 plugins {
-    // See https://github.com/gradle/gradle/issues/17968
-    id(libs.plugins.uiplayground.android.test.get().pluginId)
+    id(libs.plugins.alexrdclement.android.test.get().pluginId)
     id(libs.plugins.baselineprofile.get().pluginId)
 }
 
