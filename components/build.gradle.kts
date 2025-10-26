@@ -44,14 +44,14 @@ kotlin {
                 implementation(compose.uiTooling)
             }
         }
-        androidUnitTest {
+        getByName("androidHostTest") {
             dependencies {
                 implementation(libs.junit)
                 implementation(libs.test.parameter.injector)
                 implementation(projects.testing)
             }
         }
-        androidInstrumentedTest {
+        getByName("androidDeviceTest") {
             dependencies {
                 implementation(libs.androidx.test.ext.junit)
                 implementation(libs.compose.ui.test.junit4)

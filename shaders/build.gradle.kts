@@ -30,7 +30,7 @@ kotlin {
                 implementation(libs.compose.ui.test.manifest)
             }
         }
-        androidUnitTest {
+        getByName("androidHostTest") {
             dependencies {
                 implementation(libs.junit)
                 implementation(libs.test.parameter.injector)

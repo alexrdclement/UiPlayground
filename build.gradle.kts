@@ -1,6 +1,5 @@
 plugins {
     id(libs.plugins.alexrdclement.github.release.get().pluginId)
-//    id(libs.plugins.alexrdclement.maven.publish.get().pluginId) apply false
     alias(libs.plugins.baselineprofile) apply false
 }
 
