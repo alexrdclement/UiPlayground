@@ -3,10 +3,6 @@ plugins {
     id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
 //    id(libs.plugins.alexrdclement.android.baselineprofile.consumer.get().pluginId)
     id(libs.plugins.alexrdclement.maven.publish.get().pluginId)
-
-    // TODO
-//    alias(libs.plugins.paparazzi)
-    alias(libs.plugins.baselineprofile) apply true
 }
 
 kotlin {
@@ -42,19 +38,6 @@ kotlin {
                 implementation(libs.androidx.emoji2)
                 implementation(libs.androidx.activity.compose)
                 implementation(compose.uiTooling)
-            }
-        }
-        getByName("androidHostTest") {
-            dependencies {
-                implementation(libs.junit)
-                implementation(libs.test.parameter.injector)
-                implementation(projects.testing)
-            }
-        }
-        getByName("androidDeviceTest") {
-            dependencies {
-                implementation(libs.androidx.test.ext.junit)
-                implementation(libs.compose.ui.test.junit4)
             }
         }
         appleMain {

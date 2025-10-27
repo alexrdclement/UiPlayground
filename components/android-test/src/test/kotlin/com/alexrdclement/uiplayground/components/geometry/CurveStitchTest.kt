@@ -6,7 +6,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.components.core.Surface
-import com.alexrdclement.uiplayground.testing.PaparazziTestRule
+import com.alexrdclement.uiplayground.components.testing.ComponentsPaparazziTestRule
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.google.testing.junit.testparameterinjector.TestParameter
 import com.google.testing.junit.testparameterinjector.TestParameterInjector
@@ -23,7 +23,7 @@ class CurveStitchTest(
 ) {
 
     @get:Rule
-    val paparazzi = PaparazziTestRule
+    val paparazzi = ComponentsPaparazziTestRule
 
     object NumLinesProvider : TestParameter.TestParameterValuesProvider {
         override fun provideValues() = listOf(2, 4, 8, 16, 32)

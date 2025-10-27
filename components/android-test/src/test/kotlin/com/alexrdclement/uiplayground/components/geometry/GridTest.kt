@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.components.core.Surface
-import com.alexrdclement.uiplayground.testing.PaparazziTestRule
+import com.alexrdclement.uiplayground.components.testing.ComponentsPaparazziTestRule
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.google.testing.junit.testparameterinjector.TestParameterInjector
 import org.junit.Rule
@@ -19,7 +19,7 @@ import kotlin.math.PI
 @RunWith(TestParameterInjector::class)
 class GridTest {
     @get:Rule
-    val paparazzi = PaparazziTestRule
+    val paparazzi = ComponentsPaparazziTestRule
 
 
     @Test

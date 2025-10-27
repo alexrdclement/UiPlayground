@@ -4,7 +4,6 @@ plugins {
     id(libs.plugins.alexrdclement.maven.publish.get().pluginId)
 
     // TODO
-//    alias(libs.plugins.paparazzi)
 //    alias(libs.plugins.baselineprofile)
 }
 
@@ -28,13 +27,6 @@ kotlin {
         androidMain {
             dependencies {
                 implementation(libs.compose.ui.test.manifest)
-            }
-        }
-        getByName("androidHostTest") {
-            dependencies {
-                implementation(libs.junit)
-                implementation(libs.test.parameter.injector)
-                implementation(projects.testing)
             }
         }
 

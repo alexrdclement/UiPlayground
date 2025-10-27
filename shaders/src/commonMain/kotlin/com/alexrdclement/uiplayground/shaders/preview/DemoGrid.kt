@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-internal fun DemoGrid(
+fun DemoGrid(
     modifier: Modifier = Modifier,
     color: Color = Color.Black,
     background: Color = Color.White,
