@@ -7,11 +7,14 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastMap
+import androidx.compose.ui.util.fastMaxOfOrNull
 import com.alexrdclement.uiplayground.components.core.Surface
 
 @Composable
 fun Scaffold(
     topBar: @Composable () -> Unit = {},
+    floatingAction: @Composable () -> Unit = {},
+    navigationBar: @Composable () -> Unit = {},
     modifier: Modifier = Modifier,
     content: @Composable (PaddingValues) -> Unit,
 ) {
@@ -25,8 +28,16 @@ fun Scaffold(
             val topBarPlaceables = subcompose(ScaffoldComponents.TopBar, topBar).fastMap {
                 it.measure(constraints)
             }
+            val topBarHeight = topBarPlaceables.fastMaxOfOrNull { it.height } ?: 0
+            val floatingActionPlaceables = subcompose(ScaffoldComponents.FloatingAction, floatingAction).fastMap {
+                it.measure(constraints)
+            }
+            val navigationBar = subcompose(ScaffoldComponents.NavigationBar, navigationBar).fastMap {
+                it.measure(constraints)
+            }
+            val navigationBarWidth = navigationBar.maxOfOrNull { it.width } ?: 0
 
-            val contentPadding = PaddingValues(top = topBarPlaceables.maxOf { it.height }.toDp())
+            val contentPadding = PaddingValues(top = topBarHeight.toDp())
             val contentPlaceables = subcompose(ScaffoldComponents.Content) {
                 content(contentPadding)
             }.fastMap { it.measure(constraints) }
@@ -34,6 +45,8 @@ fun Scaffold(
             layout(constraints.maxWidth, constraints.maxHeight) {
                 contentPlaceables.fastForEach { it.place(0, 0) }
                 topBarPlaceables.fastForEach { it.place(0, 0) }
+                navigationBar.fastForEach { it.place(0, constraints.maxHeight - it.height) }
+                floatingActionPlaceables.fastForEach { it.place(navigationBarWidth, constraints.maxHeight - it.height) }
             }
         }
     }
@@ -41,5 +54,7 @@ fun Scaffold(
 
 private enum class ScaffoldComponents {
     TopBar,
+    FloatingAction,
+    NavigationBar,
     Content,
 }

@@ -24,9 +24,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun TopBar(
     modifier: Modifier = Modifier,
-    title: @Composable (() -> Unit)? = null,
     navButton: @Composable (() -> Unit)? = null,
     actions: @Composable (() -> Unit)? = null,
+    title: @Composable (() -> Unit)? = null,
 ) {
     Row(
         modifier = modifier
