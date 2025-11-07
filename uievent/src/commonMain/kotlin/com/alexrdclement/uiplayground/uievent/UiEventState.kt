@@ -1,7 +1,7 @@
 package com.alexrdclement.uiplayground.uievent
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.produceState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -19,7 +20,7 @@ import kotlin.coroutines.EmptyCoroutineContext
  * Credit to @tevjef.
  */
 class UiEventState<T>(
-    initialValue: T? = null,
+    internal val initialValue: T? = null,
 ) {
     internal val state = MutableStateFlow(initialValue)
 
@@ -54,4 +55,8 @@ fun <T> Flow<T>.toUiEvent(
 @Composable
 fun <T> UiEventState<T>.collectAsState(
     context: CoroutineContext = EmptyCoroutineContext,
-) = state.collectAsState(context = context)
+) = produceState(initialValue, this, context) {
+    if (context == EmptyCoroutineContext) {
+        collect { value = it }
+    } else withContext(context) { collect { value = it } }
+}
