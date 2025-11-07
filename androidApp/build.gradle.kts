@@ -42,6 +42,16 @@ android {
                 "proguard-rules.pro"
             )
         }
+        create("benchmarkRelease") {
+            initWith(buildTypes.getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+        }
+        create("nonMinifiedRelease") {
+            initWith(buildTypes.getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+        }
     }
 
     packaging {
@@ -49,6 +59,11 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+baselineProfile {
+    // Automatically save generated profiles to src/release/generated/baselineProfiles/
+    saveInSrc = true
 }
 
 dependencies {

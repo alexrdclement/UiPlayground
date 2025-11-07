@@ -1,10 +1,8 @@
 plugins {
     id(libs.plugins.alexrdclement.kotlin.multiplatform.library.get().pluginId)
     id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
+    id(libs.plugins.alexrdclement.android.baselineprofile.consumer.get().pluginId)
     id(libs.plugins.alexrdclement.maven.publish.get().pluginId)
-
-    // TODO
-//    alias(libs.plugins.baselineprofile)
 }
 
 kotlin {
@@ -46,17 +44,6 @@ kotlin {
     }
 }
 
-// TODO
-//baselineProfile {
-//    filter {
-//        include("com.alexrdclement.uiplayground.shaders.**")
-//    }
-//}
-//
-//dependencies {
-//    baselineProfile(projects.shaders.baselineProfile)
-//}
-//
-//dependencies {
-//    debugImplementation(compose.uiTooling)
-//}
+dependencies {
+    baselineProfile(projects.shaders.baselineProfile)
+}

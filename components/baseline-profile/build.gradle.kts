@@ -22,3 +22,10 @@ dependencies {
 
     implementation(projects.uiautomatorFixtures)
 }
+
+// Automatically copy generated baseline profiles to the library module's src directory
+tasks.configureEach {
+    if (name == "collectNonMinifiedReleaseBaselineProfile") {
+        finalizedBy(":components:copyBaselineProfile")
+    }
+}
