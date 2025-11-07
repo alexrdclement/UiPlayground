@@ -1,7 +1,7 @@
 plugins {
     id(libs.plugins.alexrdclement.kotlin.multiplatform.library.get().pluginId)
+    id(libs.plugins.alexrdclement.kotlin.serialization.get().pluginId)
     id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {

@@ -87,11 +87,11 @@ alexrdclement-compose-multiplatform = { id = "com.alexrdclement.gradle.plugin.co
 alexrdclement-desktop-application = { id = "com.alexrdclement.gradle.plugin.desktop.application", version.ref = "alexrdclement-gradle-plugins" }
 alexrdclement-github-release = { id = "com.alexrdclement.gradle.plugin.github.release", version.ref = "alexrdclement-gradle-plugins" }
 alexrdclement-kotlin-multiplatform-library = { id = "com.alexrdclement.gradle.plugin.kotlin.multiplatform.library", version.ref = "alexrdclement-gradle-plugins" }
+alexrdclement-kotlin-serialization = { id = "com.alexrdclement.gradle.plugin.kotlin.serialization", version.ref = "alexrdclement-gradle-plugins" }
 alexrdclement-maven-publish = { id = "com.alexrdclement.gradle.plugin.maven.publish", version.ref = "alexrdclement-gradle-plugins" }
 alexrdclement-web-application = { id = "com.alexrdclement.gradle.plugin.web.application", version.ref = "alexrdclement-gradle-plugins" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
 compose-hotreload = { id = "org.jetbrains.compose.hot-reload", version.ref = "compose-hotreload" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 
 [bundles]
