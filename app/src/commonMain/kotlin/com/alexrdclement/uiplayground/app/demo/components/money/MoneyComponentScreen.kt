@@ -1,6 +1,5 @@
 package com.alexrdclement.uiplayground.app.demo.components.money
 
-import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,8 +21,6 @@ fun MoneyComponentScreen(
                 onConfigureClick = onConfigureClick,
             )
         },
-        modifier = Modifier
-            .displayCutoutPadding()
     ) { innerPadding ->
         when (component) {
             MoneyComponent.CurrencyAmountField -> CurrencyAmountFieldDemo(

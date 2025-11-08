@@ -2,7 +2,6 @@ package com.alexrdclement.uiplayground.app.theme.styles
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,16 +16,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.components.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.components.core.TextAlign
 import com.alexrdclement.uiplayground.app.demo.components.core.TextDemo
 import com.alexrdclement.uiplayground.app.demo.components.core.TextDemoControl
 import com.alexrdclement.uiplayground.app.demo.components.core.TextDemoState
 import com.alexrdclement.uiplayground.app.demo.components.core.TextDemoStateSaver
+import com.alexrdclement.uiplayground.components.core.Button
+import com.alexrdclement.uiplayground.components.demo.Demo
 import com.alexrdclement.uiplayground.components.demo.control.Control
 import com.alexrdclement.uiplayground.components.demo.control.enumControl
-import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.components.util.restore
@@ -61,8 +60,6 @@ fun ButtonStyleScreen(
                 actions = {},
             )
         },
-        modifier = Modifier
-           .displayCutoutPadding()
     ) { paddingValues ->
         Demo(
             controls = control.controls,

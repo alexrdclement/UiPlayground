@@ -2,8 +2,11 @@ package com.alexrdclement.uiplayground.app.demo.components.media
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,12 +18,15 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.media.MediaControlSheet
 import com.alexrdclement.uiplayground.components.media.MediaControlSheetAnchor
 import com.alexrdclement.uiplayground.components.media.model.Artist
 import com.alexrdclement.uiplayground.components.media.model.MediaItem
 import com.alexrdclement.uiplayground.components.media.rememberMediaControlSheetState
+import com.alexrdclement.uiplayground.components.util.copy
+import com.alexrdclement.uiplayground.components.util.horizontalPaddingValues
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.coroutines.launch
 
@@ -41,7 +47,9 @@ fun MediaControlSheetDemo(
     val coroutineScope = rememberCoroutineScope()
 
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .padding(WindowInsets.safeDrawing.horizontalPaddingValues())
     ) {
         Text(text = "Current value ${state.currentValue}", style = PlaygroundTheme.typography.labelLarge)
         Text(text = "Target value ${state.targetValue}", style = PlaygroundTheme.typography.labelLarge)
@@ -66,7 +74,8 @@ fun MediaControlSheetDemo(
                 width = Dp.Infinity,
                 height = with(LocalDensity.current) { constraints.maxHeight.toDp() / 2f },
             ),
-            modifier = modifier.navigationBarsPadding(),
+            modifier = modifier
+                .padding(WindowInsets.safeDrawing.asPaddingValues().copy(top = 0.dp)),
         ) {
             Column(
                 modifier = Modifier

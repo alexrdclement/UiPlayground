@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,11 +23,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.components.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
-import com.alexrdclement.uiplayground.components.demo.control.Control
 import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.core.Text
+import com.alexrdclement.uiplayground.components.demo.Demo
+import com.alexrdclement.uiplayground.components.demo.control.Control
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.theme.ColorToken
@@ -64,8 +63,6 @@ fun ColorScreen(
                 actions = {},
             )
         },
-        modifier = Modifier
-            .displayCutoutPadding()
     ) { paddingValues ->
         Demo(
             controls = control.controls,
