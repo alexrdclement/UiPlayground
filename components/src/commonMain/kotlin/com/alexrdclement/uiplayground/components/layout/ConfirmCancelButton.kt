@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.styles.ButtonStyleToken
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -13,6 +14,7 @@ fun ConfirmButton(
     modifier: Modifier = Modifier,
 ) {
     Button(
+        style = ButtonStyleToken.Secondary,
         onClick = onConfirm,
         modifier = modifier,
     ) {
@@ -26,6 +28,7 @@ fun CancelButton(
     modifier: Modifier = Modifier,
 ) {
     Button(
+        style = ButtonStyleToken.Secondary,
         onClick = onDismiss,
         modifier = modifier,
     ) {

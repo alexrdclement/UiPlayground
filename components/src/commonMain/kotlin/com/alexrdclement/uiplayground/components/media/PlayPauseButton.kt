@@ -32,7 +32,7 @@ fun PlayPauseButton(
         onClick = onClick,
         contentColor = ColorToken.OnPrimary,
         containerColor = ColorToken.Primary,
-        shape = ShapeToken.Tertiary,
+        shape = ShapeToken.Primary,
         enabled = isEnabled,
         contentPadding = PaddingValues(vertical = 2.dp, horizontal = 2.dp),
         modifier = modifier
