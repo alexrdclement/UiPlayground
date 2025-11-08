@@ -21,6 +21,7 @@ import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.menu.DropdownMenu
 import com.alexrdclement.uiplayground.components.menu.DropdownMenuItem
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.styles.ButtonStyleToken
 import kotlinx.collections.immutable.toPersistentList
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -103,6 +104,7 @@ private fun <T> DropdownMenuControlButton(
     modifier: Modifier = Modifier,
 ) {
     Button(
+        style = ButtonStyleToken.Secondary,
         onClick = onClick,
         modifier = modifier,
     ) {

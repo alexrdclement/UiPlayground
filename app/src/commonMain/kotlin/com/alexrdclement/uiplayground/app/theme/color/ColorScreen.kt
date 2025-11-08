@@ -39,6 +39,7 @@ import com.alexrdclement.uiplayground.theme.control.ThemeController
 import com.alexrdclement.uiplayground.theme.control.ThemeState
 import com.alexrdclement.uiplayground.theme.control.rememberThemeController
 import com.alexrdclement.uiplayground.theme.copy
+import com.alexrdclement.uiplayground.theme.styles.ButtonStyleToken
 import com.alexrdclement.uiplayground.theme.toColor
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
@@ -120,6 +121,7 @@ private fun ColorDisplay(
         modifier = modifier
     ) {
         Button(
+            style = ButtonStyleToken.Secondary,
             onClick = { onColorClick(color) },
             contentPadding = PaddingValues(0.dp),
             modifier = Modifier
