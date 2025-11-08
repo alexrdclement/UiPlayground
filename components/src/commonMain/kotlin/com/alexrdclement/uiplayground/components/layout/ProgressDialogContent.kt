@@ -10,7 +10,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun IndeterminateProgressDialogContent(
-    title: String,
+    title: String = "",
     modifier: Modifier = Modifier,
 ) {
     DialogContent(
