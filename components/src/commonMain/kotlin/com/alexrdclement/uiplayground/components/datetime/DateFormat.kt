@@ -5,6 +5,22 @@ import kotlinx.datetime.format.DateTimeFormat
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.Padding
 
+enum class DateFormat {
+    YMD,
+    YMDShort,
+    MDY,
+    MDYShort,
+    MDYLong,
+}
+
+fun DateFormat.toFormat() = when (this) {
+    DateFormat.YMD -> LocalDateFormatYMD
+    DateFormat.YMDShort -> LocalDateFormatYMDShort
+    DateFormat.MDY -> LocalDateFormatMDY
+    DateFormat.MDYShort -> LocalDateFormatMDYShort
+    DateFormat.MDYLong -> LocalDateFormatMDYLong
+}
+
 private const val BaseYear = 1960
 
 val LocalDateFormatYMD = LocalDate.Format {
