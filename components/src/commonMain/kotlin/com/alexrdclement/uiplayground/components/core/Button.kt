@@ -36,6 +36,10 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 fun Button(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onLongClickLabel: String? = null,
+    onLongClick: (() -> Unit)? = null,
+    onDoubleClick: (() -> Unit)? = null,
+    hapticFeedbackEnabled: Boolean = true,
     style: ButtonStyleToken = ButtonStyleToken.Primary,
     enabled: Boolean = true,
     contentPadding: PaddingValues = ButtonDefaults.ContentPaddingDefault,
@@ -46,6 +50,10 @@ fun Button(
     Button(
         onClick = onClick,
         modifier = modifier,
+        onLongClickLabel = onLongClickLabel,
+        onLongClick = onLongClick,
+        onDoubleClick = onDoubleClick,
+        hapticFeedbackEnabled = hapticFeedbackEnabled,
         enabled = enabled,
         contentColor = style.contentColor,
         contentPadding = contentPadding,
@@ -61,6 +69,10 @@ fun Button(
 internal fun Button(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onLongClickLabel: String? = null,
+    onLongClick: (() -> Unit)? = null,
+    onDoubleClick: (() -> Unit)? = null,
+    hapticFeedbackEnabled: Boolean = true,
     enabled: Boolean = true,
     contentColor: ColorToken = ColorToken.Primary,
     contentPadding: PaddingValues = ButtonDefaults.ContentPaddingDefault,
@@ -78,13 +90,17 @@ internal fun Button(
     )
     Surface(
         onClick = onClick,
-        modifier = modifier.semantics { role = Role.Button },
+        onLongClickLabel = onLongClickLabel,
+        onLongClick = onLongClick,
+        onDoubleClick = onDoubleClick,
+        hapticFeedbackEnabled = hapticFeedbackEnabled,
         enabled = enabled,
         shape = shape.toComposeShape(),
         color = containerColor,
         contentColor = contentColor,
         border = borderStroke,
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
+        modifier = modifier.semantics { role = Role.Button }
     ) {
         val mergedTextStyle = LocalTextStyle.current.merge(PlaygroundTheme.typography.labelLarge)
         CompositionLocalProvider(
