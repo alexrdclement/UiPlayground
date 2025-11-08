@@ -29,15 +29,22 @@ fun Scaffold(
                 it.measure(constraints)
             }
             val topBarHeight = topBarPlaceables.fastMaxOfOrNull { it.height } ?: 0
-            val floatingActionPlaceables = subcompose(ScaffoldComponents.FloatingAction, floatingAction).fastMap {
-                it.measure(constraints)
-            }
+
             val navigationBar = subcompose(ScaffoldComponents.NavigationBar, navigationBar).fastMap {
                 it.measure(constraints)
             }
+            val navigationBarHeight = navigationBar.fastMaxOfOrNull { it.height } ?: 0
             val navigationBarWidth = navigationBar.maxOfOrNull { it.width } ?: 0
 
-            val contentPadding = PaddingValues(top = topBarHeight.toDp())
+            val floatingActionPlaceables = subcompose(ScaffoldComponents.FloatingAction, floatingAction).fastMap {
+                it.measure(constraints)
+            }
+            val floatingActionHeight = floatingActionPlaceables.fastMaxOfOrNull { it.height } ?: 0
+
+            val contentPadding = PaddingValues(
+                top = topBarHeight.toDp(),
+                bottom = maxOf(navigationBarHeight, floatingActionHeight).toDp(),
+            )
             val contentPlaceables = subcompose(ScaffoldComponents.Content) {
                 content(contentPadding)
             }.fastMap { it.measure(constraints) }
