@@ -121,6 +121,28 @@ fun PaddingValues.plus(
 }
 
 @Composable
+fun PaddingValues.plus(
+    all: Dp,
+): PaddingValues {
+    return this.plus(
+        vertical = PaddingValues(all = all),
+        horizontal = PaddingValues(all = all),
+        layoutDirection = LocalLayoutDirection.current,
+    )
+}
+
+fun PaddingValues.plus(
+    all: Dp,
+    layoutDirection: LayoutDirection,
+): PaddingValues {
+    return this.plus(
+        vertical = PaddingValues(all = all),
+        horizontal = PaddingValues(all = all),
+        layoutDirection = layoutDirection,
+    )
+}
+
+@Composable
 operator fun PaddingValues.minus(other: PaddingValues): PaddingValues {
     val layoutDirection = LocalLayoutDirection.current
     return this.minus(other, layoutDirection)

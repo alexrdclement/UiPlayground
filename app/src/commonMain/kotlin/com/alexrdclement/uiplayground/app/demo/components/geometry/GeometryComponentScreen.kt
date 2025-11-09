@@ -1,6 +1,5 @@
 package com.alexrdclement.uiplayground.app.demo.components.geometry
 
-import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,15 +21,13 @@ fun GeometryComponentScreen(
                 onConfigureClick = onConfigureClick,
             )
         },
-        modifier = Modifier
-            .displayCutoutPadding()
     ) { innerPadding ->
         when (component) {
             GeometryComponent.CurveStitch -> CurveStitchDemo(
                 modifier = Modifier.padding(innerPadding)
             )
             GeometryComponent.Grid -> GridDemo(
-                modifier = Modifier.padding(innerPadding),
+                modifier = Modifier.padding(innerPadding)
             )
             GeometryComponent.Sphere -> SphereDemo(
                 modifier = Modifier.padding(innerPadding)

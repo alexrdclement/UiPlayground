@@ -35,6 +35,7 @@ import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.theme.PlaygroundSpacing
+import com.alexrdclement.uiplayground.theme.styles.ButtonStyleToken
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -68,6 +69,7 @@ fun AnimateScrollItemVisibleDemo(
                 modifier = Modifier.align(Alignment.CenterEnd)
             ) {
                 Button(
+                    style = ButtonStyleToken.Secondary,
                     onClick = {
                         state.items = state.items.plus(state.items.size).toList()
                     },
@@ -75,6 +77,7 @@ fun AnimateScrollItemVisibleDemo(
                     Text("Add")
                 }
                 Button(
+                    style = ButtonStyleToken.Secondary,
                     onClick = {
                         state.items = state.items.minus(state.items.size - 1).toList()
                     },

@@ -5,8 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class ComponentCategory : CatalogItem {
+    Auth,
     Color,
     Core,
+    DateTime,
     Geometry,
     Media,
     Money,

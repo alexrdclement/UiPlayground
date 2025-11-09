@@ -11,7 +11,7 @@ fun ConfigureButton(
     onClick: () -> Unit = {},
 ) {
     Button(
-        style = ButtonStyleToken.Secondary,
+        style = ButtonStyleToken.Tertiary,
         onClick = onClick,
     ) {
         Text("CONFIGURE", style = PlaygroundTheme.typography.labelSmall)

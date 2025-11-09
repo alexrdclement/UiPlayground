@@ -1,6 +1,5 @@
 package com.alexrdclement.uiplayground.app.demo.shaders
 
-import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -23,8 +22,6 @@ fun ShaderScreen(
                 onConfigureClick = onConfigureClick,
             )
         },
-        modifier = Modifier
-            .displayCutoutPadding(),
     ) { innerPadding ->
         ShaderDemo(
             modifier = Modifier

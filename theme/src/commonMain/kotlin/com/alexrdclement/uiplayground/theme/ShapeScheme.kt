@@ -10,11 +10,11 @@ data class ShapeScheme(
 )
 
 val PlaygroundShapeScheme = ShapeScheme(
-    primary = Shape.Rectangle(
+    primary = Shape.Circle,
+    secondary = Shape.Rectangle(
         cornerRadius = 64.dp,
     ),
-    secondary = Shape.Rectangle(),
-    tertiary = Shape.Circle,
+    tertiary = Shape.Rectangle(),
     surface = Shape.Rectangle(),
 )
 

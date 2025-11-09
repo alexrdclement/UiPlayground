@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.styles.ButtonStyleToken
 
 @Composable
 fun ButtonControl(
@@ -15,6 +16,7 @@ fun ButtonControl(
 ) {
     val enabled by rememberUpdatedState(control.enabled())
     Button(
+        style = ButtonStyleToken.Secondary,
         onClick = control.onClick,
         enabled = enabled,
         modifier = modifier

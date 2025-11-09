@@ -24,6 +24,7 @@ kotlin {
                 api(libs.coil.network.ktor3)
 
                 api(libs.kotlinx.collections.immutable)
+                api(libs.kotlinx.datetime)
 
                 api(projects.trace)
                 api(projects.theme)

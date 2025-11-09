@@ -4,7 +4,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,11 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.components.demo.Demo
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
+import com.alexrdclement.uiplayground.components.core.Text
+import com.alexrdclement.uiplayground.components.demo.Demo
 import com.alexrdclement.uiplayground.components.demo.control.Control
 import com.alexrdclement.uiplayground.components.demo.control.enumControl
-import com.alexrdclement.uiplayground.components.core.Text
 import com.alexrdclement.uiplayground.components.layout.Scaffold
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.components.util.restore
@@ -66,8 +65,6 @@ fun TypographyScreen(
                 actions = {},
             )
         },
-        modifier = Modifier
-           .displayCutoutPadding()
     ) { paddingValues ->
         Demo(
             controls = control.controls,

@@ -5,22 +5,25 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.components.demo.control.Control
-import com.alexrdclement.uiplayground.components.demo.control.Controls
 import com.alexrdclement.uiplayground.components.core.HorizontalDivider
 import com.alexrdclement.uiplayground.components.core.VerticalDivider
+import com.alexrdclement.uiplayground.components.demo.control.Control
+import com.alexrdclement.uiplayground.components.demo.control.Controls
+import com.alexrdclement.uiplayground.components.util.horizontalPaddingValues
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
@@ -32,7 +35,8 @@ fun Demo(
     content: @Composable BoxWithConstraintsScope.() -> Unit,
 ) {
     BoxWithConstraints(
-        modifier = modifier,
+        modifier = modifier
+            .padding(WindowInsets.safeDrawing.horizontalPaddingValues()),
     ) {
         if (minWidth < minHeight) {
             Column(

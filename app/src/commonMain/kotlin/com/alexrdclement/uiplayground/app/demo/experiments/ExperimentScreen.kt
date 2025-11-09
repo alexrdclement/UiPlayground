@@ -1,6 +1,5 @@
 package com.alexrdclement.uiplayground.app.demo.experiments
 
-import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,8 +24,6 @@ fun ExperimentScreen(
                 onConfigureClick = onConfigureClick,
             )
         },
-        modifier = Modifier
-            .displayCutoutPadding()
     ) { innerPadding ->
         when (experiment) {
             Experiment.AnimateScrollItemVisible -> AnimateScrollItemVisibleDemo(

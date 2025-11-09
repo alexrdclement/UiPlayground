@@ -22,8 +22,8 @@ fun ButtonStyleScheme.copy(
 val PlaygroundButtonStyleScheme = ButtonStyleScheme(
     primary = ButtonStyle(
         token = ButtonStyleToken.Primary,
-        contentColor = ColorToken.Primary,
-        containerColor = ColorToken.Surface,
+        contentColor = ColorToken.OnPrimary,
+        containerColor = ColorToken.Primary,
         shape = ShapeToken.Primary,
         border = Border(1.dp, ColorToken.Outline),
     ),
@@ -36,9 +36,9 @@ val PlaygroundButtonStyleScheme = ButtonStyleScheme(
     ),
     tertiary = ButtonStyle(
         token = ButtonStyleToken.Tertiary,
-        contentColor = ColorToken.OnPrimary,
-        containerColor = ColorToken.Primary,
+        contentColor = ColorToken.Primary,
+        containerColor = ColorToken.OnPrimary,
         shape = ShapeToken.Tertiary,
-        border = null,
+        border = Border(1.dp, ColorToken.Outline),
     ),
 )
