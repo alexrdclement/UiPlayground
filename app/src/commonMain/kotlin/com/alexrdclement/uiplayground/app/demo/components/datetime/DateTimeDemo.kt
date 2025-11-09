@@ -142,7 +142,7 @@ class DateTimeDemoState(
     dateFormatInitial: DateFormat,
     dateTimeFormatInitial: DateTimeFormatToken
 ) {
-    val availableTimeZoneIds = TimeZone.availableZoneIds.toPersistentList()
+    val availableTimeZoneIds = setOf(TimeZone.currentSystemDefault().id, "UTC", "EST", "PST8PDT").toPersistentList()
 
     var timeZone by mutableStateOf(timeZoneInitial)
         internal set
