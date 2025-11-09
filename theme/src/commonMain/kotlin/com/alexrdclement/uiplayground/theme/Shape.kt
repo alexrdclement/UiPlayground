@@ -2,7 +2,6 @@ package com.alexrdclement.uiplayground.theme
 
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.uiplayground.theme.util.toRadians
@@ -30,6 +29,9 @@ sealed class Shape(
 
     open val cornerRadius
         get() = if (this is Rectangle) this.cornerRadius else 0.dp
+
+    val hasEqualAspectRatio: Boolean
+        get() = this is Circle
 }
 
 fun ShapeType.toShape(
