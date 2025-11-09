@@ -37,6 +37,7 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.uiToolingPreview)
 
+            implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.navigation.compose)
