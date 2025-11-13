@@ -1,6 +1,5 @@
 [versions]
 activity-compose = "1.11.0"
-android-desugar-jdk-libs = "2.1.5"
 agp = "8.13.0"
 android-tools = "31.13.0"
 androidx-core-splashscreen = "1.0.1"
@@ -35,7 +34,6 @@ shipkit-changelog = "2.0.1"
 
 [libraries]
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
-android-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark-macro-junit4" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-core-splashscreen" }
 androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
