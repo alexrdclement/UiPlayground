@@ -18,8 +18,7 @@ fun Project.configureKotlin(enableAllWarningsAsErrors: Boolean = false) {
             }
 
             if (this is KotlinJvmCompilerOptions) {
-                // Target JVM 11 bytecode
-                jvmTarget = JvmTarget.JVM_11
+                jvmTarget = JvmTarget.JVM_17
                 // Enable detailed names in test-parameter-injector tests
                 javaParameters = true
             }
