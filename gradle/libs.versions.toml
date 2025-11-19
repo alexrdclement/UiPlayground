@@ -28,7 +28,7 @@ test-parameter-injector = "1.19"
 tracing-perfetto = "1.0.0"
 uiautomator = "2.3.0"
 maven-publish = "0.34.0"
-runtime-android = "1.9.3"
+runtime-android = "1.9.5"
 shipkit-autoversion = "2.1.2"
 shipkit-changelog = "2.0.1"
 
