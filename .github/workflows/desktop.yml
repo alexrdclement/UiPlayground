@@ -52,7 +52,7 @@ jobs:
         run: ./gradlew desktopApp:createDistributable
 
       - name: Upload build outputs
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: UiPlayground.app
           path: 'desktopApp/build/compose/binaries/main/app/*.app'
@@ -93,7 +93,7 @@ jobs:
         run: ./gradlew desktopApp:createDistributable
 
       - name: Upload build outputs
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: UiPlayground.exe
           path: 'desktopApp/build/compose/binaries/main/app/*'
