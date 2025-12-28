@@ -3,7 +3,6 @@ package com.alexrdclement.uiplayground.components.core
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
@@ -11,9 +10,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.isTraversalGroup
@@ -22,6 +19,7 @@ import com.alexrdclement.uiplayground.components.LocalContentColor
 import com.alexrdclement.uiplayground.components.contentColorFor
 import com.alexrdclement.uiplayground.components.preview.BoolPreviewParameterProvider
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.uiplayground.theme.Shape
 import com.alexrdclement.uiplayground.theme.toComposeShape
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
@@ -29,7 +27,7 @@ import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 @Composable
 fun Surface(
     modifier: Modifier = Modifier,
-    shape: Shape = PlaygroundTheme.shapeScheme.surface.toComposeShape(),
+    shape: Shape = PlaygroundTheme.shapeScheme.surface,
     color: Color = PlaygroundTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(color),
     border: BorderStroke? = null,
@@ -40,8 +38,9 @@ fun Surface(
     ) {
         Box(
             modifier = modifier
+                .shapeLayout(shape)
                 .surface(
-                    shape = shape,
+                    composeShape = shape.toComposeShape(),
                     backgroundColor = color,
                     border = border,
                 )
@@ -65,7 +64,7 @@ fun Surface(
     onDoubleClick: (() -> Unit)? = null,
     hapticFeedbackEnabled: Boolean = true,
     enabled: Boolean = true,
-    shape: Shape = PlaygroundTheme.shapeScheme.surface.toComposeShape(),
+    shape: Shape = PlaygroundTheme.shapeScheme.surface,
     color: Color = PlaygroundTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(color),
     border: BorderStroke? = null,
@@ -76,13 +75,11 @@ fun Surface(
         LocalContentColor provides contentColor
     ) {
         Box(
+            propagateMinConstraints = true,
             modifier = modifier
-                .surface(
+                .shapeLayout(shape)
+                .shapeClickable(
                     shape = shape,
-                    backgroundColor = color,
-                    border = border,
-                )
-                .combinedClickable(
                     interactionSource = interactionSource,
                     indication = PlaygroundTheme.indication,
                     enabled = enabled,
@@ -91,8 +88,12 @@ fun Surface(
                     onLongClick = onLongClick,
                     onDoubleClick = onDoubleClick,
                     hapticFeedbackEnabled = hapticFeedbackEnabled,
-                ),
-            propagateMinConstraints = true
+                )
+                .surface(
+                    composeShape = shape.toComposeShape(),
+                    backgroundColor = color,
+                    border = border,
+                )
         ) {
             content()
         }
@@ -101,14 +102,13 @@ fun Surface(
 
 @Stable
 private fun Modifier.surface(
-    shape: Shape,
+    composeShape: androidx.compose.ui.graphics.Shape,
     backgroundColor: Color,
     border: BorderStroke?,
 ) = this
-    .graphicsLayer(shape = shape, clip = false)
-    .then(if (border != null) Modifier.border(border, shape) else Modifier)
-    .background(color = backgroundColor, shape = shape)
-    .clip(shape)
+    .graphicsLayer(shape = composeShape, clip = true)
+    .then(if (border != null) Modifier.border(border, composeShape) else Modifier)
+    .background(color = backgroundColor, shape = composeShape)
 
 @Preview
 @Composable

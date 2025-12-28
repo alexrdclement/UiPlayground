@@ -29,6 +29,7 @@ import com.alexrdclement.uiplayground.theme.styles.stroke
 import com.alexrdclement.uiplayground.theme.styles.toStyle
 import com.alexrdclement.uiplayground.theme.toColor
 import com.alexrdclement.uiplayground.theme.toComposeShape
+import com.alexrdclement.uiplayground.theme.toShape
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
 
@@ -95,7 +96,7 @@ internal fun Button(
         onDoubleClick = onDoubleClick,
         hapticFeedbackEnabled = hapticFeedbackEnabled,
         enabled = enabled,
-        shape = shape.toComposeShape(),
+        shape = shape.toShape(),
         color = containerColor,
         contentColor = contentColor,
         border = borderStroke,

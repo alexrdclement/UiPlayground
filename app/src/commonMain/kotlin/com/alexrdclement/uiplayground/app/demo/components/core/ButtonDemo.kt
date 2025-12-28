@@ -16,13 +16,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.demo.Demo
 import com.alexrdclement.uiplayground.components.demo.control.Control
 import com.alexrdclement.uiplayground.components.demo.control.enumControl
-import com.alexrdclement.uiplayground.components.core.Button
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.components.util.restore
 import com.alexrdclement.uiplayground.components.util.save
@@ -54,9 +53,8 @@ fun BoxWithConstraintsScope.ButtonDemo(
     state: ButtonDemoState = rememberButtonDemoState(),
     control: ButtonDemoControl = rememberButtonDemoControl(state),
 ) {
-    val density = LocalDensity.current
-    LaunchedEffect(control, this.maxWidth, density) {
-        with(density) { control.onSizeChanged(this@ButtonDemo.maxWidth) }
+    LaunchedEffect(control, this.maxWidth) {
+        control.onSizeChanged(this@ButtonDemo.maxWidth)
     }
     Button(
         onClick = {},
