@@ -46,8 +46,8 @@ class BaselineProfileGenerator {
             CoreComponentsPage(device).navigateToText()
             TextPage(device).textField.text = "Hello world edited"
             device.pressBack()
-            
-            CoreComponentsPage(device).navigateToText()
+
+            CoreComponentsPage(device).navigateToTextField()
             TextFieldPage(device).textField.text = "Hello world edited"
             device.pressBack()
         }
