@@ -35,7 +35,7 @@ shipkit-autoversion = "2.1.2"
 shipkit-changelog = "2.0.1"
 logging = "0.0.12"
 trace = "0.0.5"
-uievent = "0.0.6"
+uievent = "0.0.7"
 ui-tooling = "1.9.3"
 
 [libraries]
