@@ -33,7 +33,7 @@ maven-publish = "0.35.0"
 runtime-android = "1.9.5"
 shipkit-autoversion = "2.1.2"
 shipkit-changelog = "2.0.1"
-logging = "0.0.3"
+logging = "0.0.12"
 ui-tooling = "1.9.3"
 
 [libraries]
