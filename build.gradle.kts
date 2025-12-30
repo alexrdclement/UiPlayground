@@ -1,5 +1,5 @@
 plugins {
-    id(libs.plugins.alexrdclement.github.release.get().pluginId)
+    alias(libs.plugins.alexrdclement.github.release)
     alias(libs.plugins.baselineprofile) apply false
 }
 
