@@ -19,7 +19,7 @@ kotlin {
                 implementation(compose.ui)
                 implementation(compose.components.uiToolingPreview)
 
-                api(projects.trace)
+                api(libs.trace)
             }
         }
         androidMain {

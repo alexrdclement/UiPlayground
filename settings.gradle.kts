@@ -39,10 +39,8 @@ include(":shaders")
 include(":shaders:android-test")
 include(":shaders:baseline-profile")
 include(":testing")
-include(":trace")
 include(":theme")
 include(":uiautomator-fixtures")
-include(":uievent")
 include(":webApp")
 
 plugins {
@@ -59,9 +57,27 @@ val includeLogging = localProps.getProperty("includeLogging")?.toBoolean() ?: fa
 if (includeLogging && file("../logging").exists()) {
     includeBuild("../logging") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.logging:logger-apl")).using(project(":logger-api"))
+            substitute(module("com.alexrdclement.logging:logger-api")).using(project(":logger-api"))
             substitute(module("com.alexrdclement.logging:logger-impl")).using(project(":logger-impl"))
             substitute(module("com.alexrdclement.logging:loggable")).using(project(":loggable"))
+        }
+    }
+}
+
+val includeTrace = localProps.getProperty("includeTrace")?.toBoolean() ?: false
+if (includeTrace && file("../trace").exists()) {
+    includeBuild("../trace") {
+        dependencySubstitution {
+            substitute(module("com.alexrdclement.trace:trace")).using(project(":trace"))
+        }
+    }
+}
+
+val includeUievent = localProps.getProperty("includeUievent")?.toBoolean() ?: false
+if (includeUievent && file("../uievent").exists()) {
+    includeBuild("../uievent") {
+        dependencySubstitution {
+            substitute(module("com.alexrdclement.uievent:uievent")).using(project(":uievent"))
         }
     }
 }

@@ -30,9 +30,9 @@ import com.alexrdclement.uiplayground.components.demo.control.Control
 import com.alexrdclement.uiplayground.components.layout.ErrorDialogContent
 import com.alexrdclement.uiplayground.components.util.mapSaverSafe
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import com.alexrdclement.uiplayground.uievent.UiEventState
-import com.alexrdclement.uiplayground.uievent.collectAsState
-import com.alexrdclement.uiplayground.uievent.toUiEvent
+import com.alexrdclement.uievent.UiEventState
+import com.alexrdclement.uievent.collectAsState
+import com.alexrdclement.uievent.toUiEvent
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
