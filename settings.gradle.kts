@@ -1,5 +1,7 @@
 pluginManagement {
-    includeBuild("build-logic")
+    if (file("../gradle-plugins").exists()) {
+        includeBuild("../gradle-plugins")
+    }
     repositories {
         google()
         mavenCentral()
@@ -12,6 +14,13 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        if (file("../gradle-plugins").exists()) {
+            create("alexrdclementPluginLibs") {
+                from(files("../gradle-plugins/gradle/libs.versions.toml"))
+            }
+        }
+    }
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -23,11 +32,11 @@ include(":app")
 include(":baseline-profile")
 include(":benchmark")
 include(":components")
+include(":components:android-test")
 include(":components:baseline-profile")
 include(":desktopApp")
-include(":log")
-include(":loggable")
 include(":shaders")
+include(":shaders:android-test")
 include(":shaders:baseline-profile")
 include(":testing")
 include(":trace")
@@ -39,4 +48,20 @@ include(":webApp")
 plugins {
     // Compose Hot Reload
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
+
+val localPropsFile = rootDir.resolve("local.properties").takeIf { it.exists() }
+val localProps = java.util.Properties().apply {
+    localPropsFile?.inputStream()?.use { load(it) }
+}
+
+val includeLogging = localProps.getProperty("includeLogging")?.toBoolean() ?: false
+if (includeLogging && file("../logging").exists()) {
+    includeBuild("../logging") {
+        dependencySubstitution {
+            substitute(module("com.alexrdclement.logging:logger-apl")).using(project(":logger-api"))
+            substitute(module("com.alexrdclement.logging:logger-impl")).using(project(":logger-impl"))
+            substitute(module("com.alexrdclement.logging:loggable")).using(project(":loggable"))
+        }
+    }
 }

@@ -1,8 +1,10 @@
 [versions]
-activity-compose = "1.11.0"
 agp = "8.13.1"
+alexrdclement-gradle-plugins = "0.0.33"
 android-tools = "31.13.0"
+androidx-activity-compose = "1.11.0"
 androidx-core-splashscreen = "1.2.0"
+androidx-emoji2 = "1.6.0"
 androidx-lifecycle = "2.10.0"
 androidx-test-ext-junit = "1.3.0"
 androidx-tracing = "1.3.0"
@@ -31,11 +33,14 @@ maven-publish = "0.35.0"
 runtime-android = "1.9.5"
 shipkit-autoversion = "2.1.2"
 shipkit-changelog = "2.0.1"
+logging = "0.0.12"
+ui-tooling = "1.9.3"
 
 [libraries]
-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark-macro-junit4" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-core-splashscreen" }
+androidx-emoji2 = { group = "androidx.emoji2", name = "emoji2", version.ref = "androidx-emoji2" }
 androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
@@ -46,9 +51,6 @@ androidx-tracing-perfetto-binary = { group = "androidx.tracing", name = "tracing
 androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network-ktor3 = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coil" }
-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose-ui" }
-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose-ui" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "compose-ui" }
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose-ui" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
@@ -64,6 +66,9 @@ ktor-client-java = { group = "io.ktor", name = "ktor-client-java", version.ref =
 navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 paparazzi = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "paparazzi" }
 test-parameter-injector = { group = "com.google.testparameterinjector", name = "test-parameter-injector", version.ref = "test-parameter-injector" }
+logger-api = { group = "com.alexrdclement.logging", name = "logger-api", version.ref = "logging" }
+logger-impl = { group = "com.alexrdclement.logging", name = "logger-impl", version.ref = "logging" }
+loggable = { group = "com.alexrdclement.logging", name = "loggable", version.ref = "logging" }
 
 # Dependencies of the included build-logic
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -72,31 +77,24 @@ compose-compiler-gradle-plugin = { group = "org.jetbrains.kotlin", name = "compo
 compose-gradle-plugin = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "compose-multiplatform" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtime-android" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "ui-tooling" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "agp" }
-android-library = { id = "com.android.library", version.ref = "agp" }
-android-test = { id = "com.android.test", version.ref = "agp" }
+alexrdclement-android-application = { id = "com.alexrdclement.gradle.plugin.android.application", version.ref = "alexrdclement-gradle-plugins" }
+alexrdclement-android-application-compose = { id = "com.alexrdclement.gradle.plugin.android.application.compose", version.ref = "alexrdclement-gradle-plugins" }
+alexrdclement-android-baselineprofile-consumer = { id = "com.alexrdclement.gradle.plugin.android.baselineprofile.consumer", version.ref = "alexrdclement-gradle-plugins" }
+alexrdclement-android-library = { id = "com.alexrdclement.gradle.plugin.android.library", version.ref = "alexrdclement-gradle-plugins" }
+alexrdclement-android-library-compose = { id = "com.alexrdclement.gradle.plugin.android.library.compose", version.ref = "alexrdclement-gradle-plugins" }
+alexrdclement-android-test = { id = "com.alexrdclement.gradle.plugin.android.test", version.ref = "alexrdclement-gradle-plugins" }
+alexrdclement-compose-multiplatform = { id = "com.alexrdclement.gradle.plugin.compose.multiplatform", version.ref = "alexrdclement-gradle-plugins" }
+alexrdclement-desktop-application = { id = "com.alexrdclement.gradle.plugin.desktop.application", version.ref = "alexrdclement-gradle-plugins" }
+alexrdclement-github-release = { id = "com.alexrdclement.gradle.plugin.github.release", version.ref = "alexrdclement-gradle-plugins" }
+alexrdclement-kotlin-multiplatform-library = { id = "com.alexrdclement.gradle.plugin.kotlin.multiplatform.library", version.ref = "alexrdclement-gradle-plugins" }
+alexrdclement-kotlin-serialization = { id = "com.alexrdclement.gradle.plugin.kotlin.serialization", version.ref = "alexrdclement-gradle-plugins" }
+alexrdclement-maven-publish = { id = "com.alexrdclement.gradle.plugin.maven.publish", version.ref = "alexrdclement-gradle-plugins" }
+alexrdclement-web-application = { id = "com.alexrdclement.gradle.plugin.web.application", version.ref = "alexrdclement-gradle-plugins" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 compose-hotreload = { id = "org.jetbrains.compose.hot-reload", version.ref = "compose-hotreload" }
-compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
-shipkit-autoversion = { id = "org.shipkit.shipkit-auto-version", version.ref = "shipkit-autoversion" }
-shipkit-changelog = { id = "org.shipkit.shipkit-changelog", version.ref = "shipkit-changelog" }
-shipkit-githubrelease = { id = "org.shipkit.shipkit-github-release", version.ref = "shipkit-changelog" }
-
-uiplayground-android-application = { id = "uiplayground.android.application", version = "unspecified" }
-uiplayground-android-application-compose = { id = "uiplayground.android.application.compose", version = "unspecified" }
-uiplayground-android-library = { id = "uiplayground.android.library", version = "unspecified" }
-uiplayground-android-library-compose = { id = "uiplayground.android.library.compose", version = "unspecified" }
-uiplayground-android-test = { id = "uiplayground.android.test", version = "unspecified" }
-uiplayground-compose-multiplatform = { id = "uiplayground.compose.multiplatform", version = "unspecified" }
-uiplayground-kotlin-android = { id = "uiplayground.kotlin.android", version = "unspecified" }
-uiplayground-kotlin-multiplatform = { id = "uiplayground.kotlin.multiplatform", version = "unspecified" }
-uiplayground-release-github = { id = "uiplayground.release.github", version = "unspecified" }
 
 [bundles]

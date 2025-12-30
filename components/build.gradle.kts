@@ -1,53 +1,15 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-
 plugins {
-    alias(libs.plugins.uiplayground.android.library)
-    alias(libs.plugins.uiplayground.kotlin.multiplatform)
-    alias(libs.plugins.uiplayground.compose.multiplatform)
-    alias(libs.plugins.paparazzi)
-    alias(libs.plugins.baselineprofile)
-    alias(libs.plugins.maven.publish)
-}
-
-android {
-    namespace = "com.alexrdclement.uiplayground.components"
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
-    }
-}
-
-baselineProfile {
-    filter {
-        include("com.alexrdclement.uiplayground.components.**")
-    }
-}
-
-dependencies {
-    baselineProfile(projects.components.baselineProfile)
+    id(libs.plugins.alexrdclement.kotlin.multiplatform.library.get().pluginId)
+    id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
+    id(libs.plugins.alexrdclement.android.baselineprofile.consumer.get().pluginId)
+    id(libs.plugins.alexrdclement.maven.publish.get().pluginId)
 }
 
 kotlin {
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "components"
-            isStatic = true
-        }
-    }
-
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
-        binaries.executable()
-    }
-
-    applyDefaultHierarchyTemplate()
+    libraryTargets(
+        androidNamespace = "com.alexrdclement.uiplayground.components",
+        iosFrameworkBaseName = "Components",
+    )
 
     sourceSets {
         commonMain {
@@ -72,20 +34,11 @@ kotlin {
             dependencies {
                 api(libs.ktor.client.android)
                 api(libs.ktor.client.okhttp)
+                implementation(compose.preview)
                 implementation(libs.compose.ui.test.manifest)
-            }
-        }
-        androidUnitTest {
-            dependencies {
-                implementation(libs.junit)
-                implementation(libs.test.parameter.injector)
-                implementation(projects.testing)
-            }
-        }
-        androidInstrumentedTest {
-            dependencies {
-                implementation(libs.androidx.test.ext.junit)
-                implementation(libs.compose.ui.test.junit4)
+                implementation(libs.androidx.emoji2)
+                implementation(libs.androidx.activity.compose)
+                implementation(compose.uiTooling)
             }
         }
         appleMain {
@@ -102,5 +55,5 @@ kotlin {
 }
 
 dependencies {
-    debugImplementation(compose.uiTooling)
+    baselineProfile(projects.components.baselineProfile)
 }

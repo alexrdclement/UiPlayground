@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
 
 @Composable
-internal fun DemoCircle(
+fun DemoCircle(
     modifier: Modifier = Modifier,
     color: Color = Color.Black,
     background: Color = Color.White,

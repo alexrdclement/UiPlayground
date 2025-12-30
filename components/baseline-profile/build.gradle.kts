@@ -1,6 +1,5 @@
 plugins {
-    // See https://github.com/gradle/gradle/issues/17968
-    id(libs.plugins.uiplayground.android.test.get().pluginId)
+    id(libs.plugins.alexrdclement.android.test.get().pluginId)
     id(libs.plugins.baselineprofile.get().pluginId)
 }
 
@@ -22,4 +21,11 @@ dependencies {
     implementation(libs.androidx.benchmark.macro.junit4)
 
     implementation(projects.uiautomatorFixtures)
+}
+
+// Automatically copy generated baseline profiles to the library module's src directory
+tasks.configureEach {
+    if (name == "collectNonMinifiedReleaseBaselineProfile") {
+        finalizedBy(":components:copyBaselineProfile")
+    }
 }

@@ -1,37 +1,21 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-
 plugins {
-    alias(libs.plugins.uiplayground.android.library)
-    alias(libs.plugins.uiplayground.kotlin.multiplatform)
-    alias(libs.plugins.uiplayground.compose.multiplatform)
-    alias(libs.plugins.kotlin.serialization)
+    id(libs.plugins.alexrdclement.kotlin.multiplatform.library.get().pluginId)
+    id(libs.plugins.alexrdclement.kotlin.serialization.get().pluginId)
+    id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
 }
 
 kotlin {
-    androidTarget()
-
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "app"
-            isStatic = true
-        }
-    }
-
-    jvm()
-
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
-        binaries.executable()
-    }
-
-    applyDefaultHierarchyTemplate()
+    libraryTargets(
+        androidNamespace = "com.alexrdclement.uiplayground.app",
+        iosFrameworkBaseName = "App",
+    )
 
     sourceSets {
+        androidMain {
+            dependencies {
+                implementation(libs.androidx.activity.compose)
+            }
+        }
         commonMain.dependencies {
             implementation(compose.foundation)
             implementation(compose.ui)
@@ -41,9 +25,9 @@ kotlin {
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.navigation.compose)
+            implementation(libs.logger.impl)
 
             implementation(projects.components)
-            implementation(projects.log)
             implementation(projects.shaders)
             implementation(projects.theme)
             implementation(projects.trace)
@@ -58,16 +42,6 @@ kotlin {
             dependencies {
                 implementation(compose.foundation)
             }
-        }
-    }
-}
-
-android {
-    namespace = "com.alexrdclement.uiplayground.app"
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
         }
     }
 }

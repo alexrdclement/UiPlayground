@@ -1,17 +1,19 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    alias(libs.plugins.uiplayground.kotlin.multiplatform)
-    alias(libs.plugins.uiplayground.compose.multiplatform)
+    id(libs.plugins.alexrdclement.desktop.application.get().pluginId)
+    id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
     alias(libs.plugins.compose.hotreload)
 }
 
 kotlin {
-    jvm()
+    desktopAppTarget(
+        mainClass = "com.alexrdclement.uiplayground.MainKt",
+    )
     sourceSets {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation(project(":app"))
+            implementation(projects.app)
         }
     }
 }

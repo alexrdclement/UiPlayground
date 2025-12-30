@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import app
+import App
 
 struct MainView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {

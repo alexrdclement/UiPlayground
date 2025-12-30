@@ -1,23 +1,15 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-
 plugins {
-    alias(libs.plugins.uiplayground.kotlin.multiplatform)
-    alias(libs.plugins.uiplayground.compose.multiplatform)
+    id(libs.plugins.alexrdclement.web.application.get().pluginId)
+    id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
 }
 
 kotlin {
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
-        binaries.executable()
-    }
-
-    applyDefaultHierarchyTemplate()
+    webAppTarget()
 
     sourceSets {
         wasmJsMain {
             dependencies {
-                implementation(project(":app"))
+                implementation(projects.app)
                 implementation(compose.ui)
                 implementation(libs.navigation.compose)
             }

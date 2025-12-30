@@ -1,6 +1,5 @@
 plugins {
-    alias(libs.plugins.uiplayground.android.library)
-    alias(libs.plugins.uiplayground.kotlin.android)
+    id(libs.plugins.alexrdclement.android.library.asProvider().get().pluginId)
 }
 
 android {

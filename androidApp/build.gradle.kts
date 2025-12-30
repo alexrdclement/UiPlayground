@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.uiplayground.android.application)
-    alias(libs.plugins.uiplayground.android.application.compose)
+    id(libs.plugins.alexrdclement.android.application.asProvider().get().pluginId)
+    id(libs.plugins.alexrdclement.android.application.compose.get().pluginId)
     alias(libs.plugins.baselineprofile)
 }
 
@@ -42,6 +42,16 @@ android {
                 "proguard-rules.pro"
             )
         }
+        create("benchmarkRelease") {
+            initWith(buildTypes.getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+        }
+        create("nonMinifiedRelease") {
+            initWith(buildTypes.getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+        }
     }
 
     packaging {
@@ -51,8 +61,13 @@ android {
     }
 }
 
+baselineProfile {
+    // Automatically save generated profiles to src/release/generated/baselineProfiles/
+    saveInSrc = true
+}
+
 dependencies {
-    implementation(libs.activity.compose)
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.profileinstaller)
 

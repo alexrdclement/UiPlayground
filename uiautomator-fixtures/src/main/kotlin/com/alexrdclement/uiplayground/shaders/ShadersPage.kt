@@ -56,7 +56,7 @@ class ShadersPage(
 
     fun adjustPixelate() {
         // One adjustment doesn't generate benchmark/profile frame data
-        val xAmount = device.waitAndFindObject(By.desc("Amount"))
+        val xAmount = device.waitAndFindObject(By.desc("Subdivisions"))
         xAmount.drag(Point(xAmount.visibleCenter.x + 100, xAmount.visibleCenter.y))
         xAmount.drag(Point(xAmount.visibleCenter.x + 200, xAmount.visibleCenter.y))
     }

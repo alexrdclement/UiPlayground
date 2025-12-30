@@ -9,5 +9,5 @@ class ButtonPage(
     private val device: UiDevice,
 ) {
     val button: UiObject2
-        get() = device.waitAndFindObject(By.text("Button").clickable(true))
+        get() = device.waitAndFindObject(By.desc("Demo Button"))
 }

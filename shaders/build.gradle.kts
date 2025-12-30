@@ -1,51 +1,15 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-
 plugins {
-    alias(libs.plugins.uiplayground.android.library)
-    alias(libs.plugins.uiplayground.kotlin.multiplatform)
-    alias(libs.plugins.uiplayground.compose.multiplatform)
-    alias(libs.plugins.paparazzi)
-    alias(libs.plugins.baselineprofile)
-    alias(libs.plugins.maven.publish)
-}
-
-android {
-    namespace = "com.alexrdclement.uiplayground.shaders"
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
-    }
-}
-
-baselineProfile {
-    filter {
-        include("com.alexrdclement.uiplayground.shaders.**")
-    }
-}
-
-dependencies {
-    baselineProfile(projects.shaders.baselineProfile)
+    id(libs.plugins.alexrdclement.kotlin.multiplatform.library.get().pluginId)
+    id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
+    id(libs.plugins.alexrdclement.android.baselineprofile.consumer.get().pluginId)
+    id(libs.plugins.alexrdclement.maven.publish.get().pluginId)
 }
 
 kotlin {
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "shaders"
-            isStatic = true
-        }
-    }
-
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
-        binaries.executable()
-    }
+    libraryTargets(
+        androidNamespace = "com.alexrdclement.uiplayground.shaders",
+        iosFrameworkBaseName = "Shaders",
+    )
 
     sourceSets {
         commonMain {
@@ -61,13 +25,6 @@ kotlin {
         androidMain {
             dependencies {
                 implementation(libs.compose.ui.test.manifest)
-            }
-        }
-        androidUnitTest {
-            dependencies {
-                implementation(libs.junit)
-                implementation(libs.test.parameter.injector)
-                implementation(projects.testing)
             }
         }
 
@@ -88,5 +45,5 @@ kotlin {
 }
 
 dependencies {
-    debugImplementation(compose.uiTooling)
+    baselineProfile(projects.shaders.baselineProfile)
 }
