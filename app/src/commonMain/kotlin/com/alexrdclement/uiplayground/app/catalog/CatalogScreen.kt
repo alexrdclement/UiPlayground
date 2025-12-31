@@ -15,7 +15,7 @@ import com.alexrdclement.uiplayground.components.navigation.BackNavigationButton
 import com.alexrdclement.uiplayground.components.util.horizontalPaddingValues
 import com.alexrdclement.uiplayground.components.util.plus
 import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import com.alexrdclement.uiplayground.trace.ReportDrawn
+import com.alexrdclement.trace.ReportDrawn
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable

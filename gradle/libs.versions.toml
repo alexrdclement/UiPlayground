@@ -34,6 +34,8 @@ runtime-android = "1.9.5"
 shipkit-autoversion = "2.1.2"
 shipkit-changelog = "2.0.1"
 logging = "0.0.12"
+trace = "0.0.5"
+uievent = "0.0.7"
 ui-tooling = "1.9.3"
 
 [libraries]
@@ -69,6 +71,8 @@ test-parameter-injector = { group = "com.google.testparameterinjector", name = "
 logger-api = { group = "com.alexrdclement.logging", name = "logger-api", version.ref = "logging" }
 logger-impl = { group = "com.alexrdclement.logging", name = "logger-impl", version.ref = "logging" }
 loggable = { group = "com.alexrdclement.logging", name = "loggable", version.ref = "logging" }
+trace = { group = "com.alexrdclement.trace", name = "trace", version.ref = "trace" }
+uievent = { group = "com.alexrdclement.uievent", name = "uievent", version.ref = "uievent" }
 
 # Dependencies of the included build-logic
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }

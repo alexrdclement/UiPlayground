@@ -26,7 +26,7 @@ kotlin {
                 api(libs.kotlinx.collections.immutable)
                 api(libs.kotlinx.datetime)
 
-                api(projects.trace)
+                api(libs.trace)
                 api(projects.theme)
             }
         }
