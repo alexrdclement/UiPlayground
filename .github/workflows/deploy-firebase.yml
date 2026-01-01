@@ -47,7 +47,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.4.7'
+          ruby-version: '4.0.0'
           bundler-cache: true
           working-directory: 'androidApp'
 
@@ -124,7 +124,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.4.7'
+          ruby-version: '4.0.0'
           bundler-cache: true
           working-directory: 'iosApp'
 
