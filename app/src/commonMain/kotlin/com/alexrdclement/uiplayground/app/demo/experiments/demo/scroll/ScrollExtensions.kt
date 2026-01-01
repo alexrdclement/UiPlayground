@@ -17,12 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.palette.components.core.Button
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.theme.PaletteSpacing
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.FadeSide
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.fade
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
-import com.alexrdclement.uiplayground.components.core.Button
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.theme.PlaygroundSpacing
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.roundToInt
@@ -134,7 +134,7 @@ fun AnimateScrollItemVisibleVerticalPreview() {
         LazyColumn(
             state = lazyListState,
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(PlaygroundSpacing.xs),
+            verticalArrangement = Arrangement.spacedBy(PaletteSpacing.xs),
             contentPadding = PaddingValues(vertical = fadeLength),
             modifier = Modifier
                 .size(width = itemSize * 2, height = itemSize * 3 + itemSize / 2)
@@ -186,7 +186,7 @@ fun AnimateScrollItemVisibleHorizontalPreview() {
 
         LazyRow(
             state = lazyListState,
-            horizontalArrangement = Arrangement.spacedBy(PlaygroundSpacing.xs),
+            horizontalArrangement = Arrangement.spacedBy(PaletteSpacing.xs),
             verticalAlignment = Alignment.CenterVertically,
             contentPadding = PaddingValues(horizontal = fadeLength),
             modifier = Modifier

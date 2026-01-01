@@ -9824,12 +9824,12 @@ SPLcom/alexrdclement/uiplayground/theme/ColorScheme;->getSurface-0d7_KjU()J
 Lcom/alexrdclement/uiplayground/theme/ColorSchemeKt;
 SPLcom/alexrdclement/uiplayground/theme/ColorSchemeKt;-><clinit>()V
 SPLcom/alexrdclement/uiplayground/theme/ColorSchemeKt;->getPlaygroundDarkColorScheme()Lcom/alexrdclement/uiplayground/theme/ColorScheme;
-Lcom/alexrdclement/uiplayground/theme/PlaygroundTheme;
-SPLcom/alexrdclement/uiplayground/theme/PlaygroundTheme;-><clinit>()V
-SPLcom/alexrdclement/uiplayground/theme/PlaygroundTheme;-><init>()V
-SPLcom/alexrdclement/uiplayground/theme/PlaygroundTheme;->getColorScheme(Landroidx/compose/runtime/Composer;I)Lcom/alexrdclement/uiplayground/theme/ColorScheme;
-SPLcom/alexrdclement/uiplayground/theme/PlaygroundTheme;->getSpacing(Landroidx/compose/runtime/Composer;I)Lcom/alexrdclement/uiplayground/theme/Spacing;
-SPLcom/alexrdclement/uiplayground/theme/PlaygroundTheme;->getTypography(Landroidx/compose/runtime/Composer;I)Lcom/alexrdclement/uiplayground/theme/Typography;
+Lcom/alexrdclement/uiplayground/theme/PaletteTheme;
+SPLcom/alexrdclement/uiplayground/theme/PaletteTheme;-><clinit>()V
+SPLcom/alexrdclement/uiplayground/theme/PaletteTheme;-><init>()V
+SPLcom/alexrdclement/uiplayground/theme/PaletteTheme;->getColorScheme(Landroidx/compose/runtime/Composer;I)Lcom/alexrdclement/uiplayground/theme/ColorScheme;
+SPLcom/alexrdclement/uiplayground/theme/PaletteTheme;->getSpacing(Landroidx/compose/runtime/Composer;I)Lcom/alexrdclement/uiplayground/theme/Spacing;
+SPLcom/alexrdclement/uiplayground/theme/PaletteTheme;->getTypography(Landroidx/compose/runtime/Composer;I)Lcom/alexrdclement/uiplayground/theme/Typography;
 Lcom/alexrdclement/uiplayground/theme/Spacing;
 SPLcom/alexrdclement/uiplayground/theme/Spacing;-><clinit>()V
 SPLcom/alexrdclement/uiplayground/theme/Spacing;-><init>(FFFF)V
@@ -9841,7 +9841,7 @@ SPLcom/alexrdclement/uiplayground/theme/SpacingKt;-><clinit>()V
 SPLcom/alexrdclement/uiplayground/theme/SpacingKt;->getPlaygroundSpacing()Lcom/alexrdclement/uiplayground/theme/Spacing;
 Lcom/alexrdclement/uiplayground/theme/ThemeKt;
 SPLcom/alexrdclement/uiplayground/theme/ThemeKt;-><clinit>()V
-SPLcom/alexrdclement/uiplayground/theme/ThemeKt;->PlaygroundTheme(ZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+SPLcom/alexrdclement/uiplayground/theme/ThemeKt;->PaletteTheme(ZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 SPLcom/alexrdclement/uiplayground/theme/ThemeKt;->getLocalPlaygroundColorScheme()Landroidx/compose/runtime/ProvidableCompositionLocal;
 SPLcom/alexrdclement/uiplayground/theme/ThemeKt;->getLocalPlaygroundSpacing()Landroidx/compose/runtime/ProvidableCompositionLocal;
 SPLcom/alexrdclement/uiplayground/theme/ThemeKt;->getLocalPlaygroundTypography()Landroidx/compose/runtime/ProvidableCompositionLocal;

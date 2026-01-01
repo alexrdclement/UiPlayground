@@ -24,15 +24,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.components.demo.Demo
-import com.alexrdclement.uiplayground.components.demo.control.Control
+import com.alexrdclement.palette.components.demo.Demo
+import com.alexrdclement.palette.components.demo.control.Control
+import com.alexrdclement.palette.components.util.ColorSaver
+import com.alexrdclement.palette.components.util.mapSaverSafe
+import com.alexrdclement.palette.components.util.restore
+import com.alexrdclement.palette.components.util.save
+import com.alexrdclement.palette.theme.PaletteSpacing
+import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
-import com.alexrdclement.uiplayground.components.util.ColorSaver
-import com.alexrdclement.uiplayground.components.util.mapSaverSafe
-import com.alexrdclement.uiplayground.components.util.restore
-import com.alexrdclement.uiplayground.components.util.save
-import com.alexrdclement.uiplayground.theme.PlaygroundSpacing
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -57,7 +57,7 @@ fun FadeDemo(
                     borderColor = state.borderColor.takeIf { state.showBorder },
                 )
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(PlaygroundSpacing.medium),
+            verticalArrangement = Arrangement.spacedBy(PaletteSpacing.medium),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Box(
@@ -81,7 +81,7 @@ fun FadeDemo(
                                 length = state.fadeLength,
                                 borderColor = state.borderColor.takeIf { state.showBorder },
                             )
-                            .background(PlaygroundTheme.colorScheme.primary)
+                            .background(PaletteTheme.colorScheme.primary)
                             .align(alignment)
                     )
                 }
@@ -108,7 +108,7 @@ fun FadeDemo(
                                 length = state.fadeLength,
                                 borderColor = state.borderColor.takeIf { state.showBorder },
                             )
-                            .background(PlaygroundTheme.colorScheme.primary)
+                            .background(PaletteTheme.colorScheme.primary)
                             .align(alignment)
                     )
                 }
@@ -118,7 +118,7 @@ fun FadeDemo(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
-                    .background(PlaygroundTheme.colorScheme.primary)
+                    .background(PaletteTheme.colorScheme.primary)
             )
         }
     }

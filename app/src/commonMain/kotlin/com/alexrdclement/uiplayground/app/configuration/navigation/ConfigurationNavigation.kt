@@ -18,14 +18,12 @@ object ConfigurationRoute
 
 fun NavGraphBuilder.configurationGraph(
     configurationController: ConfigurationController,
-    onConfigureThemeClick: () -> Unit,
 ) {
     navigation<ConfigurationGraphRoute>(
         startDestination = ConfigurationRoute,
     ) {
         configurationDialog(
             configurationController = configurationController,
-            onConfigureThemeClick = onConfigureThemeClick,
         )
     }
 }
@@ -38,12 +36,10 @@ fun NavController.navigateToConfiguration() {
 
 fun NavGraphBuilder.configurationDialog(
     configurationController: ConfigurationController,
-    onConfigureThemeClick: () -> Unit,
 ) {
     dialog<ConfigurationRoute> {
         ConfigurationDialogContent(
             configurationController = configurationController,
-            onConfigureThemeClick = onConfigureThemeClick,
         )
     }
 }

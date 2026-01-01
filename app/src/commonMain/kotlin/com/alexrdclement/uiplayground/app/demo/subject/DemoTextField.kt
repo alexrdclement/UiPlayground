@@ -7,13 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import com.alexrdclement.uiplayground.components.core.TextField
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.core.TextField
+import com.alexrdclement.palette.theme.PaletteTheme
 
 @Composable
 fun DemoTextField(
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = PlaygroundTheme.typography.display,
+    textStyle: TextStyle = PaletteTheme.typography.display,
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         TextField(

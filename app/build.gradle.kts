@@ -26,12 +26,10 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.navigation.compose)
             implementation(libs.logger.impl)
+            implementation(libs.palette.components)
+            implementation(libs.palette.theme)
             implementation(libs.trace)
             implementation(libs.uievent)
-
-            implementation(projects.components)
-            implementation(projects.shaders)
-            implementation(projects.theme)
         }
         jvmMain {
             dependencies {

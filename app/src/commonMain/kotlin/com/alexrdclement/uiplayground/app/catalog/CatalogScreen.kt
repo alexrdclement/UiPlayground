@@ -6,15 +6,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.components.layout.Scaffold
-import com.alexrdclement.uiplayground.components.layout.TopBar
-import com.alexrdclement.uiplayground.components.layout.catalog.Catalog
-import com.alexrdclement.uiplayground.components.layout.catalog.CatalogItem
-import com.alexrdclement.uiplayground.components.navigation.BackNavigationButton
-import com.alexrdclement.uiplayground.components.util.horizontalPaddingValues
-import com.alexrdclement.uiplayground.components.util.plus
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.layout.Scaffold
+import com.alexrdclement.palette.components.layout.TopBar
+import com.alexrdclement.palette.components.layout.catalog.Catalog
+import com.alexrdclement.palette.components.layout.catalog.CatalogItem
+import com.alexrdclement.palette.components.navigation.BackNavigationButton
+import com.alexrdclement.palette.components.util.horizontalPaddingValues
+import com.alexrdclement.palette.components.util.plus
+import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.trace.ReportDrawn
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -32,7 +32,7 @@ fun <T : CatalogItem> CatalogScreen(
         topBar = {
             TopBar(
                 title = title?.let {
-                    { Text(title, style = PlaygroundTheme.typography.titleMedium) }
+                    { Text(title, style = PaletteTheme.typography.titleMedium) }
                 },
                 navButton = onNavigateBack?.let {
                     { BackNavigationButton(onNavigateBack) }
@@ -47,7 +47,7 @@ fun <T : CatalogItem> CatalogScreen(
             contentPadding = innerPadding.plus(WindowInsets.safeDrawing.horizontalPaddingValues()),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = PlaygroundTheme.spacing.medium)
+                .padding(horizontal = PaletteTheme.spacing.medium)
         )
     }
 }
@@ -55,7 +55,7 @@ fun <T : CatalogItem> CatalogScreen(
 @Preview
 @Composable
 private fun Preview() {
-    PlaygroundTheme {
+    PaletteTheme {
         CatalogScreen(
             items = MainCatalogItem.entries.toList(),
             onItemClick = {}
@@ -66,7 +66,7 @@ private fun Preview() {
 @Preview
 @Composable
 private fun WithNavPreview() {
-    PlaygroundTheme {
+    PaletteTheme {
         CatalogScreen(
             items = MainCatalogItem.entries.toList(),
             onItemClick = {},

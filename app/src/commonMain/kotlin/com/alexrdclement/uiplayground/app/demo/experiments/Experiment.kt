@@ -1,6 +1,6 @@
 package com.alexrdclement.uiplayground.app.demo.experiments
 
-import com.alexrdclement.uiplayground.components.layout.catalog.CatalogItem
+import com.alexrdclement.palette.components.layout.catalog.CatalogItem
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -3,11 +3,11 @@ package com.alexrdclement.uiplayground.app.demo
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.layout.TopBar
+import com.alexrdclement.palette.components.navigation.BackNavigationButton
+import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.components.layout.TopBar
-import com.alexrdclement.uiplayground.components.navigation.BackNavigationButton
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 
 @Composable
 fun DemoTopBar(
@@ -25,7 +25,7 @@ fun DemoTopBar(
         title = {
             Text(
                 text = title,
-                style = PlaygroundTheme.typography.titleMedium,
+                style = PaletteTheme.typography.titleMedium,
                 modifier = Modifier.basicMarquee(),
             )
         },

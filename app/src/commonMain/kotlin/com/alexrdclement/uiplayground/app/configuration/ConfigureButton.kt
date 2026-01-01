@@ -1,10 +1,10 @@
 package com.alexrdclement.uiplayground.app.configuration
 
 import androidx.compose.runtime.Composable
-import com.alexrdclement.uiplayground.components.core.Button
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
-import com.alexrdclement.uiplayground.theme.styles.ButtonStyleToken
+import com.alexrdclement.palette.components.core.Button
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.theme.PaletteTheme
+import com.alexrdclement.palette.theme.styles.ButtonStyleToken
 
 @Composable
 fun ConfigureButton(
@@ -14,6 +14,6 @@ fun ConfigureButton(
         style = ButtonStyleToken.Tertiary,
         onClick = onClick,
     ) {
-        Text("CONFIGURE", style = PlaygroundTheme.typography.labelSmall)
+        Text("CONFIGURE", style = PaletteTheme.typography.labelSmall)
     }
 }

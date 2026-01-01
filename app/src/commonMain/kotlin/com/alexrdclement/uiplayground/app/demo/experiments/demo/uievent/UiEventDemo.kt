@@ -23,13 +23,13 @@ import com.alexrdclement.logging.LogLevel
 import com.alexrdclement.logging.Logger
 import com.alexrdclement.logging.LoggerImpl
 import com.alexrdclement.logging.logString
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.demo.Demo
+import com.alexrdclement.palette.components.demo.control.Control
+import com.alexrdclement.palette.components.layout.ErrorDialogContent
+import com.alexrdclement.palette.components.util.mapSaverSafe
+import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.components.demo.Demo
-import com.alexrdclement.uiplayground.components.demo.control.Control
-import com.alexrdclement.uiplayground.components.layout.ErrorDialogContent
-import com.alexrdclement.uiplayground.components.util.mapSaverSafe
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import com.alexrdclement.uievent.UiEventState
 import com.alexrdclement.uievent.collectAsState
 import com.alexrdclement.uievent.toUiEvent
@@ -65,7 +65,7 @@ fun UiEventDemo(
         val logs by state.logs.collectAsState(persistentListOf())
 
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.large)
+            verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.large)
         ) {
             items(
                 count = state.eventsByLogLevel.size,
@@ -80,7 +80,7 @@ fun UiEventDemo(
                 )
             }
             item {
-                Text("Logs", style = PlaygroundTheme.typography.titleMedium)
+                Text("Logs", style = PaletteTheme.typography.titleMedium)
             }
             items(
                 items = logs,
@@ -88,7 +88,7 @@ fun UiEventDemo(
                 LogDisplay(
                     log = log,
                     modifier = Modifier
-                        .padding(horizontal = PlaygroundTheme.spacing.medium)
+                        .padding(horizontal = PaletteTheme.spacing.medium)
                 )
             }
         }
@@ -114,15 +114,15 @@ fun LogLevelDisplay(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.medium),
         modifier = modifier,
     ) {
-        Text(level.name, style = PlaygroundTheme.typography.labelLarge)
+        Text(level.name, style = PaletteTheme.typography.labelLarge)
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.small),
+            verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
             modifier = Modifier
-                .padding(horizontal = PlaygroundTheme.spacing.medium)
+                .padding(horizontal = PaletteTheme.spacing.medium)
         ) {
             val eventState by logs.collectAsState()
             Text("Event state: $eventState")

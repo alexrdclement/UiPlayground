@@ -1,7 +1,5 @@
 [versions]
-agp = "8.13.1"
 alexrdclement-gradle-plugins = "0.0.33"
-android-tools = "31.13.0"
 androidx-activity-compose = "1.11.0"
 androidx-core-splashscreen = "1.2.0"
 androidx-emoji2 = "1.6.0"
@@ -11,32 +9,24 @@ androidx-tracing = "1.3.0"
 baselineprofile = "1.4.1"
 benchmark-macro-junit4 = "1.4.1"
 coil = "3.3.0"
-compose-bom = "2025.11.01"
 compose-hotreload = "1.0.0"
-compose-multiplatform = "1.9.3"
 compose-ui = "1.9.5"
 espresso-core = "3.7.0"
 junit = "4.13.2"
-kotlin = "2.2.21"
 kotlinx-coroutines = "1.10.2"
 kotlinx-collections-immutable = "0.4.0"
 kotlinx-datetime = "0.7.1-0.6.x-compat"
 kotlinx-serialization-json = "1.9.0"
-ktor = "3.3.2"
 navigation-compose = "2.9.1"
 paparazzi = "2.0.0-alpha02"
+palette = "0.0.9"
 profileinstaller = "1.4.1"
 test-parameter-injector = "1.19"
 tracing-perfetto = "1.0.1"
 uiautomator = "2.3.0"
-maven-publish = "0.35.0"
-runtime-android = "1.9.5"
-shipkit-autoversion = "2.1.2"
-shipkit-changelog = "2.0.1"
 logging = "0.0.12"
 trace = "0.0.5"
 uievent = "0.0.7"
-ui-tooling = "1.9.3"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
@@ -56,32 +46,14 @@ coil-network-ktor3 = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", 
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "compose-ui" }
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose-ui" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
-kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
-ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
-ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
-ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
-ktor-client-java = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
 navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
-paparazzi = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "paparazzi" }
-test-parameter-injector = { group = "com.google.testparameterinjector", name = "test-parameter-injector", version.ref = "test-parameter-injector" }
-logger-api = { group = "com.alexrdclement.logging", name = "logger-api", version.ref = "logging" }
+palette-components = { group = "com.alexrdclement.palette", name = "palette-components", version.ref = "palette" }
+palette-theme = { group = "com.alexrdclement.palette", name = "palette-theme", version.ref = "palette" }
 logger-impl = { group = "com.alexrdclement.logging", name = "logger-impl", version.ref = "logging" }
-loggable = { group = "com.alexrdclement.logging", name = "loggable", version.ref = "logging" }
 trace = { group = "com.alexrdclement.trace", name = "trace", version.ref = "trace" }
 uievent = { group = "com.alexrdclement.uievent", name = "uievent", version.ref = "uievent" }
-
-# Dependencies of the included build-logic
-android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
-android-tools-common = { group = "com.android.tools", name = "common", version.ref = "android-tools" }
-compose-compiler-gradle-plugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
-compose-gradle-plugin = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "compose-multiplatform" }
-kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtime-android" }
-androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "ui-tooling" }
 
 [plugins]
 alexrdclement-android-application = { id = "com.alexrdclement.gradle.plugin.android.application", version.ref = "alexrdclement-gradle-plugins" }
@@ -99,6 +71,5 @@ alexrdclement-maven-publish = { id = "com.alexrdclement.gradle.plugin.maven.publ
 alexrdclement-web-application = { id = "com.alexrdclement.gradle.plugin.web.application", version.ref = "alexrdclement-gradle-plugins" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
 compose-hotreload = { id = "org.jetbrains.compose.hot-reload", version.ref = "compose-hotreload" }
-paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 
 [bundles]

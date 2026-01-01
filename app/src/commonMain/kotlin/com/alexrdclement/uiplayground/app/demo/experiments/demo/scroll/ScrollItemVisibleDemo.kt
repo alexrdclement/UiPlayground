@@ -26,16 +26,16 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
-import com.alexrdclement.uiplayground.components.demo.Demo
-import com.alexrdclement.uiplayground.components.demo.control.Control
+import com.alexrdclement.palette.components.core.Button
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.demo.Demo
+import com.alexrdclement.palette.components.demo.control.Control
+import com.alexrdclement.palette.components.util.mapSaverSafe
+import com.alexrdclement.palette.theme.PaletteSpacing
+import com.alexrdclement.palette.theme.styles.ButtonStyleToken
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.FadeSide
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.fade
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
-import com.alexrdclement.uiplayground.components.core.Button
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.components.util.mapSaverSafe
-import com.alexrdclement.uiplayground.theme.PlaygroundSpacing
-import com.alexrdclement.uiplayground.theme.styles.ButtonStyleToken
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -65,7 +65,7 @@ fun AnimateScrollItemVisibleDemo(
         ) {
             Column(
                 horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.spacedBy(PlaygroundSpacing.xs),
+                verticalArrangement = Arrangement.spacedBy(PaletteSpacing.xs),
                 modifier = Modifier.align(Alignment.CenterEnd)
             ) {
                 Button(
@@ -88,7 +88,7 @@ fun AnimateScrollItemVisibleDemo(
             LazyColumn(
                 state = lazyListState,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(PlaygroundSpacing.xs),
+                verticalArrangement = Arrangement.spacedBy(PaletteSpacing.xs),
                 contentPadding = PaddingValues(vertical = state.fadeLength),
                 modifier = Modifier.fade(
                     sides = FadeSide.Top + FadeSide.Bottom,

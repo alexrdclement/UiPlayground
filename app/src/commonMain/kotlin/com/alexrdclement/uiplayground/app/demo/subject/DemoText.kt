@@ -7,20 +7,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
-import com.alexrdclement.uiplayground.components.core.Text
-import com.alexrdclement.uiplayground.theme.PlaygroundTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun DemoText(
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = PlaygroundTheme.typography.display,
+    textStyle: TextStyle = PaletteTheme.typography.display,
 ) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(PlaygroundTheme.colorScheme.surface)
+            .background(PaletteTheme.colorScheme.surface)
     ) {
         Text(
             text = "Hello world",
