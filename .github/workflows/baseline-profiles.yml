@@ -51,7 +51,7 @@ jobs:
           CLOUDSDK_CORE_DISABLE_PROMPTS: 1
 
       - name: Generate Baseline Profiles
-        run: ./gradlew generateBaselineProfile --no-configuration-cache
+        run: ./gradlew :baseline-profile:generateBaselineProfile --no-configuration-cache
         env:
           FIREBASE_TEST_LAB_SERVICE_ACCOUNT: /tmp/ftl-service-account.json
 
