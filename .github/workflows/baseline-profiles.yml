@@ -1,0 +1,72 @@
+name: "Generate Baseline Profiles"
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generate-baseline-profiles:
+    name: "Generate Baseline Profiles"
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          lfs: 'true'
+          fetch-depth: 0
+
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          add-job-summary-as-pr-comment: 'never'
+          build-scan-publish: true
+          build-scan-terms-of-use-url: 'https://gradle.com/terms-of-service'
+          build-scan-terms-of-use-agree: 'yes'
+
+      - name: Create FTL service account file
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > /tmp/ftl-service-account.json
+
+      - name: Configure gcloud
+        run: |
+          gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
+        env:
+          CLOUDSDK_CORE_DISABLE_PROMPTS: 1
+
+      - name: Generate Baseline Profiles
+        run: ./gradlew generateBaselineProfile --no-configuration-cache
+        env:
+          FIREBASE_TEST_LAB_SERVICE_ACCOUNT: /tmp/ftl-service-account.json
+
+      - name: Upload baseline profiles
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: baseline-profiles
+          path: |
+            androidApp/src/release/generated/baselineProfiles/baseline-prof.txt
+
+      - name: Commit generated baseline profiles
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          file_pattern: |
+            androidApp/src/release/generated/baselineProfiles/baseline-prof.txt
+          disable_globbing: true
+          commit_message: "🤖 Update baseline profiles"

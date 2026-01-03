@@ -1,17 +1,24 @@
 plugins {
-    id(libs.plugins.alexrdclement.android.test.get().pluginId)
-    alias(libs.plugins.baselineprofile)
+    id(libs.plugins.alexrdclement.android.baselineprofile.generator.get().pluginId)
 }
 
 android {
     namespace = "com.alexrdclement.uiplayground.baselineprofile"
 
     targetProjectPath = ":androidApp"
-
 }
 
-baselineProfile {
-    useConnectedDevices = true
+firebaseTestLab {
+    managedDevices {
+        create(baselineProfileGenerator.deviceName) {
+            device = baselineProfileGenerator.deviceType
+            apiLevel = baselineProfileGenerator.apiLevel
+        }
+    }
+    val serviceAccountJson = System.getenv("FIREBASE_TEST_LAB_SERVICE_ACCOUNT")
+    if (serviceAccountJson != null) {
+        serviceAccountCredentials.set(file(serviceAccountJson))
+    }
 }
 
 dependencies {
@@ -21,13 +28,4 @@ dependencies {
     implementation(libs.androidx.benchmark.macro.junit4)
 
     implementation(projects.uiautomatorFixtures)
-}
-
-androidComponents {
-    onVariants { v ->
-        v.instrumentationRunnerArguments.put(
-            "targetAppId",
-            v.testedApks.map { v.artifacts.getBuiltArtifactsLoader().load(it)?.applicationId }
-        )
-    }
 }
