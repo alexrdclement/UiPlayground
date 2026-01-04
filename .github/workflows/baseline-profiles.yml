@@ -48,16 +48,6 @@ jobs:
       - name: Create FTL service account file
         run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}' > /tmp/ftl-service-account.json
 
-      - name: Authenticate with Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}'
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-
       - name: Generate Baseline Profiles
         run: ./gradlew :baseline-profile:generateBaselineProfile --no-configuration-cache
         env:
