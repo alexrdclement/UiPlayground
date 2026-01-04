@@ -2696,6 +2696,7 @@ HSPLandroidx/compose/runtime/ComposerImpl;->currentCompositionLocalScope()Landro
 HSPLandroidx/compose/runtime/ComposerImpl;->currentCompositionLocalScope(I)Landroidx/compose/runtime/PersistentCompositionLocalMap;
 HSPLandroidx/compose/runtime/ComposerImpl;->doCompose-aFTiNEg(Landroidx/collection/MutableScatterMap;Lkotlin/jvm/functions/Function2;)V
 PLandroidx/compose/runtime/ComposerImpl;->doRecordDownsFor(II)V
+HSPLandroidx/compose/runtime/ComposerImpl;->end(Z)V
 HSPLandroidx/compose/runtime/ComposerImpl;->endDefaults()V
 HSPLandroidx/compose/runtime/ComposerImpl;->endGroup()V
 HSPLandroidx/compose/runtime/ComposerImpl;->endMovableGroup()V
@@ -3551,6 +3552,7 @@ HSPLandroidx/compose/runtime/SlotWriter;->sourceInformationOf$runtime(I)Landroid
 HSPLandroidx/compose/runtime/SlotWriter;->startData(ILjava/lang/Object;Ljava/lang/Object;)V
 PLandroidx/compose/runtime/SlotWriter;->startGroup()V
 HSPLandroidx/compose/runtime/SlotWriter;->startGroup(ILjava/lang/Object;)V
+HSPLandroidx/compose/runtime/SlotWriter;->startGroup(ILjava/lang/Object;ZLjava/lang/Object;)V
 HSPLandroidx/compose/runtime/SlotWriter;->startNode(ILjava/lang/Object;)V
 HSPLandroidx/compose/runtime/SlotWriter;->update(Ljava/lang/Object;)Ljava/lang/Object;
 PLandroidx/compose/runtime/SlotWriter;->updateAnchors(II)V
@@ -11056,8 +11058,6 @@ PLandroidx/profileinstaller/ProfileVerifier;->getPackageLastUpdateTime(Landroid/
 PLandroidx/profileinstaller/ProfileVerifier;->setCompilationStatus(IZZZ)Landroidx/profileinstaller/ProfileVerifier$CompilationStatus;
 PLandroidx/profileinstaller/ProfileVerifier;->writeProfileVerification(Landroid/content/Context;Z)Landroidx/profileinstaller/ProfileVerifier$CompilationStatus;
 PLandroidx/profileinstaller/ProfileVerifier$Cache;-><init>(IIJJ)V
-PLandroidx/profileinstaller/ProfileVerifier$Cache;->equals(Ljava/lang/Object;)Z
-PLandroidx/profileinstaller/ProfileVerifier$Cache;->readFromFile(Ljava/io/File;)Landroidx/profileinstaller/ProfileVerifier$Cache;
 PLandroidx/profileinstaller/ProfileVerifier$Cache;->writeOnFile(Ljava/io/File;)V
 PLandroidx/profileinstaller/ProfileVerifier$CompilationStatus;-><init>(IZZZ)V
 Landroidx/savedstate/R$id;
