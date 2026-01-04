@@ -1,6 +1,7 @@
 package com.alexrdclement.uiplayground.app.configuration
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,8 +18,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.components.demo.control.Controls
 import com.alexrdclement.palette.components.demo.control.enumControl
 import com.alexrdclement.palette.theme.PaletteTheme
+import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -61,8 +64,8 @@ fun ConfigurationDialogContent(
                 controls = persistentListOf(
                     colorModeControl,
                 ),
-                verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.large),
-                modifier = Modifier.padding(PlaygroundTheme.spacing.medium)
+                verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.large),
+                modifier = Modifier.padding(PaletteTheme.spacing.medium)
             )
         }
     }
