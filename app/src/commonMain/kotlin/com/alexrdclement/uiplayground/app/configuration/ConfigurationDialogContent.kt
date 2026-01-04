@@ -57,6 +57,13 @@ fun ConfigurationDialogContent(
                     .padding(PaletteTheme.spacing.small)
                     .align(Alignment.CenterHorizontally)
             )
+            Controls(
+                controls = persistentListOf(
+                    colorModeControl,
+                ),
+                verticalArrangement = Arrangement.spacedBy(PlaygroundTheme.spacing.large),
+                modifier = Modifier.padding(PlaygroundTheme.spacing.medium)
+            )
         }
     }
 }
