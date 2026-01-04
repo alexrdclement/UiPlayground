@@ -6,7 +6,7 @@ android {
     namespace = "com.alexrdclement.uiplayground.benchmark"
 
     buildTypes {
-        create("benchmark") {
+        create("benchmarkRelease") {
             signingConfig = signingConfigs.getByName("debug")
             matchingFallbacks += listOf("release")
         }
@@ -45,6 +45,6 @@ dependencies {
 
 androidComponents {
     beforeVariants(selector().all()) {
-        it.enable = it.buildType == "benchmark"
+        it.enable = it.buildType == "benchmarkRelease"
     }
 }
