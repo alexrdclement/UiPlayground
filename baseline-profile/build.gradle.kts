@@ -20,7 +20,7 @@ firebaseTestLab {
         serviceAccountCredentials.set(file(serviceAccountJson))
     }
     testOptions {
-        results.cloudStorageBucket = "firebase-test-lab-custom"
+        results.cloudStorageBucket = "firebase-test-lab-uiplayground"
     }
 }
 
