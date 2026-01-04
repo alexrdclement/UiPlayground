@@ -1,5 +1,5 @@
 [versions]
-alexrdclement-gradle-plugins = "0.0.47"
+alexrdclement-gradle-plugins = "0.0.49"
 androidx-activity-compose = "1.11.0"
 androidx-core-splashscreen = "1.2.0"
 androidx-emoji2 = "1.6.0"
@@ -48,6 +48,7 @@ alexrdclement-android-application = { id = "com.alexrdclement.gradle.plugin.andr
 alexrdclement-android-application-compose = { id = "com.alexrdclement.gradle.plugin.android.application.compose", version.ref = "alexrdclement-gradle-plugins" }
 alexrdclement-android-baselineprofile-consumer = { id = "com.alexrdclement.gradle.plugin.android.baselineprofile.consumer", version.ref = "alexrdclement-gradle-plugins" }
 alexrdclement-android-baselineprofile-generator = { id = "com.alexrdclement.gradle.plugin.android.baselineprofile.generator", version.ref = "alexrdclement-gradle-plugins" }
+alexrdclement-android-benchmark = { id = "com.alexrdclement.gradle.plugin.android.benchmark", version.ref = "alexrdclement-gradle-plugins" }
 alexrdclement-android-library = { id = "com.alexrdclement.gradle.plugin.android.library", version.ref = "alexrdclement-gradle-plugins" }
 alexrdclement-android-library-compose = { id = "com.alexrdclement.gradle.plugin.android.library.compose", version.ref = "alexrdclement-gradle-plugins" }
 alexrdclement-android-test = { id = "com.alexrdclement.gradle.plugin.android.test", version.ref = "alexrdclement-gradle-plugins" }

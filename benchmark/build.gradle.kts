@@ -1,5 +1,5 @@
 plugins {
-    id(libs.plugins.alexrdclement.android.test.get().pluginId)
+    id(libs.plugins.alexrdclement.android.benchmark.get().pluginId)
 }
 
 android {
@@ -14,6 +14,22 @@ android {
 
     targetProjectPath = ":androidApp"
     experimentalProperties["android.experimental.self-instrumenting"] = true
+}
+
+firebaseTestLab {
+    managedDevices {
+        create(benchmark.deviceName) {
+            device = benchmark.deviceType
+            apiLevel = benchmark.apiLevel
+        }
+    }
+    val serviceAccountJson = System.getenv("FIREBASE_TEST_LAB_SERVICE_ACCOUNT")
+    if (serviceAccountJson != null) {
+        serviceAccountCredentials.set(file(serviceAccountJson))
+    }
+    testOptions {
+        results.cloudStorageBucket = "firebase-test-lab-uiplayground"
+    }
 }
 
 dependencies {
