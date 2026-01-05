@@ -19,9 +19,9 @@ import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.Text
+import com.alexrdclement.palette.modifiers.FadeSide
+import com.alexrdclement.palette.modifiers.fade
 import com.alexrdclement.palette.theme.PaletteSpacing
-import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.FadeSide
-import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.fade
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview

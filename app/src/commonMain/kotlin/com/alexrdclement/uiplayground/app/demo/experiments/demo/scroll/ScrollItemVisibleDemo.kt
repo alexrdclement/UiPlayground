@@ -31,6 +31,8 @@ import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.demo.Demo
 import com.alexrdclement.palette.components.demo.control.Control
 import com.alexrdclement.palette.components.util.mapSaverSafe
+import com.alexrdclement.palette.modifiers.FadeSide
+import com.alexrdclement.palette.modifiers.fade
 import com.alexrdclement.palette.theme.PaletteSpacing
 import com.alexrdclement.palette.theme.styles.ButtonStyleToken
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
