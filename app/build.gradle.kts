@@ -27,6 +27,7 @@ kotlin {
             implementation(libs.navigation.compose)
             implementation(libs.logger.impl)
             implementation(libs.palette.components)
+            implementation(libs.palette.modifiers)
             implementation(libs.palette.theme)
             implementation(libs.trace)
             implementation(libs.uievent)

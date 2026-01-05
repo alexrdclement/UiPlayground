@@ -56,6 +56,17 @@ if (includeLogging && file("../logging").exists()) {
     }
 }
 
+val includePalette = localProps.getProperty("includePalette")?.toBoolean() ?: false
+if (includePalette && file("../palette").exists()) {
+    includeBuild("../palette") {
+        dependencySubstitution {
+            substitute(module("com.alexrdclement.palette:palette-components")).using(project(":components"))
+            substitute(module("com.alexrdclement.palette:palette-modifiers")).using(project(":modifiers"))
+            substitute(module("com.alexrdclement.palette:palette-theme")).using(project(":theme"))
+        }
+    }
+}
+
 val includeTrace = localProps.getProperty("includeTrace")?.toBoolean() ?: false
 if (includeTrace && file("../trace").exists()) {
     includeBuild("../trace") {

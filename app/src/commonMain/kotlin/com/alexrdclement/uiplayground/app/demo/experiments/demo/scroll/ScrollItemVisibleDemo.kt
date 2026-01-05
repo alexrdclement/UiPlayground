@@ -33,8 +33,6 @@ import com.alexrdclement.palette.components.demo.control.Control
 import com.alexrdclement.palette.components.util.mapSaverSafe
 import com.alexrdclement.palette.theme.PaletteSpacing
 import com.alexrdclement.palette.theme.styles.ButtonStyleToken
-import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.FadeSide
-import com.alexrdclement.uiplayground.app.demo.experiments.demo.fade.fade
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
