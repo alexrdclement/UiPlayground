@@ -11,6 +11,10 @@ kotlin {
     )
 
     sourceSets {
+        val nonAndroidMain by creating {
+            dependsOn(commonMain.get())
+        }
+
         androidMain {
             dependencies {
                 implementation(libs.androidx.activity.compose)
@@ -33,14 +37,16 @@ kotlin {
             implementation(libs.uievent)
         }
         jvmMain {
+            dependsOn(nonAndroidMain)
             dependencies {
                 implementation(compose.desktop.common)
             }
         }
-        nativeMain {
-            dependencies {
-                implementation(compose.foundation)
-            }
+        iosMain {
+            dependsOn(nonAndroidMain)
+        }
+        wasmJsMain {
+            dependsOn(nonAndroidMain)
         }
     }
 }
