@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import com.alexrdclement.palette.components.layout.Scaffold
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.gradient.GradientDemo
+import com.alexrdclement.uiplayground.app.demo.experiments.demo.keyboard.KeyboardDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.scroll.AnimateScrollItemVisibleDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.uievent.UiEventDemo
 
@@ -29,6 +30,9 @@ fun ExperimentScreen(
                 modifier = Modifier.padding(innerPadding),
             )
             Experiment.Gradients -> GradientDemo(
+                modifier = Modifier.padding(innerPadding),
+            )
+            Experiment.Keyboard -> KeyboardDemo(
                 modifier = Modifier.padding(innerPadding),
             )
             Experiment.UiEvent -> UiEventDemo(

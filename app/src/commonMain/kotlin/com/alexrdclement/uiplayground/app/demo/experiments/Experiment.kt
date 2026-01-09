@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 enum class Experiment : CatalogItem {
     AnimateScrollItemVisible,
     Gradients,
+    Keyboard,
     UiEvent,
     ;
 
