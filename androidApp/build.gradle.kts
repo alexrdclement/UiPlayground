@@ -1,7 +1,7 @@
 plugins {
     id(libs.plugins.alexrdclement.android.application.asProvider().get().pluginId)
     id(libs.plugins.alexrdclement.android.application.compose.get().pluginId)
-    alias(libs.plugins.baselineprofile)
+    alias(libs.plugins.androidx.baselineprofile)
 }
 
 android {

@@ -1,16 +1,12 @@
 [versions]
 alexrdclement-gradle-plugins = "0.0.52"
 androidx-activity-compose = "1.11.0"
+androidx-baselineprofile = "1.4.1"
 androidx-core-splashscreen = "1.2.0"
-androidx-emoji2 = "1.6.0"
 androidx-lifecycle = "2.10.0"
 androidx-test-ext-junit = "1.3.0"
-androidx-tracing = "1.3.0"
-baselineprofile = "1.4.1"
 benchmark-macro-junit4 = "1.4.1"
-coil = "3.3.0"
 compose-hotreload = "1.0.0"
-compose-ui = "1.9.5"
 espresso-core = "3.7.0"
 kotlinx-collections-immutable = "0.4.0"
 kotlinx-serialization-json = "1.9.0"
@@ -59,7 +55,7 @@ alexrdclement-github-release = { id = "com.alexrdclement.gradle.plugin.github.re
 alexrdclement-kotlin-multiplatform-library = { id = "com.alexrdclement.gradle.plugin.kotlin.multiplatform.library", version.ref = "alexrdclement-gradle-plugins" }
 alexrdclement-kotlin-serialization = { id = "com.alexrdclement.gradle.plugin.kotlin.serialization", version.ref = "alexrdclement-gradle-plugins" }
 alexrdclement-web-application = { id = "com.alexrdclement.gradle.plugin.web.application", version.ref = "alexrdclement-gradle-plugins" }
-baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
+androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidx-baselineprofile" }
 compose-hotreload = { id = "org.jetbrains.compose.hot-reload", version.ref = "compose-hotreload" }
 
 [bundles]
