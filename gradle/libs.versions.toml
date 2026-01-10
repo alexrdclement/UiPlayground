@@ -1,6 +1,6 @@
 [versions]
 alexrdclement-gradle-plugins = "0.0.52"
-androidx-activity-compose = "1.11.0"
+androidx-activity-compose = "1.12.2"
 androidx-baselineprofile = "1.4.1"
 androidx-core-splashscreen = "1.2.0"
 androidx-lifecycle = "2.10.0"
