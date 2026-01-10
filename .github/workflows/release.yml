@@ -1,8 +1,8 @@
-name: "Publish"
+name: "GitHub Release"
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["Test"]
+    workflows: ["Generate Baseline Profiles"]
     types:
       - completed
     branches:
@@ -10,9 +10,9 @@ on:
 
 jobs:
   publish:
-    name: "Publish"
+    name: "GitHub Release"
 
-    # Only run if the test workflow succeeded (for workflow_run) or if manually triggered
+    # Only run if the baseline profiles workflow succeeded (for workflow_run) or if manually triggered
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
 
     runs-on: macos-15
