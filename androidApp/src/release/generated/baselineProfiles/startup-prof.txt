@@ -2696,6 +2696,7 @@ HSPLandroidx/compose/runtime/ComposerImpl;->currentCompositionLocalScope()Landro
 HSPLandroidx/compose/runtime/ComposerImpl;->currentCompositionLocalScope(I)Landroidx/compose/runtime/PersistentCompositionLocalMap;
 HSPLandroidx/compose/runtime/ComposerImpl;->doCompose-aFTiNEg(Landroidx/collection/MutableScatterMap;Lkotlin/jvm/functions/Function2;)V
 PLandroidx/compose/runtime/ComposerImpl;->doRecordDownsFor(II)V
+HSPLandroidx/compose/runtime/ComposerImpl;->end(Z)V
 HSPLandroidx/compose/runtime/ComposerImpl;->endDefaults()V
 HSPLandroidx/compose/runtime/ComposerImpl;->endGroup()V
 HSPLandroidx/compose/runtime/ComposerImpl;->endMovableGroup()V
