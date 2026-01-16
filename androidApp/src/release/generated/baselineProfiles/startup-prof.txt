@@ -11059,6 +11059,7 @@ PLandroidx/profileinstaller/ProfileVerifier;->writeProfileVerification(Landroid/
 PLandroidx/profileinstaller/ProfileVerifier$Cache;-><init>(IIJJ)V
 PLandroidx/profileinstaller/ProfileVerifier$Cache;->equals(Ljava/lang/Object;)Z
 PLandroidx/profileinstaller/ProfileVerifier$Cache;->readFromFile(Ljava/io/File;)Landroidx/profileinstaller/ProfileVerifier$Cache;
+PLandroidx/profileinstaller/ProfileVerifier$Cache;->writeOnFile(Ljava/io/File;)V
 PLandroidx/profileinstaller/ProfileVerifier$CompilationStatus;-><init>(IZZZ)V
 Landroidx/savedstate/R$id;
 Landroidx/savedstate/Recreator;
