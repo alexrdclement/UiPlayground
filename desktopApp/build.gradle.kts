@@ -3,7 +3,6 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     id(libs.plugins.alexrdclement.desktop.application.get().pluginId)
     id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
-    alias(libs.plugins.compose.hotreload)
 }
 
 kotlin {

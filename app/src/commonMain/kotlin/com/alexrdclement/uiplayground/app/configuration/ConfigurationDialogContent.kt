@@ -1,6 +1,5 @@
 package com.alexrdclement.uiplayground.app.configuration
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -15,7 +14,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.alexrdclement.palette.components.core.Surface
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.demo.control.Controls
@@ -43,7 +41,7 @@ fun ConfigurationDialogContent(
     )
 
     Surface(
-        border = BorderStroke(1.dp, PaletteTheme.colorScheme.outline),
+        borderStyle = PaletteTheme.styles.border.surface,
     ) {
         Column(
             modifier = Modifier

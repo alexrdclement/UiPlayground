@@ -26,7 +26,7 @@ import com.alexrdclement.logging.logString
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.demo.Demo
 import com.alexrdclement.palette.components.demo.control.Control
-import com.alexrdclement.palette.components.layout.ErrorDialogContent
+import com.alexrdclement.palette.components.layout.dialog.ErrorDialogContent
 import com.alexrdclement.palette.components.util.mapSaverSafe
 import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview

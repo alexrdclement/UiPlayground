@@ -21,10 +21,6 @@ kotlin {
             }
         }
         commonMain.dependencies {
-            implementation(compose.foundation)
-            implementation(compose.ui)
-            implementation(compose.components.uiToolingPreview)
-
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.serialization.json)
@@ -38,9 +34,6 @@ kotlin {
         }
         jvmMain {
             dependsOn(nonAndroidMain)
-            dependencies {
-                implementation(compose.desktop.common)
-            }
         }
         iosMain {
             dependsOn(nonAndroidMain)

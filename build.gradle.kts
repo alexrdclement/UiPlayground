@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.alexrdclement.github.release)
     alias(libs.plugins.androidx.baselineprofile) apply false
-    alias(libs.plugins.compose.hotreload) apply false
 }
 
 githubRelease {
