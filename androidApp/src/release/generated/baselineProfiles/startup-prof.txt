@@ -2696,7 +2696,6 @@ HSPLandroidx/compose/runtime/ComposerImpl;->currentCompositionLocalScope()Landro
 HSPLandroidx/compose/runtime/ComposerImpl;->currentCompositionLocalScope(I)Landroidx/compose/runtime/PersistentCompositionLocalMap;
 HSPLandroidx/compose/runtime/ComposerImpl;->doCompose-aFTiNEg(Landroidx/collection/MutableScatterMap;Lkotlin/jvm/functions/Function2;)V
 PLandroidx/compose/runtime/ComposerImpl;->doRecordDownsFor(II)V
-HSPLandroidx/compose/runtime/ComposerImpl;->end(Z)V
 HSPLandroidx/compose/runtime/ComposerImpl;->endDefaults()V
 HSPLandroidx/compose/runtime/ComposerImpl;->endGroup()V
 HSPLandroidx/compose/runtime/ComposerImpl;->endMovableGroup()V
@@ -11060,7 +11059,6 @@ PLandroidx/profileinstaller/ProfileVerifier;->writeProfileVerification(Landroid/
 PLandroidx/profileinstaller/ProfileVerifier$Cache;-><init>(IIJJ)V
 PLandroidx/profileinstaller/ProfileVerifier$Cache;->equals(Ljava/lang/Object;)Z
 PLandroidx/profileinstaller/ProfileVerifier$Cache;->readFromFile(Ljava/io/File;)Landroidx/profileinstaller/ProfileVerifier$Cache;
-PLandroidx/profileinstaller/ProfileVerifier$Cache;->writeOnFile(Ljava/io/File;)V
 PLandroidx/profileinstaller/ProfileVerifier$CompilationStatus;-><init>(IZZZ)V
 Landroidx/savedstate/R$id;
 Landroidx/savedstate/Recreator;
