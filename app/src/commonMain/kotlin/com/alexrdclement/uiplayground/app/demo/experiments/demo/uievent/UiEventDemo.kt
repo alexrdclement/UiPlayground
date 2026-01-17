@@ -17,6 +17,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import com.alexrdclement.logging.Log
 import com.alexrdclement.logging.LogLevel
@@ -29,10 +30,10 @@ import com.alexrdclement.palette.components.demo.control.Control
 import com.alexrdclement.palette.components.layout.dialog.ErrorDialogContent
 import com.alexrdclement.palette.components.util.mapSaverSafe
 import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.alexrdclement.uievent.UiEventState
 import com.alexrdclement.uievent.collectAsState
 import com.alexrdclement.uievent.toUiEvent
+import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -41,7 +42,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun UiEventDemo(

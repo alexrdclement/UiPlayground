@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.layout.Scaffold
 import com.alexrdclement.palette.components.layout.TopBar
@@ -16,7 +17,6 @@ import com.alexrdclement.palette.components.util.horizontalPaddingValues
 import com.alexrdclement.palette.components.util.plus
 import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.trace.ReportDrawn
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun <T : CatalogItem> CatalogScreen(

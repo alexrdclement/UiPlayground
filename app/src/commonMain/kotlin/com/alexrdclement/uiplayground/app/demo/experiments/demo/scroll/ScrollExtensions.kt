@@ -15,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.palette.components.core.Button
@@ -24,7 +25,6 @@ import com.alexrdclement.palette.modifiers.fade
 import com.alexrdclement.palette.theme.PaletteSpacing
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.roundToInt
 
 /**
