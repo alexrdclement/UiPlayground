@@ -14,6 +14,6 @@ fun ConfigureButton(
         style = ButtonStyleToken.Tertiary,
         onClick = onClick,
     ) {
-        Text("CONFIGURE", style = PaletteTheme.typography.labelSmall)
+        Text("Configure", style = PaletteTheme.styles.text.labelSmall)
     }
 }

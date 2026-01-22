@@ -80,7 +80,7 @@ fun UiEventDemo(
                 )
             }
             item {
-                Text("Logs", style = PaletteTheme.typography.titleMedium)
+                Text("Logs", style = PaletteTheme.styles.text.titleMedium)
             }
             items(
                 items = logs,
@@ -117,7 +117,7 @@ fun LogLevelDisplay(
         verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.medium),
         modifier = modifier,
     ) {
-        Text(level.name, style = PaletteTheme.typography.labelLarge)
+        Text(level.name, style = PaletteTheme.styles.text.labelLarge)
 
         Column(
             verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
