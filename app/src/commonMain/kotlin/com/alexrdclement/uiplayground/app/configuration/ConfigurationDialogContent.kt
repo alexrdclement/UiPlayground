@@ -50,9 +50,7 @@ fun ConfigurationDialogContent(
         ) {
             Text(
                 text = "Configure",
-                style = PaletteTheme.typography.titleMedium.merge(
-                    textAlign = TextAlign.Center,
-                ),
+                style = PaletteTheme.styles.text.titleMedium,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(PaletteTheme.spacing.small)

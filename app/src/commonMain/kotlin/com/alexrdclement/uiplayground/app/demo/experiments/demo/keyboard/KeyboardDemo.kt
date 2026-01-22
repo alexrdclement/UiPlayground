@@ -84,6 +84,7 @@ fun KeyboardDemo(
         ) {
             TextField(
                 state = rememberTextFieldState("Top text field"),
+                textStyle = PaletteTheme.styles.text.bodyMedium,
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -92,27 +93,27 @@ fun KeyboardDemo(
             ) {
                 Text(
                     text = "IME Bottom: $imeBottomDp (${imeBottomPx}px)",
-                    style = PaletteTheme.typography.bodyMedium,
+                    style = PaletteTheme.styles.text.bodyMedium,
                 )
                 Text(
                     text = "IME Animation Source: $imeAnimationSourceDp (${imeAnimationSourcePx}px)",
-                    style = PaletteTheme.typography.bodyMedium,
+                    style = PaletteTheme.styles.text.bodyMedium,
                 )
                 Text(
                     text = "IME Animation Target: $imeAnimationTargetDp (${imeAnimationTargetPx}px)",
-                    style = PaletteTheme.typography.bodyMedium,
+                    style = PaletteTheme.styles.text.bodyMedium,
                 )
                 Text(
                     text = "Safe Drawing Bottom: $safeDrawingBottomDp (${safeDrawingBottomPx}px)",
-                    style = PaletteTheme.typography.bodyMedium,
+                    style = PaletteTheme.styles.text.bodyMedium,
                 )
                 Text(
                     text = "Keyboard Visible: ${imeBottomPx > 0}",
-                    style = PaletteTheme.typography.bodyMedium,
+                    style = PaletteTheme.styles.text.bodyMedium,
                 )
                 Text(
                     text = "Animation In Progress: ${imeAnimationSourcePx != imeAnimationTargetPx}",
-                    style = PaletteTheme.typography.bodyMedium,
+                    style = PaletteTheme.styles.text.bodyMedium,
                 )
                 BoxControl(
                     title = "White Box (below bottom text field)",
@@ -142,6 +143,7 @@ fun KeyboardDemo(
             ) {
                 TextField(
                     state = rememberTextFieldState("Bottom text field"),
+                    textStyle = PaletteTheme.styles.text.bodyMedium,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -241,7 +243,7 @@ private fun BoxControl(
         )
         Text(
             text = title,
-            style = PaletteTheme.typography.bodyMedium,
+            style = PaletteTheme.styles.text.bodyMedium,
         )
     }
 }
