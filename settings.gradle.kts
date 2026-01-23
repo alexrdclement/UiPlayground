@@ -35,11 +35,6 @@ include(":desktopApp")
 include(":uiautomator-fixtures")
 include(":webApp")
 
-plugins {
-    // Compose Hot Reload
-    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-}
-
 val localPropsFile = rootDir.resolve("local.properties").takeIf { it.exists() }
 val localProps = java.util.Properties().apply {
     localPropsFile?.inputStream()?.use { load(it) }
