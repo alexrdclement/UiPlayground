@@ -1,45 +1,25 @@
 package com.alexrdclement.uiplayground.app.configuration.navigation
 
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.dialog
-import androidx.navigation.compose.navigation
+import androidx.compose.runtime.Composable
 import com.alexrdclement.uiplayground.app.configuration.ConfigurationController
 import com.alexrdclement.uiplayground.app.configuration.ConfigurationDialogContent
+import com.alexrdclement.uiplayground.app.navigation.UiPlaygroundNavKey
+import com.alexrdclement.uiplayground.app.navigation.toPathSegment
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-object ConfigurationGraphRoute
-
-@Serializable
 @SerialName("configuration")
-object ConfigurationRoute
-
-fun NavGraphBuilder.configurationGraph(
-    configurationController: ConfigurationController,
-) {
-    navigation<ConfigurationGraphRoute>(
-        startDestination = ConfigurationRoute,
-    ) {
-        configurationDialog(
-            configurationController = configurationController,
-        )
-    }
+data object ConfigurationRoute : UiPlaygroundNavKey {
+    override val pathSegment = "configuration".toPathSegment()
+    override val isDialog = true
 }
 
-fun NavController.navigateToConfiguration() {
-    this.navigate(ConfigurationRoute) {
-        launchSingleTop = true
-    }
-}
-
-fun NavGraphBuilder.configurationDialog(
+@Composable
+fun ConfigurationContent(
     configurationController: ConfigurationController,
 ) {
-    dialog<ConfigurationRoute> {
-        ConfigurationDialogContent(
-            configurationController = configurationController,
-        )
-    }
+    ConfigurationDialogContent(
+        configurationController = configurationController,
+    )
 }
