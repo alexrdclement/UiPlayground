@@ -1,14 +1,14 @@
 package com.alexrdclement.uiplayground.app.navigation.deeplink
 
-import com.alexrdclement.uiplayground.app.catalog.navigation.MainCatalogRoute
-import com.alexrdclement.uiplayground.app.configuration.navigation.ConfigurationRoute
+import com.alexrdclement.uiplayground.app.catalog.navigation.mainCatalogDeeplinkTree
+import com.alexrdclement.uiplayground.app.configuration.navigation.configurationDeeplinkTree
 import com.alexrdclement.uiplayground.app.demo.experiments.navigation.experimentsDeeplinkTree
 import com.alexrdclement.uiplayground.app.navigation.PathSegment
 import com.alexrdclement.uiplayground.app.navigation.UiPlaygroundNavKey
 
 private val deeplinkTree = deeplinkTree {
-    route(MainCatalogRoute)
-    route(ConfigurationRoute)
+    mainCatalogDeeplinkTree()
+    configurationDeeplinkTree()
     experimentsDeeplinkTree()
 }
 
