@@ -1,29 +1,32 @@
 package com.alexrdclement.uiplayground
 
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import com.alexrdclement.uiplayground.app.App
 import com.alexrdclement.uiplayground.app.catalog.navigation.MainCatalogRoute
+import com.alexrdclement.uiplayground.app.navigation.deeplink.fromDeeplinkPath
+import com.alexrdclement.uiplayground.app.navigation.deeplink.toDeeplinkPath
+import com.alexrdclement.uiplayground.app.navigation.UiPlaygroundNavKey
 import com.alexrdclement.uiplayground.app.navigation.rememberNavState
-import com.github.terrakok.navigation3.browser.HierarchicalBrowserNavigation
-import com.github.terrakok.navigation3.browser.buildBrowserHistoryFragment
+import com.github.terrakok.navigation3.browser.ChronologicalBrowserNavigation
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     ComposeViewport {
-        val navigationState = rememberNavState(startRoute = MainCatalogRoute)
+        val navState = rememberNavState(startRoute = MainCatalogRoute)
 
-        HierarchicalBrowserNavigation(
-            currentDestination = remember { derivedStateOf { navigationState.backStack.lastOrNull() } },
-            currentDestinationName = { key ->
-                key?.pathSegment?.value?.let(::buildBrowserHistoryFragment)
+        ChronologicalBrowserNavigation(
+            backStack = navState.backStack,
+            saveKey = { key ->
+                "#${key.toDeeplinkPath()}"
+            },
+            restoreKey = { fragment ->
+                UiPlaygroundNavKey.fromDeeplinkPath(fragment.removePrefix("#"))
             }
         )
 
         App(
-            navState = navigationState,
+            navState = navState,
         )
     }
 }

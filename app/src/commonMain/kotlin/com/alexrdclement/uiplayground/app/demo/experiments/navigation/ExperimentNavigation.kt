@@ -17,7 +17,14 @@ data class ExperimentRoute(
     val ordinal: Int,
 ) : UiPlaygroundNavKey {
 
-    constructor(experiment: Experiment) : this(experiment.ordinal)
+    companion object {
+        fun from(pathSegment: PathSegment): ExperimentRoute? {
+            val experiment = Experiment.entries.firstOrNull { it.name.toPathSegment() == pathSegment }
+            return experiment?.let(::ExperimentRoute)
+        }
+    }
+
+    constructor(experiment: Experiment) : this(ordinal = experiment.ordinal)
 
     val experiment: Experiment
         get() = Experiment.entries[ordinal]

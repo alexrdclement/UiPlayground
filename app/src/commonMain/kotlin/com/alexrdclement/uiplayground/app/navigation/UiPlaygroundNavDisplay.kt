@@ -61,6 +61,7 @@ private fun Content(
     ),
     navController: NavController = rememberNavController(navState)
 ) {
+    // TODO: replace with entry providers when they're available
     when (route) {
         is MainCatalogRoute -> MainCatalogScreen(
             navController = navController,
