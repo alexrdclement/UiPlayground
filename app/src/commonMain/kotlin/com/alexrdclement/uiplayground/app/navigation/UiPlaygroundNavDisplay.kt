@@ -3,8 +3,8 @@ package com.alexrdclement.uiplayground.app.navigation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Dialog
+import com.alexrdclement.uiplayground.app.catalog.navigation.MainCatalogNav
 import com.alexrdclement.uiplayground.app.catalog.navigation.MainCatalogRoute
-import com.alexrdclement.uiplayground.app.catalog.navigation.MainNav
 import com.alexrdclement.uiplayground.app.configuration.ConfigurationController
 import com.alexrdclement.uiplayground.app.configuration.navigation.ConfigurationNav
 import com.alexrdclement.uiplayground.app.demo.experiments.navigation.ExperimentsNav
@@ -17,10 +17,6 @@ fun UiPlaygroundNavDisplay(
     ),
     navController: NavController = rememberNavController(navState)
 ) {
-    BackHandler(enabled = navState.backStack.size > 1) {
-        navController.goBack()
-    }
-
     val currentRoute = navState.backStack.lastOrNull() ?: return
     val previousRoute = navState.backStack.getOrNull(navState.backStack.size - 2) ?: currentRoute
 
@@ -61,7 +57,7 @@ private fun Content(
     ),
     navController: NavController = rememberNavController(navState)
 ) {
-    MainNav(
+    MainCatalogNav(
         route = route,
         navController = navController,
     )
