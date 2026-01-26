@@ -3,8 +3,8 @@ package com.alexrdclement.uiplayground.app.navigation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Dialog
-import com.alexrdclement.uiplayground.app.catalog.navigation.MainCatalogNav
 import com.alexrdclement.uiplayground.app.catalog.navigation.MainCatalogRoute
+import com.alexrdclement.uiplayground.app.catalog.navigation.MainNav
 import com.alexrdclement.uiplayground.app.configuration.ConfigurationController
 import com.alexrdclement.uiplayground.app.configuration.navigation.ConfigurationNav
 import com.alexrdclement.uiplayground.app.demo.experiments.navigation.ExperimentsNav
@@ -57,7 +57,7 @@ private fun Content(
     ),
     navController: NavController = rememberNavController(navState)
 ) {
-    MainCatalogNav(
+    MainNav(
         route = route,
         navController = navController,
     )
