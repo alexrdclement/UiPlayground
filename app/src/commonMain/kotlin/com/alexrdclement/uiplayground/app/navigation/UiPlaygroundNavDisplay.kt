@@ -3,6 +3,9 @@ package com.alexrdclement.uiplayground.app.navigation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Dialog
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
 import com.alexrdclement.uiplayground.app.catalog.navigation.MainCatalogRoute
 import com.alexrdclement.uiplayground.app.catalog.navigation.MainNav
 import com.alexrdclement.uiplayground.app.configuration.ConfigurationController
@@ -19,6 +22,18 @@ fun UiPlaygroundNavDisplay(
 ) {
     val currentRoute = navState.backStack.lastOrNull() ?: return
     val previousRoute = navState.backStack.getOrNull(navState.backStack.size - 2) ?: currentRoute
+
+    val navEventState = rememberNavigationEventState(
+        currentInfo = NavigationEventInfo.None,
+    )
+    NavigationBackHandler(
+        state = navEventState,
+        isBackEnabled = navState.backStack.size > 1,
+        onBackCancelled = {},
+        onBackCompleted = {
+            navController.goBack()
+        },
+    )
 
     if (currentRoute.isDialog) {
         Box {
