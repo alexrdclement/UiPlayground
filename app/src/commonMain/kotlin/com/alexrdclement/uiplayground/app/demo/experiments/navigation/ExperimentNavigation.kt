@@ -1,38 +1,48 @@
 package com.alexrdclement.uiplayground.app.demo.experiments.navigation
 
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
+import androidx.compose.runtime.Composable
+import com.alexrdclement.uiplayground.app.configuration.navigation.ConfigurationRoute
 import com.alexrdclement.uiplayground.app.demo.experiments.Experiment
 import com.alexrdclement.uiplayground.app.demo.experiments.ExperimentScreen
+import com.alexrdclement.uiplayground.app.navigation.NavController
+import com.alexrdclement.uiplayground.app.navigation.PathSegment
+import com.alexrdclement.uiplayground.app.navigation.UiPlaygroundNavKey
+import com.alexrdclement.uiplayground.app.navigation.toPathSegment
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("experiment")
 data class ExperimentRoute(
-    // Serializable enums not supported in multiplatform navigation as of 2.8.0-alpha10
-    val experimentOrdinal: Int,
-)
+    val ordinal: Int,
+) : UiPlaygroundNavKey {
 
-fun NavGraphBuilder.experimentScreen(
-    onNavigateBack: () -> Unit,
-    onConfigureClick: () -> Unit,
-) {
-    composable<ExperimentRoute> { backStackEntry ->
-        val experimentRoute: ExperimentRoute = backStackEntry.toRoute()
-        val experiment = Experiment.entries[experimentRoute.experimentOrdinal]
-        ExperimentScreen(
-            experiment = experiment,
-            onNavigateBack = onNavigateBack,
-            onConfigureClick = onConfigureClick,
-        )
+    companion object {
+        fun from(pathSegment: PathSegment): ExperimentRoute? {
+            val experiment = Experiment.entries.firstOrNull { it.name.toPathSegment() == pathSegment }
+            return experiment?.let(::ExperimentRoute)
+        }
     }
+
+    constructor(experiment: Experiment) : this(ordinal = experiment.ordinal)
+
+    val experiment: Experiment
+        get() = Experiment.entries[ordinal]
+
+    override val pathSegment: PathSegment
+        get() = experiment.name.toPathSegment()
 }
 
-fun NavController.navigateToExperiment(experiment: Experiment) {
-    this.navigate(ExperimentRoute(experiment.ordinal)) {
-        launchSingleTop = true
-    }
+@Composable
+fun ExperimentScreen(
+    route: ExperimentRoute,
+    navController: NavController,
+) {
+    ExperimentScreen(
+        experiment = route.experiment,
+        onNavigateBack = navController::goBack,
+        onConfigureClick = {
+            navController.navigate(ConfigurationRoute)
+        },
+    )
 }

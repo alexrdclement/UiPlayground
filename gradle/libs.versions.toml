@@ -9,7 +9,9 @@ benchmark-macro-junit4 = "1.4.1"
 espresso-core = "3.7.0"
 kotlinx-collections-immutable = "0.4.0"
 kotlinx-serialization-json = "1.9.0"
-navigation-compose = "2.9.1"
+navigationevent = "1.0.1"
+navigation3-browser = "0.3.1"
+navigation3-ui = "1.0.0-alpha06"
 palette = "0.0.58"
 profileinstaller = "1.4.1"
 tracing-perfetto = "1.0.1"
@@ -23,6 +25,7 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark-macro-junit4" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-core-splashscreen" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+androidx-navigationevent = { group = "androidx.navigationevent", name = "navigationevent", version.ref = "navigationevent" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 androidx-tracing-perfetto = { group = "androidx.tracing", name = "tracing-perfetto", version.ref = "tracing-perfetto" }
@@ -31,7 +34,8 @@ androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomato
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
-navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
+navigation3-browser = { module = "com.github.terrakok:navigation3-browser", version.ref = "navigation3-browser" }
+navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "navigation3-ui" }
 palette-components = { group = "com.alexrdclement.palette", name = "palette-components", version.ref = "palette" }
 palette-modifiers = { group = "com.alexrdclement.palette", name = "palette-modifiers", version.ref = "palette" }
 palette-theme = { group = "com.alexrdclement.palette", name = "palette-theme", version.ref = "palette" }
