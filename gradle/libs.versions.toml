@@ -1,5 +1,5 @@
 [versions]
-alexrdclement-gradle-plugins = "0.0.70"
+alexrdclement-gradle-plugins = "0.0.71"
 androidx-activity-compose = "1.12.2"
 androidx-baselineprofile = "1.4.1"
 androidx-core-splashscreen = "1.2.0"
