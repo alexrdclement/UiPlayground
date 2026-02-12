@@ -4592,7 +4592,6 @@ HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;->
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;->recordInvalidation(Ljava/util/Set;)Z
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;->recordRead(Ljava/lang/Object;)V
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;->recordRead(Ljava/lang/Object;ILjava/lang/Object;Landroidx/collection/MutableObjectIntMap;)V
-PLandroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;->removeObservation(Ljava/lang/Object;Ljava/lang/Object;)V
 PLandroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;->rereadDerivedState(Landroidx/compose/runtime/DerivedState;)V
 Landroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap$derivedStateObserver$1;
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap$derivedStateObserver$1;-><init>(Landroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;)V
@@ -8169,13 +8168,11 @@ HSPLandroidx/compose/ui/text/AnnotatedString$Companion;-><init>()V
 HSPLandroidx/compose/ui/text/AnnotatedString$Companion;-><init>(Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 Landroidx/compose/ui/text/EmojiSupportMatch;
 HSPLandroidx/compose/ui/text/EmojiSupportMatch;-><clinit>()V
-PLandroidx/compose/ui/text/EmojiSupportMatch;->access$getAll$cp()I
 HSPLandroidx/compose/ui/text/EmojiSupportMatch;->access$getNone$cp()I
 HSPLandroidx/compose/ui/text/EmojiSupportMatch;->constructor-impl(I)I
 Landroidx/compose/ui/text/EmojiSupportMatch$Companion;
 HSPLandroidx/compose/ui/text/EmojiSupportMatch$Companion;-><init>()V
 HSPLandroidx/compose/ui/text/EmojiSupportMatch$Companion;-><init>(Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-PLandroidx/compose/ui/text/EmojiSupportMatch$Companion;->getAll-_3YsG6Y()I
 HSPLandroidx/compose/ui/text/EmojiSupportMatch$Companion;->getNone-_3YsG6Y()I
 Landroidx/compose/ui/text/NonNullValueClassSaver;
 Landroidx/compose/ui/text/Paragraph;
@@ -9786,7 +9783,6 @@ PLandroidx/emoji2/text/flatbuffer/MetadataList;->__assign(ILjava/nio/ByteBuffer;
 PLandroidx/emoji2/text/flatbuffer/MetadataList;->__init(ILjava/nio/ByteBuffer;)V
 PLandroidx/emoji2/text/flatbuffer/MetadataList;->getRootAsMetadataList(Ljava/nio/ByteBuffer;)Landroidx/emoji2/text/flatbuffer/MetadataList;
 PLandroidx/emoji2/text/flatbuffer/MetadataList;->getRootAsMetadataList(Ljava/nio/ByteBuffer;Landroidx/emoji2/text/flatbuffer/MetadataList;)Landroidx/emoji2/text/flatbuffer/MetadataList;
-HPLandroidx/emoji2/text/flatbuffer/MetadataList;->list(Landroidx/emoji2/text/flatbuffer/MetadataItem;I)Landroidx/emoji2/text/flatbuffer/MetadataItem;
 PLandroidx/emoji2/text/flatbuffer/MetadataList;->listLength()I
 PLandroidx/emoji2/text/flatbuffer/Table;-><init>()V
 HPLandroidx/emoji2/text/flatbuffer/Table;->__indirect(I)I
