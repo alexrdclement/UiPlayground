@@ -58,5 +58,4 @@ alexrdclement-kotlin-serialization = { id = "com.alexrdclement.gradle.plugin.kot
 alexrdclement-web-application = { id = "com.alexrdclement.gradle.plugin.web.application", version.ref = "alexrdclement-gradle-plugins" }
 androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidx-baselineprofile" }
 
-
 [bundles]
