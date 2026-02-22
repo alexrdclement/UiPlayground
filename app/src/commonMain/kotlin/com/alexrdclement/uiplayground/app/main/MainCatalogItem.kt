@@ -1,4 +1,4 @@
-package com.alexrdclement.uiplayground.app.catalog
+package com.alexrdclement.uiplayground.app.main
 
 import com.alexrdclement.palette.components.layout.catalog.CatalogItem
 

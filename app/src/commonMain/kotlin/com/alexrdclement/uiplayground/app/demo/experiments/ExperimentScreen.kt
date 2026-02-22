@@ -9,18 +9,19 @@ import com.alexrdclement.uiplayground.app.demo.experiments.demo.gradient.Gradien
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.keyboard.KeyboardDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.scroll.AnimateScrollItemVisibleDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.uievent.UiEventDemo
+import com.alexrdclement.uiplayground.app.demo.experiments.navigation.Experiment
 
 @Composable
 fun ExperimentScreen(
     experiment: Experiment,
-    onNavigateBack: () -> Unit,
+    onNavigateUp: () -> Unit,
     onConfigureClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
             DemoTopBar(
                 title = experiment.title,
-                onNavigateBack = onNavigateBack,
+                onNavigateUp = onNavigateUp,
                 onConfigureClick = onConfigureClick,
             )
         },

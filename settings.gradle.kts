@@ -57,6 +57,7 @@ if (includePalette && file("../palette").exists()) {
         dependencySubstitution {
             substitute(module("com.alexrdclement.palette:palette-components")).using(project(":components"))
             substitute(module("com.alexrdclement.palette:palette-modifiers")).using(project(":modifiers"))
+            substitute(module("com.alexrdclement.palette:palette-navigation")).using(project(":navigation"))
             substitute(module("com.alexrdclement.palette:palette-theme")).using(project(":theme"))
         }
     }

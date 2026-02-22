@@ -10,7 +10,8 @@ kotlin {
         wasmJsMain {
             dependencies {
                 implementation(projects.app)
-                implementation(libs.navigation.compose)
+                implementation(libs.navigation3.browser)
+                implementation(libs.palette.navigation)
             }
         }
     }
