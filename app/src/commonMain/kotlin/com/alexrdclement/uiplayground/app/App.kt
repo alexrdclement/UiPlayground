@@ -1,25 +1,23 @@
 package com.alexrdclement.uiplayground.app
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import com.alexrdclement.palette.components.core.Surface
+import com.alexrdclement.palette.navigation.NavController
 import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.uiplayground.app.catalog.navigation.MainCatalogRoute
 import com.alexrdclement.uiplayground.app.configuration.ConfigurationController
 import com.alexrdclement.uiplayground.app.configuration.rememberConfigurationController
-import com.alexrdclement.uiplayground.app.navigation.NavState
-import com.alexrdclement.uiplayground.app.navigation.UiPlaygroundNavDisplay
-import com.alexrdclement.uiplayground.app.navigation.rememberNavState
+import com.alexrdclement.uiplayground.app.navigation.UiPlaygroundNav
+import com.alexrdclement.uiplayground.app.navigation.rememberUiPlaygroundNavController
 
 @Composable
 fun App(
-    navState: NavState = rememberNavState(startRoute = MainCatalogRoute),
+    navController: NavController = rememberUiPlaygroundNavController(),
     configurationController: ConfigurationController = rememberConfigurationController(),
 ) {
     PaletteTheme {
         Surface {
-            UiPlaygroundNavDisplay(
-                navState = navState,
+            UiPlaygroundNav(
+                navController = navController,
                 configurationController = configurationController,
             )
         }

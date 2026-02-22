@@ -22,13 +22,12 @@ kotlin {
         }
         commonMain.dependencies {
             implementation(libs.androidx.lifecycle.runtime.compose)
-            implementation(libs.androidx.navigationevent)
             implementation(libs.kotlinx.collections.immutable)
             implementation(libs.kotlinx.serialization.json)
-            implementation(libs.navigation3.ui)
             implementation(libs.logger.impl)
             implementation(libs.palette.components)
             implementation(libs.palette.modifiers)
+            implementation(libs.palette.navigation)
             implementation(libs.palette.theme)
             implementation(libs.trace)
             implementation(libs.uievent)

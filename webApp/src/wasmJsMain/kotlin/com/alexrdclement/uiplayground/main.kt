@@ -2,31 +2,29 @@ package com.alexrdclement.uiplayground
 
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
+import com.alexrdclement.palette.navigation.NavKey
+import com.alexrdclement.palette.navigation.fromDeeplink
+import com.alexrdclement.palette.navigation.toDeeplink
 import com.alexrdclement.uiplayground.app.App
-import com.alexrdclement.uiplayground.app.catalog.navigation.MainCatalogRoute
-import com.alexrdclement.uiplayground.app.navigation.deeplink.fromDeeplinkPath
-import com.alexrdclement.uiplayground.app.navigation.deeplink.toDeeplinkPath
-import com.alexrdclement.uiplayground.app.navigation.UiPlaygroundNavKey
-import com.alexrdclement.uiplayground.app.navigation.rememberNavState
+import com.alexrdclement.uiplayground.app.navigation.rememberUiPlaygroundNavController
 import com.github.terrakok.navigation3.browser.ChronologicalBrowserNavigation
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     ComposeViewport {
-        val navState = rememberNavState(startRoute = MainCatalogRoute)
+        val navController = rememberUiPlaygroundNavController()
 
         ChronologicalBrowserNavigation(
-            backStack = navState.backStack,
-            saveKey = { key ->
-                "#${key.toDeeplinkPath()}"
-            },
+            backStack = navController.state.backStack,
+            saveKey = { key -> "#${key.toDeeplink(tree = navController.state.navGraph)}" },
             restoreKey = { fragment ->
-                UiPlaygroundNavKey.fromDeeplinkPath(fragment.removePrefix("#"))
-            }
+                NavKey.fromDeeplink(
+                    deeplink = fragment.removePrefix("#"),
+                    navGraph = navController.state.navGraph,
+                ) as? NavKey
+            },
         )
 
-        App(
-            navState = navState,
-        )
+        App(navController = navController)
     }
 }

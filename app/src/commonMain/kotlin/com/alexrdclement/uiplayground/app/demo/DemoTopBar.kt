@@ -12,10 +12,10 @@ import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
 @Composable
 fun DemoTopBar(
     title: String,
-    onNavigateBack: () -> Unit,
+    onNavigateUp: () -> Unit,
     onConfigureClick: () -> Unit,
     navButton: @Composable () -> Unit = {
-        BackNavigationButton(onNavigateBack)
+        BackNavigationButton(onNavigateUp)
     },
     actions: @Composable () -> Unit = {
         ConfigureButton(onClick = onConfigureClick)

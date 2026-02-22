@@ -3,10 +3,10 @@ package com.alexrdclement.uiplayground
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 
-class MainCatalogPage(
+class ConfigurationPage(
     private val device: UiDevice,
 ) {
     fun assertIsDisplayed() {
-        device.waitAndFindObject(By.text("Experiments"))
+        device.waitAndFindObject(By.text("Configure"))
     }
 }

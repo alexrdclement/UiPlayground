@@ -11,6 +11,7 @@ kotlin {
             dependencies {
                 implementation(projects.app)
                 implementation(libs.navigation3.browser)
+                implementation(libs.palette.navigation)
             }
         }
     }
