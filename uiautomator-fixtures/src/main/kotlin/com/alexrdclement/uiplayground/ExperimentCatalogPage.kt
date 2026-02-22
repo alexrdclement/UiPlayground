@@ -7,6 +7,6 @@ class ExperimentCatalogPage(
     private val device: UiDevice,
 ) {
     fun assertIsDisplayed() {
-        device.waitAndFindObject(By.text("Blur"))
+        device.waitAndFindObject(By.text("Gradients"))
     }
 }
