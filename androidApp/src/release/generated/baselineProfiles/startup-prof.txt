@@ -2626,7 +2626,6 @@ HSPLandroidx/compose/runtime/ComposerImpl;->currentCompositionLocalScope()Landro
 HSPLandroidx/compose/runtime/ComposerImpl;->currentCompositionLocalScope(I)Landroidx/compose/runtime/PersistentCompositionLocalMap;
 HSPLandroidx/compose/runtime/ComposerImpl;->doCompose-aFTiNEg(Landroidx/collection/MutableScatterMap;Lkotlin/jvm/functions/Function2;)V
 PLandroidx/compose/runtime/ComposerImpl;->doRecordDownsFor(II)V
-HSPLandroidx/compose/runtime/ComposerImpl;->end(Z)V
 HSPLandroidx/compose/runtime/ComposerImpl;->endDefaults()V
 HSPLandroidx/compose/runtime/ComposerImpl;->endGroup()V
 HSPLandroidx/compose/runtime/ComposerImpl;->endMovableGroup()V
@@ -2964,7 +2963,6 @@ HSPLandroidx/compose/runtime/GroupKind$Companion;-><init>(Lkotlin/jvm/internal/D
 HSPLandroidx/compose/runtime/GroupKind$Companion;->getGroup-ULZAiWs()I
 HSPLandroidx/compose/runtime/GroupKind$Companion;->getNode-ULZAiWs()I
 HSPLandroidx/compose/runtime/GroupKind$Companion;->getReusableNode-ULZAiWs()I
-Landroidx/compose/runtime/GroupSourceInformation;
 Landroidx/compose/runtime/IntStack;
 HSPLandroidx/compose/runtime/IntStack;-><clinit>()V
 HSPLandroidx/compose/runtime/IntStack;-><init>()V
@@ -3531,7 +3529,6 @@ HSPLandroidx/compose/runtime/SlotWriter;->sourceInformationOf$runtime(I)Landroid
 HSPLandroidx/compose/runtime/SlotWriter;->startData(ILjava/lang/Object;Ljava/lang/Object;)V
 HSPLandroidx/compose/runtime/SlotWriter;->startGroup()V
 HSPLandroidx/compose/runtime/SlotWriter;->startGroup(ILjava/lang/Object;)V
-HSPLandroidx/compose/runtime/SlotWriter;->startGroup(ILjava/lang/Object;ZLjava/lang/Object;)V
 HSPLandroidx/compose/runtime/SlotWriter;->startNode(ILjava/lang/Object;)V
 HSPLandroidx/compose/runtime/SlotWriter;->update(Ljava/lang/Object;)Ljava/lang/Object;
 PLandroidx/compose/runtime/SlotWriter;->updateAnchors(II)V
@@ -4403,7 +4400,6 @@ HSPLandroidx/compose/runtime/snapshots/GlobalSnapshot$takeNestedMutableSnapshot$
 PLandroidx/compose/runtime/snapshots/GlobalSnapshot$takeNestedSnapshot$1$1;-><init>(Lkotlin/jvm/functions/Function1;)V
 PLandroidx/compose/runtime/snapshots/GlobalSnapshot$takeNestedSnapshot$1$1;->invoke(Landroidx/compose/runtime/snapshots/SnapshotIdSet;)Landroidx/compose/runtime/snapshots/ReadonlySnapshot;
 PLandroidx/compose/runtime/snapshots/GlobalSnapshot$takeNestedSnapshot$1$1;->invoke(Ljava/lang/Object;)Ljava/lang/Object;
-Landroidx/compose/runtime/snapshots/ListUtilsKt;
 Landroidx/compose/runtime/snapshots/MutableSnapshot;
 HSPLandroidx/compose/runtime/snapshots/MutableSnapshot;-><clinit>()V
 HSPLandroidx/compose/runtime/snapshots/MutableSnapshot;-><init>(JLandroidx/compose/runtime/snapshots/SnapshotIdSet;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
@@ -4697,7 +4693,6 @@ HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;->
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;->recordInvalidation(Ljava/util/Set;)Z
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;->recordRead(Ljava/lang/Object;)V
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;->recordRead(Ljava/lang/Object;ILjava/lang/Object;Landroidx/collection/MutableObjectIntMap;)V
-PLandroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;->removeObservation(Ljava/lang/Object;Ljava/lang/Object;)V
 PLandroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;->rereadDerivedState(Landroidx/compose/runtime/DerivedState;)V
 Landroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap$derivedStateObserver$1;
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap$derivedStateObserver$1;-><init>(Landroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;)V
@@ -8276,13 +8271,11 @@ HSPLandroidx/compose/ui/text/AnnotatedString$Companion;-><init>()V
 HSPLandroidx/compose/ui/text/AnnotatedString$Companion;-><init>(Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 Landroidx/compose/ui/text/EmojiSupportMatch;
 HSPLandroidx/compose/ui/text/EmojiSupportMatch;-><clinit>()V
-PLandroidx/compose/ui/text/EmojiSupportMatch;->access$getAll$cp()I
 HSPLandroidx/compose/ui/text/EmojiSupportMatch;->access$getNone$cp()I
 HSPLandroidx/compose/ui/text/EmojiSupportMatch;->constructor-impl(I)I
 Landroidx/compose/ui/text/EmojiSupportMatch$Companion;
 HSPLandroidx/compose/ui/text/EmojiSupportMatch$Companion;-><init>()V
 HSPLandroidx/compose/ui/text/EmojiSupportMatch$Companion;-><init>(Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-PLandroidx/compose/ui/text/EmojiSupportMatch$Companion;->getAll-_3YsG6Y()I
 HSPLandroidx/compose/ui/text/EmojiSupportMatch$Companion;->getNone-_3YsG6Y()I
 Landroidx/compose/ui/text/NonNullValueClassSaver;
 Landroidx/compose/ui/text/Paragraph;
