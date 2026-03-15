@@ -2626,6 +2626,7 @@ HSPLandroidx/compose/runtime/ComposerImpl;->currentCompositionLocalScope()Landro
 HSPLandroidx/compose/runtime/ComposerImpl;->currentCompositionLocalScope(I)Landroidx/compose/runtime/PersistentCompositionLocalMap;
 HSPLandroidx/compose/runtime/ComposerImpl;->doCompose-aFTiNEg(Landroidx/collection/MutableScatterMap;Lkotlin/jvm/functions/Function2;)V
 PLandroidx/compose/runtime/ComposerImpl;->doRecordDownsFor(II)V
+HSPLandroidx/compose/runtime/ComposerImpl;->end(Z)V
 HSPLandroidx/compose/runtime/ComposerImpl;->endDefaults()V
 HSPLandroidx/compose/runtime/ComposerImpl;->endGroup()V
 HSPLandroidx/compose/runtime/ComposerImpl;->endMovableGroup()V
@@ -3530,6 +3531,7 @@ HSPLandroidx/compose/runtime/SlotWriter;->sourceInformationOf$runtime(I)Landroid
 HSPLandroidx/compose/runtime/SlotWriter;->startData(ILjava/lang/Object;Ljava/lang/Object;)V
 HSPLandroidx/compose/runtime/SlotWriter;->startGroup()V
 HSPLandroidx/compose/runtime/SlotWriter;->startGroup(ILjava/lang/Object;)V
+HSPLandroidx/compose/runtime/SlotWriter;->startGroup(ILjava/lang/Object;ZLjava/lang/Object;)V
 HSPLandroidx/compose/runtime/SlotWriter;->startNode(ILjava/lang/Object;)V
 HSPLandroidx/compose/runtime/SlotWriter;->update(Ljava/lang/Object;)Ljava/lang/Object;
 PLandroidx/compose/runtime/SlotWriter;->updateAnchors(II)V
@@ -4658,6 +4660,7 @@ HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->clear()V
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->clear(Ljava/lang/Object;)V
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->drainChanges()Z
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->ensureMap(Lkotlin/jvm/functions/Function1;)Landroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;
+HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->observeReads(Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)V
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->readObserver$lambda$0(Landroidx/compose/runtime/snapshots/SnapshotStateObserver;Ljava/lang/Object;)Lkotlin/Unit;
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->removeChanges()Ljava/util/Set;
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->sendNotifications$lambda$0(Landroidx/compose/runtime/snapshots/SnapshotStateObserver;)Lkotlin/Unit;
@@ -10650,6 +10653,8 @@ PLandroidx/profileinstaller/ProfileVerifier;->getPackageLastUpdateTime(Landroid/
 PLandroidx/profileinstaller/ProfileVerifier;->setCompilationStatus(IZZZ)Landroidx/profileinstaller/ProfileVerifier$CompilationStatus;
 PLandroidx/profileinstaller/ProfileVerifier;->writeProfileVerification(Landroid/content/Context;Z)Landroidx/profileinstaller/ProfileVerifier$CompilationStatus;
 PLandroidx/profileinstaller/ProfileVerifier$Cache;-><init>(IIJJ)V
+PLandroidx/profileinstaller/ProfileVerifier$Cache;->equals(Ljava/lang/Object;)Z
+PLandroidx/profileinstaller/ProfileVerifier$Cache;->readFromFile(Ljava/io/File;)Landroidx/profileinstaller/ProfileVerifier$Cache;
 PLandroidx/profileinstaller/ProfileVerifier$Cache;->writeOnFile(Ljava/io/File;)V
 PLandroidx/profileinstaller/ProfileVerifier$CompilationStatus;-><init>(IZZZ)V
 Landroidx/savedstate/R$id;
@@ -11116,13 +11121,14 @@ HSPLcom/alexrdclement/palette/navigation/NavGraphKt;->resolve$resolve(Lcom/alexr
 HSPLcom/alexrdclement/palette/navigation/NavGraphKt;->resolve(Lcom/alexrdclement/palette/navigation/NavGraph;Lcom/alexrdclement/palette/navigation/NavKey;)Lcom/alexrdclement/palette/navigation/NavKey;
 Lcom/alexrdclement/palette/navigation/NavGraphNode;
 HSPLcom/alexrdclement/palette/navigation/NavGraphNode;-><clinit>()V
-HSPLcom/alexrdclement/palette/navigation/NavGraphNode;-><init>(Ljava/lang/String;Lkotlin/reflect/KClass;Lkotlinx/serialization/KSerializer;Lkotlin/jvm/functions/Function1;Lcom/alexrdclement/palette/navigation/NavKey;Ljava/util/List;Lcom/alexrdclement/palette/navigation/NavKey;)V
-HSPLcom/alexrdclement/palette/navigation/NavGraphNode;-><init>(Ljava/lang/String;Lkotlin/reflect/KClass;Lkotlinx/serialization/KSerializer;Lkotlin/jvm/functions/Function1;Lcom/alexrdclement/palette/navigation/NavKey;Ljava/util/List;Lcom/alexrdclement/palette/navigation/NavKey;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-HSPLcom/alexrdclement/palette/navigation/NavGraphNode;-><init>(Ljava/lang/String;Lkotlin/reflect/KClass;Lkotlinx/serialization/KSerializer;Lkotlin/jvm/functions/Function1;Lcom/alexrdclement/palette/navigation/NavKey;Ljava/util/List;Lcom/alexrdclement/palette/navigation/NavKey;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+HSPLcom/alexrdclement/palette/navigation/NavGraphNode;-><init>(Ljava/lang/String;Lkotlin/reflect/KClass;Lkotlinx/serialization/KSerializer;Lkotlin/jvm/functions/Function1;Lcom/alexrdclement/palette/navigation/NavKey;Ljava/util/List;Lkotlin/jvm/functions/Function1;)V
+HSPLcom/alexrdclement/palette/navigation/NavGraphNode;-><init>(Ljava/lang/String;Lkotlin/reflect/KClass;Lkotlinx/serialization/KSerializer;Lkotlin/jvm/functions/Function1;Lcom/alexrdclement/palette/navigation/NavKey;Ljava/util/List;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+HSPLcom/alexrdclement/palette/navigation/NavGraphNode;-><init>(Ljava/lang/String;Lkotlin/reflect/KClass;Lkotlinx/serialization/KSerializer;Lkotlin/jvm/functions/Function1;Lcom/alexrdclement/palette/navigation/NavKey;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 HSPLcom/alexrdclement/palette/navigation/NavGraphNode;->getChildren()Ljava/util/List;
-HSPLcom/alexrdclement/palette/navigation/NavGraphNode;->getGraphStartRoute()Lcom/alexrdclement/palette/navigation/NavKey;
 HSPLcom/alexrdclement/palette/navigation/NavGraphNode;->getNavKeyClass()Lkotlin/reflect/KClass;
 HSPLcom/alexrdclement/palette/navigation/NavGraphNode;->getSerializer()Lkotlinx/serialization/KSerializer;
+HSPLcom/alexrdclement/palette/navigation/NavGraphNode;->getStartRouteFactory()Lkotlin/jvm/functions/Function1;
+HSPLcom/alexrdclement/palette/navigation/NavGraphNode;->isGraph()Z
 Lcom/alexrdclement/palette/navigation/NavGraphRoute;
 Lcom/alexrdclement/palette/navigation/NavKey;
 Lcom/alexrdclement/palette/navigation/NavKeyJsonBuilder;
@@ -11675,6 +11681,8 @@ Lcom/alexrdclement/uiplayground/app/demo/experiments/navigation/ExperimentsNavKt
 HSPLcom/alexrdclement/uiplayground/app/demo/experiments/navigation/ExperimentsNavKt$experimentsEntryProvider$2;-><init>(Ljava/lang/Object;)V
 Lcom/alexrdclement/uiplayground/app/demo/experiments/navigation/ExperimentsNavKt$experimentsNavGraph$$inlined$navGraph$1;
 HSPLcom/alexrdclement/uiplayground/app/demo/experiments/navigation/ExperimentsNavKt$experimentsNavGraph$$inlined$navGraph$1;-><init>(Lcom/alexrdclement/palette/navigation/NavGraphRoute;)V
+Lcom/alexrdclement/uiplayground/app/demo/experiments/navigation/ExperimentsNavKt$experimentsNavGraph$$inlined$navGraph$2;
+HSPLcom/alexrdclement/uiplayground/app/demo/experiments/navigation/ExperimentsNavKt$experimentsNavGraph$$inlined$navGraph$2;-><init>(Lcom/alexrdclement/palette/navigation/NavKey;)V
 Lcom/alexrdclement/uiplayground/app/demo/experiments/navigation/ExperimentsNavKt$experimentsNavGraph$1$1;
 HSPLcom/alexrdclement/uiplayground/app/demo/experiments/navigation/ExperimentsNavKt$experimentsNavGraph$1$1;-><clinit>()V
 HSPLcom/alexrdclement/uiplayground/app/demo/experiments/navigation/ExperimentsNavKt$experimentsNavGraph$1$1;-><init>()V
@@ -11739,6 +11747,10 @@ HSPLcom/alexrdclement/uiplayground/app/main/navigation/MainNavKt$mainEntryProvid
 HSPLcom/alexrdclement/uiplayground/app/main/navigation/MainNavKt$mainEntryProvider$$inlined$catalogEntry$default$3;->invoke(Ljava/lang/Object;)Ljava/util/Map;
 Lcom/alexrdclement/uiplayground/app/main/navigation/MainNavKt$mainNavGraph$$inlined$navGraph$1;
 HSPLcom/alexrdclement/uiplayground/app/main/navigation/MainNavKt$mainNavGraph$$inlined$navGraph$1;-><init>(Lcom/alexrdclement/palette/navigation/NavGraphRoute;)V
+Lcom/alexrdclement/uiplayground/app/main/navigation/MainNavKt$mainNavGraph$$inlined$navGraph$2;
+HSPLcom/alexrdclement/uiplayground/app/main/navigation/MainNavKt$mainNavGraph$$inlined$navGraph$2;-><init>(Lcom/alexrdclement/palette/navigation/NavKey;)V
+HSPLcom/alexrdclement/uiplayground/app/main/navigation/MainNavKt$mainNavGraph$$inlined$navGraph$2;->invoke(Lcom/alexrdclement/palette/navigation/NavKey;)Lcom/alexrdclement/palette/navigation/NavKey;
+HSPLcom/alexrdclement/uiplayground/app/main/navigation/MainNavKt$mainNavGraph$$inlined$navGraph$2;->invoke(Ljava/lang/Object;)Ljava/lang/Object;
 Lcom/alexrdclement/uiplayground/app/main/navigation/MainNavKt$mainNavGraph$lambda$0$$inlined$route$default$1;
 HSPLcom/alexrdclement/uiplayground/app/main/navigation/MainNavKt$mainNavGraph$lambda$0$$inlined$route$default$1;-><init>(Lcom/alexrdclement/palette/navigation/NavKey;)V
 HSPLcom/alexrdclement/uiplayground/app/main/navigation/MainNavKt$mainNavGraph$lambda$0$$inlined$route$default$1;->invoke(Ljava/lang/Object;)Ljava/lang/Object;
@@ -11773,6 +11785,10 @@ Lcom/alexrdclement/uiplayground/app/navigation/UiPlaygroundNavKt$UiPlaygroundNav
 HSPLcom/alexrdclement/uiplayground/app/navigation/UiPlaygroundNavKt$UiPlaygroundNav$2$1;-><init>(Ljava/lang/Object;)V
 Lcom/alexrdclement/uiplayground/app/navigation/UiPlaygroundNavKt$special$$inlined$navGraph$1;
 HSPLcom/alexrdclement/uiplayground/app/navigation/UiPlaygroundNavKt$special$$inlined$navGraph$1;-><init>(Lcom/alexrdclement/palette/navigation/NavGraphRoute;)V
+Lcom/alexrdclement/uiplayground/app/navigation/UiPlaygroundNavKt$special$$inlined$navGraph$2;
+HSPLcom/alexrdclement/uiplayground/app/navigation/UiPlaygroundNavKt$special$$inlined$navGraph$2;-><init>(Lcom/alexrdclement/palette/navigation/NavKey;)V
+HSPLcom/alexrdclement/uiplayground/app/navigation/UiPlaygroundNavKt$special$$inlined$navGraph$2;->invoke(Lcom/alexrdclement/palette/navigation/NavKey;)Lcom/alexrdclement/palette/navigation/NavKey;
+HSPLcom/alexrdclement/uiplayground/app/navigation/UiPlaygroundNavKt$special$$inlined$navGraph$2;->invoke(Ljava/lang/Object;)Ljava/lang/Object;
 Lio/ktor/utils/io/pool/DefaultPool$$ExternalSyntheticBackportWithForwarding0;
 HSPLio/ktor/utils/io/pool/DefaultPool$$ExternalSyntheticBackportWithForwarding0;->m(Ljava/util/concurrent/atomic/AtomicReferenceArray;ILjava/lang/Object;Ljava/lang/Object;)Z
 Lkotlin/Function;
