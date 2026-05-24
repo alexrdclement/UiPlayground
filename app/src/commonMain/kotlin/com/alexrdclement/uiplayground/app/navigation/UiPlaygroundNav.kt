@@ -46,7 +46,10 @@ fun UiPlaygroundNav(
 ) {
     NavDisplay(
         backStack = navController.state.backStack,
-        sceneStrategy = DialogSceneStrategy<NavKey>() then SinglePaneSceneStrategy(),
+        sceneStrategies = listOf(
+            DialogSceneStrategy(),
+            SinglePaneSceneStrategy(),
+        ),
         entryProvider = entryProvider {
             uiPlaygroundEntryProvider(
                 navController = navController,
