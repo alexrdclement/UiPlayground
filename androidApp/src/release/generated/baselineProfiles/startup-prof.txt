@@ -10135,7 +10135,6 @@ HPLandroidx/emoji2/text/TypefaceEmojiRasterizer;-><init>(Landroidx/emoji2/text/M
 HPLandroidx/emoji2/text/TypefaceEmojiRasterizer;->getCodepointAt(I)I
 HPLandroidx/emoji2/text/TypefaceEmojiRasterizer;->getCodepointsLength()I
 PLandroidx/emoji2/text/TypefaceEmojiRasterizer;->getId()I
-HPLandroidx/emoji2/text/TypefaceEmojiRasterizer;->getMetadataItem()Landroidx/emoji2/text/flatbuffer/MetadataItem;
 PLandroidx/emoji2/text/flatbuffer/MetadataItem;-><init>()V
 HPLandroidx/emoji2/text/flatbuffer/MetadataItem;->__assign(ILjava/nio/ByteBuffer;)Landroidx/emoji2/text/flatbuffer/MetadataItem;
 HPLandroidx/emoji2/text/flatbuffer/MetadataItem;->__init(ILjava/nio/ByteBuffer;)V
