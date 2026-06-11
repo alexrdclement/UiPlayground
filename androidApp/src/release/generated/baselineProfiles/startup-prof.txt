@@ -2862,6 +2862,7 @@ HSPLandroidx/compose/runtime/GapComposer;->currentCompositionLocalScope()Landroi
 HSPLandroidx/compose/runtime/GapComposer;->currentCompositionLocalScope(I)Landroidx/compose/runtime/PersistentCompositionLocalMap;
 HSPLandroidx/compose/runtime/GapComposer;->doCompose-aFTiNEg(Landroidx/collection/MutableScatterMap;Lkotlin/jvm/functions/Function2;)V
 PLandroidx/compose/runtime/GapComposer;->doRecordDownsFor(II)V
+HSPLandroidx/compose/runtime/GapComposer;->end(Z)V
 HSPLandroidx/compose/runtime/GapComposer;->endDefaults()V
 HSPLandroidx/compose/runtime/GapComposer;->endGroup()V
 HSPLandroidx/compose/runtime/GapComposer;->endMovableGroup()V
