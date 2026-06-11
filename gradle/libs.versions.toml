@@ -16,7 +16,7 @@ uiautomator = "2.3.0"
 logging = "0.0.15"
 navigation3-browser = "1.1.0"
 trace = "0.0.5"
-uievent = "0.0.7"
+uievent = "0.0.14"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
