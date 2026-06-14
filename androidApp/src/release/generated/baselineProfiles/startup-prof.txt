@@ -3794,7 +3794,6 @@ HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->dataIndex(I)I
 HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->dataIndex([II)I
 HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->dataIndexToDataAddress(I)I
 HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->dataIndexToDataAnchor(IIII)I
-HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->endGroup()I
 HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->endInsert()V
 HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->ensureStarted(I)V
 HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->ensureStarted(Landroidx/compose/runtime/composer/gapbuffer/GapAnchor;)V
@@ -3849,7 +3848,6 @@ HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->sourceInformationOf
 HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->startData(ILjava/lang/Object;Ljava/lang/Object;)V
 HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->startGroup()V
 HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->startGroup(ILjava/lang/Object;)V
-HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->startGroup(ILjava/lang/Object;ZLjava/lang/Object;)V
 HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->startNode(ILjava/lang/Object;)V
 HSPLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->update(Ljava/lang/Object;)Ljava/lang/Object;
 PLandroidx/compose/runtime/composer/gapbuffer/SlotWriter;->updateAnchors(II)V
