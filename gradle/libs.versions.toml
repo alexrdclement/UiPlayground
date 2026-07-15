@@ -15,7 +15,7 @@ tracing-perfetto = "1.0.1"
 uiautomator = "2.3.0"
 logging = "0.0.21"
 navigation3-browser = "1.1.0"
-trace = "0.0.5"
+trace = "0.0.12"
 uievent = "0.0.14"
 
 [libraries]
