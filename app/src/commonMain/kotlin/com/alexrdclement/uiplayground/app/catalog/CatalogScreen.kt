@@ -43,6 +43,7 @@ fun <T : CatalogItem> CatalogScreen(
         },
     ) { innerPadding ->
         Catalog(
+            style = PaletteTheme.component.layout.catalog,
             items = items,
             onItemClick = onItemClick,
             contentPadding = innerPadding.plus(WindowInsets.safeDrawing.horizontalPaddingValues()),

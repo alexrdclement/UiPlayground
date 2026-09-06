@@ -240,6 +240,7 @@ private fun BoxControl(
         Checkbox(
             isChecked = isEnabled,
             onCheckedChange = { onClick() },
+            style = PaletteTheme.component.core.checkbox,
         )
         Text(
             text = title,
