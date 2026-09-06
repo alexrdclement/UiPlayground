@@ -65,7 +65,7 @@ fun UiEventDemo(
         val logs by state.logs.collectAsState(persistentListOf())
 
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.large)
+            verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.large)
         ) {
             items(
                 count = state.eventsByLogLevel.size,
@@ -80,7 +80,7 @@ fun UiEventDemo(
                 )
             }
             item {
-                Text("Logs", style = PaletteTheme.styles.text.titleMedium)
+                Text("Logs", style = PaletteTheme.component.core.text.titleMedium)
             }
             items(
                 items = logs,
@@ -88,7 +88,7 @@ fun UiEventDemo(
                 LogDisplay(
                     log = log,
                     modifier = Modifier
-                        .padding(horizontal = PaletteTheme.spacing.medium)
+                        .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
                 )
             }
         }
@@ -114,15 +114,15 @@ fun LogLevelDisplay(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.medium),
         modifier = modifier,
     ) {
-        Text(level.name, style = PaletteTheme.styles.text.labelLarge)
+        Text(level.name, style = PaletteTheme.component.core.text.labelLarge)
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+            verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
             modifier = Modifier
-                .padding(horizontal = PaletteTheme.spacing.medium)
+                .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
         ) {
             val eventState by logs.collectAsState()
             Text("Event state: $eventState")

@@ -25,7 +25,7 @@ fun DemoTopBar(
         title = {
             Text(
                 text = title,
-                style = PaletteTheme.styles.text.titleMedium,
+                style = PaletteTheme.component.core.text.titleMedium,
                 modifier = Modifier.basicMarquee(),
             )
         },

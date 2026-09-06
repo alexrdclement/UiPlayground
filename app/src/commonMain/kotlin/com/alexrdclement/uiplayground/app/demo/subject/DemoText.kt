@@ -9,18 +9,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.palette.theme.styles.TextStyle
+import com.alexrdclement.palette.components.core.TextStyle
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 
 @Composable
 fun DemoText(
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = PaletteTheme.styles.text.display,
+    textStyle: TextStyle = PaletteTheme.component.core.text.display,
 ) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(PaletteTheme.colorScheme.surface)
+            .background(PaletteTheme.semantic.color.surface)
     ) {
         Text(
             text = "Hello world",

@@ -34,8 +34,7 @@ import com.alexrdclement.palette.components.demo.control.Control
 import com.alexrdclement.palette.components.util.mapSaverSafe
 import com.alexrdclement.palette.modifiers.FadeSide
 import com.alexrdclement.palette.modifiers.fade
-import com.alexrdclement.palette.theme.PaletteSpacing
-import com.alexrdclement.palette.theme.styles.ButtonStyleToken
+import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
@@ -65,11 +64,11 @@ fun AnimateScrollItemVisibleDemo(
         ) {
             Column(
                 horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.spacedBy(PaletteSpacing.xs),
+                verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.xs),
                 modifier = Modifier.align(Alignment.CenterEnd)
             ) {
                 Button(
-                    style = ButtonStyleToken.Secondary,
+                    style = PaletteTheme.component.core.button.secondary,
                     onClick = {
                         state.items = state.items.plus(state.items.size).toList()
                     },
@@ -77,7 +76,7 @@ fun AnimateScrollItemVisibleDemo(
                     Text("Add")
                 }
                 Button(
-                    style = ButtonStyleToken.Secondary,
+                    style = PaletteTheme.component.core.button.secondary,
                     onClick = {
                         state.items = state.items.minus(state.items.size - 1).toList()
                     },
@@ -88,7 +87,7 @@ fun AnimateScrollItemVisibleDemo(
             LazyColumn(
                 state = lazyListState,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(PaletteSpacing.xs),
+                verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.xs),
                 contentPadding = PaddingValues(vertical = state.fadeLength),
                 modifier = Modifier.fade(
                     sides = FadeSide.Top + FadeSide.Bottom,

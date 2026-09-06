@@ -75,45 +75,45 @@ fun KeyboardDemo(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.large),
+            verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.large),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(PaletteTheme.spacing.medium)
+                .padding(PaletteTheme.semantic.dimension.spacing.medium)
                 .imeNestedScroll()
                 .verticalScroll(scrollState)
         ) {
             TextField(
                 state = rememberTextFieldState("Top text field"),
-                textStyle = PaletteTheme.styles.text.bodyMedium,
+                style = PaletteTheme.component.core.textField,
                 modifier = Modifier.fillMaxWidth()
             )
 
             Column(
-                verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+                verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
             ) {
                 Text(
                     text = "IME Bottom: $imeBottomDp (${imeBottomPx}px)",
-                    style = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.text.bodyMedium,
                 )
                 Text(
                     text = "IME Animation Source: $imeAnimationSourceDp (${imeAnimationSourcePx}px)",
-                    style = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.text.bodyMedium,
                 )
                 Text(
                     text = "IME Animation Target: $imeAnimationTargetDp (${imeAnimationTargetPx}px)",
-                    style = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.text.bodyMedium,
                 )
                 Text(
                     text = "Safe Drawing Bottom: $safeDrawingBottomDp (${safeDrawingBottomPx}px)",
-                    style = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.text.bodyMedium,
                 )
                 Text(
                     text = "Keyboard Visible: ${imeBottomPx > 0}",
-                    style = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.text.bodyMedium,
                 )
                 Text(
                     text = "Animation In Progress: ${imeAnimationSourcePx != imeAnimationTargetPx}",
-                    style = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.text.bodyMedium,
                 )
                 BoxControl(
                     title = "White Box (below bottom text field)",
@@ -143,7 +143,7 @@ fun KeyboardDemo(
             ) {
                 TextField(
                     state = rememberTextFieldState("Bottom text field"),
-                    textStyle = PaletteTheme.styles.text.bodyMedium,
+                    style = PaletteTheme.component.core.textField,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -232,7 +232,7 @@ private fun BoxControl(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.small),
+        horizontalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
@@ -243,7 +243,7 @@ private fun BoxControl(
         )
         Text(
             text = title,
-            style = PaletteTheme.styles.text.bodyMedium,
+            style = PaletteTheme.component.core.text.bodyMedium,
         )
     }
 }

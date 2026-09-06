@@ -22,7 +22,7 @@ import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.modifiers.FadeSide
 import com.alexrdclement.palette.modifiers.fade
-import com.alexrdclement.palette.theme.PaletteSpacing
+import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -134,7 +134,7 @@ fun AnimateScrollItemVisibleVerticalPreview() {
         LazyColumn(
             state = lazyListState,
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(PaletteSpacing.xs),
+            verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.xs),
             contentPadding = PaddingValues(vertical = fadeLength),
             modifier = Modifier
                 .size(width = itemSize * 2, height = itemSize * 3 + itemSize / 2)
@@ -186,7 +186,7 @@ fun AnimateScrollItemVisibleHorizontalPreview() {
 
         LazyRow(
             state = lazyListState,
-            horizontalArrangement = Arrangement.spacedBy(PaletteSpacing.xs),
+            horizontalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.xs),
             verticalAlignment = Alignment.CenterVertically,
             contentPadding = PaddingValues(horizontal = fadeLength),
             modifier = Modifier
