@@ -35,6 +35,7 @@ palette-components = { group = "com.alexrdclement.palette", name = "palette-comp
 palette-modifiers = { group = "com.alexrdclement.palette", name = "palette-modifiers", version.ref = "palette" }
 palette-navigation = { group = "com.alexrdclement.palette", name = "palette-navigation", version.ref = "palette" }
 palette-theme = { group = "com.alexrdclement.palette", name = "palette-theme", version.ref = "palette" }
+palette-theme-components = { group = "com.alexrdclement.palette", name = "palette-theme-components", version.ref = "palette" }
 logger-impl = { group = "com.alexrdclement.logging", name = "logger-impl", version.ref = "logging" }
 navigation3-browser = { module = "com.github.terrakok:navigation3-browser", version.ref = "navigation3-browser" }
 trace = { group = "com.alexrdclement.trace", name = "trace", version.ref = "trace" }

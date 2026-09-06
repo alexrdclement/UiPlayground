@@ -59,6 +59,7 @@ if (includePalette && file("../palette").exists()) {
             substitute(module("com.alexrdclement.palette:palette-modifiers")).using(project(":modifiers"))
             substitute(module("com.alexrdclement.palette:palette-navigation")).using(project(":navigation"))
             substitute(module("com.alexrdclement.palette:palette-theme")).using(project(":theme"))
+            substitute(module("com.alexrdclement.palette:palette-theme-components")).using(project(":theme:components"))
         }
     }
 }

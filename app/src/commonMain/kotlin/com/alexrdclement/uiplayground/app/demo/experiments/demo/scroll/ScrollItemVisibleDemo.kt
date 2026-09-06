@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.demo.Demo
+import com.alexrdclement.palette.theme.components.demo.Demo
 import com.alexrdclement.palette.components.demo.control.Control
 import com.alexrdclement.palette.components.util.mapSaverSafe
 import com.alexrdclement.palette.modifiers.FadeSide

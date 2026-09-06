@@ -3,7 +3,7 @@ package com.alexrdclement.uiplayground.app.demo.experiments
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.alexrdclement.palette.components.layout.Scaffold
+import com.alexrdclement.palette.theme.components.layout.Scaffold
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.gradient.GradientDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.keyboard.KeyboardDemo
