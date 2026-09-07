@@ -1,8 +1,8 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    id(libs.plugins.alexrdclement.desktop.application.get().pluginId)
-    id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
+    id(libs.plugins.embarrasdf.desktop.application.get().pluginId)
+    id(libs.plugins.embarrasdf.compose.multiplatform.get().pluginId)
 }
 
 kotlin {

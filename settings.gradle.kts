@@ -16,7 +16,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         if (file("../gradle-plugins").exists()) {
-            create("alexrdclementPluginLibs") {
+            create("embarrasdfPluginLibs") {
                 from(files("../gradle-plugins/gradle/libs.versions.toml"))
             }
         }

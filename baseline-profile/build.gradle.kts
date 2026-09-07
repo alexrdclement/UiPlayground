@@ -1,5 +1,5 @@
 plugins {
-    id(libs.plugins.alexrdclement.android.baselineprofile.generator.get().pluginId)
+    id(libs.plugins.embarrasdf.android.baselineprofile.generator.get().pluginId)
 }
 
 android {

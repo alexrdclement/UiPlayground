@@ -1,6 +1,6 @@
 plugins {
-    id(libs.plugins.alexrdclement.web.application.get().pluginId)
-    id(libs.plugins.alexrdclement.compose.multiplatform.get().pluginId)
+    id(libs.plugins.embarrasdf.web.application.get().pluginId)
+    id(libs.plugins.embarrasdf.compose.multiplatform.get().pluginId)
 }
 
 kotlin {
