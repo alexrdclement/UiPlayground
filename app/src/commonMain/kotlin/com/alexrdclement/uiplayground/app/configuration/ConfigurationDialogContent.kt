@@ -2,10 +2,8 @@ package com.alexrdclement.uiplayground.app.configuration
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,7 +43,6 @@ fun ConfigurationDialogContent(
     ) {
         Column(
             modifier = Modifier
-                .width(IntrinsicSize.Min)
                 .padding(PaletteTheme.spacing.small)
         ) {
             Text(
