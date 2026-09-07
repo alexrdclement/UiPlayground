@@ -1,11 +1,11 @@
 [versions]
-alexrdclement-gradle-plugins = "0.0.101"
 androidx-activity-compose = "1.13.0"
 androidx-baselineprofile = "1.4.1"
 androidx-core-splashscreen = "1.2.0"
 androidx-lifecycle = "2.10.0"
 androidx-test-ext-junit = "1.3.0"
 benchmark-macro-junit4 = "1.4.1"
+embarrasdf-gradle-plugins = "0.0.127"
 espresso-core = "3.7.0"
 kotlinx-collections-immutable = "0.5.1"
 kotlinx-serialization-json = "1.11.0"
@@ -13,7 +13,7 @@ palette = "0.0.111"
 profileinstaller = "1.4.1"
 tracing-perfetto = "1.0.1"
 uiautomator = "2.3.0"
-logging = "0.0.21"
+logging = "0.0.22"
 navigation3-browser = "1.1.0"
 trace = "0.0.12"
 uievent = "0.0.14"
@@ -41,21 +41,21 @@ trace = { group = "com.alexrdclement.trace", name = "trace", version.ref = "trac
 uievent = { group = "com.alexrdclement.uievent", name = "uievent", version.ref = "uievent" }
 
 [plugins]
-alexrdclement-android-application = { id = "com.alexrdclement.gradle.plugin.android.application", version.ref = "alexrdclement-gradle-plugins" }
-alexrdclement-android-instrumented-test = { id = "com.alexrdclement.gradle.plugin.android.instrumented.test", version.ref = "alexrdclement-gradle-plugins" }
-alexrdclement-android-application-compose = { id = "com.alexrdclement.gradle.plugin.android.application.compose", version.ref = "alexrdclement-gradle-plugins" }
-alexrdclement-android-baselineprofile-consumer = { id = "com.alexrdclement.gradle.plugin.android.baselineprofile.consumer", version.ref = "alexrdclement-gradle-plugins" }
-alexrdclement-android-baselineprofile-generator = { id = "com.alexrdclement.gradle.plugin.android.baselineprofile.generator", version.ref = "alexrdclement-gradle-plugins" }
-alexrdclement-android-benchmark = { id = "com.alexrdclement.gradle.plugin.android.benchmark", version.ref = "alexrdclement-gradle-plugins" }
-alexrdclement-android-library = { id = "com.alexrdclement.gradle.plugin.android.library", version.ref = "alexrdclement-gradle-plugins" }
-alexrdclement-android-library-compose = { id = "com.alexrdclement.gradle.plugin.android.library.compose", version.ref = "alexrdclement-gradle-plugins" }
-alexrdclement-android-test = { id = "com.alexrdclement.gradle.plugin.android.test", version.ref = "alexrdclement-gradle-plugins" }
-alexrdclement-compose-multiplatform = { id = "com.alexrdclement.gradle.plugin.compose.multiplatform", version.ref = "alexrdclement-gradle-plugins" }
-alexrdclement-desktop-application = { id = "com.alexrdclement.gradle.plugin.desktop.application", version.ref = "alexrdclement-gradle-plugins" }
-alexrdclement-github-release = { id = "com.alexrdclement.gradle.plugin.github.release", version.ref = "alexrdclement-gradle-plugins" }
-alexrdclement-kotlin-multiplatform-library = { id = "com.alexrdclement.gradle.plugin.kotlin.multiplatform.library", version.ref = "alexrdclement-gradle-plugins" }
-alexrdclement-kotlin-serialization = { id = "com.alexrdclement.gradle.plugin.kotlin.serialization", version.ref = "alexrdclement-gradle-plugins" }
-alexrdclement-web-application = { id = "com.alexrdclement.gradle.plugin.web.application", version.ref = "alexrdclement-gradle-plugins" }
 androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidx-baselineprofile" }
+embarrasdf-android-application = { id = "com.embarrasdf.gradle.plugin.android.application", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-application-compose = { id = "com.embarrasdf.gradle.plugin.android.application.compose", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-baselineprofile-consumer = { id = "com.embarrasdf.gradle.plugin.android.baselineprofile.consumer", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-baselineprofile-generator = { id = "com.embarrasdf.gradle.plugin.android.baselineprofile.generator", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-benchmark = { id = "com.embarrasdf.gradle.plugin.android.benchmark", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-instrumented-test = { id = "com.embarrasdf.gradle.plugin.android.instrumented.test", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-library = { id = "com.embarrasdf.gradle.plugin.android.library", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-library-compose = { id = "com.embarrasdf.gradle.plugin.android.library.compose", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-test = { id = "com.embarrasdf.gradle.plugin.android.test", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-compose-multiplatform = { id = "com.embarrasdf.gradle.plugin.compose.multiplatform", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-desktop-application = { id = "com.embarrasdf.gradle.plugin.desktop.application", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-github-release = { id = "com.embarrasdf.gradle.plugin.github.release", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-kotlin-multiplatform-library = { id = "com.embarrasdf.gradle.plugin.kotlin.multiplatform.library", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-kotlin-serialization = { id = "com.embarrasdf.gradle.plugin.kotlin.serialization", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-web-application = { id = "com.embarrasdf.gradle.plugin.web.application", version.ref = "embarrasdf-gradle-plugins" }
 
 [bundles]

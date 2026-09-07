@@ -1,5 +1,5 @@
 plugins {
-    id(libs.plugins.alexrdclement.android.library.asProvider().get().pluginId)
+    id(libs.plugins.embarrasdf.android.library.asProvider().get().pluginId)
 }
 
 android {

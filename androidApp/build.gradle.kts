@@ -1,7 +1,7 @@
 plugins {
-    id(libs.plugins.alexrdclement.android.application.asProvider().get().pluginId)
-    id(libs.plugins.alexrdclement.android.application.compose.get().pluginId)
-    id(libs.plugins.alexrdclement.android.instrumented.test.get().pluginId)
+    id(libs.plugins.embarrasdf.android.application.asProvider().get().pluginId)
+    id(libs.plugins.embarrasdf.android.application.compose.get().pluginId)
+    id(libs.plugins.embarrasdf.android.instrumented.test.get().pluginId)
     alias(libs.plugins.androidx.baselineprofile)
 }
 

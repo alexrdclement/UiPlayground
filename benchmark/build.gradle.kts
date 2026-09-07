@@ -1,5 +1,5 @@
 plugins {
-    id(libs.plugins.alexrdclement.android.benchmark.get().pluginId)
+    id(libs.plugins.embarrasdf.android.benchmark.get().pluginId)
 }
 
 android {
