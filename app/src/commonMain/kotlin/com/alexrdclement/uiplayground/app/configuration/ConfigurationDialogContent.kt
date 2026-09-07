@@ -60,6 +60,7 @@ fun ConfigurationDialogContent(
                 controls = persistentListOf(
                     colorModeControl,
                 ),
+                controlsStyle = PaletteTheme.component.demo.style.controlsStyle,
                 verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.large),
                 modifier = Modifier.padding(PaletteTheme.semantic.dimension.spacing.medium)
             )
