@@ -73,7 +73,7 @@ fun AnimateScrollItemVisibleDemo(
                         state.items = state.items.plus(state.items.size).toList()
                     },
                 ) {
-                    Text("Add")
+                    Text("Add", style = PaletteTheme.component.core.text.bodyMedium)
                 }
                 Button(
                     style = PaletteTheme.component.core.button.secondary,
@@ -81,7 +81,7 @@ fun AnimateScrollItemVisibleDemo(
                         state.items = state.items.minus(state.items.size - 1).toList()
                     },
                 ) {
-                    Text("Remove")
+                    Text("Remove", style = PaletteTheme.component.core.text.bodyMedium)
                 }
             }
             LazyColumn(
@@ -100,6 +100,7 @@ fun AnimateScrollItemVisibleDemo(
                     key = { it },
                 ) { index ->
                     Button(
+                        style = PaletteTheme.component.core.button.secondary,
                         modifier = Modifier.size(itemSize),
                         onClick = {
                             coroutineScope.launch {
@@ -118,7 +119,7 @@ fun AnimateScrollItemVisibleDemo(
                             }
                         },
                     ) {
-                        Text(index.toString())
+                        Text(index.toString(), style = PaletteTheme.component.core.text.bodyMedium)
                     }
                 }
             }

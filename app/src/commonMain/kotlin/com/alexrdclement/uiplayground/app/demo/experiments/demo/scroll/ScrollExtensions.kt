@@ -161,9 +161,10 @@ fun AnimateScrollItemVisibleVerticalPreview() {
                             )
                         }
                     },
+                    style = PaletteTheme.component.core.button.secondary,
                     modifier = Modifier.size(itemSize),
                 ) {
-                    Text(text = index.toString())
+                    Text(text = index.toString(), style = PaletteTheme.component.core.text.bodyMedium)
                 }
             }
         }
@@ -214,9 +215,10 @@ fun AnimateScrollItemVisibleHorizontalPreview() {
                             )
                         }
                     },
+                    style = PaletteTheme.component.core.button.secondary,
                     modifier = Modifier.size(itemSize),
                 ) {
-                    Text(text = index.toString())
+                    Text(text = index.toString(), style = PaletteTheme.component.core.text.bodyMedium)
                 }
             }
         }

@@ -125,8 +125,8 @@ fun LogLevelDisplay(
                 .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
         ) {
             val eventState by logs.collectAsState()
-            Text("Event state: $eventState")
-            Text("Event fired $logCount times")
+            Text("Event state: $eventState", style = PaletteTheme.component.core.text.bodyMedium)
+            Text("Event fired $logCount times", style = PaletteTheme.component.core.text.bodyMedium)
         }
     }
 }
@@ -136,7 +136,7 @@ fun LogDisplay(
     log: String,
     modifier: Modifier = Modifier,
 ) {
-    Text(log, modifier = modifier)
+    Text(log, modifier = modifier, style = PaletteTheme.component.core.text.bodyMedium)
 }
 
 @Composable
