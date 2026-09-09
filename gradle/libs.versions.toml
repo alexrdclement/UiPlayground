@@ -1,11 +1,10 @@
 [versions]
 androidx-activity-compose = "1.13.0"
-androidx-baselineprofile = "1.4.1"
 androidx-core-splashscreen = "1.2.0"
 androidx-lifecycle = "2.10.0"
 androidx-test-ext-junit = "1.3.0"
 benchmark-macro-junit4 = "1.4.1"
-embarrasdf-gradle-plugins = "0.0.127"
+embarrasdf-gradle-plugins = "0.0.129"
 espresso-core = "3.7.0"
 kotlinx-collections-immutable = "0.5.1"
 kotlinx-serialization-json = "1.11.0"
@@ -41,10 +40,9 @@ trace = { group = "com.alexrdclement.trace", name = "trace", version.ref = "trac
 uievent = { group = "com.alexrdclement.uievent", name = "uievent", version.ref = "uievent" }
 
 [plugins]
-androidx-baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidx-baselineprofile" }
 embarrasdf-android-application = { id = "com.embarrasdf.gradle.plugin.android.application", version.ref = "embarrasdf-gradle-plugins" }
 embarrasdf-android-application-compose = { id = "com.embarrasdf.gradle.plugin.android.application.compose", version.ref = "embarrasdf-gradle-plugins" }
-embarrasdf-android-baselineprofile-consumer = { id = "com.embarrasdf.gradle.plugin.android.baselineprofile.consumer", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-android-baselineprofile-consumer-app = { id = "com.embarrasdf.gradle.plugin.android.baselineprofile.consumer.app", version.ref = "embarrasdf-gradle-plugins" }
 embarrasdf-android-baselineprofile-generator = { id = "com.embarrasdf.gradle.plugin.android.baselineprofile.generator", version.ref = "embarrasdf-gradle-plugins" }
 embarrasdf-android-benchmark = { id = "com.embarrasdf.gradle.plugin.android.benchmark", version.ref = "embarrasdf-gradle-plugins" }
 embarrasdf-android-instrumented-test = { id = "com.embarrasdf.gradle.plugin.android.instrumented.test", version.ref = "embarrasdf-gradle-plugins" }

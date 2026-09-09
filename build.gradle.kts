@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.embarrasdf.github.release)
-    alias(libs.plugins.androidx.baselineprofile) apply false
 }
 
 githubRelease {

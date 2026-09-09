@@ -2,7 +2,7 @@ plugins {
     id(libs.plugins.embarrasdf.android.application.asProvider().get().pluginId)
     id(libs.plugins.embarrasdf.android.application.compose.get().pluginId)
     id(libs.plugins.embarrasdf.android.instrumented.test.get().pluginId)
-    alias(libs.plugins.androidx.baselineprofile)
+    id(libs.plugins.embarrasdf.android.baselineprofile.consumer.app.get().pluginId)
 }
 
 android {
@@ -60,11 +60,6 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-}
-
-baselineProfile {
-    // Automatically save generated profiles to src/release/generated/baselineProfiles/
-    saveInSrc = true
 }
 
 firebaseTestLab {
