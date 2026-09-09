@@ -4,8 +4,8 @@ import androidx.compose.foundation.basicMarquee
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.layout.TopBar
-import com.alexrdclement.palette.components.navigation.BackNavigationButton
+import com.alexrdclement.palette.theme.components.layout.TopBar
+import com.alexrdclement.palette.theme.components.navigation.BackNavigationButton
 import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
 
@@ -25,7 +25,7 @@ fun DemoTopBar(
         title = {
             Text(
                 text = title,
-                style = PaletteTheme.styles.text.titleMedium,
+                style = PaletteTheme.component.core.text.titleMedium,
                 modifier = Modifier.basicMarquee(),
             )
         },

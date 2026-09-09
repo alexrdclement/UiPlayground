@@ -8,11 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.layout.Scaffold
-import com.alexrdclement.palette.components.layout.TopBar
+import com.alexrdclement.palette.theme.components.layout.Scaffold
+import com.alexrdclement.palette.theme.components.layout.TopBar
 import com.alexrdclement.palette.components.layout.catalog.Catalog
 import com.alexrdclement.palette.components.layout.catalog.CatalogItem
-import com.alexrdclement.palette.components.navigation.BackNavigationButton
+import com.alexrdclement.palette.theme.components.navigation.BackNavigationButton
 import com.alexrdclement.palette.components.util.horizontalPaddingValues
 import com.alexrdclement.palette.components.util.plus
 import com.alexrdclement.palette.theme.PaletteTheme
@@ -33,7 +33,7 @@ fun <T : CatalogItem> CatalogScreen(
         topBar = {
             TopBar(
                 title = title?.let {
-                    { Text(title, style = PaletteTheme.styles.text.titleMedium) }
+                    { Text(title, style = PaletteTheme.component.core.text.titleMedium) }
                 },
                 navButton = onNavigateUp?.let {
                     { BackNavigationButton(onNavigateUp) }
@@ -43,12 +43,13 @@ fun <T : CatalogItem> CatalogScreen(
         },
     ) { innerPadding ->
         Catalog(
+            style = PaletteTheme.component.layout.catalog,
             items = items,
             onItemClick = onItemClick,
             contentPadding = innerPadding.plus(WindowInsets.safeDrawing.horizontalPaddingValues()),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = PaletteTheme.spacing.medium)
+                .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
         )
     }
 }

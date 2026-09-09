@@ -4,16 +4,15 @@ import androidx.compose.runtime.Composable
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.theme.PaletteTheme
-import com.alexrdclement.palette.theme.styles.ButtonStyleToken
 
 @Composable
 fun ConfigureButton(
     onClick: () -> Unit = {},
 ) {
     Button(
-        style = ButtonStyleToken.Tertiary,
+        style = PaletteTheme.component.core.button.tertiary,
         onClick = onClick,
     ) {
-        Text("Configure", style = PaletteTheme.styles.text.labelSmall)
+        Text("Configure", style = PaletteTheme.component.core.text.labelSmall)
     }
 }

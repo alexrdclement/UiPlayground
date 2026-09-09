@@ -16,11 +16,11 @@ fun DemoCircle(
     modifier: Modifier = Modifier,
     drawStyle: DrawStyle = Fill,
 ) {
-    val color = PaletteTheme.colorScheme.primary
+    val color = PaletteTheme.semantic.color.primary
     Canvas(
         modifier = modifier
             .fillMaxSize()
-            .background(PaletteTheme.colorScheme.surface)
+            .background(PaletteTheme.semantic.color.surface)
     ) {
         drawCircle(color, style = drawStyle, radius = size.minDimension / 4f)
     }

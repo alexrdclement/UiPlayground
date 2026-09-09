@@ -29,13 +29,12 @@ import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
 import com.alexrdclement.palette.components.core.Button
 import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.demo.Demo
+import com.alexrdclement.palette.theme.components.demo.Demo
 import com.alexrdclement.palette.components.demo.control.Control
 import com.alexrdclement.palette.components.util.mapSaverSafe
 import com.alexrdclement.palette.modifiers.FadeSide
 import com.alexrdclement.palette.modifiers.fade
-import com.alexrdclement.palette.theme.PaletteSpacing
-import com.alexrdclement.palette.theme.styles.ButtonStyleToken
+import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
@@ -65,30 +64,30 @@ fun AnimateScrollItemVisibleDemo(
         ) {
             Column(
                 horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.spacedBy(PaletteSpacing.xs),
+                verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.xs),
                 modifier = Modifier.align(Alignment.CenterEnd)
             ) {
                 Button(
-                    style = ButtonStyleToken.Secondary,
+                    style = PaletteTheme.component.core.button.secondary,
                     onClick = {
                         state.items = state.items.plus(state.items.size).toList()
                     },
                 ) {
-                    Text("Add")
+                    Text("Add", style = PaletteTheme.component.core.text.bodyMedium)
                 }
                 Button(
-                    style = ButtonStyleToken.Secondary,
+                    style = PaletteTheme.component.core.button.secondary,
                     onClick = {
                         state.items = state.items.minus(state.items.size - 1).toList()
                     },
                 ) {
-                    Text("Remove")
+                    Text("Remove", style = PaletteTheme.component.core.text.bodyMedium)
                 }
             }
             LazyColumn(
                 state = lazyListState,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(PaletteSpacing.xs),
+                verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.xs),
                 contentPadding = PaddingValues(vertical = state.fadeLength),
                 modifier = Modifier.fade(
                     sides = FadeSide.Top + FadeSide.Bottom,
@@ -101,6 +100,7 @@ fun AnimateScrollItemVisibleDemo(
                     key = { it },
                 ) { index ->
                     Button(
+                        style = PaletteTheme.component.core.button.secondary,
                         modifier = Modifier.size(itemSize),
                         onClick = {
                             coroutineScope.launch {
@@ -119,7 +119,7 @@ fun AnimateScrollItemVisibleDemo(
                             }
                         },
                     ) {
-                        Text(index.toString())
+                        Text(index.toString(), style = PaletteTheme.component.core.text.bodyMedium)
                     }
                 }
             }

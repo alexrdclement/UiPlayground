@@ -1,7 +1,7 @@
 package com.alexrdclement.uiplayground.app
 
 import androidx.compose.runtime.Composable
-import com.alexrdclement.palette.components.core.Surface
+import com.alexrdclement.palette.theme.components.core.Surface
 import com.alexrdclement.palette.navigation.NavController
 import com.alexrdclement.palette.theme.PaletteTheme
 import com.alexrdclement.uiplayground.app.configuration.ConfigurationController

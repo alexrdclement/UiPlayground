@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.alexrdclement.palette.components.core.Surface
+import com.alexrdclement.palette.theme.components.core.Surface
 import com.alexrdclement.palette.components.core.Text
 import com.alexrdclement.palette.components.demo.control.Controls
 import com.alexrdclement.palette.components.demo.control.enumControl
@@ -41,27 +41,28 @@ fun ConfigurationDialogContent(
     )
 
     Surface(
-        borderStyle = PaletteTheme.styles.border.surface,
+        style = PaletteTheme.component.core.surface.container,
     ) {
         Column(
             modifier = Modifier
                 .width(IntrinsicSize.Min)
-                .padding(PaletteTheme.spacing.small)
+                .padding(PaletteTheme.semantic.dimension.spacing.small)
         ) {
             Text(
                 text = "Configure",
-                style = PaletteTheme.styles.text.titleMedium,
+                style = PaletteTheme.component.core.text.titleMedium,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(PaletteTheme.spacing.small)
+                    .padding(PaletteTheme.semantic.dimension.spacing.small)
                     .align(Alignment.CenterHorizontally)
             )
             Controls(
                 controls = persistentListOf(
                     colorModeControl,
                 ),
-                verticalArrangement = Arrangement.spacedBy(PaletteTheme.spacing.large),
-                modifier = Modifier.padding(PaletteTheme.spacing.medium)
+                controlsStyle = PaletteTheme.component.demo.style.controlsStyle,
+                verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.large),
+                modifier = Modifier.padding(PaletteTheme.semantic.dimension.spacing.medium)
             )
         }
     }
