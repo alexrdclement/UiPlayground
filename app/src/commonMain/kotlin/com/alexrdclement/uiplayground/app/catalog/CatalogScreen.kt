@@ -7,15 +7,15 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.theme.components.layout.Scaffold
-import com.alexrdclement.palette.theme.components.layout.TopBar
-import com.alexrdclement.palette.components.layout.catalog.Catalog
-import com.alexrdclement.palette.components.layout.catalog.CatalogItem
-import com.alexrdclement.palette.theme.components.navigation.BackNavigationButton
-import com.alexrdclement.palette.components.util.horizontalPaddingValues
-import com.alexrdclement.palette.components.util.plus
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.theme.components.layout.Scaffold
+import com.embarrasdf.palette.theme.components.layout.TopBar
+import com.embarrasdf.palette.components.layout.catalog.Catalog
+import com.embarrasdf.palette.components.layout.catalog.CatalogItem
+import com.embarrasdf.palette.theme.components.navigation.BackNavigationButton
+import com.embarrasdf.palette.components.util.horizontalPaddingValues
+import com.embarrasdf.palette.components.util.plus
+import com.embarrasdf.palette.theme.PaletteTheme
 import com.alexrdclement.trace.ReportDrawn
 import com.alexrdclement.uiplayground.app.main.MainCatalogItem
 

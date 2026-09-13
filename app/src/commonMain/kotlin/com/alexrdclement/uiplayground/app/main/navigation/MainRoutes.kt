@@ -1,8 +1,8 @@
 package com.alexrdclement.uiplayground.app.main.navigation
 
-import com.alexrdclement.palette.navigation.NavGraphRoute
-import com.alexrdclement.palette.navigation.NavKey
-import com.alexrdclement.palette.navigation.toPathSegment
+import com.embarrasdf.palette.navigation.NavGraphRoute
+import com.embarrasdf.palette.navigation.NavKey
+import com.embarrasdf.palette.navigation.toPathSegment
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

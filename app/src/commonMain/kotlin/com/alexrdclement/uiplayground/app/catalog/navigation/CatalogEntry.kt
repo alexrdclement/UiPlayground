@@ -2,8 +2,8 @@ package com.alexrdclement.uiplayground.app.catalog.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation3.runtime.EntryProviderScope
-import com.alexrdclement.palette.components.layout.catalog.CatalogItem
-import com.alexrdclement.palette.navigation.NavKey
+import com.embarrasdf.palette.components.layout.catalog.CatalogItem
+import com.embarrasdf.palette.navigation.NavKey
 import com.alexrdclement.uiplayground.app.catalog.CatalogScreen
 
 inline fun <reified T : NavKey, reified E> EntryProviderScope<NavKey>.catalogEntry(

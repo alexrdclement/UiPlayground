@@ -8,7 +8,7 @@ embarrasdf-gradle-plugins = "0.0.129"
 espresso-core = "3.7.0"
 kotlinx-collections-immutable = "0.5.1"
 kotlinx-serialization-json = "1.11.0"
-palette = "0.0.175"
+palette = "0.0.179"
 profileinstaller = "1.4.1"
 tracing-perfetto = "1.0.1"
 uiautomator = "2.3.0"
@@ -30,11 +30,11 @@ androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomato
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
-palette-components = { group = "com.alexrdclement.palette", name = "palette-components", version.ref = "palette" }
-palette-modifiers = { group = "com.alexrdclement.palette", name = "palette-modifiers", version.ref = "palette" }
-palette-navigation = { group = "com.alexrdclement.palette", name = "palette-navigation", version.ref = "palette" }
-palette-theme = { group = "com.alexrdclement.palette", name = "palette-theme", version.ref = "palette" }
-palette-theme-components = { group = "com.alexrdclement.palette", name = "palette-theme-components", version.ref = "palette" }
+palette-components = { group = "com.embarrasdf.palette", name = "palette-components", version.ref = "palette" }
+palette-modifiers = { group = "com.embarrasdf.palette", name = "palette-modifiers", version.ref = "palette" }
+palette-navigation = { group = "com.embarrasdf.palette", name = "palette-navigation", version.ref = "palette" }
+palette-theme = { group = "com.embarrasdf.palette", name = "palette-theme", version.ref = "palette" }
+palette-theme-components = { group = "com.embarrasdf.palette", name = "palette-theme-components", version.ref = "palette" }
 logger-impl = { group = "com.alexrdclement.logging", name = "logger-impl", version.ref = "logging" }
 navigation3-browser = { module = "com.github.terrakok:navigation3-browser", version.ref = "navigation3-browser" }
 trace = { group = "com.alexrdclement.trace", name = "trace", version.ref = "trace" }

@@ -1,6 +1,6 @@
 package com.alexrdclement.uiplayground.app.demo.experiments.navigation
 
-import com.alexrdclement.palette.components.layout.catalog.CatalogItem
+import com.embarrasdf.palette.components.layout.catalog.CatalogItem
 import kotlinx.serialization.Serializable
 
 @Serializable

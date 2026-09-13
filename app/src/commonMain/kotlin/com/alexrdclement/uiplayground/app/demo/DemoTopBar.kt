@@ -3,10 +3,10 @@ package com.alexrdclement.uiplayground.app.demo
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.theme.components.layout.TopBar
-import com.alexrdclement.palette.theme.components.navigation.BackNavigationButton
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.theme.components.layout.TopBar
+import com.embarrasdf.palette.theme.components.navigation.BackNavigationButton
+import com.embarrasdf.palette.theme.PaletteTheme
 import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
 
 @Composable
