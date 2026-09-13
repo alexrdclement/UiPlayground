@@ -44,9 +44,9 @@ val includeLogging = localProps.getProperty("includeLogging")?.toBoolean() ?: fa
 if (includeLogging && file("../logging").exists()) {
     includeBuild("../logging") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.logging:logger-api")).using(project(":logger-api"))
-            substitute(module("com.alexrdclement.logging:logger-impl")).using(project(":logger-impl"))
-            substitute(module("com.alexrdclement.logging:loggable")).using(project(":loggable"))
+            substitute(module("com.embarrasdf.logging:logger-api")).using(project(":logger-api"))
+            substitute(module("com.embarrasdf.logging:logger-impl")).using(project(":logger-impl"))
+            substitute(module("com.embarrasdf.logging:loggable")).using(project(":loggable"))
         }
     }
 }
@@ -68,7 +68,7 @@ val includeTrace = localProps.getProperty("includeTrace")?.toBoolean() ?: false
 if (includeTrace && file("../trace").exists()) {
     includeBuild("../trace") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.trace:trace")).using(project(":trace"))
+            substitute(module("com.embarrasdf.trace:trace")).using(project(":trace"))
         }
     }
 }
@@ -77,7 +77,7 @@ val includeUievent = localProps.getProperty("includeUievent")?.toBoolean() ?: fa
 if (includeUievent && file("../uievent").exists()) {
     includeBuild("../uievent") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.uievent:uievent")).using(project(":uievent"))
+            substitute(module("com.embarrasdf.uievent:uievent")).using(project(":uievent"))
         }
     }
 }

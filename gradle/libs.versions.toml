@@ -8,14 +8,14 @@ embarrasdf-gradle-plugins = "0.0.129"
 espresso-core = "3.7.0"
 kotlinx-collections-immutable = "0.5.1"
 kotlinx-serialization-json = "1.11.0"
-palette = "0.0.179"
+palette = "0.0.181"
 profileinstaller = "1.4.1"
 tracing-perfetto = "1.0.1"
 uiautomator = "2.3.0"
-logging = "0.0.22"
+logging = "0.0.26"
 navigation3-browser = "1.1.0"
-trace = "0.0.12"
-uievent = "0.0.14"
+trace = "0.0.17"
+uievent = "0.0.19"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
@@ -35,10 +35,10 @@ palette-modifiers = { group = "com.embarrasdf.palette", name = "palette-modifier
 palette-navigation = { group = "com.embarrasdf.palette", name = "palette-navigation", version.ref = "palette" }
 palette-theme = { group = "com.embarrasdf.palette", name = "palette-theme", version.ref = "palette" }
 palette-theme-components = { group = "com.embarrasdf.palette", name = "palette-theme-components", version.ref = "palette" }
-logger-impl = { group = "com.alexrdclement.logging", name = "logger-impl", version.ref = "logging" }
+logger-impl = { group = "com.embarrasdf.logging", name = "logger-impl", version.ref = "logging" }
 navigation3-browser = { module = "com.github.terrakok:navigation3-browser", version.ref = "navigation3-browser" }
-trace = { group = "com.alexrdclement.trace", name = "trace", version.ref = "trace" }
-uievent = { group = "com.alexrdclement.uievent", name = "uievent", version.ref = "uievent" }
+trace = { group = "com.embarrasdf.trace", name = "trace", version.ref = "trace" }
+uievent = { group = "com.embarrasdf.uievent", name = "uievent", version.ref = "uievent" }
 
 [plugins]
 embarrasdf-android-application = { id = "com.embarrasdf.gradle.plugin.android.application", version.ref = "embarrasdf-gradle-plugins" }
