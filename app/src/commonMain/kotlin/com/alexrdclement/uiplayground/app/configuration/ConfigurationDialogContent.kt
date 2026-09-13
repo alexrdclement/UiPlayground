@@ -15,11 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.alexrdclement.palette.theme.components.core.Surface
-import com.alexrdclement.palette.components.core.Text
-import com.alexrdclement.palette.components.demo.control.Controls
-import com.alexrdclement.palette.components.demo.control.enumControl
-import com.alexrdclement.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.components.core.Surface
+import com.embarrasdf.palette.components.core.Text
+import com.embarrasdf.palette.components.demo.control.Controls
+import com.embarrasdf.palette.components.demo.control.enumControl
+import com.embarrasdf.palette.theme.PaletteTheme
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable

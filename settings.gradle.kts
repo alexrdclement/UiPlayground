@@ -55,11 +55,11 @@ val includePalette = localProps.getProperty("includePalette")?.toBoolean() ?: fa
 if (includePalette && file("../palette").exists()) {
     includeBuild("../palette") {
         dependencySubstitution {
-            substitute(module("com.alexrdclement.palette:palette-components")).using(project(":components"))
-            substitute(module("com.alexrdclement.palette:palette-modifiers")).using(project(":modifiers"))
-            substitute(module("com.alexrdclement.palette:palette-navigation")).using(project(":navigation"))
-            substitute(module("com.alexrdclement.palette:palette-theme")).using(project(":theme"))
-            substitute(module("com.alexrdclement.palette:palette-theme-components")).using(project(":theme:components"))
+            substitute(module("com.embarrasdf.palette:palette-components")).using(project(":components"))
+            substitute(module("com.embarrasdf.palette:palette-modifiers")).using(project(":modifiers"))
+            substitute(module("com.embarrasdf.palette:palette-navigation")).using(project(":navigation"))
+            substitute(module("com.embarrasdf.palette:palette-theme")).using(project(":theme"))
+            substitute(module("com.embarrasdf.palette:palette-theme-components")).using(project(":theme:components"))
         }
     }
 }

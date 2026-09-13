@@ -1,11 +1,11 @@
 package com.alexrdclement.uiplayground.app.demo.experiments.navigation
 
-import com.alexrdclement.palette.navigation.EnumNavKey
-import com.alexrdclement.palette.navigation.NavGraphRoute
-import com.alexrdclement.palette.navigation.NavKey
-import com.alexrdclement.palette.navigation.PathSegment
-import com.alexrdclement.palette.navigation.toEnumEntry
-import com.alexrdclement.palette.navigation.toPathSegment
+import com.embarrasdf.palette.navigation.EnumNavKey
+import com.embarrasdf.palette.navigation.NavGraphRoute
+import com.embarrasdf.palette.navigation.NavKey
+import com.embarrasdf.palette.navigation.PathSegment
+import com.embarrasdf.palette.navigation.toEnumEntry
+import com.embarrasdf.palette.navigation.toPathSegment
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
