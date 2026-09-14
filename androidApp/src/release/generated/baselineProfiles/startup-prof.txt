@@ -21,6 +21,7 @@ HSPLandroidx/activity/ComponentActivity;->getViewModelStore()Landroidx/lifecycle
 HSPLandroidx/activity/ComponentActivity;->initializeViewTreeOwners()V
 HSPLandroidx/activity/ComponentActivity;->onBackPressedDispatcher_delegate$lambda$0(Landroidx/activity/ComponentActivity;)Landroidx/activity/OnBackPressedDispatcher;
 HSPLandroidx/activity/ComponentActivity;->onCreate(Landroid/os/Bundle;)V
+PLandroidx/activity/ComponentActivity;->onTrimMemory(I)V
 HSPLandroidx/activity/ComponentActivity;->reportFullyDrawn()V
 HSPLandroidx/activity/ComponentActivity;->setContentView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
 Landroidx/activity/ComponentActivity$$ExternalSyntheticLambda0;
@@ -361,6 +362,7 @@ Landroidx/collection/MutableIntObjectMap;
 HSPLandroidx/collection/MutableIntObjectMap;-><init>(I)V
 HSPLandroidx/collection/MutableIntObjectMap;-><init>(IILkotlin/jvm/internal/DefaultConstructorMarker;)V
 HSPLandroidx/collection/MutableIntObjectMap;->adjustStorage$collection()V
+PLandroidx/collection/MutableIntObjectMap;->clear()V
 HSPLandroidx/collection/MutableIntObjectMap;->findAbsoluteInsertIndex(I)I
 HSPLandroidx/collection/MutableIntObjectMap;->findFirstAvailableSlot(I)I
 HSPLandroidx/collection/MutableIntObjectMap;->initializeGrowth()V
@@ -4864,7 +4866,6 @@ HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->clear()V
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->clear(Ljava/lang/Object;)V
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->drainChanges()Z
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->ensureMap(Lkotlin/jvm/functions/Function1;)Landroidx/compose/runtime/snapshots/SnapshotStateObserver$ObservedScopeMap;
-HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->observeReads(Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)V
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->readObserver$lambda$0(Landroidx/compose/runtime/snapshots/SnapshotStateObserver;Ljava/lang/Object;)Lkotlin/Unit;
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->removeChanges()Ljava/util/Set;
 HSPLandroidx/compose/runtime/snapshots/SnapshotStateObserver;->sendNotifications$lambda$0(Landroidx/compose/runtime/snapshots/SnapshotStateObserver;)Lkotlin/Unit;
@@ -5421,6 +5422,7 @@ HSPLandroidx/compose/ui/graphics/AndroidGraphicsContext;->getUniqueDrawingId(Lan
 HSPLandroidx/compose/ui/graphics/AndroidGraphicsContext;->registerComponentCallback(Landroid/content/Context;)V
 Landroidx/compose/ui/graphics/AndroidGraphicsContext$1;
 HSPLandroidx/compose/ui/graphics/AndroidGraphicsContext$1;-><init>(Landroidx/compose/ui/graphics/AndroidGraphicsContext;)V
+PLandroidx/compose/ui/graphics/AndroidGraphicsContext$1;->onTrimMemory(I)V
 Landroidx/compose/ui/graphics/AndroidGraphicsContext$2;
 HSPLandroidx/compose/ui/graphics/AndroidGraphicsContext$2;-><init>(Landroidx/compose/ui/graphics/AndroidGraphicsContext;)V
 HSPLandroidx/compose/ui/graphics/AndroidGraphicsContext$2;->onViewAttachedToWindow(Landroid/view/View;)V
@@ -7833,7 +7835,9 @@ HSPLandroidx/compose/ui/platform/ComposeViewContext;->getCompositionContext$ui()
 HSPLandroidx/compose/ui/platform/ComposeViewContext;->getFontFamilyResolver$ui()Landroidx/compose/runtime/MutableState;
 HSPLandroidx/compose/ui/platform/ComposeViewContext;->getFontLoader$ui()Landroidx/compose/ui/text/font/Font$ResourceLoader;
 HSPLandroidx/compose/ui/platform/ComposeViewContext;->getHapticFeedback$ui()Landroidx/compose/ui/hapticfeedback/HapticFeedback;
+PLandroidx/compose/ui/platform/ComposeViewContext;->getImageVectorCache$ui()Landroidx/compose/ui/res/ImageVectorCache;
 HSPLandroidx/compose/ui/platform/ComposeViewContext;->getLifecycleOwner$ui()Landroidx/lifecycle/LifecycleOwner;
+PLandroidx/compose/ui/platform/ComposeViewContext;->getResourceIdCache$ui()Landroidx/compose/ui/res/ResourceIdCache;
 HSPLandroidx/compose/ui/platform/ComposeViewContext;->getSavedStateRegistryOwner$ui()Landroidx/savedstate/SavedStateRegistryOwner;
 PLandroidx/compose/ui/platform/ComposeViewContext;->getSharedDrawScope$ui()Landroidx/compose/ui/node/LayoutNodeDrawScope;
 HSPLandroidx/compose/ui/platform/ComposeViewContext;->getView$ui()Landroid/view/View;
@@ -7861,6 +7865,7 @@ Landroidx/compose/ui/platform/ComposeViewContext$$ExternalSyntheticLambda6;
 HSPLandroidx/compose/ui/platform/ComposeViewContext$$ExternalSyntheticLambda6;-><init>(Landroidx/compose/ui/platform/ComposeViewContext;)V
 Landroidx/compose/ui/platform/ComposeViewContext$callback$1;
 HSPLandroidx/compose/ui/platform/ComposeViewContext$callback$1;-><init>(Landroidx/compose/ui/platform/ComposeViewContext;)V
+PLandroidx/compose/ui/platform/ComposeViewContext$callback$1;->onTrimMemory(I)V
 PLandroidx/compose/ui/platform/ComposeViewContext$callback$1;->onWindowFocusChanged(Z)V
 Landroidx/compose/ui/platform/ComposeView_androidKt;
 HSPLandroidx/compose/ui/platform/ComposeView_androidKt;-><clinit>()V
@@ -8211,9 +8216,11 @@ Landroidx/compose/ui/relocation/BringIntoViewModifierNode;
 Landroidx/compose/ui/res/ImageVectorCache;
 HSPLandroidx/compose/ui/res/ImageVectorCache;-><clinit>()V
 HSPLandroidx/compose/ui/res/ImageVectorCache;-><init>()V
+PLandroidx/compose/ui/res/ImageVectorCache;->clear()V
 Landroidx/compose/ui/res/ResourceIdCache;
 HSPLandroidx/compose/ui/res/ResourceIdCache;-><clinit>()V
 HSPLandroidx/compose/ui/res/ResourceIdCache;-><init>()V
+PLandroidx/compose/ui/res/ResourceIdCache;->clear()V
 Landroidx/compose/ui/scrollcapture/ComposeScrollCaptureCallback$ScrollCaptureSessionListener;
 Landroidx/compose/ui/scrollcapture/ScrollCapture;
 HSPLandroidx/compose/ui/scrollcapture/ScrollCapture;-><clinit>()V
@@ -10138,6 +10145,7 @@ HPLandroidx/emoji2/text/TypefaceEmojiRasterizer;->getCodepointsLength()I
 PLandroidx/emoji2/text/TypefaceEmojiRasterizer;->getId()I
 HPLandroidx/emoji2/text/TypefaceEmojiRasterizer;->getMetadataItem()Landroidx/emoji2/text/flatbuffer/MetadataItem;
 PLandroidx/emoji2/text/flatbuffer/MetadataItem;-><init>()V
+HPLandroidx/emoji2/text/flatbuffer/MetadataItem;->__assign(ILjava/nio/ByteBuffer;)Landroidx/emoji2/text/flatbuffer/MetadataItem;
 HPLandroidx/emoji2/text/flatbuffer/MetadataItem;->__init(ILjava/nio/ByteBuffer;)V
 HPLandroidx/emoji2/text/flatbuffer/MetadataItem;->codepoints(I)I
 HPLandroidx/emoji2/text/flatbuffer/MetadataItem;->codepointsLength()I
@@ -10147,6 +10155,7 @@ PLandroidx/emoji2/text/flatbuffer/MetadataList;->__assign(ILjava/nio/ByteBuffer;
 PLandroidx/emoji2/text/flatbuffer/MetadataList;->__init(ILjava/nio/ByteBuffer;)V
 PLandroidx/emoji2/text/flatbuffer/MetadataList;->getRootAsMetadataList(Ljava/nio/ByteBuffer;)Landroidx/emoji2/text/flatbuffer/MetadataList;
 PLandroidx/emoji2/text/flatbuffer/MetadataList;->getRootAsMetadataList(Ljava/nio/ByteBuffer;Landroidx/emoji2/text/flatbuffer/MetadataList;)Landroidx/emoji2/text/flatbuffer/MetadataList;
+HPLandroidx/emoji2/text/flatbuffer/MetadataList;->list(Landroidx/emoji2/text/flatbuffer/MetadataItem;I)Landroidx/emoji2/text/flatbuffer/MetadataItem;
 PLandroidx/emoji2/text/flatbuffer/MetadataList;->listLength()I
 PLandroidx/emoji2/text/flatbuffer/Table;-><init>()V
 HPLandroidx/emoji2/text/flatbuffer/Table;->__indirect(I)I
@@ -10925,8 +10934,6 @@ PLandroidx/profileinstaller/ProfileVerifier;->getPackageLastUpdateTime(Landroid/
 PLandroidx/profileinstaller/ProfileVerifier;->setCompilationStatus(IZZZ)Landroidx/profileinstaller/ProfileVerifier$CompilationStatus;
 PLandroidx/profileinstaller/ProfileVerifier;->writeProfileVerification(Landroid/content/Context;Z)Landroidx/profileinstaller/ProfileVerifier$CompilationStatus;
 PLandroidx/profileinstaller/ProfileVerifier$Cache;-><init>(IIJJ)V
-PLandroidx/profileinstaller/ProfileVerifier$Cache;->equals(Ljava/lang/Object;)Z
-PLandroidx/profileinstaller/ProfileVerifier$Cache;->readFromFile(Ljava/io/File;)Landroidx/profileinstaller/ProfileVerifier$Cache;
 PLandroidx/profileinstaller/ProfileVerifier$Cache;->writeOnFile(Ljava/io/File;)V
 PLandroidx/profileinstaller/ProfileVerifier$CompilationStatus;-><init>(IZZZ)V
 Landroidx/savedstate/R$id;
