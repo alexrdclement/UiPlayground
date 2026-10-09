@@ -6,9 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.embarrasdf.palette.navigation.NavController
 import com.alexrdclement.uiplayground.app.App
 import com.alexrdclement.uiplayground.app.navigation.rememberUiPlaygroundNavController
+import com.embarrasdf.palette.navigation.NavController
 
 class MainActivity : ComponentActivity() {
     private var navController: NavController? = null

@@ -24,8 +24,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.platform.LocalDensity
-import com.embarrasdf.palette.theme.components.demo.Demo
 import com.embarrasdf.palette.components.demo.control.enumControl
+import com.embarrasdf.palette.theme.components.demo.Demo
 import kotlinx.collections.immutable.persistentListOf
 import kotlin.math.sin
 
@@ -71,7 +71,7 @@ fun GradientDemo(modifier: Modifier = Modifier) {
             currentGradientControl,
         ),
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         val density = LocalDensity.current
         LaunchedEffect(this@Demo.maxWidth) {
@@ -89,7 +89,7 @@ fun GradientDemo(modifier: Modifier = Modifier) {
                             colors = gradientColors,
                         ),
                         shape = CircleShape,
-                    )
+                    ),
             )
             GradientDemo.Linear -> Box(
                 modifier = baseModifier
@@ -101,14 +101,14 @@ fun GradientDemo(modifier: Modifier = Modifier) {
                             end = Offset(offset + widthPxFloat, offset + widthPxFloat),
                             tileMode = TileMode.Repeated,
                         ),
-                    )
+                    ),
             )
             GradientDemo.Mesh -> MeshGradientDemo(
                 gradientColors = gradientColors,
                 offset = offset,
                 widthPxFloat = widthPxFloat,
                 modifier = baseModifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
             )
         }
     }
@@ -135,34 +135,44 @@ private fun MeshGradientDemo(
                     listOf(
                         Offset(
                             0.0f,
-                            if (index == 0) 0f else index / (gradientColors.lastIndex.toFloat())
+                            if (index == 0) 0f else index / (gradientColors.lastIndex.toFloat()),
                         ) to color,
                         Offset(
                             .33f,
                             when (index) {
                                 0 -> 0f
                                 gradientColors.lastIndex -> 1f
-                                else -> (index / (gradientColors.lastIndex.toFloat()) - progress.toFloat()).coerceIn(0f, 1f)
-                            }
+                                else -> (index / (gradientColors.lastIndex.toFloat()) - progress.toFloat()).coerceIn(
+                                    0f,
+                                    1f,
+                                )
+                            },
                         ) to color,
                         Offset(
                             .66f,
                             when (index) {
                                 0 -> 0f
                                 gradientColors.lastIndex -> 1f
-                                else -> (index / (gradientColors.lastIndex.toFloat()) + progress.toFloat()).coerceIn(0f, 1f)
-                            }
+                                else -> (index / (gradientColors.lastIndex.toFloat()) + progress.toFloat()).coerceIn(
+                                    0f,
+                                    1f,
+                                )
+                            },
                         ) to color,
                         Offset(
                             1.0f,
-                            if (index == gradientColors.lastIndex) 1f
-                            else index / (gradientColors.size.toFloat() - 1)) to color,
+                            if (index == gradientColors.lastIndex) {
+                                1f
+                            } else {
+                                index / (gradientColors.size.toFloat() - 1)
+                            },
+                        ) to color,
                     )
                 },
                 resolutionX = 10,
                 resolutionY = 1,
                 showPoints = false,
                 indicesModifier = { it },
-            )
+            ),
     )
 }

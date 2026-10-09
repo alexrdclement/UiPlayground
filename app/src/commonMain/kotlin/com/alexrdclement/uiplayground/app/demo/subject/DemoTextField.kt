@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.embarrasdf.palette.components.core.TextField
-import com.embarrasdf.palette.theme.PaletteTheme
 import com.embarrasdf.palette.components.core.TextStyle
+import com.embarrasdf.palette.theme.PaletteTheme
 
 @Composable
 fun DemoTextField(
@@ -19,7 +19,7 @@ fun DemoTextField(
         TextField(
             state = rememberTextFieldState(),
             style = PaletteTheme.component.core.textField.copy(textStyle = textStyle),
-            modifier = modifier.align(Alignment.Center)
+            modifier = modifier.align(Alignment.Center),
         )
     }
 }

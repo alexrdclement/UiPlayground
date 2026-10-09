@@ -6,13 +6,6 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.scene.SinglePaneSceneStrategy
 import androidx.navigation3.ui.NavDisplay
-import com.embarrasdf.palette.navigation.NavController
-import com.embarrasdf.palette.navigation.NavGraphRoute
-import com.embarrasdf.palette.navigation.NavKey
-import com.embarrasdf.palette.navigation.navGraph
-import com.embarrasdf.palette.navigation.rememberNavController
-import com.embarrasdf.palette.navigation.rememberNavState
-import com.embarrasdf.palette.navigation.toPathSegment
 import com.alexrdclement.uiplayground.app.configuration.ConfigurationController
 import com.alexrdclement.uiplayground.app.configuration.navigation.configurationEntryProvider
 import com.alexrdclement.uiplayground.app.configuration.navigation.configurationNavGraph
@@ -21,6 +14,13 @@ import com.alexrdclement.uiplayground.app.demo.experiments.navigation.experiment
 import com.alexrdclement.uiplayground.app.main.navigation.MainGraph
 import com.alexrdclement.uiplayground.app.main.navigation.mainEntryProvider
 import com.alexrdclement.uiplayground.app.main.navigation.mainNavGraph
+import com.embarrasdf.palette.navigation.NavController
+import com.embarrasdf.palette.navigation.NavGraphRoute
+import com.embarrasdf.palette.navigation.NavKey
+import com.embarrasdf.palette.navigation.navGraph
+import com.embarrasdf.palette.navigation.rememberNavController
+import com.embarrasdf.palette.navigation.rememberNavState
+import com.embarrasdf.palette.navigation.toPathSegment
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

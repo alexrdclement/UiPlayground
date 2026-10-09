@@ -3,13 +3,13 @@ package com.alexrdclement.uiplayground.app.demo.experiments
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.embarrasdf.palette.theme.components.layout.Scaffold
 import com.alexrdclement.uiplayground.app.demo.DemoTopBar
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.gradient.GradientDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.keyboard.KeyboardDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.scroll.AnimateScrollItemVisibleDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.demo.uievent.UiEventDemo
 import com.alexrdclement.uiplayground.app.demo.experiments.navigation.Experiment
+import com.embarrasdf.palette.theme.components.layout.Scaffold
 
 @Composable
 fun ExperimentScreen(

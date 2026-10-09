@@ -1,0 +1,24 @@
+name: "Format"
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  format:
+    uses: embarrasdf/devops/.github/workflows/format.yml@main
+    permissions:
+      contents: write
+      pull-requests: write

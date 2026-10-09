@@ -28,7 +28,7 @@ fun Modifier.meshGradient(
     resolutionX: Int = 1,
     resolutionY: Int = 1,
     showPoints: Boolean = false,
-    indicesModifier: (List<Int>) -> List<Int> = { it }
+    indicesModifier: (List<Int>) -> List<Int> = { it },
 ): Modifier {
     val pointData by remember(points, resolutionX, resolutionY) {
         derivedStateOf {
@@ -41,7 +41,7 @@ fun Modifier.meshGradient(
             scale(
                 scaleX = size.width,
                 scaleY = size.height,
-                pivot = Offset.Zero
+                pivot = Offset.Zero,
             ) {
                 canvas.drawVertices(
                     vertices = Vertices(
@@ -49,13 +49,12 @@ fun Modifier.meshGradient(
                         positions = pointData.offsets,
                         textureCoordinates = pointData.offsets,
                         colors = pointData.colors,
-                        indices = indicesModifier(pointData.indices)
+                        indices = indicesModifier(pointData.indices),
                     ),
                     blendMode = BlendMode.Dst,
                     paint = paint,
                 )
             }
-
 
             if (showPoints) {
                 val flattenedPaint = Paint()
@@ -67,12 +66,12 @@ fun Modifier.meshGradient(
                 scale(
                     scaleX = size.width,
                     scaleY = size.height,
-                    pivot = Offset.Zero
+                    pivot = Offset.Zero,
                 ) {
                     canvas.drawPoints(
                         pointMode = PointMode.Points,
                         points = pointData.offsets,
-                        paint = flattenedPaint
+                        paint = flattenedPaint,
                     )
                 }
             }
@@ -128,10 +127,10 @@ class PointData(
                                     add(b)
                                     add(d)
                                 },
-                                x = x, y = y
-                            )
+                                x = x,
+                                y = y,
+                            ),
                         )
-
                     }
                 }
             }
@@ -154,7 +153,7 @@ class PointData(
                             0 -> 0
                             points[y].lastIndex - 1 -> 2
                             else -> 1
-                        }
+                        },
                     )
                     measure.setPath(path, false)
 
@@ -182,7 +181,7 @@ class PointData(
                         0 -> 0
                         points[y].lastIndex - 1 -> 2
                         else -> 1
-                    }
+                    },
                 )
                 measure.setPath(path, false)
                 for (i in (1..<stepsY)) {
@@ -197,7 +196,6 @@ class PointData(
                         this.getColor(x, (y + 1) * stepsY),
                         i / stepsY.toFloat(),
                     )
-
                 }
             }
         }
@@ -205,48 +203,73 @@ class PointData(
 
     data class IndicesBlock(val indices: List<Int>, val x: Int, val y: Int)
 
-    operator fun get(x: Int, y: Int): Offset {
+    operator fun get(
+        x: Int,
+        y: Int,
+    ): Offset {
         val index = (y * xLength) + x
         return offsets[index]
     }
 
-    private fun getColor(x: Int, y: Int): Color {
+    private fun getColor(
+        x: Int,
+        y: Int,
+    ): Color {
         val index = (y * xLength) + x
         return colors[index]
     }
 
-    private operator fun set(x: Int, y: Int, offset: Offset) {
+    private operator fun set(
+        x: Int,
+        y: Int,
+        offset: Offset,
+    ) {
         val index = (y * xLength) + x
         offsets[index] = Offset(offset.x, offset.y)
     }
 
-    private operator fun set(x: Int, y: Int, color: Color) {
+    private operator fun set(
+        x: Int,
+        y: Int,
+        color: Color,
+    ) {
         val index = (y * xLength) + x
         colors[index] = color
     }
 }
 
-private fun cubicPathX(point1: Offset, point2: Offset, position: Int): Path {
+private fun cubicPathX(
+    point1: Offset,
+    point2: Offset,
+    position: Int,
+): Path {
     val path = Path().apply {
         moveTo(point1.x, point1.y)
         val delta = (point2.x - point1.x) * .5f
         when (position) {
             0 -> cubicTo(
-                point1.x, point1.y,
-                point2.x - delta, point2.y,
-                point2.x, point2.y
+                point1.x,
+                point1.y,
+                point2.x - delta,
+                point2.y,
+                point2.x,
+                point2.y,
             )
-
             2 -> cubicTo(
-                point1.x + delta, point1.y,
-                point2.x, point2.y,
-                point2.x, point2.y
+                point1.x + delta,
+                point1.y,
+                point2.x,
+                point2.y,
+                point2.x,
+                point2.y,
             )
-
             else -> cubicTo(
-                point1.x + delta, point1.y,
-                point2.x - delta, point2.y,
-                point2.x, point2.y
+                point1.x + delta,
+                point1.y,
+                point2.x - delta,
+                point2.y,
+                point2.x,
+                point2.y,
             )
         }
 
@@ -255,27 +278,38 @@ private fun cubicPathX(point1: Offset, point2: Offset, position: Int): Path {
     return path
 }
 
-private fun cubicPathY(point1: Offset, point2: Offset, position: Int): Path {
+private fun cubicPathY(
+    point1: Offset,
+    point2: Offset,
+    position: Int,
+): Path {
     val path = Path().apply {
         moveTo(point1.x, point1.y)
         val delta = (point2.y - point1.y) * .5f
         when (position) {
             0 -> cubicTo(
-                point1.x, point1.y,
-                point2.x, point2.y - delta,
-                point2.x, point2.y
+                point1.x,
+                point1.y,
+                point2.x,
+                point2.y - delta,
+                point2.x,
+                point2.y,
             )
-
             2 -> cubicTo(
-                point1.x, point1.y + delta,
-                point2.x, point2.y,
-                point2.x, point2.y
+                point1.x,
+                point1.y + delta,
+                point2.x,
+                point2.y,
+                point2.x,
+                point2.y,
             )
-
             else -> cubicTo(
-                point1.x, point1.y + delta,
-                point2.x, point2.y - delta,
-                point2.x, point2.y
+                point1.x,
+                point1.y + delta,
+                point2.x,
+                point2.y - delta,
+                point2.x,
+                point2.y,
             )
         }
 

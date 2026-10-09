@@ -27,15 +27,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.embarrasdf.palette.components.core.Button
 import com.embarrasdf.palette.components.core.Text
-import com.embarrasdf.palette.theme.components.demo.Demo
 import com.embarrasdf.palette.components.demo.control.Control
 import com.embarrasdf.palette.components.util.mapSaverSafe
 import com.embarrasdf.palette.modifiers.FadeSide
 import com.embarrasdf.palette.modifiers.fade
 import com.embarrasdf.palette.theme.PaletteTheme
-import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
+import com.embarrasdf.palette.theme.components.demo.Demo
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -45,7 +45,7 @@ fun AnimateScrollItemVisibleDemo(
     modifier: Modifier = Modifier,
     state: AnimateScrollItemVisibleDemoState = rememberAnimateScrollItemVisibleDemoState(),
     control: AnimateScrollItemVisibleDemoControl = rememberAnimateScrollItemVisibleDemoControl(state),
-    itemSize: DpSize = DpSize(80.dp, 80.dp)
+    itemSize: DpSize = DpSize(80.dp, 80.dp),
 ) {
     val lazyListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -60,12 +60,12 @@ fun AnimateScrollItemVisibleDemo(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Column(
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.xs),
-                modifier = Modifier.align(Alignment.CenterEnd)
+                modifier = Modifier.align(Alignment.CenterEnd),
             ) {
                 Button(
                     style = PaletteTheme.component.core.button.secondary,
@@ -127,11 +127,8 @@ fun AnimateScrollItemVisibleDemo(
     }
 }
 
-
 @Composable
-fun rememberAnimateScrollItemVisibleDemoState(
-    initialFadeLength: Dp = 40.dp,
-) = rememberSaveable(
+fun rememberAnimateScrollItemVisibleDemoState(initialFadeLength: Dp = 40.dp) = rememberSaveable(
     initialFadeLength,
     saver = AnimateScrollItemVisibleDemoStateSaver,
 ) {
@@ -157,29 +154,29 @@ class AnimateScrollItemVisibleDemoState(
         internal set
 }
 
-private const val fadeLengthKey = "fadeLength"
-private const val itemCountKey = "itemCount"
-private const val itemVisibilityScrollThresholdKey = "itemVisibilityScrollThreshold"
-private const val showFadeBordersKey = "showFadeBorders"
+private const val FadeLengthKey = "fadeLength"
+private const val ItemCountKey = "itemCount"
+private const val ItemVisibilityScrollThresholdKey = "itemVisibilityScrollThreshold"
+private const val ShowFadeBordersKey = "showFadeBorders"
 
 val AnimateScrollItemVisibleDemoStateSaver = mapSaverSafe(
     save = { value ->
         mapOf(
-            fadeLengthKey to value.fadeLength.value,
-            itemCountKey to value.items.size,
-            itemVisibilityScrollThresholdKey to value.itemVisibilityScrollThreshold,
-            showFadeBordersKey to value.showFadeBorders,
+            FadeLengthKey to value.fadeLength.value,
+            ItemCountKey to value.items.size,
+            ItemVisibilityScrollThresholdKey to value.itemVisibilityScrollThreshold,
+            ShowFadeBordersKey to value.showFadeBorders,
         )
     },
     restore = { map ->
         AnimateScrollItemVisibleDemoState(
-            initialFadeLength = (map[fadeLengthKey] as Float).dp,
-            initialItemCount = map[itemCountKey] as Int,
+            initialFadeLength = (map[FadeLengthKey] as Float).dp,
+            initialItemCount = map[ItemCountKey] as Int,
             initialItemVisibilityScrollThreshold =
-                map[itemVisibilityScrollThresholdKey] as Float,
-            initialShowBorders = map[showFadeBordersKey] as Boolean,
+            map[ItemVisibilityScrollThresholdKey] as Float,
+            initialShowBorders = map[ShowFadeBordersKey] as Boolean,
         )
-    }
+    },
 )
 
 @Composable
