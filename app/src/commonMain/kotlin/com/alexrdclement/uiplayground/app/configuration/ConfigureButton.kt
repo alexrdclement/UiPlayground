@@ -6,9 +6,7 @@ import com.embarrasdf.palette.components.core.Text
 import com.embarrasdf.palette.theme.PaletteTheme
 
 @Composable
-fun ConfigureButton(
-    onClick: () -> Unit = {},
-) {
+fun ConfigureButton(onClick: () -> Unit = {}) {
     Button(
         style = PaletteTheme.component.core.button.tertiary,
         onClick = onClick,

@@ -17,12 +17,10 @@ class StartupBenchmark {
     val benchmarkRule = MacrobenchmarkRule()
 
     @Test
-    fun startupCompilationNone() =
-        benchmark(CompilationMode.None())
+    fun startupCompilationNone() = benchmark(CompilationMode.None())
 
     @Test
-    fun startupCompilationBaselineProfiles() =
-        benchmark(CompilationMode.Partial(BaselineProfileMode.Require))
+    fun startupCompilationBaselineProfiles() = benchmark(CompilationMode.Partial(BaselineProfileMode.Require))
 
     private fun benchmark(compilationMode: CompilationMode) {
         benchmarkRule.measureRepeated(
@@ -33,7 +31,7 @@ class StartupBenchmark {
             startupMode = StartupMode.COLD,
             setupBlock = {
                 pressHome()
-            }
+            },
         ) {
             startActivityAndWait()
         }

@@ -15,17 +15,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.embarrasdf.palette.theme.components.core.Surface
 import com.embarrasdf.palette.components.core.Text
 import com.embarrasdf.palette.components.demo.control.Controls
 import com.embarrasdf.palette.components.demo.control.enumControl
 import com.embarrasdf.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.components.core.Surface
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun ConfigurationDialogContent(
-    configurationController: ConfigurationController,
-) {
+fun ConfigurationDialogContent(configurationController: ConfigurationController) {
     var colorMode by remember(configurationController) {
         mutableStateOf(configurationController.colorMode)
     }
@@ -46,7 +44,7 @@ fun ConfigurationDialogContent(
         Column(
             modifier = Modifier
                 .width(IntrinsicSize.Min)
-                .padding(PaletteTheme.semantic.dimension.spacing.small)
+                .padding(PaletteTheme.semantic.dimension.spacing.small),
         ) {
             Text(
                 text = "Configure",
@@ -54,7 +52,7 @@ fun ConfigurationDialogContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(PaletteTheme.semantic.dimension.spacing.small)
-                    .align(Alignment.CenterHorizontally)
+                    .align(Alignment.CenterHorizontally),
             )
             Controls(
                 controls = persistentListOf(
@@ -62,7 +60,7 @@ fun ConfigurationDialogContent(
                 ),
                 controlsStyle = PaletteTheme.component.demo.style.controlsStyle,
                 verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.large),
-                modifier = Modifier.padding(PaletteTheme.semantic.dimension.spacing.medium)
+                modifier = Modifier.padding(PaletteTheme.semantic.dimension.spacing.medium),
             )
         }
     }

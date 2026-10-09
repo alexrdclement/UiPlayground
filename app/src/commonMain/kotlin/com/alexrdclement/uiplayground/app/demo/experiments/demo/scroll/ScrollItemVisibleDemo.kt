@@ -27,15 +27,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.embarrasdf.palette.components.core.Button
 import com.embarrasdf.palette.components.core.Text
-import com.embarrasdf.palette.theme.components.demo.Demo
 import com.embarrasdf.palette.components.demo.control.Control
 import com.embarrasdf.palette.components.util.mapSaverSafe
 import com.embarrasdf.palette.modifiers.FadeSide
 import com.embarrasdf.palette.modifiers.fade
 import com.embarrasdf.palette.theme.PaletteTheme
-import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
+import com.embarrasdf.palette.theme.components.demo.Demo
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -45,7 +45,7 @@ fun AnimateScrollItemVisibleDemo(
     modifier: Modifier = Modifier,
     state: AnimateScrollItemVisibleDemoState = rememberAnimateScrollItemVisibleDemoState(),
     control: AnimateScrollItemVisibleDemoControl = rememberAnimateScrollItemVisibleDemoControl(state),
-    itemSize: DpSize = DpSize(80.dp, 80.dp)
+    itemSize: DpSize = DpSize(80.dp, 80.dp),
 ) {
     val lazyListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -60,12 +60,12 @@ fun AnimateScrollItemVisibleDemo(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Column(
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.xs),
-                modifier = Modifier.align(Alignment.CenterEnd)
+                modifier = Modifier.align(Alignment.CenterEnd),
             ) {
                 Button(
                     style = PaletteTheme.component.core.button.secondary,
@@ -127,11 +127,8 @@ fun AnimateScrollItemVisibleDemo(
     }
 }
 
-
 @Composable
-fun rememberAnimateScrollItemVisibleDemoState(
-    initialFadeLength: Dp = 40.dp,
-) = rememberSaveable(
+fun rememberAnimateScrollItemVisibleDemoState(initialFadeLength: Dp = 40.dp) = rememberSaveable(
     initialFadeLength,
     saver = AnimateScrollItemVisibleDemoStateSaver,
 ) {
@@ -176,10 +173,10 @@ val AnimateScrollItemVisibleDemoStateSaver = mapSaverSafe(
             initialFadeLength = (map[FadeLengthKey] as Float).dp,
             initialItemCount = map[ItemCountKey] as Int,
             initialItemVisibilityScrollThreshold =
-                map[ItemVisibilityScrollThresholdKey] as Float,
+            map[ItemVisibilityScrollThresholdKey] as Float,
             initialShowBorders = map[ShowFadeBordersKey] as Boolean,
         )
-    }
+    },
 )
 
 @Composable

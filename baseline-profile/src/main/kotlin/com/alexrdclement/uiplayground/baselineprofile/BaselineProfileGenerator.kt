@@ -20,7 +20,7 @@ class BaselineProfileGenerator {
         rule.collect(
             packageName = AppPackageName,
             // See: https://d.android.com/topic/performance/baselineprofiles/dex-layout-optimizations
-            includeInStartupProfile = true
+            includeInStartupProfile = true,
         ) {
             pressHome()
             startActivityAndWait()
