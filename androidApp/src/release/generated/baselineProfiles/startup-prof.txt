@@ -351,6 +351,9 @@ HSPLandroidx/collection/MutableIntSet;->initializeMetadata(I)V
 HSPLandroidx/collection/MutableIntSet;->initializeStorage(I)V
 Landroidx/collection/MutableLongList;
 HSPLandroidx/collection/MutableLongList;-><init>(I)V
+PLandroidx/collection/MutableLongList;-><init>(IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+PLandroidx/collection/MutableLongList;->add(J)Z
+PLandroidx/collection/MutableLongList;->ensureCapacity(I)V
 Landroidx/collection/MutableLongObjectMap;
 HSPLandroidx/collection/MutableLongObjectMap;-><init>(I)V
 HSPLandroidx/collection/MutableLongObjectMap;->initializeGrowth()V
@@ -4674,6 +4677,10 @@ HSPLandroidx/compose/runtime/snapshots/SnapshotDoubleIndexHeap;->remove(I)V
 HSPLandroidx/compose/runtime/snapshots/SnapshotDoubleIndexHeap;->shiftDown(I)V
 HSPLandroidx/compose/runtime/snapshots/SnapshotDoubleIndexHeap;->shiftUp(I)V
 HSPLandroidx/compose/runtime/snapshots/SnapshotDoubleIndexHeap;->swap(II)V
+PLandroidx/compose/runtime/snapshots/SnapshotIdArrayBuilder;-><clinit>()V
+PLandroidx/compose/runtime/snapshots/SnapshotIdArrayBuilder;-><init>([J)V
+PLandroidx/compose/runtime/snapshots/SnapshotIdArrayBuilder;->add(J)V
+PLandroidx/compose/runtime/snapshots/SnapshotIdArrayBuilder;->toArray()[J
 Landroidx/compose/runtime/snapshots/SnapshotIdSet;
 HSPLandroidx/compose/runtime/snapshots/SnapshotIdSet;-><clinit>()V
 HSPLandroidx/compose/runtime/snapshots/SnapshotIdSet;-><init>(JJJ[J)V
@@ -4689,8 +4696,10 @@ HSPLandroidx/compose/runtime/snapshots/SnapshotIdSet$Companion;-><init>()V
 HSPLandroidx/compose/runtime/snapshots/SnapshotIdSet$Companion;-><init>(Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 HSPLandroidx/compose/runtime/snapshots/SnapshotIdSet$Companion;->getEMPTY()Landroidx/compose/runtime/snapshots/SnapshotIdSet;
 Landroidx/compose/runtime/snapshots/SnapshotId_jvmKt;
+PLandroidx/compose/runtime/snapshots/SnapshotId_jvmKt;->binarySearch([JJ)I
 HSPLandroidx/compose/runtime/snapshots/SnapshotId_jvmKt;->snapshotIdArrayWithCapacity(I)[J
 HSPLandroidx/compose/runtime/snapshots/SnapshotId_jvmKt;->toSnapshotId(I)J
+PLandroidx/compose/runtime/snapshots/SnapshotId_jvmKt;->withIdRemovedAt([JI)[J
 Landroidx/compose/runtime/snapshots/SnapshotKt;
 HSPLandroidx/compose/runtime/snapshots/SnapshotKt;-><clinit>()V
 HSPLandroidx/compose/runtime/snapshots/SnapshotKt;->access$advanceGlobalSnapshot()V
