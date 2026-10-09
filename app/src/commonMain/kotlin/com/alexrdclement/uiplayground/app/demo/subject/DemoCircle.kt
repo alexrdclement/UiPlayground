@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.tooling.preview.Preview
-import com.embarrasdf.palette.theme.PaletteTheme
 import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
+import com.embarrasdf.palette.theme.PaletteTheme
 
 @Composable
 fun DemoCircle(
@@ -20,7 +20,7 @@ fun DemoCircle(
     Canvas(
         modifier = modifier
             .fillMaxSize()
-            .background(PaletteTheme.semantic.color.surface)
+            .background(PaletteTheme.semantic.color.surface),
     ) {
         drawCircle(color, style = drawStyle, radius = size.minDimension / 4f)
     }

@@ -31,17 +31,15 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.embarrasdf.palette.components.core.Checkbox
 import com.embarrasdf.palette.components.core.Text
 import com.embarrasdf.palette.components.core.TextField
 import com.embarrasdf.palette.theme.PaletteTheme
-import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun KeyboardDemo(
-    modifier: Modifier = Modifier,
-) {
+fun KeyboardDemo(modifier: Modifier = Modifier) {
     val density = LocalDensity.current
 
     val imeInsets = WindowInsets.ime
@@ -80,12 +78,12 @@ fun KeyboardDemo(
                 .fillMaxSize()
                 .padding(PaletteTheme.semantic.dimension.spacing.medium)
                 .imeNestedScroll()
-                .verticalScroll(scrollState)
+                .verticalScroll(scrollState),
         ) {
             TextField(
                 state = rememberTextFieldState("Top text field"),
                 style = PaletteTheme.component.core.textField,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
 
             Column(
@@ -139,12 +137,12 @@ fun KeyboardDemo(
 
             Box(
                 contentAlignment = Alignment.BottomCenter,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 TextField(
                     state = rememberTextFieldState("Bottom text field"),
                     style = PaletteTheme.component.core.textField,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
 
@@ -155,7 +153,7 @@ fun KeyboardDemo(
                         .fillMaxWidth()
                         .widthIn(max = 600.dp)
                         .height(keyboardBoxHeight)
-                        .background(Color.White)
+                        .background(Color.White),
                 )
             }
         }
@@ -169,7 +167,7 @@ fun KeyboardDemo(
                     .fillMaxWidth()
                     .widthIn(max = 600.dp)
                     .height(keyboardBoxHeight)
-                    .background(Color.Cyan)
+                    .background(Color.Cyan),
             )
         }
 
@@ -184,7 +182,7 @@ fun KeyboardDemo(
                     .fillMaxWidth()
                     .widthIn(max = 600.dp)
                     .height(keyboardBoxHeight)
-                    .background(Color.Yellow)
+                    .background(Color.Yellow),
             )
         }
 
@@ -198,7 +196,8 @@ fun KeyboardDemo(
                         val progress = if (imeAnimationSourcePx != imeAnimationTargetPx) {
                             // Calculate how far through the animation we are
                             val animationRange = imeAnimationTargetPx - imeAnimationSourcePx
-                            val animProgress = ((imeBottomPx - imeAnimationSourcePx).toFloat() / animationRange).coerceIn(0f, 1f)
+                            val animProgress = ((imeBottomPx - imeAnimationSourcePx).toFloat() / animationRange)
+                                .coerceIn(0f, 1f)
 
                             // If closing (target < source), invert progress so box stays visible at start
                             if (imeAnimationTargetPx < imeAnimationSourcePx) {
@@ -218,7 +217,7 @@ fun KeyboardDemo(
                     .fillMaxWidth()
                     .widthIn(max = 600.dp)
                     .height(keyboardBoxHeight)
-                    .background(Color.Magenta)
+                    .background(Color.Magenta),
             )
         }
     }
@@ -235,7 +234,7 @@ private fun BoxControl(
         horizontalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick),
     ) {
         Checkbox(
             isChecked = isEnabled,

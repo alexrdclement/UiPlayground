@@ -19,21 +19,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
+import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.embarrasdf.logging.Log
 import com.embarrasdf.logging.LogLevel
 import com.embarrasdf.logging.Logger
 import com.embarrasdf.logging.LoggerImpl
 import com.embarrasdf.logging.logString
 import com.embarrasdf.palette.components.core.Text
-import com.embarrasdf.palette.theme.components.demo.Demo
 import com.embarrasdf.palette.components.demo.control.Control
 import com.embarrasdf.palette.components.layout.dialog.ErrorDialogContent
 import com.embarrasdf.palette.components.util.mapSaverSafe
 import com.embarrasdf.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.components.demo.Demo
 import com.embarrasdf.uievent.UiEventState
 import com.embarrasdf.uievent.collectAsState
 import com.embarrasdf.uievent.toUiEvent
-import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -65,7 +65,7 @@ fun UiEventDemo(
         val logs by state.logs.collectAsState(persistentListOf())
 
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.large)
+            verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.large),
         ) {
             items(
                 count = state.eventsByLogLevel.size,
@@ -88,7 +88,7 @@ fun UiEventDemo(
                 LogDisplay(
                     log = log,
                     modifier = Modifier
-                        .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
+                        .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium),
                 )
             }
         }
@@ -122,7 +122,7 @@ fun LogLevelDisplay(
         Column(
             verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
             modifier = Modifier
-                .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
+                .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium),
         ) {
             val eventState by logs.collectAsState()
             Text("Event state: $eventState", style = PaletteTheme.component.core.text.bodyMedium)
@@ -140,10 +140,8 @@ fun LogDisplay(
 }
 
 @Composable
-fun rememberUiEventDemoState(
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
-) = rememberSaveable(
-    saver = UiEventDemoStateSaver(
+fun rememberUiEventDemoState(coroutineScope: CoroutineScope = rememberCoroutineScope()) = rememberSaveable(
+    saver = uiEventDemoStateSaver(
         coroutineScope = coroutineScope,
     ),
 ) {
@@ -181,7 +179,7 @@ class UiEventDemoState(
             }
             coroutineScope.launch {
                 logs.collect { log ->
-                    val message = "[${level}] ${log.message}"
+                    val message = "[$level] ${log.message}"
                     mutableLogs.update { it.add(0, message) }
                 }
             }
@@ -204,18 +202,15 @@ class UiEventDemoState(
     }
 }
 
-fun UiEventDemoStateSaver(
-    coroutineScope: CoroutineScope,
-) = mapSaverSafe(
+fun uiEventDemoStateSaver(coroutineScope: CoroutineScope) = mapSaverSafe(
     save = { value ->
-        mapOf(
-        )
+        mapOf()
     },
     restore = { map ->
         UiEventDemoState(
             coroutineScope = coroutineScope,
         )
-    }
+    },
 )
 
 @Composable
@@ -247,7 +242,10 @@ class UiEventDemoControl(
         *logLevelControls.toTypedArray(),
     )
 
-    fun log(level: LogLevel, loggable: () -> String) {
+    fun log(
+        level: LogLevel,
+        loggable: () -> String,
+    ) {
         coroutineScope.launch {
             state.logger.logString(level = level, tag = "UiEventDemo", loggable)
         }

@@ -7,17 +7,17 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.alexrdclement.uiplayground.app.main.MainCatalogItem
 import com.embarrasdf.palette.components.core.Text
-import com.embarrasdf.palette.theme.components.layout.Scaffold
-import com.embarrasdf.palette.theme.components.layout.TopBar
 import com.embarrasdf.palette.components.layout.catalog.Catalog
 import com.embarrasdf.palette.components.layout.catalog.CatalogItem
-import com.embarrasdf.palette.theme.components.navigation.BackNavigationButton
 import com.embarrasdf.palette.components.util.horizontalPaddingValues
 import com.embarrasdf.palette.components.util.plus
 import com.embarrasdf.palette.theme.PaletteTheme
+import com.embarrasdf.palette.theme.components.layout.Scaffold
+import com.embarrasdf.palette.theme.components.layout.TopBar
+import com.embarrasdf.palette.theme.components.navigation.BackNavigationButton
 import com.embarrasdf.trace.ReportDrawn
-import com.alexrdclement.uiplayground.app.main.MainCatalogItem
 
 @Composable
 fun <T : CatalogItem> CatalogScreen(
@@ -25,7 +25,7 @@ fun <T : CatalogItem> CatalogScreen(
     onItemClick: (T) -> Unit,
     title: String? = null,
     onNavigateUp: (() -> Unit)? = null,
-    actions: @Composable () -> Unit = {}
+    actions: @Composable () -> Unit = {},
 ) {
     ReportDrawn()
 
@@ -49,7 +49,7 @@ fun <T : CatalogItem> CatalogScreen(
             contentPadding = innerPadding.plus(WindowInsets.safeDrawing.horizontalPaddingValues()),
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium)
+                .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium),
         )
     }
 }
@@ -60,7 +60,7 @@ private fun Preview() {
     PaletteTheme {
         CatalogScreen(
             items = MainCatalogItem.entries.toList(),
-            onItemClick = {}
+            onItemClick = {},
         )
     }
 }
@@ -77,4 +77,3 @@ private fun WithNavPreview() {
         )
     }
 }
-

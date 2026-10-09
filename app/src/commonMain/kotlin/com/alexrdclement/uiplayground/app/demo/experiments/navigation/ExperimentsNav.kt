@@ -1,13 +1,13 @@
 package com.alexrdclement.uiplayground.app.demo.experiments.navigation
 
 import androidx.navigation3.runtime.EntryProviderScope
-import com.embarrasdf.palette.navigation.NavController
-import com.embarrasdf.palette.navigation.NavGraphBuilder
-import com.embarrasdf.palette.navigation.NavKey
 import com.alexrdclement.uiplayground.app.catalog.navigation.catalogEntry
 import com.alexrdclement.uiplayground.app.configuration.ConfigureButton
 import com.alexrdclement.uiplayground.app.configuration.navigation.ConfigurationRoute
 import com.alexrdclement.uiplayground.app.demo.experiments.ExperimentScreen
+import com.embarrasdf.palette.navigation.NavController
+import com.embarrasdf.palette.navigation.NavGraphBuilder
+import com.embarrasdf.palette.navigation.NavKey
 
 fun NavGraphBuilder.experimentsNavGraph() = navGraph(
     root = ExperimentsGraph,
@@ -19,9 +19,7 @@ fun NavGraphBuilder.experimentsNavGraph() = navGraph(
     }
 }
 
-fun EntryProviderScope<NavKey>.experimentsEntryProvider(
-    navController: NavController,
-) {
+fun EntryProviderScope<NavKey>.experimentsEntryProvider(navController: NavController) {
     catalogEntry<ExperimentCatalogRoute, Experiment>(
         onItemClick = { experiment ->
             navController.navigate(ExperimentRoute(experiment))

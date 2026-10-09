@@ -20,7 +20,7 @@ class DeeplinkTest {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         context.startActivity(
             context.packageManager.getLaunchIntentForPackage(context.packageName)!!
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK),
         )
         MainCatalogPage(device).assertIsDisplayed()
     }
@@ -70,7 +70,7 @@ class DeeplinkTest {
     private fun startDeeplink(path: String) {
         InstrumentationRegistry.getInstrumentation().targetContext.startActivity(
             Intent(Intent.ACTION_VIEW, Uri.parse("uiplayground://app/$path"))
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
         )
     }
 }

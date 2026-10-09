@@ -18,12 +18,12 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
+import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import com.embarrasdf.palette.components.core.Button
 import com.embarrasdf.palette.components.core.Text
 import com.embarrasdf.palette.modifiers.FadeSide
 import com.embarrasdf.palette.modifiers.fade
 import com.embarrasdf.palette.theme.PaletteTheme
-import com.alexrdclement.uiplayground.app.preview.UiPlaygroundPreview
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -106,13 +106,20 @@ private fun calculateItemScrollPx(
             val scrollBackward = itemStart - targetStartOffset
             val scrollForward = itemEnd - targetEndOffset
 
-            val visibilityAfterScrollBackward = minOf(itemLayoutInfo.size, targetEndOffset - itemStart).toFloat() / itemLayoutInfo.size
-            val visibilityAfterScrollForward = minOf(itemLayoutInfo.size, itemEnd - targetStartOffset).toFloat() / itemLayoutInfo.size
+            val visibilityAfterScrollBackward =
+                minOf(itemLayoutInfo.size, targetEndOffset - itemStart).toFloat() / itemLayoutInfo.size
+            val visibilityAfterScrollForward =
+                minOf(itemLayoutInfo.size, itemEnd - targetStartOffset).toFloat() / itemLayoutInfo.size
 
-            if (visibilityAfterScrollBackward >= visibilityThreshold) scrollBackward.toFloat()
-            else if (visibilityAfterScrollForward >= visibilityThreshold) scrollForward.toFloat()
-            else if (visibilityAfterScrollBackward > visibilityAfterScrollForward) scrollBackward.toFloat()
-            else scrollForward.toFloat()
+            if (visibilityAfterScrollBackward >= visibilityThreshold) {
+                scrollBackward.toFloat()
+            } else if (visibilityAfterScrollForward >= visibilityThreshold) {
+                scrollForward.toFloat()
+            } else if (visibilityAfterScrollBackward > visibilityAfterScrollForward) {
+                scrollBackward.toFloat()
+            } else {
+                scrollForward.toFloat()
+            }
         }
     }
 }
@@ -192,7 +199,7 @@ fun AnimateScrollItemVisibleHorizontalPreview() {
             contentPadding = PaddingValues(horizontal = fadeLength),
             modifier = Modifier
                 .size(width = itemSize * 3 + itemSize / 2, height = itemSize * 2)
-                .fade(sides = FadeSide.Left + FadeSide.Right, length = fadeLength)
+                .fade(sides = FadeSide.Left + FadeSide.Right, length = fadeLength),
         ) {
             items(
                 items = items,
