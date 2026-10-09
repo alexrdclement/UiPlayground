@@ -1,3 +1,3 @@
 package com.alexrdclement.uiplayground
 
-const val appPackageName = "com.alexrdclement.uiplayground"
+const val AppPackageName = "com.alexrdclement.uiplayground"

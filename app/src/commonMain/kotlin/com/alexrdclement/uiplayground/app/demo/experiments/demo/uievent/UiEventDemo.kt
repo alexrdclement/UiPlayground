@@ -143,7 +143,7 @@ fun LogDisplay(
 fun rememberUiEventDemoState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ) = rememberSaveable(
-    saver = UiEventDemoStateSaver(
+    saver = uiEventDemoStateSaver(
         coroutineScope = coroutineScope,
     ),
 ) {
@@ -204,7 +204,7 @@ class UiEventDemoState(
     }
 }
 
-fun UiEventDemoStateSaver(
+fun uiEventDemoStateSaver(
     coroutineScope: CoroutineScope,
 ) = mapSaverSafe(
     save = { value ->

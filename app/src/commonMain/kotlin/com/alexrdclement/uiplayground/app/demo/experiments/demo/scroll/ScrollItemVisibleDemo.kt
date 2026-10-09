@@ -157,27 +157,27 @@ class AnimateScrollItemVisibleDemoState(
         internal set
 }
 
-private const val fadeLengthKey = "fadeLength"
-private const val itemCountKey = "itemCount"
-private const val itemVisibilityScrollThresholdKey = "itemVisibilityScrollThreshold"
-private const val showFadeBordersKey = "showFadeBorders"
+private const val FadeLengthKey = "fadeLength"
+private const val ItemCountKey = "itemCount"
+private const val ItemVisibilityScrollThresholdKey = "itemVisibilityScrollThreshold"
+private const val ShowFadeBordersKey = "showFadeBorders"
 
 val AnimateScrollItemVisibleDemoStateSaver = mapSaverSafe(
     save = { value ->
         mapOf(
-            fadeLengthKey to value.fadeLength.value,
-            itemCountKey to value.items.size,
-            itemVisibilityScrollThresholdKey to value.itemVisibilityScrollThreshold,
-            showFadeBordersKey to value.showFadeBorders,
+            FadeLengthKey to value.fadeLength.value,
+            ItemCountKey to value.items.size,
+            ItemVisibilityScrollThresholdKey to value.itemVisibilityScrollThreshold,
+            ShowFadeBordersKey to value.showFadeBorders,
         )
     },
     restore = { map ->
         AnimateScrollItemVisibleDemoState(
-            initialFadeLength = (map[fadeLengthKey] as Float).dp,
-            initialItemCount = map[itemCountKey] as Int,
+            initialFadeLength = (map[FadeLengthKey] as Float).dp,
+            initialItemCount = map[ItemCountKey] as Int,
             initialItemVisibilityScrollThreshold =
-                map[itemVisibilityScrollThresholdKey] as Float,
-            initialShowBorders = map[showFadeBordersKey] as Boolean,
+                map[ItemVisibilityScrollThresholdKey] as Float,
+            initialShowBorders = map[ShowFadeBordersKey] as Boolean,
         )
     }
 )

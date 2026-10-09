@@ -198,7 +198,8 @@ fun KeyboardDemo(
                         val progress = if (imeAnimationSourcePx != imeAnimationTargetPx) {
                             // Calculate how far through the animation we are
                             val animationRange = imeAnimationTargetPx - imeAnimationSourcePx
-                            val animProgress = ((imeBottomPx - imeAnimationSourcePx).toFloat() / animationRange).coerceIn(0f, 1f)
+                            val animProgress = ((imeBottomPx - imeAnimationSourcePx).toFloat() / animationRange)
+                                .coerceIn(0f, 1f)
 
                             // If closing (target < source), invert progress so box stays visible at start
                             if (imeAnimationTargetPx < imeAnimationSourcePx) {
