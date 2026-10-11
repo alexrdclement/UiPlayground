@@ -16,12 +16,12 @@ concurrency:
 
 jobs:
   run:
+    name: Firebase Test Lab
     if: github.event_name == 'workflow_dispatch' || github.event.head_commit.author.username != 'github-actions[bot]'
     uses: embarrasdf/devops/.github/workflows/firebase-test-lab.yml@claude/loving-mendel-w26y87-ci-test
     permissions:
       contents: write
     with:
-      name: Generate Baseline Profiles
       tasks: :baseline-profile:generateBaselineProfile
       artifact-name: baseline-profiles
       paths: androidApp/src/release/generated/baselineProfiles/startup-prof.txt

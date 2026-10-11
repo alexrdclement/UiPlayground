@@ -16,11 +16,11 @@ concurrency:
 
 jobs:
   run:
+    name: Firebase Test Lab
     uses: embarrasdf/devops/.github/workflows/firebase-test-lab.yml@claude/loving-mendel-w26y87-ci-test
     permissions:
       contents: write
     with:
-      name: Android Instrumented Tests
       tasks: :androidApp:runInstrumentedTests
       artifact-name: instrumented-test-results
       paths: '**/build/outputs/androidTest-results/managedDevice/**/*.xml'

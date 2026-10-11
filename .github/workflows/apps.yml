@@ -18,6 +18,7 @@ concurrency:
 
 jobs:
   app:
+    name: UiPlayground
     uses: embarrasdf/devops/.github/workflows/apps.yml@claude/loving-mendel-w26y87-ci-test
     permissions:
       contents: read

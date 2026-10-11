@@ -19,6 +19,7 @@ concurrency:
 
 jobs:
   app:
+    name: UiPlayground
     uses: embarrasdf/devops/.github/workflows/firebase-distribute.yml@claude/loving-mendel-w26y87-ci-test
     permissions:
       contents: read

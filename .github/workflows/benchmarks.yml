@@ -9,11 +9,11 @@ concurrency:
 
 jobs:
   run:
+    name: Firebase Test Lab
     uses: embarrasdf/devops/.github/workflows/firebase-test-lab.yml@claude/loving-mendel-w26y87-ci-test
     permissions:
       contents: write
     with:
-      name: Run Benchmarks
       tasks: :benchmark:runBenchmarks
       artifact-name: benchmark-results
       paths: benchmark/results/*.json

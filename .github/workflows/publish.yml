@@ -9,6 +9,7 @@ on:
 
 jobs:
   publish:
+    name: Publish
     uses: embarrasdf/devops/.github/workflows/publish.yml@claude/loving-mendel-w26y87-ci-test
     permissions:
       contents: write

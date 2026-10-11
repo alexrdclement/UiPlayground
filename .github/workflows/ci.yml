@@ -18,6 +18,7 @@ concurrency:
 
 jobs:
   ci:
+    name: CI
     uses: embarrasdf/devops/.github/workflows/ci.yml@claude/loving-mendel-w26y87-ci-test
     permissions:
       contents: write
