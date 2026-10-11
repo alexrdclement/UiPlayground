@@ -91,11 +91,8 @@ private fun calculateItemScrollPx(
     val visibleSize = maxOf(0, visibleEnd - visibleStart)
     val itemVisibleFraction = visibleSize.toFloat() / itemLayoutInfo.size.toFloat()
 
-    if (itemVisibleFraction >= visibilityThreshold) {
-        return null
-    }
-
     return when {
+        itemVisibleFraction >= visibilityThreshold -> null
         itemEnd <= targetStartOffset -> {
             (itemStart - targetStartOffset).toFloat()
         }
@@ -126,7 +123,7 @@ private fun calculateItemScrollPx(
 
 @Preview
 @Composable
-fun AnimateScrollItemVisibleVerticalPreview() {
+private fun AnimateScrollItemVisibleVerticalPreview() {
     UiPlaygroundPreview {
         val lazyListState = rememberLazyListState()
         val coroutineScope = rememberCoroutineScope()
@@ -180,7 +177,7 @@ fun AnimateScrollItemVisibleVerticalPreview() {
 
 @Preview
 @Composable
-fun AnimateScrollItemVisibleHorizontalPreview() {
+private fun AnimateScrollItemVisibleHorizontalPreview() {
     UiPlaygroundPreview {
         val lazyListState = rememberLazyListState()
         val coroutineScope = rememberCoroutineScope()

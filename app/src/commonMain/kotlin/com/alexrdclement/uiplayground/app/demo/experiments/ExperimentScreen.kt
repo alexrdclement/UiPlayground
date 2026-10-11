@@ -16,8 +16,10 @@ fun ExperimentScreen(
     experiment: Experiment,
     onNavigateUp: () -> Unit,
     onConfigureClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(
+        modifier = modifier,
         topBar = {
             DemoTopBar(
                 title = experiment.title,

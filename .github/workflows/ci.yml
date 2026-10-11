@@ -25,6 +25,4 @@ jobs:
       pull-requests: write
       security-events: write
     with:
-      # Off until this repo's static analysis findings are fixed.
-      static-analysis: false
       lfs: true

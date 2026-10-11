@@ -250,7 +250,7 @@ private fun BoxControl(
 
 @Preview
 @Composable
-fun KeyboardDemoPreview() {
+private fun KeyboardDemoPreview() {
     UiPlaygroundPreview {
         KeyboardDemo()
     }

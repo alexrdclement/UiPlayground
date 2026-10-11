@@ -19,7 +19,7 @@ fun DemoTextField(
         TextField(
             state = rememberTextFieldState(),
             style = PaletteTheme.component.core.textField.copy(textStyle = textStyle),
-            modifier = modifier.align(Alignment.Center),
+            modifier = Modifier.align(Alignment.Center),
         )
     }
 }

@@ -14,6 +14,7 @@ fun DemoTopBar(
     title: String,
     onNavigateUp: () -> Unit,
     onConfigureClick: () -> Unit,
+    modifier: Modifier = Modifier,
     navButton: @Composable () -> Unit = {
         BackNavigationButton(onNavigateUp)
     },
@@ -31,5 +32,6 @@ fun DemoTopBar(
         },
         navButton = navButton,
         actions = actions,
+        modifier = modifier,
     )
 }

@@ -4,7 +4,7 @@ androidx-core-splashscreen = "1.2.0"
 androidx-lifecycle = "2.10.0"
 androidx-test-ext-junit = "1.3.0"
 benchmark-macro-junit4 = "1.4.1"
-embarrasdf-gradle-plugins = "0.0.136"
+embarrasdf-gradle-plugins = "0.0.146"
 espresso-core = "3.7.0"
 kotlinx-collections-immutable = "0.5.1"
 kotlinx-serialization-json = "1.11.0"
@@ -56,6 +56,7 @@ embarrasdf-format = { id = "com.embarrasdf.gradle.plugin.format", version.ref = 
 embarrasdf-github-release = { id = "com.embarrasdf.gradle.plugin.github.release", version.ref = "embarrasdf-gradle-plugins" }
 embarrasdf-kotlin-multiplatform-library = { id = "com.embarrasdf.gradle.plugin.kotlin.multiplatform.library", version.ref = "embarrasdf-gradle-plugins" }
 embarrasdf-kotlin-serialization = { id = "com.embarrasdf.gradle.plugin.kotlin.serialization", version.ref = "embarrasdf-gradle-plugins" }
+embarrasdf-static-analysis = { id = "com.embarrasdf.gradle.plugin.static.analysis", version.ref = "embarrasdf-gradle-plugins" }
 embarrasdf-web-application = { id = "com.embarrasdf.gradle.plugin.web.application", version.ref = "embarrasdf-gradle-plugins" }
 
 [bundles]

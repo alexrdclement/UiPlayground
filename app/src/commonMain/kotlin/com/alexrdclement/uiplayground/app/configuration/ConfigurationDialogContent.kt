@@ -23,7 +23,10 @@ import com.embarrasdf.palette.theme.components.core.Surface
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun ConfigurationDialogContent(configurationController: ConfigurationController) {
+fun ConfigurationDialogContent(
+    configurationController: ConfigurationController,
+    modifier: Modifier = Modifier,
+) {
     var colorMode by remember(configurationController) {
         mutableStateOf(configurationController.colorMode)
     }
@@ -40,6 +43,7 @@ fun ConfigurationDialogContent(configurationController: ConfigurationController)
 
     Surface(
         style = PaletteTheme.component.core.surface.container,
+        modifier = modifier,
     ) {
         Column(
             modifier = Modifier
