@@ -26,7 +26,7 @@ platform :android do
     firebase_app_distribution(
       app: options[:firebase_app_id],
       groups: "testers",
-      release_notes: options[:release_notes],
+      release_notes_file: options[:release_notes_file],
       android_artifact_path: "build/outputs/apk/release/androidApp-release.apk",
 #       android_artifact_path: "build/outputs/bundle/release/androidApp-release.aab",
     )

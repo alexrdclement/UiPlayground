@@ -1,4 +1,4 @@
-name: "Format"
+name: Build Apps
 
 on:
   push:
@@ -17,8 +17,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  format:
-    uses: embarrasdf/devops/.github/workflows/format.yml@main
+  app:
+    name: UiPlayground
+    uses: embarrasdf/devops/.github/workflows/build-apps.yml@main
     permissions:
-      contents: write
+      contents: read
       pull-requests: write
+    with:
+      android: true
+      ios: true
+      web: true
+      desktop: true
+      lfs: true

@@ -1,0 +1,25 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  app:
+    name: UiPlayground
+    uses: embarrasdf/devops/.github/workflows/deploy-pages.yml@main
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    with:
+      lfs: true

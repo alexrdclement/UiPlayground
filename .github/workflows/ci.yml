@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: CI
+    uses: embarrasdf/devops/.github/workflows/ci.yml@main
+    permissions:
+      contents: write
+      pull-requests: write
+    with:
+      test-tasks: jvmTest wasmJsBrowserTest testDebugUnitTest
+      apple-test-tasks: ''
+      lfs: true
