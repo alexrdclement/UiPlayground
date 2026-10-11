@@ -1,14 +1,6 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
-    'config:recommended',
-  ],
-  "baseBranches": [
-    "main"
-  ],
-  "gitIgnoredAuthors": [
-    "renovate[bot]@users.noreply.github.com",
-    "github-actions[bot]@users.noreply.github.com",
-    "41898282+github-actions[bot]@users.noreply.github.com"
+    'github>embarrasdf/devops//renovate/default.json5',
   ],
 }

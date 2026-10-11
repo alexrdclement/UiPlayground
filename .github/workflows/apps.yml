@@ -1,0 +1,33 @@
+name: Apps
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  app:
+    uses: embarrasdf/devops/.github/workflows/apps.yml@claude/loving-mendel-w26y87-ci-test
+    permissions:
+      contents: read
+      pull-requests: write
+      pages: write
+      id-token: write
+    with:
+      android: true
+      ios: true
+      web: true
+      desktop: true
+      pages: true
+      lfs: true

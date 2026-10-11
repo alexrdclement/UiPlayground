@@ -1,0 +1,16 @@
+name: Publish
+
+on:
+  workflow_run:
+    workflows: [Generate Baseline Profiles]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    uses: embarrasdf/devops/.github/workflows/publish.yml@claude/loving-mendel-w26y87-ci-test
+    permissions:
+      contents: write
+    with:
+      runs-on: ubuntu-latest

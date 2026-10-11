@@ -1,4 +1,4 @@
-name: "Format"
+name: CI
 
 on:
   push:
@@ -17,8 +17,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  format:
-    uses: embarrasdf/devops/.github/workflows/format.yml@main
+  ci:
+    uses: embarrasdf/devops/.github/workflows/ci.yml@claude/loving-mendel-w26y87-ci-test
     permissions:
       contents: write
       pull-requests: write
+    with:
+      test-tasks: testDebug
+      apple-test-tasks: ''
+      lfs: true
