@@ -1,4 +1,4 @@
-name: Apps
+name: Build Apps
 
 on:
   push:
@@ -19,16 +19,13 @@ concurrency:
 jobs:
   app:
     name: UiPlayground
-    uses: embarrasdf/devops/.github/workflows/apps.yml@claude/loving-mendel-w26y87-ci-test
+    uses: embarrasdf/devops/.github/workflows/build-apps.yml@claude/loving-mendel-w26y87-ci-test
     permissions:
       contents: read
       pull-requests: write
-      pages: write
-      id-token: write
     with:
       android: true
       ios: true
       web: true
       desktop: true
-      pages: true
       lfs: true
