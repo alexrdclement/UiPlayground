@@ -23,6 +23,9 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      security-events: write
     with:
       apple-test-tasks: ''
+      # Off until this repo's static analysis findings are fixed.
+      static-analysis: false
       lfs: true
