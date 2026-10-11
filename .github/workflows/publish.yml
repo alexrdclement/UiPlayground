@@ -10,7 +10,7 @@ on:
 jobs:
   publish:
     name: Publish
-    uses: embarrasdf/devops/.github/workflows/publish.yml@claude/loving-mendel-w26y87-ci-test
+    uses: embarrasdf/devops/.github/workflows/publish.yml@main
     permissions:
       contents: write
     with:

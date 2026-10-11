@@ -19,7 +19,7 @@ concurrency:
 jobs:
   app:
     name: UiPlayground
-    uses: embarrasdf/devops/.github/workflows/build-apps.yml@claude/loving-mendel-w26y87-ci-test
+    uses: embarrasdf/devops/.github/workflows/build-apps.yml@main
     permissions:
       contents: read
       pull-requests: write

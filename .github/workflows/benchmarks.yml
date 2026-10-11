@@ -10,7 +10,7 @@ concurrency:
 jobs:
   run:
     name: Firebase Test Lab
-    uses: embarrasdf/devops/.github/workflows/firebase-test-lab.yml@claude/loving-mendel-w26y87-ci-test
+    uses: embarrasdf/devops/.github/workflows/firebase-test-lab.yml@main
     permissions:
       contents: write
     with:
