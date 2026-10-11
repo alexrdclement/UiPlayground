@@ -24,5 +24,4 @@ jobs:
       contents: write
       pull-requests: write
     with:
-      apple-test-tasks: ''
       lfs: true
