@@ -24,6 +24,5 @@ jobs:
       contents: write
       pull-requests: write
     with:
-      test-tasks: jvmTest wasmJsBrowserTest testDebugUnitTest
       apple-test-tasks: ''
       lfs: true
