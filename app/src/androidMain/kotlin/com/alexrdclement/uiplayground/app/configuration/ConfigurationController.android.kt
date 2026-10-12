@@ -35,7 +35,10 @@ private class ConfigurationControllerImpl(
         }
 
     override fun setColorMode(colorMode: ColorMode): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || window == null) return false
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return false
+        }
+        if (window == null) return false
 
         window.colorMode = when (colorMode) {
             ColorMode.DEFAULT -> ActivityInfo.COLOR_MODE_DEFAULT

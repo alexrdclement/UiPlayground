@@ -91,8 +91,11 @@ private fun calculateItemScrollPx(
     val visibleSize = maxOf(0, visibleEnd - visibleStart)
     val itemVisibleFraction = visibleSize.toFloat() / itemLayoutInfo.size.toFloat()
 
+    if (itemVisibleFraction >= visibilityThreshold) {
+        return null
+    }
+
     return when {
-        itemVisibleFraction >= visibilityThreshold -> null
         itemEnd <= targetStartOffset -> {
             (itemStart - targetStartOffset).toFloat()
         }
