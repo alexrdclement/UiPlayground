@@ -1,7 +1,6 @@
 [versions]
 androidx-activity-compose = "1.13.0"
 androidx-core-splashscreen = "1.2.0"
-androidx-lifecycle = "2.10.0"
 androidx-test-ext-junit = "1.3.0"
 benchmark-macro-junit4 = "1.4.1"
 embarrasdf-gradle-plugins = "0.0.150"
@@ -21,7 +20,6 @@ uievent = "0.0.25"
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark-macro-junit4" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-core-splashscreen" }
-androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 androidx-tracing-perfetto = { group = "androidx.tracing", name = "tracing-perfetto", version.ref = "tracing-perfetto" }
