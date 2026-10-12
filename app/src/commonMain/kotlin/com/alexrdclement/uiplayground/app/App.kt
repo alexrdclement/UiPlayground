@@ -1,6 +1,7 @@
 package com.alexrdclement.uiplayground.app
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.alexrdclement.uiplayground.app.configuration.ConfigurationController
 import com.alexrdclement.uiplayground.app.configuration.rememberConfigurationController
 import com.alexrdclement.uiplayground.app.navigation.UiPlaygroundNav
@@ -11,11 +12,12 @@ import com.embarrasdf.palette.theme.components.core.Surface
 
 @Composable
 fun App(
+    modifier: Modifier = Modifier,
     navController: NavController = rememberUiPlaygroundNavController(),
     configurationController: ConfigurationController = rememberConfigurationController(),
 ) {
     PaletteTheme {
-        Surface {
+        Surface(modifier = modifier) {
             UiPlaygroundNav(
                 navController = navController,
                 configurationController = configurationController,

@@ -45,9 +45,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun UiEventDemo(
+    modifier: Modifier = Modifier,
     state: UiEventDemoState = rememberUiEventDemoState(),
     control: UiEventDemoControl = rememberUiEventDemoControl(state),
-    modifier: Modifier = Modifier,
 ) {
     var error by rememberSaveable { mutableStateOf<String?>(null) }
 
@@ -80,7 +80,7 @@ fun UiEventDemo(
                 )
             }
             item {
-                Text("Logs", style = PaletteTheme.component.core.text.titleMedium)
+                Text(text = "Logs", style = PaletteTheme.component.core.text.titleMedium)
             }
             items(
                 items = logs,
@@ -117,7 +117,7 @@ fun LogLevelDisplay(
         verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.medium),
         modifier = modifier,
     ) {
-        Text(level.name, style = PaletteTheme.component.core.text.labelLarge)
+        Text(text = level.name, style = PaletteTheme.component.core.text.labelLarge)
 
         Column(
             verticalArrangement = Arrangement.spacedBy(PaletteTheme.semantic.dimension.spacing.small),
@@ -125,8 +125,8 @@ fun LogLevelDisplay(
                 .padding(horizontal = PaletteTheme.semantic.dimension.spacing.medium),
         ) {
             val eventState by logs.collectAsState()
-            Text("Event state: $eventState", style = PaletteTheme.component.core.text.bodyMedium)
-            Text("Event fired $logCount times", style = PaletteTheme.component.core.text.bodyMedium)
+            Text(text = "Event state: $eventState", style = PaletteTheme.component.core.text.bodyMedium)
+            Text(text = "Event fired $logCount times", style = PaletteTheme.component.core.text.bodyMedium)
         }
     }
 }
@@ -136,7 +136,7 @@ fun LogDisplay(
     log: String,
     modifier: Modifier = Modifier,
 ) {
-    Text(log, modifier = modifier, style = PaletteTheme.component.core.text.bodyMedium)
+    Text(text = log, modifier = modifier, style = PaletteTheme.component.core.text.bodyMedium)
 }
 
 @Composable
@@ -180,7 +180,7 @@ class UiEventDemoState(
             coroutineScope.launch {
                 logs.collect { log ->
                     val message = "[$level] ${log.message}"
-                    mutableLogs.update { it.add(0, message) }
+                    mutableLogs.update { it.add(index = 0, element = message) }
                 }
             }
         }
@@ -188,7 +188,7 @@ class UiEventDemoState(
             val eventState = eventsByLogLevel.getValue(level)
             coroutineScope.launch {
                 eventState.collect {
-                    state.update { it + 1 }
+                    state.update { count -> count + 1 }
                 }
             }
         }
@@ -237,10 +237,7 @@ class UiEventDemoControl(
 
     val logLevelControls = LogLevel.entries.map(::makeControlForLevel)
 
-    val controls = persistentListOf<Control>(
-        resetControl,
-        *logLevelControls.toTypedArray(),
-    )
+    val controls = persistentListOf<Control>(resetControl).addAll(logLevelControls)
 
     fun log(
         level: LogLevel,
@@ -263,7 +260,7 @@ class UiEventDemoControl(
 
 @Preview
 @Composable
-fun UiEventDemoPreview() {
+private fun UiEventDemoPreview() {
     UiPlaygroundPreview {
         UiEventDemo()
     }

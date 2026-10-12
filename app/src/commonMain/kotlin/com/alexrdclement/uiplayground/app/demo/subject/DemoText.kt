@@ -25,7 +25,7 @@ fun DemoText(
         Text(
             text = "Hello world",
             style = textStyle,
-            modifier = modifier.align(Alignment.Center),
+            modifier = Modifier.align(Alignment.Center),
         )
     }
 }

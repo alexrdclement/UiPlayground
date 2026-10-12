@@ -32,7 +32,7 @@ fun Modifier.meshGradient(
 ): Modifier {
     val pointData by remember(points, resolutionX, resolutionY) {
         derivedStateOf {
-            PointData(points, resolutionX, resolutionY)
+            PointData(points = points, stepsX = resolutionX, stepsY = resolutionY)
         }
     }
 
@@ -140,61 +140,69 @@ class PointData(
     }
 
     private fun generateInterpolatedOffsets() {
+        interpolateRows()
+        interpolateColumns()
+    }
+
+    private fun interpolateRows() {
         for (y in 0..points.lastIndex) {
             for (x in 0..points[y].lastIndex) {
-                this[x * stepsX, y * stepsY] = points[y][x].first
-                this[x * stepsX, y * stepsY] = points[y][x].second
+                setOffset(x = x * stepsX, y = y * stepsY, offset = points[y][x].first)
+                setColor(x = x * stepsX, y = y * stepsY, color = points[y][x].second)
 
                 if (x != points[y].lastIndex) {
-                    val path = cubicPathX(
-                        point1 = points[y][x].first,
-                        point2 = points[y][x + 1].first,
-                        when (x) {
-                            0 -> 0
-                            points[y].lastIndex - 1 -> 2
-                            else -> 1
-                        },
-                    )
-                    measure.setPath(path, false)
-
-                    for (i in 1..<stepsX) {
-                        measure.getPosition(i / stepsX.toFloat() * measure.length).let {
-                            this[(x * stepsX) + i, (y * stepsY)] = Offset(it.x, it.y)
-                            this[(x * stepsX) + i, (y * stepsY)] =
-                                lerp(
-                                    points[y][x].second,
-                                    points[y][x + 1].second,
-                                    i / stepsX.toFloat(),
-                                )
-                        }
-                    }
+                    interpolateRowSegment(x = x, y = y)
                 }
             }
         }
+    }
 
+    private fun interpolateRowSegment(
+        x: Int,
+        y: Int,
+    ) {
+        val path = cubicPathX(
+            point1 = points[y][x].first,
+            point2 = points[y][x + 1].first,
+            position = segmentPosition(index = x, lastIndex = points[y].lastIndex),
+        )
+        measure.setPath(path = path, forceClosed = false)
+
+        for (i in 1..<stepsX) {
+            val position = measure.getPosition(i / stepsX.toFloat() * measure.length)
+            setOffset(x = (x * stepsX) + i, y = y * stepsY, offset = Offset(position.x, position.y))
+            setColor(
+                x = (x * stepsX) + i,
+                y = y * stepsY,
+                color = lerp(
+                    points[y][x].second,
+                    points[y][x + 1].second,
+                    i / stepsX.toFloat(),
+                ),
+            )
+        }
+    }
+
+    private fun interpolateColumns() {
         for (y in 0..<points.lastIndex) {
             for (x in 0..<this.xLength) {
                 val path = cubicPathY(
                     point1 = this[x, y * stepsY].let { Offset(it.x, it.y) },
                     point2 = this[x, (y + 1) * stepsY].let { Offset(it.x, it.y) },
-                    when (y) {
-                        0 -> 0
-                        points[y].lastIndex - 1 -> 2
-                        else -> 1
-                    },
+                    position = segmentPosition(index = y, lastIndex = points[y].lastIndex),
                 )
-                measure.setPath(path, false)
+                measure.setPath(path = path, forceClosed = false)
                 for (i in (1..<stepsY)) {
-                    val point3 = measure.getPosition(i / stepsY.toFloat() * measure.length).let {
-                        Offset(it.x, it.y)
-                    }
-
-                    this[x, ((y * stepsY) + i)] = point3
-
-                    this[x, ((y * stepsY) + i)] = lerp(
-                        this.getColor(x, y * stepsY),
-                        this.getColor(x, (y + 1) * stepsY),
-                        i / stepsY.toFloat(),
+                    val position = measure.getPosition(i / stepsY.toFloat() * measure.length)
+                    setOffset(x = x, y = (y * stepsY) + i, offset = Offset(position.x, position.y))
+                    setColor(
+                        x = x,
+                        y = (y * stepsY) + i,
+                        color = lerp(
+                            getColor(x = x, y = y * stepsY),
+                            getColor(x = x, y = (y + 1) * stepsY),
+                            i / stepsY.toFloat(),
+                        ),
                     )
                 }
             }
@@ -219,7 +227,7 @@ class PointData(
         return colors[index]
     }
 
-    private operator fun set(
+    private fun setOffset(
         x: Int,
         y: Int,
         offset: Offset,
@@ -228,7 +236,7 @@ class PointData(
         offsets[index] = Offset(offset.x, offset.y)
     }
 
-    private operator fun set(
+    private fun setColor(
         x: Int,
         y: Int,
         color: Color,
@@ -236,6 +244,18 @@ class PointData(
         val index = (y * xLength) + x
         colors[index] = color
     }
+}
+
+/**
+ * Where a segment sits along its row or column: 0 for the first, 2 for the last, 1 otherwise.
+ */
+private fun segmentPosition(
+    index: Int,
+    lastIndex: Int,
+) = when (index) {
+    0 -> 0
+    lastIndex - 1 -> 2
+    else -> 1
 }
 
 private fun cubicPathX(

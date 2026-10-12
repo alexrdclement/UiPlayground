@@ -12,8 +12,9 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,7 +51,7 @@ fun GradientDemo(modifier: Modifier = Modifier) {
         onValueChange = { currentGradient = it },
     )
 
-    var widthPx by remember { mutableStateOf(0) }
+    var widthPx by remember { mutableIntStateOf(0) }
     val widthPxFloat = widthPx.toFloat()
 
     val infiniteTransition = rememberInfiniteTransition()
@@ -74,7 +75,7 @@ fun GradientDemo(modifier: Modifier = Modifier) {
             .fillMaxSize(),
     ) {
         val density = LocalDensity.current
-        LaunchedEffect(this@Demo.maxWidth) {
+        SideEffect {
             widthPx = with(density) { this@Demo.maxWidth.toPx().toInt() }
         }
 

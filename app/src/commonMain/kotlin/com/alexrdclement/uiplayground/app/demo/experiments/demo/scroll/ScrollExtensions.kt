@@ -126,7 +126,7 @@ private fun calculateItemScrollPx(
 
 @Preview
 @Composable
-fun AnimateScrollItemVisibleVerticalPreview() {
+private fun AnimateScrollItemVisibleVerticalPreview() {
     UiPlaygroundPreview {
         val lazyListState = rememberLazyListState()
         val coroutineScope = rememberCoroutineScope()
@@ -180,7 +180,7 @@ fun AnimateScrollItemVisibleVerticalPreview() {
 
 @Preview
 @Composable
-fun AnimateScrollItemVisibleHorizontalPreview() {
+private fun AnimateScrollItemVisibleHorizontalPreview() {
     UiPlaygroundPreview {
         val lazyListState = rememberLazyListState()
         val coroutineScope = rememberCoroutineScope()
