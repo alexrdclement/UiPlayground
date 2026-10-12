@@ -75,7 +75,7 @@ fun GradientDemo(modifier: Modifier = Modifier) {
             .fillMaxSize(),
     ) {
         val density = LocalDensity.current
-        SideEffect {
+        SideEffect(key1 = this@Demo.maxWidth, key2 = density) {
             widthPx = with(density) { this@Demo.maxWidth.toPx().toInt() }
         }
 
