@@ -35,6 +35,7 @@ import com.embarrasdf.uievent.UiEventState
 import com.embarrasdf.uievent.collectAsState
 import com.embarrasdf.uievent.toUiEvent
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -237,7 +238,10 @@ class UiEventDemoControl(
 
     val logLevelControls = LogLevel.entries.map(::makeControlForLevel)
 
-    val controls = persistentListOf<Control>(resetControl).addAll(logLevelControls)
+    val controls = buildList<Control> {
+        add(resetControl)
+        addAll(logLevelControls)
+    }.toPersistentList()
 
     fun log(
         level: LogLevel,
