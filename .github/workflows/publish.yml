@@ -13,5 +13,8 @@ jobs:
     uses: embarrasdf/devops/.github/workflows/publish.yml@main
     permissions:
       contents: write
+      # The release changelog reads the merged pull requests.
+      issues: read
+      pull-requests: read
     with:
       runs-on: ubuntu-latest
